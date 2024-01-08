@@ -26,7 +26,7 @@
 #include "library.h"
 #include "block_model.h"
 #include "plf.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "parser.h"
 #include "path.h"
 #include "assertion.h"

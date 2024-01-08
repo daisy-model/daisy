@@ -22,7 +22,7 @@
 #ifndef HARVESTING_H
 #define HARVESTING_H
 
-#include "time.h"
+#include "daisy_time.h"
 #include "plf.h"
 #include "symbol.h"
 #include <vector>

@@ -30,7 +30,7 @@
 #include "assertion.h"
 #include "mathlib.h"
 #include "path.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "units.h"
 
 #define BOOST_UBLAS_NDEBUG

@@ -24,7 +24,7 @@
 #include "daisy.h"
 #include "log_all.h"
 #include "treelog.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "block_model.h"
 #include "frame.h"

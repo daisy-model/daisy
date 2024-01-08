@@ -28,7 +28,7 @@
 #include "geometry.h"
 #include "am.h"
 #include "log.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "plf.h"
 #include "treelog.h"
 #include "mathlib.h"

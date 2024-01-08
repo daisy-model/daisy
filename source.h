@@ -22,7 +22,7 @@
 #define SOURCE_H
 
 #include "model.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "source.h"
 #include "symbol.h"
 

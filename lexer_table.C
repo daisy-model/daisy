@@ -26,7 +26,7 @@
 #include "assertion.h"
 #include "mathlib.h"
 #include "submodeler.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "vcheck.h"
 #include "units.h"
 #include "path.h"

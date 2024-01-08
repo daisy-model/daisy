@@ -22,7 +22,7 @@
 
 #define BUILD_DLL
 
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "assertion.h"
 #include "log.h"

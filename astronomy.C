@@ -22,7 +22,7 @@
 #define BUILD_DLL
 
 #include "astronomy.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "mathlib.h"
 #include <algorithm>

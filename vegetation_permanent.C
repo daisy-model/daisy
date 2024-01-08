@@ -26,7 +26,7 @@
 #include "log.h"
 #include "root_system.h"
 #include "canopy_simple.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "geometry.h"
 #include "soil.h"
 #include "crop.h"

@@ -23,7 +23,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "time.h"
+#include "daisy_time.h"
 #include "border.h"
 #include "model_framed.h"
 #include "symbol.h"

@@ -24,7 +24,7 @@
 
 #include "condition.h"
 #include "block_model.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "daisy.h"
 #include "vcheck.h"
 #include "librarian.h"

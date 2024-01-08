@@ -22,7 +22,7 @@
 
 #include "wsource_weather.h"
 #include "weatherdata.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "librarian.h"
 #include "assertion.h"
 

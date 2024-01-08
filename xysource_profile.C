@@ -26,7 +26,7 @@
 #include "check.h"
 #include "vcheck.h"
 #include "geometry.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "units.h"
 #include "submodeler.h"
 #include "assertion.h"

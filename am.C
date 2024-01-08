@@ -29,7 +29,7 @@
 #include "submodeler.h"
 #include "frame_model.h"
 #include "frame_submodel.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "log.h"
 #include "geometry.h"
 #include "check.h"

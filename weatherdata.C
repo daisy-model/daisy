@@ -21,7 +21,7 @@
 #define BUILD_DLL
 
 #include "weatherdata.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "units.h"
 #include "attribute.h"
 #include "assertion.h"

@@ -28,7 +28,7 @@
 #include "librarian.h"
 #include "block_model.h"
 #include "assertion.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "mathlib.h"
 #include <sstream>

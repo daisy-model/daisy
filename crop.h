@@ -24,7 +24,7 @@
 #define CROP_H
 
 #include "model_framed.h"
-#include "time.h"
+#include "daisy_time.h"
 #include <vector>
 
 class Log;

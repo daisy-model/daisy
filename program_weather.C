@@ -22,11 +22,11 @@
 
 #include "program.h"
 #include "wsource.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "librarian.h"
 #include "block_model.h"
 #include "submodeler.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "assertion.h"
 #include "mathlib.h"
 #include "timestep.h"

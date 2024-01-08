@@ -23,7 +23,7 @@
 #include "wsource_base.h"
 #include "librarian.h"
 #include "treelog.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "frame.h"
 
 struct WSourceConst : public WSourceBase
