@@ -27,7 +27,7 @@
 #include "block_model.h"
 #include "librarian.h"
 #include "treelog.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "memutils.h"
 #include "submodeler.h"
 #include "mathlib.h"

@@ -25,7 +25,7 @@
 #include "root_system.h"
 #include "canopy_simple.h"
 #include "log.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "bioclimate.h"
 #include "plf.h"
 #include "soil_water.h"

@@ -24,7 +24,7 @@
 
 #include "groundwater.h"
 #include "source.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "units.h"
 #include "assertion.h"

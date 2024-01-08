@@ -44,7 +44,7 @@
 #include "chemical.h"
 #include "bioincorporation.h"
 #include "abiotic.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "mathlib.h"
 #include "plf.h"
 #include "treelog.h"

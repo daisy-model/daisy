@@ -24,7 +24,7 @@
 
 #include "condition.h"
 #include "memutils.h"
-#include "time.h"
+#include "daisy_time.h"
 #include <vector>
 
 class Log;

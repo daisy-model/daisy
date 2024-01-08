@@ -26,7 +26,7 @@
 #include "lexer_data.h"
 #include "librarian.h"
 #include "assertion.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "treelog.h"
 #include "block_model.h"
 #include "path.h"

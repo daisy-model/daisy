@@ -27,7 +27,7 @@
 #include "librarian.h"
 #include "lexer_data.h"
 #include "block_model.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "assertion.h"
 #include "vcheck.h"
 #include "path.h"

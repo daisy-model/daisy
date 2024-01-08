@@ -24,7 +24,7 @@
 #include "units.h"
 #include "metalib.h"
 #include "library.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "plf.h"
 #include "assertion.h"
 #include "mathlib.h"

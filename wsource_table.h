@@ -22,7 +22,7 @@
 #define WSOURCE_TABLE_H
 
 #include "wsource_base.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "lexer_table.h"
 #include "frame_submodel.h"
 #include <map>

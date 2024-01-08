@@ -23,7 +23,7 @@
 #ifndef HARVEST_H
 #define HARVEST_H
 
-#include "time.h"
+#include "daisy_time.h"
 #include "symbol.h"
 #include "block_model.h"
 

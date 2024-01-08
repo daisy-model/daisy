@@ -26,7 +26,7 @@
 #include "mathlib.h"
 #include "librarian.h"
 #include "frame.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "units.h"
 #include "submodeler.h"
 #include "check.h"

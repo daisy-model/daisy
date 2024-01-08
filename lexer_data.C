@@ -22,7 +22,7 @@
 #define BUILD_DLL
 
 #include "lexer_data.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "mathlib.h"
 #include <ctype.h>
 #include <cstdlib>

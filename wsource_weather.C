@@ -27,7 +27,7 @@
 #include "im.h"
 #include "units.h"
 #include "plf.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "block_model.h"
 #include "librarian.h"

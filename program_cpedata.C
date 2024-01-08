@@ -26,7 +26,7 @@
 #include "lexer_table.h"
 #include "librarian.h"
 #include "assertion.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "timestep.h"
 #include "mathlib.h"
 #include <sstream>

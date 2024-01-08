@@ -43,7 +43,7 @@
 #include "am.h"
 #include "dom.h"
 #include "irrigate.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "log.h"
 #include "submodeler.h"
 #include "memutils.h"

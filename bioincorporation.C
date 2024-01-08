@@ -29,7 +29,7 @@
 #include "am.h"
 #include "librarian.h"
 #include "plf.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "aom.h"
 #include "check.h"
 #include "vcheck.h"

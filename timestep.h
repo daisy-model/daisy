@@ -21,7 +21,7 @@
 #ifndef TIMESTEP_H
 #define TIMESTEP_H
 
-#include "time.h"
+#include "daisy_time.h"
 #include "vcheck.h"
 #include <string>
 

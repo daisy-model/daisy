@@ -31,7 +31,7 @@
 #include "number.h"
 #include "integer.h"
 #include "plf.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "treelog_text.h"
 #include "path.h"
 #include "units.h"

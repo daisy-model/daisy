@@ -23,7 +23,7 @@
 #include "dlf.h"
 #include "lexer_soil.h"
 #include "units.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "mathlib.h"
 #include "submodeler.h"
 #include "librarian.h"

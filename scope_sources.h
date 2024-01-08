@@ -23,7 +23,7 @@
 #define SCOPE_SOURCES_H
 
 #include "scope.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "memutils.h"
 #include <vector>
 

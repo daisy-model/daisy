@@ -27,7 +27,7 @@
 #include "column.h"
 #include "horizon.h"
 #include "hydraulic.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "librarian.h"
 #include "scope.h"
 #include "units.h"

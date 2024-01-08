@@ -25,7 +25,7 @@
 #include "librarian.h"
 #include "frame.h"
 #include "lexer_data.h"
-#include "time.h"
+#include "daisy_time.h"
 #include "mathlib.h"
 #include "path.h"
 #include "daisy.h"
