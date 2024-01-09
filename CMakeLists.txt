@@ -35,9 +35,70 @@ add_compile_options(
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
-add_subdirectory(src)
+# Compiling parts as libraries does not work, as daisy cannot find the models.
+# TODO: Figure out why
+# add_subdirectory(src) 
 
 add_executable(daisy
+  src/models/gnuplot/gnuplot.C
+  src/models/gnuplot/gnuplot_base.C
+  src/models/gnuplot/gnuplot_multi.C
+  src/models/gnuplot/gnuplot_profile.C
+  src/models/gnuplot/gnuplot_soil.C
+  src/models/gnuplot/gnuplot_time.C
+  src/models/gnuplot/gnuplot_utils.C
+  src/models/gnuplot/gnuplot_vector.C
+  src/models/gnuplot/gnuplot_xy.C
+  src/models/gnuplot/program_gnuplot.C
+  src/models/gnuplot/source.C
+  src/models/gnuplot/source_combine.C
+  src/models/gnuplot/source_expr.C
+  src/models/gnuplot/source_file.C
+  src/models/gnuplot/source_merge.C
+  src/models/gnuplot/source_std.C
+  src/models/gnuplot/xysource.C
+  src/models/gnuplot/xysource_combine.C
+  src/models/gnuplot/xysource_expr.C
+  src/models/gnuplot/xysource_flux.C
+  src/models/gnuplot/xysource_freq.C
+  src/models/gnuplot/xysource_inline.C
+  src/models/gnuplot/xysource_loop.C
+  src/models/gnuplot/xysource_merge.C
+  src/models/gnuplot/xysource_profile.C
+  src/models/gnuplot/xysource_xycombine.C
+  src/util/anystate.C
+  src/util/assertion.C
+  src/util/complex_functions.C
+  src/util/depth.C
+  src/util/filepos.C
+  src/util/format.C
+  src/util/format_LaTeX.C
+  src/util/gaussj.C
+  src/util/hyp_2F1.C
+  src/util/iterative.C
+  src/util/lexer.C
+  src/util/lexer_data.C
+  src/util/lexer_flux.C
+  src/util/lexer_soil.C
+  src/util/lexer_table.C
+  src/util/mathlib.C
+  src/util/nrutil.C
+  src/util/path.C
+  src/util/point.C
+  src/util/scope.C
+  src/util/scope_exchange.C
+  src/util/scope_id.C
+  src/util/scope_model.C
+  src/util/scope_multi.C
+  src/util/scope_soil.C
+  src/util/scope_sources.C
+  src/util/scope_table.C
+  src/util/scope_xysources.C
+  src/util/scopesel.C
+  src/util/solver.C
+  src/util/solver_cxsparse.C
+  src/util/solver_none.C
+  src/util/solver_ublas.C
   src/ABAprod.C
   src/ABAprod_root.C
   src/ABAprod_soil.C
@@ -71,9 +132,7 @@ add_executable(daisy
   src/adsorption_linear.C
   src/adsorption_vS_S.C
   src/am.C
-  src/anystate.C
   src/aom.C
-  src/assertion.C
   src/astronomy.C
   src/attribute.C
   src/average.C
@@ -109,7 +168,6 @@ add_executable(daisy
   src/cloudiness.C
   src/column.C
   src/column_std.C
-  src/complex_functions.C
   src/condedge.C
   src/condition.C
   src/condition_BBCH.C
@@ -131,7 +189,6 @@ add_executable(daisy
   src/daisy.C
   src/daisy_time.C
   src/deposition.C
-  src/depth.C
   src/destination.C
   src/difrad.C
   src/difrad_DPF.C
@@ -144,7 +201,7 @@ add_executable(daisy
   src/drain.C
   src/drain_lateral.C
   src/draineqd.C
-  src/#element.C
+  #src/element.C
   src/equil.C
   src/equil_goal.C
   src/equil_langmuir.C
@@ -153,14 +210,10 @@ add_executable(daisy
   src/fetch.C
   src/fetch_pretty.C
   src/field.C
-  src/filepos.C
-  src/format.C
-  src/format_LaTeX.C
   src/frame.C
   src/frame_model.C
   src/frame_submodel.C
   src/function.C
-  src/gaussj.C
   src/geometry.C
   src/geometry1d.C
   src/geometry_rect.C
@@ -210,19 +263,12 @@ add_executable(daisy
   src/hydraulic_table.C
   src/hydraulic_wepp.C
   src/hydraulic_yolo.C
-  src/hyp_2F1.C
   src/im.C
   src/imvec.C
   src/integer.C
   src/integer_arit.C
   src/intrinsics.C
   src/irrigate.C
-  src/iterative.C
-  src/lexer.C
-  src/lexer_data.C
-  src/lexer_flux.C
-  src/lexer_soil.C
-  src/lexer_table.C
   src/librarian.C
   src/library.C
   src/litter.C
@@ -242,7 +288,6 @@ add_executable(daisy
   src/mactrans.C
   src/mactrans_std.C
   src/main.C
-  src/mathlib.C
   src/metalib.C
   src/model.C
   src/model_derived.C
@@ -256,7 +301,6 @@ add_executable(daisy
   src/nitrification.C
   src/nitrification_soil.C
   src/nitrification_solute.C
-  src/nrutil.C
   src/number.C
   src/number_arit.C
   src/number_const.C
@@ -273,7 +317,6 @@ add_executable(daisy
   src/parser.C
   src/parser_file.C
   src/partition.C
-  src/path.C
   src/pet.C
   src/pet_FAO_PM.C
   src/pet_FAO_PM_hourly.C
@@ -290,7 +333,6 @@ add_executable(daisy
   src/photo_Farquhar.C
   src/photo_GL.C
   src/plf.C
-  src/point.C
   src/ponddamp.C
   src/printer.C
   src/printer_file.C
@@ -350,16 +392,6 @@ add_executable(daisy
   src/rubiscoNdist_forced.C
   src/rubiscoNdist_uniform.C
   src/run.C
-  src/scope.C
-  src/scope_exchange.C
-  src/scope_id.C
-  src/scope_model.C
-  src/scope_multi.C
-  src/scope_soil.C
-  src/scope_sources.C
-  src/scope_table.C
-  src/scope_xysources.C
-  src/scopesel.C
   src/secondary.C
   src/seed.C
   src/seed_LAI.C
@@ -380,10 +412,6 @@ add_executable(daisy
   src/soil_water.C
   src/soilph.C
   src/solupt.C
-  src/solver.C
-  src/solver_cxsparse.C
-  src/solver_none.C
-  src/solver_ublas.C
   src/som.C
   src/stomatacon.C
   src/stomatacon_SHA.C
@@ -476,16 +504,12 @@ target_include_directories(daisy PUBLIC include)
 
 target_link_directories(daisy INTERFACE Boost::Boost)
 
-target_link_libraries(daisy PRIVATE
-  gnuplot
-)
-
 target_link_libraries(daisy PUBLIC
   stdc++
   ${Boost_LIBRARIES}
   cxsparse
   dl
-  pthread  
+  pthread
 )
 
 

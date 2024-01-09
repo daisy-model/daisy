@@ -1,10 +1,14 @@
 add_library(gnuplot
+  gnuplot.C
+  gnuplot_base.C
   gnuplot_multi.C
   gnuplot_profile.C
   gnuplot_soil.C
   gnuplot_time.C
+  gnuplot_utils.C
   gnuplot_vector.C
   gnuplot_xy.C
+  program_gnuplot.C
   source.C
   source_combine.C
   source_expr.C
@@ -21,9 +25,8 @@ add_library(gnuplot
   xysource_merge.C
   xysource_profile.C
   xysource_xycombine.C
-  gnuplot.C
-  gnuplot_base.C
-  gnuplot_utils.C
-  program_gnuplot.C
 )
 target_include_directories(gnuplot PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_compile_options(gnuplot PRIVATE
+  "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>"
+)
