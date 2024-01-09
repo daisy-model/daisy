@@ -360,8 +360,7 @@ add_executable(daisy
   src/daisy/upper_boundary/weather/wsource_table.C
   src/daisy/upper_boundary/weather/wsource_time.C
   src/daisy/upper_boundary/weather/wsource_weather.C
-  src/element.C
-  src/function.C
+  src/util/function.C
   src/gnuplot/gnuplot.C
   src/gnuplot/gnuplot_base.C
   src/gnuplot/gnuplot_multi.C
