@@ -32,36 +32,12 @@ add_compile_options(
   -Wno-mismatched-tags
 )
 
-find_package(Boost 1.74 COMPONENTS filesystem REQUIRED)
+find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
+add_subdirectory(src)
+
 add_executable(daisy
-  src/gnuplot_multi.C
-  src/gnuplot_profile.C
-  src/gnuplot_soil.C
-  src/gnuplot_time.C
-  src/gnuplot_vector.C
-  src/gnuplot_xy.C
-  src/source.C
-  src/source_combine.C
-  src/source_expr.C
-  src/source_file.C
-  src/source_merge.C
-  src/source_std.C
-  src/xysource.C
-  src/xysource_combine.C
-  src/xysource_expr.C
-  src/xysource_flux.C
-  src/xysource_freq.C
-  src/xysource_inline.C
-  src/xysource_loop.C
-  src/xysource_merge.C
-  src/xysource_profile.C
-  src/xysource_xycombine.C
-  src/gnuplot.C
-  src/gnuplot_base.C
-  src/gnuplot_utils.C
-  src/program_gnuplot.C
   src/ABAprod.C
   src/ABAprod_root.C
   src/ABAprod_soil.C
@@ -499,6 +475,10 @@ add_executable(daisy
 target_include_directories(daisy PUBLIC include)
 
 target_link_directories(daisy INTERFACE Boost::Boost)
+
+target_link_libraries(daisy PRIVATE
+  gnuplot
+)
 
 target_link_libraries(daisy PUBLIC
   stdc++

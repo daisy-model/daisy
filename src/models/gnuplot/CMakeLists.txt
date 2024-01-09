@@ -1,0 +1,29 @@
+add_library(gnuplot
+  gnuplot_multi.C
+  gnuplot_profile.C
+  gnuplot_soil.C
+  gnuplot_time.C
+  gnuplot_vector.C
+  gnuplot_xy.C
+  source.C
+  source_combine.C
+  source_expr.C
+  source_file.C
+  source_merge.C
+  source_std.C
+  xysource.C
+  xysource_combine.C
+  xysource_expr.C
+  xysource_flux.C
+  xysource_freq.C
+  xysource_inline.C
+  xysource_loop.C
+  xysource_merge.C
+  xysource_profile.C
+  xysource_xycombine.C
+  gnuplot.C
+  gnuplot_base.C
+  gnuplot_utils.C
+  program_gnuplot.C
+)
+target_include_directories(gnuplot PUBLIC ${CMAKE_SOURCE_DIR}/include)
