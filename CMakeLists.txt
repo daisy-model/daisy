@@ -56,6 +56,11 @@ add_executable(daisy
   src/daisy/chemicals/equil_linear.C
   src/daisy/chemicals/im.C
   src/daisy/chemicals/imvec.C
+  src/daisy/chemicals/nitrification.C
+  src/daisy/chemicals/nitrification_soil.C
+  src/daisy/chemicals/nitrification_solute.C
+  src/daisy/chemicals/ponddamp.C
+  src/daisy/chemicals/rainergy.C
   src/daisy/chemicals/reaction.C
   src/daisy/chemicals/reaction_Jarvis99.C
   src/daisy/chemicals/reaction_Morgan98.C
@@ -383,9 +388,6 @@ add_executable(daisy
   src/gnuplot/xysource_merge.C
   src/gnuplot/xysource_profile.C
   src/gnuplot/xysource_xycombine.C
-  src/nitrification.C
-  src/nitrification_soil.C
-  src/nitrification_solute.C
   src/object_model/attribute.C
   src/object_model/block.C
   src/object_model/block_model.C
@@ -442,7 +444,6 @@ add_executable(daisy
   src/parameter_types/number_soil.C
   src/parameter_types/number_source.C
   src/parameter_types/stringer.C
-  src/ponddamp.C
   src/programs/program.C
   src/programs/program_GP2D.C
   src/programs/program_KM2.C
@@ -460,7 +461,6 @@ add_executable(daisy
   src/programs/program_sbrdata.C
   src/programs/program_spawn.C
   src/programs/program_weather.C
-  src/rainergy.C
   src/ui/main.C
   src/ui/run.C
   src/ui/ui.C
