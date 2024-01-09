@@ -66,6 +66,19 @@ add_executable(daisy
   src/models/gnuplot/xysource_merge.C
   src/models/gnuplot/xysource_profile.C
   src/models/gnuplot/xysource_xycombine.C
+  src/parameter_types/boolean.C
+  src/parameter_types/boolean_number.C
+  src/parameter_types/boolean_string.C
+  src/parameter_types/integer.C
+  src/parameter_types/integer_arit.C
+  src/parameter_types/number.C
+  src/parameter_types/number_arit.C
+  src/parameter_types/number_const.C
+  src/parameter_types/number_lisp.C
+  src/parameter_types/number_plf.C
+  src/parameter_types/number_soil.C
+  src/parameter_types/number_source.C
+  src/parameter_types/stringer.C
   src/ui/main.C
   src/ui/run.C
   src/ui/ui.C
@@ -152,9 +165,6 @@ add_executable(daisy
   src/block_nested.C
   src/block_submodel.C
   src/block_top.C
-  src/boolean.C
-  src/boolean_number.C
-  src/boolean_string.C
   src/border.C
   src/bound.C
   src/canopy_simple.C
@@ -268,8 +278,6 @@ add_executable(daisy
   src/hydraulic_yolo.C
   src/im.C
   src/imvec.C
-  src/integer.C
-  src/integer_arit.C
   src/intrinsics.C
   src/irrigate.C
   src/librarian.C
@@ -303,13 +311,6 @@ add_executable(daisy
   src/nitrification.C
   src/nitrification_soil.C
   src/nitrification_solute.C
-  src/number.C
-  src/number_arit.C
-  src/number_const.C
-  src/number_lisp.C
-  src/number_plf.C
-  src/number_soil.C
-  src/number_source.C
   src/oldunits.C
   src/om.C
   src/organic.C
@@ -416,7 +417,6 @@ add_executable(daisy
   src/som.C
   src/stomatacon.C
   src/stomatacon_SHA.C
-  src/stringer.C
   src/summary.C
   src/summary_Rsqr.C
   src/summary_RsqrW.C
