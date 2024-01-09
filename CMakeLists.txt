@@ -40,15 +40,6 @@ message(STATUS "Boost version: ${Boost_VERSION}")
 # add_subdirectory(src) 
 
 add_executable(daisy
-  src/attribute.C
-  src/block.C
-  src/block_model.C
-  src/block_nested.C
-  src/block_submodel.C
-  src/block_top.C
-  src/check.C
-  src/check_range.C
-  src/convert.C
   src/daisy/chemicals/adsorption.C
   src/daisy/chemicals/adsorption_freundlich.C
   src/daisy/chemicals/adsorption_langmuir.C
@@ -365,9 +356,6 @@ add_executable(daisy
   src/daisy/upper_boundary/weather/wsource_time.C
   src/daisy/upper_boundary/weather/wsource_weather.C
   src/element.C
-  src/frame.C
-  src/frame_model.C
-  src/frame_submodel.C
   src/function.C
   src/gnuplot/gnuplot.C
   src/gnuplot/gnuplot_base.C
@@ -395,18 +383,52 @@ add_executable(daisy
   src/gnuplot/xysource_merge.C
   src/gnuplot/xysource_profile.C
   src/gnuplot/xysource_xycombine.C
-  src/intrinsics.C
-  src/librarian.C
-  src/library.C
-  src/metalib.C
-  src/model.C
-  src/model_derived.C
-  src/model_framed.C
-  src/model_logable.C
   src/nitrification.C
   src/nitrification_soil.C
   src/nitrification_solute.C
-  src/oldunits.C
+  src/object_model/attribute.C
+  src/object_model/block.C
+  src/object_model/block_model.C
+  src/object_model/block_nested.C
+  src/object_model/block_submodel.C
+  src/object_model/block_top.C
+  src/object_model/check.C
+  src/object_model/check_range.C
+  src/object_model/convert.C
+  src/object_model/frame.C
+  src/object_model/frame_model.C
+  src/object_model/frame_submodel.C
+  src/object_model/intrinsics.C
+  src/object_model/librarian.C
+  src/object_model/library.C
+  src/object_model/metalib.C
+  src/object_model/model.C
+  src/object_model/model_derived.C
+  src/object_model/model_framed.C
+  src/object_model/model_logable.C
+  src/object_model/oldunits.C
+  src/object_model/parser.C
+  src/object_model/parser_file.C
+  src/object_model/plf.C
+  src/object_model/printer.C
+  src/object_model/printer_file.C
+  src/object_model/rate.C
+  src/object_model/symbol.C
+  src/object_model/toplevel.C
+  src/object_model/traverse.C
+  src/object_model/traverse_delete.C
+  src/object_model/treelog.C
+  src/object_model/treelog_child.C
+  src/object_model/treelog_store.C
+  src/object_model/treelog_text.C
+  src/object_model/type.C
+  src/object_model/unit.C
+  src/object_model/unit_model.C
+  src/object_model/units.C
+  src/object_model/value.C
+  src/object_model/vcheck.C
+  src/object_model/version.C
+  src/object_model/xref.C
   src/parameter_types/boolean.C
   src/parameter_types/boolean_number.C
   src/parameter_types/boolean_string.C
@@ -420,47 +442,29 @@ add_executable(daisy
   src/parameter_types/number_soil.C
   src/parameter_types/number_source.C
   src/parameter_types/stringer.C
-  src/parser.C
-  src/parser_file.C
-  src/plf.C
   src/ponddamp.C
-  src/printer.C
-  src/printer_file.C
-  src/program.C
-  src/program_GP2D.C
-  src/program_KM2.C
-  src/program_batch.C
-  src/program_cpedata.C
-  src/program_document.C
-  src/program_extract.C
-  src/program_file.C
-  src/program_hmovie.C
-  src/program_nwaps.C
-  src/program_optimize.C
-  src/program_osvaldo.C
-  src/program_post.C
-  src/program_rootmatch.C
-  src/program_sbrdata.C
-  src/program_spawn.C
-  src/program_weather.C
+  src/programs/program.C
+  src/programs/program_GP2D.C
+  src/programs/program_KM2.C
+  src/programs/program_batch.C
+  src/programs/program_cpedata.C
+  src/programs/program_document.C
+  src/programs/program_extract.C
+  src/programs/program_file.C
+  src/programs/program_hmovie.C
+  src/programs/program_nwaps.C
+  src/programs/program_optimize.C
+  src/programs/program_osvaldo.C
+  src/programs/program_post.C
+  src/programs/program_rootmatch.C
+  src/programs/program_sbrdata.C
+  src/programs/program_spawn.C
+  src/programs/program_weather.C
   src/rainergy.C
-  src/rate.C
-  src/symbol.C
-  src/toplevel.C
-  src/traverse.C
-  src/traverse_delete.C
-  src/treelog.C
-  src/treelog_child.C
-  src/treelog_store.C
-  src/treelog_text.C
-  src/type.C
   src/ui/main.C
   src/ui/run.C
   src/ui/ui.C
   src/ui/uifilter.C
-  src/unit.C
-  src/unit_model.C
-  src/units.C
   src/util/anystate.C
   src/util/assertion.C
   src/util/complex_functions.C
@@ -494,10 +498,6 @@ add_executable(daisy
   src/util/solver_cxsparse.C
   src/util/solver_none.C
   src/util/solver_ublas.C
-  src/value.C
-  src/vcheck.C
-  src/version.C
-  src/xref.C
 )
 
 target_include_directories(daisy PUBLIC include)
