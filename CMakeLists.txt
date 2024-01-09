@@ -66,6 +66,10 @@ add_executable(daisy
   src/models/gnuplot/xysource_merge.C
   src/models/gnuplot/xysource_profile.C
   src/models/gnuplot/xysource_xycombine.C
+  src/ui/main.C
+  src/ui/run.C
+  src/ui/ui.C
+  src/ui/uifilter.C
   src/util/anystate.C
   src/util/assertion.C
   src/util/complex_functions.C
@@ -201,7 +205,6 @@ add_executable(daisy
   src/drain.C
   src/drain_lateral.C
   src/draineqd.C
-  #src/element.C
   src/equil.C
   src/equil_goal.C
   src/equil_langmuir.C
@@ -287,7 +290,6 @@ add_executable(daisy
   src/macro_std.C
   src/mactrans.C
   src/mactrans_std.C
-  src/main.C
   src/metalib.C
   src/model.C
   src/model_derived.C
@@ -391,7 +393,6 @@ add_executable(daisy
   src/rubiscoNdist_expr.C
   src/rubiscoNdist_forced.C
   src/rubiscoNdist_uniform.C
-  src/run.C
   src/secondary.C
   src/seed.C
   src/seed_LAI.C
@@ -454,8 +455,6 @@ add_executable(daisy
   src/treelog_store.C
   src/treelog_text.C
   src/type.C
-  src/ui.C
-  src/uifilter.C
   src/unit.C
   src/unit_model.C
   src/units.C
