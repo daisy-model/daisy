@@ -65,28 +65,28 @@ add_executable(daisy
   src/daisy/chemicals/equil_linear.C
   src/daisy/chemicals/im.C
   src/daisy/chemicals/imvec.C
+  src/daisy/chemicals/reaction.C
+  src/daisy/chemicals/reaction_Jarvis99.C
+  src/daisy/chemicals/reaction_Morgan98.C
+  src/daisy/chemicals/reaction_Styczen88.C
   src/daisy/chemicals/reaction_adsorption.C
   src/daisy/chemicals/reaction_boundrel.C
-  src/daisy/chemicals/reaction.C
   src/daisy/chemicals/reaction_colgen.C
   src/daisy/chemicals/reaction_denit.C
   src/daisy/chemicals/reaction_dom.C
   src/daisy/chemicals/reaction_equil.C
   src/daisy/chemicals/reaction_filter.C
-  src/daisy/chemicals/reaction_Jarvis99.C
-  src/daisy/chemicals/reaction_Morgan98.C
   src/daisy/chemicals/reaction_nit.C
   src/daisy/chemicals/reaction_shoot.C
   src/daisy/chemicals/reaction_sorption.C
   src/daisy/chemicals/reaction_std.C
-  src/daisy/chemicals/reaction_Styczen88.C
   src/daisy/chemicals/transform.C
   src/daisy/chemicals/transform_equil.C
   src/daisy/column.C
   src/daisy/column_std.C
+  src/daisy/condition.C
   src/daisy/condition_BBCH.C
   src/daisy/condition_boolean.C
-  src/daisy/condition.C
   src/daisy/condition_crop.C
   src/daisy/condition_daisy.C
   src/daisy/condition_extern.C
@@ -105,12 +105,12 @@ add_executable(daisy
   src/daisy/crop/harvesting.C
   src/daisy/crop/partition.C
   src/daisy/crop/phenology.C
-  src/daisy/crop/phenology_std.C
   src/daisy/crop/phenology_TSum.C
+  src/daisy/crop/phenology_std.C
   src/daisy/crop/photo.C
-  src/daisy/crop/photo_Farquhar.C
   src/daisy/crop/photo_FCC3.C
   src/daisy/crop/photo_FCC4.C
+  src/daisy/crop/photo_Farquhar.C
   src/daisy/crop/photo_GL.C
   src/daisy/crop/production.C
   src/daisy/crop/root/ABAprod.C
@@ -118,15 +118,15 @@ add_executable(daisy
   src/daisy/crop/root/ABAprod_soil.C
   src/daisy/crop/root/ABAprod_uptake.C
   src/daisy/crop/root/GP2D.C
-  src/daisy/crop/root/rootdens_AP.C
+  src/daisy/crop/root/root_system.C
   src/daisy/crop/root/rootdens.C
+  src/daisy/crop/root/rootdens_AP.C
   src/daisy/crop/root/rootdens_GP1D.C
   src/daisy/crop/root/rootdens_GP2D.C
   src/daisy/crop/root/rootdens_G_P.C
+  src/daisy/crop/root/rootdens_PLF.C
   src/daisy/crop/root/rootdens_growth.C
   src/daisy/crop/root/rootdens_local.C
-  src/daisy/crop/root/rootdens_PLF.C
-  src/daisy/crop/root/root_system.C
   src/daisy/crop/root/rubiscoN.C
   src/daisy/crop/root/rubiscoNdist.C
   src/daisy/crop/root/rubiscoNdist_DPF.C
@@ -144,8 +144,8 @@ add_executable(daisy
   src/daisy/daisy.C
   src/daisy/daisy_time.C
   src/daisy/field.C
-  src/daisy/lower_boundary/groundwater_aquitard.C
   src/daisy/lower_boundary/groundwater.C
+  src/daisy/lower_boundary/groundwater_aquitard.C
   src/daisy/lower_boundary/groundwater_deep.C
   src/daisy/lower_boundary/groundwater_extern.C
   src/daisy/lower_boundary/groundwater_file.C
@@ -154,9 +154,9 @@ add_executable(daisy
   src/daisy/lower_boundary/groundwater_lysimeter.C
   src/daisy/lower_boundary/groundwater_source.C
   src/daisy/lower_boundary/groundwater_static.C
-  src/daisy/manager/action_activity.C
-  src/daisy/manager/action_BBCH.C
   src/daisy/manager/action.C
+  src/daisy/manager/action_BBCH.C
+  src/daisy/manager/action_activity.C
   src/daisy/manager/action_crop.C
   src/daisy/manager/action_extern.C
   src/daisy/manager/action_fertilize.C
@@ -179,8 +179,8 @@ add_executable(daisy
   src/daisy/organic_matter/am.C
   src/daisy/organic_matter/aom.C
   src/daisy/organic_matter/bioincorporation.C
-  src/daisy/organic_matter/clayom_biomod.C
   src/daisy/organic_matter/clayom.C
+  src/daisy/organic_matter/clayom_biomod.C
   src/daisy/organic_matter/clayom_old.C
   src/daisy/organic_matter/doe.C
   src/daisy/organic_matter/dom.C
@@ -198,17 +198,17 @@ add_executable(daisy
   src/daisy/output/fetch.C
   src/daisy/output/fetch_pretty.C
   src/daisy/output/harvest.C
+  src/daisy/output/log.C
   src/daisy/output/log_alist.C
   src/daisy/output/log_all.C
-  src/daisy/output/log.C
   src/daisy/output/log_checkpoint.C
   src/daisy/output/log_extern.C
   src/daisy/output/log_harvest.C
   src/daisy/output/log_select.C
   src/daisy/output/log_table.C
   src/daisy/output/output.C
-  src/daisy/output/select_array.C
   src/daisy/output/select.C
+  src/daisy/output/select_array.C
   src/daisy/output/select_content.C
   src/daisy/output/select_flow.C
   src/daisy/output/select_index.C
@@ -216,49 +216,49 @@ add_executable(daisy
   src/daisy/output/select_quiver.C
   src/daisy/output/select_value.C
   src/daisy/output/select_volume.C
-  src/daisy/output/summary_balance.C
   src/daisy/output/summary.C
-  src/daisy/output/summary_fractiles.C
   src/daisy/output/summary_Rsqr.C
   src/daisy/output/summary_RsqrW.C
+  src/daisy/output/summary_balance.C
+  src/daisy/output/summary_fractiles.C
   src/daisy/output/summary_simple.C
   src/daisy/soil/abiotic.C
   src/daisy/soil/horheat.C
   src/daisy/soil/horizon.C
   src/daisy/soil/horizon_numeric.C
   src/daisy/soil/horizon_system.C
-  src/daisy/soil/hydraulic_B_BaC_Bimodal.C
+  src/daisy/soil/hydraulic.C
   src/daisy/soil/hydraulic_B_BaC.C
+  src/daisy/soil/hydraulic_B_BaC_Bimodal.C
   src/daisy/soil/hydraulic_B_C.C
   src/daisy/soil/hydraulic_B_C_inverse.C
   src/daisy/soil/hydraulic_B_vG.C
-  src/daisy/soil/hydraulic.C
   src/daisy/soil/hydraulic_Cosby.C
-  src/daisy/soil/hydraulic_hypres.C
-  src/daisy/soil/hydraulic_hyprop.C
-  src/daisy/soil/hydraulic_linear.C
   src/daisy/soil/hydraulic_MACRO.C
-  src/daisy/soil/hydraulic_M_BaC_Bimodal.C
   src/daisy/soil/hydraulic_M_BaC.C
+  src/daisy/soil/hydraulic_M_BaC_Bimodal.C
   src/daisy/soil/hydraulic_M_BivG.C
   src/daisy/soil/hydraulic_M_C.C
-  src/daisy/soil/hydraulic_mod_C.C
   src/daisy/soil/hydraulic_M_vG.C
   src/daisy/soil/hydraulic_M_vG_compact.C
   src/daisy/soil/hydraulic_M_vGip.C
   src/daisy/soil/hydraulic_M_vGp.C
+  src/daisy/soil/hydraulic_hypres.C
+  src/daisy/soil/hydraulic_hyprop.C
+  src/daisy/soil/hydraulic_linear.C
+  src/daisy/soil/hydraulic_mod_C.C
   src/daisy/soil/hydraulic_old2.C
   src/daisy/soil/hydraulic_table.C
   src/daisy/soil/hydraulic_wepp.C
   src/daisy/soil/hydraulic_yolo.C
   src/daisy/soil/soil.C
   src/daisy/soil/soil_heat.C
-  src/daisy/soil/soilph.C
   src/daisy/soil/soil_water.C
+  src/daisy/soil/soilph.C
   src/daisy/soil/texture.C
   src/daisy/soil/tortuosity.C
-  src/daisy/soil/tortuosity_linear.C
   src/daisy/soil/tortuosity_M_Q.C
+  src/daisy/soil/tortuosity_linear.C
   src/daisy/soil/transport/average.C
   src/daisy/soil/transport/biopore.C
   src/daisy/soil/transport/biopore_drain.C
@@ -267,33 +267,33 @@ add_executable(daisy
   src/daisy/soil/transport/bound.C
   src/daisy/soil/transport/condedge.C
   src/daisy/soil/transport/drain.C
-  src/daisy/soil/transport/draineqd.C
   src/daisy/soil/transport/drain_lateral.C
-  src/daisy/soil/transport/geometry1d.C
+  src/daisy/soil/transport/draineqd.C
   src/daisy/soil/transport/geometry.C
+  src/daisy/soil/transport/geometry1d.C
   src/daisy/soil/transport/geometry_rect.C
   src/daisy/soil/transport/geometry_vert.C
   src/daisy/soil/transport/heatrect.C
-  src/daisy/soil/transport/heatrect_linear.C
   src/daisy/soil/transport/heatrect_Mollerup.C
+  src/daisy/soil/transport/heatrect_linear.C
   src/daisy/soil/transport/heatrect_none.C
   src/daisy/soil/transport/macro.C
   src/daisy/soil/transport/macro_none.C
   src/daisy/soil/transport/macro_std.C
   src/daisy/soil/transport/mactrans.C
   src/daisy/soil/transport/mactrans_std.C
-  src/daisy/soil/transport/movement_1D.C
   src/daisy/soil/transport/movement.C
+  src/daisy/soil/transport/movement_1D.C
   src/daisy/soil/transport/movement_rect.C
   src/daisy/soil/transport/movement_solute.C
   src/daisy/soil/transport/secondary.C
-  src/daisy/soil/transport/tertiary_biopores.C
   src/daisy/soil/transport/tertiary.C
+  src/daisy/soil/transport/tertiary_biopores.C
   src/daisy/soil/transport/tertiary_old.C
   src/daisy/soil/transport/transport.C
-  src/daisy/soil/transport/transport_convection.C
   src/daisy/soil/transport/transport_Hansen.C
   src/daisy/soil/transport/transport_Mollerup.C
+  src/daisy/soil/transport/transport_convection.C
   src/daisy/soil/transport/transport_none.C
   src/daisy/soil/transport/uz1d.C
   src/daisy/soil/transport/uz1d_none.C
@@ -301,16 +301,16 @@ add_executable(daisy
   src/daisy/soil/transport/uzlr.C
   src/daisy/soil/transport/uzmodel.C
   src/daisy/soil/transport/uznone.C
-  src/daisy/soil/transport/uzrect_2x1.C
   src/daisy/soil/transport/uzrect.C
-  src/daisy/soil/transport/uzrect_const.C
+  src/daisy/soil/transport/uzrect_2x1.C
   src/daisy/soil/transport/uzrect_Mollerup.C
-  src/daisy/soil/transport/uzrichard2.C
+  src/daisy/soil/transport/uzrect_const.C
   src/daisy/soil/transport/uzrichard.C
-  src/daisy/soil/transport/volume_box.C
+  src/daisy/soil/transport/uzrichard2.C
   src/daisy/soil/transport/volume.C
-  src/daisy/soil/transport/zone_box.C
+  src/daisy/soil/transport/volume_box.C
   src/daisy/soil/transport/zone.C
+  src/daisy/soil/transport/zone_box.C
   src/daisy/soil/transport/zone_poly.C
   src/daisy/soil/water.C
   src/daisy/timestep.C
@@ -328,8 +328,8 @@ add_executable(daisy
   src/daisy/upper_boundary/bioclimate/pet_FAO_PM.C
   src/daisy/upper_boundary/bioclimate/pet_FAO_PM_hourly.C
   src/daisy/upper_boundary/bioclimate/pet_Hargreaves.C
-  src/daisy/upper_boundary/bioclimate/pet_makkink.C
   src/daisy/upper_boundary/bioclimate/pet_PM.C
+  src/daisy/upper_boundary/bioclimate/pet_makkink.C
   src/daisy/upper_boundary/bioclimate/pet_weather.C
   src/daisy/upper_boundary/bioclimate/raddist.C
   src/daisy/upper_boundary/bioclimate/raddist_DPF.C
@@ -347,16 +347,16 @@ add_executable(daisy
   src/daisy/upper_boundary/surface/surface_simple.C
   src/daisy/upper_boundary/surface/surface_source.C
   src/daisy/upper_boundary/surface/surface_std.C
-  src/daisy/upper_boundary/vegetation/vegetation_afforestation.C
   src/daisy/upper_boundary/vegetation/vegetation.C
+  src/daisy/upper_boundary/vegetation/vegetation_afforestation.C
   src/daisy/upper_boundary/vegetation/vegetation_crops.C
   src/daisy/upper_boundary/vegetation/vegetation_permanent.C
   src/daisy/upper_boundary/weather/deposition.C
   src/daisy/upper_boundary/weather/snow.C
   src/daisy/upper_boundary/weather/weather.C
   src/daisy/upper_boundary/weather/weatherdata.C
-  src/daisy/upper_boundary/weather/wsource_base.C
   src/daisy/upper_boundary/weather/wsource.C
+  src/daisy/upper_boundary/weather/wsource_base.C
   src/daisy/upper_boundary/weather/wsource_combine.C
   src/daisy/upper_boundary/weather/wsource_const.C
   src/daisy/upper_boundary/weather/wsource_indirect.C
@@ -369,6 +369,32 @@ add_executable(daisy
   src/frame_model.C
   src/frame_submodel.C
   src/function.C
+  src/gnuplot/gnuplot.C
+  src/gnuplot/gnuplot_base.C
+  src/gnuplot/gnuplot_multi.C
+  src/gnuplot/gnuplot_profile.C
+  src/gnuplot/gnuplot_soil.C
+  src/gnuplot/gnuplot_time.C
+  src/gnuplot/gnuplot_utils.C
+  src/gnuplot/gnuplot_vector.C
+  src/gnuplot/gnuplot_xy.C
+  src/gnuplot/program_gnuplot.C
+  src/gnuplot/source.C
+  src/gnuplot/source_combine.C
+  src/gnuplot/source_expr.C
+  src/gnuplot/source_file.C
+  src/gnuplot/source_merge.C
+  src/gnuplot/source_std.C
+  src/gnuplot/xysource.C
+  src/gnuplot/xysource_combine.C
+  src/gnuplot/xysource_expr.C
+  src/gnuplot/xysource_flux.C
+  src/gnuplot/xysource_freq.C
+  src/gnuplot/xysource_inline.C
+  src/gnuplot/xysource_loop.C
+  src/gnuplot/xysource_merge.C
+  src/gnuplot/xysource_profile.C
+  src/gnuplot/xysource_xycombine.C
   src/intrinsics.C
   src/librarian.C
   src/library.C
@@ -377,32 +403,6 @@ add_executable(daisy
   src/model_derived.C
   src/model_framed.C
   src/model_logable.C
-  src/models/gnuplot/gnuplot_base.C
-  src/models/gnuplot/gnuplot.C
-  src/models/gnuplot/gnuplot_multi.C
-  src/models/gnuplot/gnuplot_profile.C
-  src/models/gnuplot/gnuplot_soil.C
-  src/models/gnuplot/gnuplot_time.C
-  src/models/gnuplot/gnuplot_utils.C
-  src/models/gnuplot/gnuplot_vector.C
-  src/models/gnuplot/gnuplot_xy.C
-  src/models/gnuplot/program_gnuplot.C
-  src/models/gnuplot/source.C
-  src/models/gnuplot/source_combine.C
-  src/models/gnuplot/source_expr.C
-  src/models/gnuplot/source_file.C
-  src/models/gnuplot/source_merge.C
-  src/models/gnuplot/source_std.C
-  src/models/gnuplot/xysource.C
-  src/models/gnuplot/xysource_combine.C
-  src/models/gnuplot/xysource_expr.C
-  src/models/gnuplot/xysource_flux.C
-  src/models/gnuplot/xysource_freq.C
-  src/models/gnuplot/xysource_inline.C
-  src/models/gnuplot/xysource_loop.C
-  src/models/gnuplot/xysource_merge.C
-  src/models/gnuplot/xysource_profile.C
-  src/models/gnuplot/xysource_xycombine.C
   src/nitrification.C
   src/nitrification_soil.C
   src/nitrification_solute.C
@@ -410,10 +410,10 @@ add_executable(daisy
   src/parameter_types/boolean.C
   src/parameter_types/boolean_number.C
   src/parameter_types/boolean_string.C
-  src/parameter_types/integer_arit.C
   src/parameter_types/integer.C
-  src/parameter_types/number_arit.C
+  src/parameter_types/integer_arit.C
   src/parameter_types/number.C
+  src/parameter_types/number_arit.C
   src/parameter_types/number_const.C
   src/parameter_types/number_lisp.C
   src/parameter_types/number_plf.C
@@ -426,15 +426,15 @@ add_executable(daisy
   src/ponddamp.C
   src/printer.C
   src/printer_file.C
-  src/program_batch.C
   src/program.C
+  src/program_GP2D.C
+  src/program_KM2.C
+  src/program_batch.C
   src/program_cpedata.C
   src/program_document.C
   src/program_extract.C
   src/program_file.C
-  src/program_GP2D.C
   src/program_hmovie.C
-  src/program_KM2.C
   src/program_nwaps.C
   src/program_optimize.C
   src/program_osvaldo.C
@@ -485,11 +485,11 @@ add_executable(daisy
   src/util/scope_id.C
   src/util/scope_model.C
   src/util/scope_multi.C
-  src/util/scopesel.C
   src/util/scope_soil.C
   src/util/scope_sources.C
   src/util/scope_table.C
   src/util/scope_xysources.C
+  src/util/scopesel.C
   src/util/solver.C
   src/util/solver_cxsparse.C
   src/util/solver_none.C
