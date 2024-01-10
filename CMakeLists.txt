@@ -8,30 +8,10 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_compile_options(
-  -Wpedantic
-  -Wall
-  -Wextra
-  -Wvariadic-macros 
-  -Wvla
-  -Wmissing-declarations
-  -Wfloat-equal
-  -Wcast-qual
-  -Woverloaded-virtual
-  -Wundef
-  -Wpointer-arith
-  -Wwrite-strings
-  -Wcast-align
-  -Wmissing-format-attribute
-  -Wold-style-cast
-  -Wformat=2
-  -Winit-self
-  -Wsign-promo
-  -Wredundant-decls
-  -Wno-unused-parameter
-  -Wno-sign-compare
-  -Wno-mismatched-tags
-)
+option(USE_PROFILE "Set to ON to build for profiling" OFF)
+option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
+
+add_compile_options(${WARNING_COMPILE_OPTIONS})
 
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
@@ -39,7 +19,17 @@ message(STATUS "Boost version: ${Boost_VERSION}")
 add_executable(daisy)
 
 # Sources are added with target_sources in CMakeLists in the source tree
-add_subdirectory(src) 
+add_subdirectory(src)
+
+if (USE_PROFILE)
+  target_compile_options(daisy PRIVATE ${PROFILE_COMPILE_OPTIONS})
+endif()
+
+if (MAKE_PORTABLE)
+  target_compile_options(daisy PRIVATE ${PORTABLE_COMPILE_OPTIONS})
+else()
+  target_compile_options(daisy PRIVATE ${NATIVE_COMPILE_OPTIONS})
+endif()
 
 target_include_directories(daisy PUBLIC include)
 target_link_directories(daisy INTERFACE Boost::Boost)
@@ -51,12 +41,6 @@ target_link_libraries(daisy PUBLIC
   pthread
 )
 
-set(RELEASE_COMPILE_OPTIONS
-  -ffast-math
-  -fno-finite-math-only
-  -mtune=native
-  -march=native
-) 
 target_compile_options(daisy PRIVATE
   "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>"
 )
