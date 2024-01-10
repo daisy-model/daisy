@@ -1,3 +1,4 @@
+add_subdirectory(parameter_types)
 target_sources(daisy PUBLIC
   attribute.C
   block.C
