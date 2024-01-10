@@ -1,0 +1,23 @@
+target_sources(daisy PUBLIC
+  ABAprod.C
+  ABAprod_root.C
+  ABAprod_soil.C
+  ABAprod_uptake.C
+  GP2D.C
+  root_system.C
+  rootdens.C
+  rootdens_AP.C
+  rootdens_GP1D.C
+  rootdens_GP2D.C
+  rootdens_G_P.C
+  rootdens_PLF.C
+  rootdens_growth.C
+  rootdens_local.C
+  rubiscoN.C
+  rubiscoNdist.C
+  rubiscoNdist_DPF.C
+  rubiscoNdist_expr.C
+  rubiscoNdist_forced.C
+  rubiscoNdist_uniform.C
+  solupt.C
+)

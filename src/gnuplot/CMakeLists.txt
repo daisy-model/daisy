@@ -1,4 +1,4 @@
-add_library(gnuplot
+target_sources(daisy PUBLIC 
   gnuplot.C
   gnuplot_base.C
   gnuplot_multi.C
@@ -25,8 +25,4 @@ add_library(gnuplot
   xysource_merge.C
   xysource_profile.C
   xysource_xycombine.C
-)
-target_include_directories(gnuplot PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_compile_options(gnuplot PRIVATE
-  "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>"
 )

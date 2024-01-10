@@ -1,0 +1,28 @@
+add_subdirectory(chemicals)
+add_subdirectory(crop)
+add_subdirectory(lower_boundary)
+add_subdirectory(manager)
+add_subdirectory(organic_matter)
+add_subdirectory(output)
+add_subdirectory(soil)
+add_subdirectory(upper_boundary)
+target_sources(daisy PUBLIC
+  column.C
+  column_std.C
+  condition.C
+  condition_BBCH.C
+  condition_boolean.C
+  condition_crop.C
+  condition_daisy.C
+  condition_extern.C
+  condition_logic.C
+  condition_soil.C
+  condition_time.C
+  condition_walltime.C
+  condition_weather.C
+  crop/wse.C
+  daisy.C
+  daisy_time.C
+  field.C
+  timestep.C
+)

@@ -1,0 +1,19 @@
+target_sources(daisy PUBLIC
+  program.C
+  program_GP2D.C
+  program_KM2.C
+  program_batch.C
+  program_cpedata.C
+  program_document.C
+  program_extract.C
+  program_file.C
+  program_hmovie.C
+  program_nwaps.C
+  program_optimize.C
+  program_osvaldo.C
+  program_post.C
+  program_rootmatch.C
+  program_sbrdata.C
+  program_spawn.C
+  program_weather.C
+)

@@ -1,0 +1,24 @@
+target_sources(daisy PUBLIC
+  action.C
+  action_BBCH.C
+  action_activity.C
+  action_crop.C
+  action_extern.C
+  action_fertilize.C
+  action_harvest.C
+  action_irrigate.C
+  action_lisp.C
+  action_markvand.C
+  action_message.C
+  action_repeat.C
+  action_sow.C
+  action_spray.C
+  action_stop.C
+  action_surface.C
+  action_table.C
+  action_tillage.C
+  action_wait.C
+  action_while.C
+  action_with.C
+  irrigate.C
+)

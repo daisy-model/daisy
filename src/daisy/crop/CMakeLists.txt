@@ -1,0 +1,27 @@
+add_subdirectory(root)
+target_sources(daisy PUBLIC
+  canopy_simple.C
+  canopy_std.C
+  crop.C
+  crop_simple.C
+  crop_std.C
+  crpn.C
+  cstage.C
+  harvesting.C
+  partition.C
+  phenology.C
+  phenology_TSum.C
+  phenology_std.C
+  photo.C
+  photo_FCC3.C
+  photo_FCC4.C
+  photo_Farquhar.C
+  photo_GL.C
+  production.C
+  seed.C
+  seed_LAI.C
+  seed_release.C
+  stomatacon.C
+  stomatacon_SHA.C
+  vernalization.C
+)
