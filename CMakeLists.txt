@@ -11,6 +11,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 option(USE_PROFILE "Set to ON to build for profiling" OFF)
 option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
 
+SET(CMAKE_CXX_FLAGS_COVERAGE
+  "--coverage -O1"
+  CACHE STRING "Flags used by the CXX compiler during COVERAGE builds"
+)
+SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE
+  "--coverage"
+  CACHE STRING "Flags used by the linker during COVERAGE builds"
+)
+MARK_AS_ADVANCED(
+  CMAKE_CXX_FLAGS_COVERAGE,
+  CMAKE_EXE_LINKER_FLAGS_COVERAGE
+)
+
+IF(NOT CMAKE_BUILD_TYPE)
+   SET(CMAKE_BUILD_TYPE Release
+       CACHE STRING "Choose the type of build : None Debug Release RelWithDebInfo MinSizeRel Coverage."
+       FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
 add_compile_options(${WARNING_COMPILE_OPTIONS})
 
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
