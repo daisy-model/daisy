@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from itertools import zip_longest
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
     os.makedirs(args.out_dir, exist_ok=True)
         
     with tempfile.TemporaryDirectory() as tmpdir:
-        daisy_args = [args.daisy_binary, args.program, '-d', tmpdir] #, '-q']
+        daisy_args = [args.daisy_binary, args.program, '-d', tmpdir, '-q']
         print(' '.join(daisy_args))
         result = subprocess.run(daisy_args, check=False)
         if result.returncode != 0:
@@ -34,17 +35,22 @@ def main():
         for entry in os.scandir(args.reference_dir):
             if entry.is_file():
                 new_file_path = os.path.join(tmpdir, entry.name)
-                if os.path.exists(new_file_path):
+                if not os.path.exists(new_file_path):
+                    errors.append(entry.name)
+                else:
+                    match = False
                     error_file_path = os.path.join(args.out_dir, entry.name)
                     if entry.name == 'daisy.log':
-                        if not compare_log_files(entry.path, new_file_path):
-                            mismatch.append(entry.name)
-                            shutil.copy(new_file_path, error_file_path)
-                    elif not filecmp.cmp(entry.path, entry.name, shallow=False):
+                        match = compare_log_files(entry.path, new_file_path)
+                    elif entry.name[-4:] == '.dlf':
+                        match = compare_dlf_files(entry.path, new_file_path)
+                    elif entry.name[:10] == 'checkpoint':
+                        match = compare_checkpoints(entry.path, new_file_path)
+                    else:
+                        errors.append(entry.name)                        
+                    if not match:
                         mismatch.append(entry.name)
                         shutil.copy(new_file_path, error_file_path)
-                else:
-                    errors.append(entry.name)
 
     if len(errors) > 0:
         print('Error comparing\n\t', '\n\t'.join(errors))
@@ -55,6 +61,39 @@ def main():
         return 4
 
     return 0
+
+
+
+def keep_line(ignore_tokens):
+    def func(s):
+        s = s.strip()
+        for tok in ignore_tokens:
+            if s.startswith(tok):
+                return False
+        return True
+    return func
+
+def compare_checkpoints(path1, path2):
+    keep = keep_line([';;'])
+    with open(path1) as f1, open(path2) as f2:
+        lines1 = filter(keep, f1)
+        lines2 = filter(keep, f2)
+        for l1, l2 in zip_longest(lines1, lines2):
+            if l1 != l2:
+                print(l1, l2)
+                return False
+        return True
+
+def compare_dlf_files(path1, path2):
+    keep = keep_line([';;', 'RUN:', 'SIMFILE:'])
+    with open(path1) as f1, open(path2) as f2:
+        lines1 = filter(keep, f1)
+        lines2 = filter(keep, f2)    
+        for l1, l2 in zip_longest(lines1, lines2):
+            if l1 != l2:
+                print(l1, l2)
+                return False
+        return True
 
 def compare_log_files(path1, path2):
     '''Compare two daisy log files
