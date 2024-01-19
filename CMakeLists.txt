@@ -1,3 +1,5 @@
+include(GNUInstallDirs)
+
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
@@ -63,3 +65,6 @@ target_link_libraries(daisy PUBLIC
 target_compile_options(daisy PRIVATE
   "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>"
 )
+
+install(TARGETS daisy DESTINATION bin)
+add_subdirectory(lib)
