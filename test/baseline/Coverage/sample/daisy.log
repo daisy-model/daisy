@@ -1,0 +1,513 @@
+Has DAISYHOME environment variable
+Using '/home/silas/Projects/daisy/daisy-model/' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release'
+Daisy crop/soil simulation version 6.44. (Jan 19 2024)
+Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/sample/sample.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/sample/sample.dai'
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'fertilizer.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/fertilizer.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/fertilizer.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'tillage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/tillage.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'crop.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/crop.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/crop.dai' success!
+** Parsing file: 'crop.dai'
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'maize.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/maize.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/maize.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'pea.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/pea.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/pea.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'potato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/potato.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/potato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'rye.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/rye.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/rye.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'sbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/sbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'sugarbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/sugarbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/sugarbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'fodderbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/fodderbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/fodderbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'srape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/srape.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/srape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'swheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/swheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/swheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'wbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/wbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/wbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'wrape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/wrape.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/wrape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'wwheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/wwheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/wwheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'grass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/grass.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/grass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'ryegrass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/ryegrass.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/ryegrass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'wclover.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/wclover.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/wclover.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'beetroot.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/beetroot.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/beetroot.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'broccoli.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/broccoli.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/broccoli.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'brusselssprouts.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/brusselssprouts.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/brusselssprouts.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'celeriac.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/celeriac.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/celeriac.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'earlypotato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/earlypotato.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/earlypotato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'whitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/whitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/whitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'earlywhitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/earlywhitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/earlywhitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'onion.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/onion.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/onion.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'onion_plantingofsets.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/onion_plantingofsets.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/onion_plantingofsets.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/dk-management.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/dk-management.dai'
+Trying '/home/silas/Projects/daisy/daisy-model//sample/dk-management.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'irrigation.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/irrigation.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/irrigation.dai'
+Trying '/home/silas/Projects/daisy/daisy-model//sample/irrigation.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'init-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/init-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/init-soil.dai'
+Trying '/home/silas/Projects/daisy/daisy-model//sample/init-soil.dai' success!
+** Parsing file: 'init-soil.dai'
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'pedo-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/pedo-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/pedo-soil.dai'
+Trying '/home/silas/Projects/daisy/daisy-model//sample/pedo-soil.dai' success!
+Command line: ./daisy /home/silas/Projects/daisy-model/daisy/sample/sample.dai
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/release'
+* dk-taastrup.dwf: initializing weather at 1990-03-01T01:00:00
+** source_initialize
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Looking for file 'dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/dk-taastrup.dwf' (cwd)
+Trying '/home/silas/Projects/daisy/daisy-model//lib/dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy/daisy-model//sample/dk-taastrup.dwf' success!
+* column: JB1_init_Cosby initialize
+** Soil
+*** Horizons
+**** horizon: Ap_JB1_Cosby initialize_base
+(CEC 10.9044 [cmolc/kg]) ; Estimated from clay and humus.
+***** hydraulic: Cosby_et_al initialize
+mod_C
+(b 3.47565 [])
+(h_b -7.62226 [cm])
+(K_sat 5.94001 [cm/h])
+(Theta_sat 0.391545 [])
+(dry_bulk_density 1.59023 [g/cm^3]) ; Estimated from porosity and texture.
+(quartz 0.671377 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.391545	5.94001	0
+-1	0	0.391544	5.93988	4.37831e-06
+-10	1	0.357382	2.39462	0.00817827
+-100	2	0.186698	0.00374135	0.000537157
+-1000	3	0.0962551	5.12723e-06	2.76941e-05
+-15848.9	4.2	0.0434675	1.87978e-09	7.89093e-07
+**** horizon: C_JB1_Cosby initialize_base
+(CEC 3.07008 [cmolc/kg]) ; Estimated from clay and humus.
+***** hydraulic: Cosby_et_al initialize
+mod_C
+(b 3.29125 [])
+(h_b -5.75205 [cm])
+(K_sat 7.85725 [cm/h])
+(Theta_sat 0.378945 [])
+(dry_bulk_density 1.64412 [g/cm^3]) ; Estimated from porosity and texture.
+(quartz 0.682014 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.378945	7.85725	0
+-1	0	0.378941	7.85653	1.82821e-05
+-10	1	0.319146	1.51548	0.0091224
+-100	2	0.159135	0.00192525	0.000483509
+-1000	3	0.0790552	2.36037e-06	2.40198e-05
+-15848.9	4.2	0.034145	7.57132e-10	6.54585e-07
+*** Geometry
+(zplus -2.5 -5 -10 -20 -30 -40 -50 -60 -70 -80 -90 -100 -110 -120 -130 -140 -150); 17 cells.
+** bioclimate: default initialize
+Pet choosen: weather
+Difrad choosen: DPF
+** tertiary: old initialize
+Adding macropores to -30 cm
+** movement: vertical initialize_derived
+Bottom heat delay = -0.525677
+** OrganicStandard
+lay	humus	humus	input	input	AOM	SMB1	SMB2	SOM1	SOM2	SOM3	dSMB1	dSMB1	dSMB2	dSMB2	dSOM1	dSOM1	dSOM2	dSOM2	dSOM3	dSOM3
+	kg C/ha/cm	%	kg C/ha/cm/y	%	%	%	%	%	%	%	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1
+0	2520.35	2.7	164.807	6.53906	1.70895	1.3351	0.657165	65.0462	31.2525	0	0	0	0	0	-9.82032	-0.00599021	0	0	-0	-nan
+1	2520.35	2.7	128.667	5.1051	1.33419	1.23279	0.513719	72.3886	24.5307	0	0	0	0	0	-13.7768	-0.00755121	0	0	-0	-nan	Above SOM1 limit
+1	2520.35	2.7	128.667	5.1051	1.33419	1.30464	0.51397	67.793	29.0542	3.44143e-14	0	0	0	0	-11.2126	-0.00656233	-4.1437	-0.00565872	-0	-0
+2	2520.35	2.7	88.7565	3.52159	0.920348	1.11982	0.355312	80.4967	17.1078	0	0	0	0	0	-18.1459	-0.00894416	0	0	-0	-nan	Above SOM1 limit
+2	2520.35	2.7	88.7565	3.52159	0.920348	1.31224	0.355984	68.188	29.2234	-2.75314e-14	0	0	0	0	-11.2779	-0.00656234	-11.0985	-0.0150685	-0	0
+3	2520.35	2.7	42.2346	1.67574	0.437945	0.98812	0.170663	89.9481	8.45515	0	0	0	0	0	-23.2389	-0.0102509	0	0	-0	-nan	Above SOM1 limit
+3	2520.35	2.7	42.2346	1.67574	0.437945	1.3211	0.171824	68.6484	29.4207	8.25943e-14	0	0	0	0	-11.354	-0.00656233	-19.2054	-0.0259006	-0	-0
+4	2520.35	2.7	15.6901	0.622535	0.162696	0.912977	0.0653055	95.3409	3.51813	0	0	0	0	0	-26.1448	-0.0108804	0	0	-0	-nan	Above SOM1 limit
+4	2520.35	2.7	15.6901	0.622535	0.162696	1.32615	0.0667469	68.9111	29.5333	8.25943e-14	0	0	0	0	-11.3975	-0.00656233	-23.8311	-0.0320163	-0	-0
+5	193.02	0.2	5.82884	3.01982	0.789213	0.465103	0.302994	13.7045	14.0308	70.7074	0	0	0	0	0	0	0	0	-0	-0
+6	193.02	0.2	2.16541	1.12186	0.293191	0.172785	0.112562	5.0912	5.21242	89.1178	0	0	0	0	0	0	0	0	-0	-0
+7	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+8	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+9	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+10	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+11	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+12	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+13	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+14	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+15	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+16	193.02	0.2	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+*** Total soil summary
+Expected humus change: -832.704 [kg C/ha/y], -9.62384e-07 [y^-1].
+Expected background mineralization: 75.7004 [kg N/ha/y].
+*** Top soil summary
+	SOM1	SOM2	SOM3	SMB1	SMB2	AOM1	AOM2	total
+kg C/ha	51632.8	22341	4.38018e-11	998.893	178.781	367.286	91.8215	75610.6
+kg N/ha	3585.85	1551.59	3.04036e-12	149.089	26.6837	4.08096	7.39673	5324.69
+
+Depth	30	cm
+T	7.8	dg C
+h	-100	cm
+clay	3.9	%
+Specified input	not specified	kg C/ha/y
+Specified background mineralization	not specified	kg N/ha/y
+Zone input	1756.71	kg C/ha/y
+Zone background mineralization	0	kg C/ha/y
+Zone humus change	0	kg C/ha/y
+Time	Fri Jan 19 10:13:17 2024
+
+Program started Fri Jan 19 10:13:17 2024., 0 seconds ago.
+* Running
+** 1990-03-01T01:00:00
+Begin simulation
+Start logging
+** 1990-03-05T08:00:00
+Fertilizing 115 kg N25S-N/ha
+** 1990-04-05T08:00:00
+Sowing Spring Barley
+*** JB1_init_Cosby
+**** sow
+***** Spring Barley
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: Spring Barley initialize
+init 2d
+init 1d
+** 1990-04-24T00:00:00
+*** crop: Spring Barley tick
+Emerging
+** 1990-05-02T16:00:00
+*** crop: Spring Barley tick
+Luxury nitrogen uptake initiated
+** 1990-05-08T12:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-05-08T14:00:00
+Irrigation done
+** 1990-05-23T13:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-05-23T15:00:00
+Irrigation done
+** 1990-06-03T11:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-06-03T13:00:00
+Irrigation done
+** 1990-06-12T10:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-06-12T12:00:00
+Irrigation done
+** 1990-06-17T00:00:00
+*** crop: Spring Barley tick
+Flowering
+** 1990-06-19T14:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-06-19T16:00:00
+Irrigation done
+** 1990-07-12T12:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-07-12T14:00:00
+Irrigation done
+** 1990-07-18T15:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-07-18T17:00:00
+Irrigation done
+** 1990-07-28T10:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1990-07-28T12:00:00
+Irrigation done
+** 1990-08-06T00:00:00
+*** crop: Spring Barley tick
+Ripe
+** 1990-08-06T01:00:00
+Harvesting Spring Barley, removing 5.54821 + 4.22333 Mg DM/ha
+** 1990-09-10T08:00:00
+Sowing Winter Barley
+*** JB1_init_Cosby
+**** sow
+***** Winter Barley
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: Winter Barley initialize
+init 2d
+init 1d
+** 1990-09-30T00:00:00
+*** crop: Winter Barley tick
+Emerging
+** 1990-10-11T21:00:00
+*** crop: Winter Barley tick
+Luxury nitrogen uptake initiated
+** 1991-02-13T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1991-03-25T08:00:00
+Fertilizing 37 ton pig_slurry ww/ha; water 3.4817 mm
+Using small timestep: 6m
+** 1991-03-25T09:00:00
+Back to normal size timesteps
+** 1991-06-07T00:00:00
+*** crop: Winter Barley tick
+Flowering
+** 1991-08-01T00:00:00
+*** crop: Winter Barley tick
+Ripe
+** 1991-08-01T01:00:00
+Harvesting Winter Barley, removing 4.06343 + 4.78412 Mg DM/ha
+** 1991-08-20T08:00:00
+Fertilizing 25 kg N25S-N/ha
+Sowing Winter Rape
+*** JB1_init_Cosby
+**** sow
+***** Winter Rape
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: Winter Rape initialize
+init 2d
+init 1d
+** 1991-09-02T00:00:00
+*** crop: Winter Rape tick
+Emerging
+** 1991-09-08T08:00:00
+*** crop: Winter Rape tick
+Luxury nitrogen uptake initiated
+** 1992-01-19T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1992-02-17T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1992-03-05T08:00:00
+Fertilizing 130 kg N25S-N/ha
+** 1992-05-10T15:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1992-05-10T17:00:00
+Irrigation done
+** 1992-05-19T18:00:00
+Irrigating 10 mm/h for 3 hours total 30 mm
+** 1992-05-19T20:00:00
+Irrigation done
+** 1992-05-21T00:00:00
+*** crop: Winter Rape tick
+Flowering
+** 1992-07-10T00:00:00
+*** crop: Winter Rape tick
+Ripe
+** 1992-07-10T01:00:00
+Harvesting Winter Rape, removing 1.82913 Mg DM/ha
+** 1993-02-22T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1993-03-05T08:00:00
+Fertilizing 60 kg N25S-N/ha
+** 1993-04-05T08:00:00
+Sowing Spring Barley
+*** JB1_init_Cosby
+**** sow
+***** Spring Barley
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: Spring Barley initialize
+init 2d
+init 1d
+Sowing Pea
+*** JB1_init_Cosby
+**** sow
+***** Pea
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: Pea initialize
+init 2d
+init 1d
+** 1993-04-27T00:00:00
+*** crop: Spring Barley tick
+Emerging
+*** crop: Pea tick
+Emerging
+** 1993-05-08T15:00:00
+*** crop: Pea tick
+Luxury nitrogen uptake initiated
+** 1993-05-15T00:00:00
+*** crop: Spring Barley tick
+Luxury nitrogen uptake initiated
+** 1993-06-14T00:00:00
+*** crop: Spring Barley tick
+Flowering
+** 1993-06-23T00:00:00
+*** crop: Pea tick
+Flowering
+** 1993-07-05T08:00:00
+Harvesting Spring Barley, removing 0.184804 + 0.538758 Mg DM/ha
+Harvesting Pea, removing 0.566576 + 0.795101 Mg DM/ha
+*** chemical: NO3 tick_top
+old_surface_storage = 4.27109e-05, surface_in = -0.00170497, surface_transform = 0, surface_runoff_rate = 0, surface_decompose_rate = 0, surface_decompose_factor = 1, decompose_used = 0, dt = 1, surface_storage = -0.00166226, surface_absolute_loss_rate = 0
+** 1993-11-23T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1993-12-13T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1993-12-27T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1994-01-29T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1994-02-03T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1994-02-28T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 1994-04-01T00:00:00
+End simulation
+Program finished after 4 seconds.

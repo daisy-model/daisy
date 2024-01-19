@@ -1,0 +1,68 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name" : "unix",
+            "hidden" : true,
+            "generator" : "Unix Makefiles",
+            "cacheVariables" : {
+                "WARNING_COMPILE_OPTIONS" : "-Wpedantic;-Wall;-Wextra;-Wvariadic-macros;-Wvla;-Wmissing-declarations;-Wfloat-equal;-Wcast-qual;-Woverloaded-virtual;-Wundef;-Wpointer-arith;-Wwrite-strings;-Wcast-align;-Wmissing-format-attribute;-Wold-style-cast;-Wformat=2;-Winit-self;-Wsign-promo;-Wredundant-decls;-Wno-unused-parameter;-Wno-sign-compare;-Wno-mismatched-tags",
+                "PROFILE_COMPILE_OPTIONS" : "-pg",
+                "RELEASE_COMPILE_OPTIONS" : "-ffast-math;-fno-finite-math-only",
+                "PORTABLE_COMPILE_OPTIONS" : "-mtune=generic",
+                "NATIVE_COMPILE_OPTIONS" : "-march=native;-mtune=native"
+            }
+        },
+        {            
+            "name" : "debug",
+            "hidden" : true,
+            "cacheVariables" : {
+                "CMAKE_BUILD_TYPE" : "Debug"
+            }
+        },
+        {            
+            "name" : "release",
+            "hidden" : true,
+            "cacheVariables" : {
+                "CMAKE_BUILD_TYPE" : "Release"
+            }
+        },
+        {
+            "name" : "gcc",
+            "hidden" : true,
+            "cacheVariables" : {
+                "CMAKE_CXX_COMPILER" : "g++"
+            }
+        },
+        {
+            "name" : "clang",
+            "hidden" : true,
+            "cacheVariables" : {
+                "CMAKE_CXX_COMPILER" : "clang++"
+            }
+        },
+        
+        {
+            "name" : "gcc-debug",
+            "inherits" : [ "gcc", "unix", "debug" ]
+        },
+        {
+            "name" : "gcc-release",
+            "inherits" : [ "gcc", "unix", "release" ]
+        },
+        
+        {
+            "name" : "clang-debug",
+            "inherits" : [ "clang", "unix", "debug" ]
+        },
+        {
+            "name" : "clang-release",
+            "inherits" : [ "clang", "unix", "release" ]
+        }
+    ]
+}

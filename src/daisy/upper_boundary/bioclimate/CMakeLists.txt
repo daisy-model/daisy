@@ -1,0 +1,27 @@
+target_sources(daisy PUBLIC
+  astronomy.C
+  bioclimate.C
+  bioclimate_std.C
+  cloudiness.C
+  difrad.C
+  difrad_DPF.C
+  difrad_weather.C
+  fao.C
+  ghf.C
+  net_radiation.C
+  pet.C
+  pet_FAO_PM.C
+  pet_FAO_PM_hourly.C
+  pet_Hargreaves.C
+  pet_PM.C
+  pet_makkink.C
+  pet_weather.C
+  raddist.C
+  raddist_DPF.C
+  raddist_std.C
+  resistance.C
+  svat.C
+  svat_none.C
+  svat_pmsw.C
+  svat_ssoc.C
+)

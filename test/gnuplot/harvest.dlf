@@ -1,0 +1,13 @@
+dlf-0.0 -- harvest
+
+VERSION: 6.44
+LOGFILE: harvest.dlf
+RUN: Tue Jan  9 08:57:57 2024
+
+SIMFILE: test.dai
+
+--------------------
+year	month	day	column	crop	stem_DM	dead_DM	leaf_DM	sorg_DM	stem_N	dead_N	leaf_N	sorg_N	WStress	NStress	WP_ET	HI
+					Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	d	d	kg/m^3	
+1987	8	26	Andeby	Spring Barley	5.4925	0.543855	0.20152	2.69724	29.6011	3.07902	3.04597	48.7729	0	17.9478	1.06242	0.280687
+1987	10	10	Andeby	Grass	2.59312	0	1.42885	0	32.9277	0	34.632	0	0	9.13414	0	0
