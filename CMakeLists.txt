@@ -68,3 +68,6 @@ install(TARGETS daisy DESTINATION bin)
 
 # Contains .dai files that define functionality
 add_subdirectory(lib)
+
+include(CTest)
+add_subdirectory(test)

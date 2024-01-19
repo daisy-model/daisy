@@ -1,0 +1,45 @@
+Has DAISYHOME environment variable
+Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release'
+Daisy crop/soil simulation version 6.44. (Jan 19 2024)
+Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
+In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-GP2D.dai'
+Changing directory to 'tmp' success
+Command line: /home/silas/Projects/daisy-model/daisy/build/release/daisy /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-GP2D.dai -d tmp
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/release/tmp'
+Program started Fri Jan 19 12:12:13 2024., 0 seconds ago.
+* rootdens: GP2D set_density
+R =	70	cm	Row distance
+M_r =	0.015	g/cm^2	Root dry matter per area
+S_r =	10000	cm/g	Specific root length
+l_r =	150	cm/cm^2	Root length
+l_R =	5250	cm/cm	Root length per half row
+w_c =	75	cm	Horisontal radius of root system
+d_c =	150	cm	Potential depth
+d_s =	200	cm	Soil depth
+d_a =	150	cm	Actual depth
+L_m =	0.1	cm/cm^3	Minimum density
+l_m =	15	cm/cm^2	Minimum root length in root zone
+D =	0.1		Minimum root length as fraction of total root length
+Q_max =	-2		The function g has a local maximum at -2
+D_max =	0.541341		There is no solution when D is above the value at Q_max
+Q =	-5.8279		Solution to 'g (Q) = 0'
+g_Q =	-2.77556e-17		g (Q)
+a_z =	0.0388527	cm^-1	Vertical decrease
+a_x =	0.0777053	cm^-1	Horisontal decrease
+L00 =	15.85	cm/cm^3	Density at (0, 0)	
+k =	1.04391		Scale factor
+* Root density table [(cm, cm) -> cm/cm^3]
+z\x	2.5	7.5	12.5	17.5	22.5	27.5	32.5
+-5	11.3402	7.74676	5.33752	3.74419	2.72319	2.11847	1.83757
+-15	7.68927	5.25273	3.61914	2.53877	1.84647	1.43644	1.24598
+-32.5	3.89582	2.66133	1.83366	1.28628	0.935528	0.72778	0.631282
+-52.5	1.79114	1.22357	0.843041	0.59138	0.430118	0.334604	0.290237
+-67.5	1.00006	0.683167	0.470702	0.33019	0.240151	0.186822	0.162051
+-82.5	0.558373	0.381438	0.262811	0.184358	0.134086	0	0
+-97.5	0.311761	0.212972	0.146738	0	0	0	0
+-112.5	0.174068	0.11891	0	0	0	0	0
+-127.5	0	0	0	0	0	0	0
+-142.5	0	0	0	0	0	0	0
+Program finished after 0 seconds.
