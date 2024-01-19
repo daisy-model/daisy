@@ -1,3 +1,4 @@
+include(GNUInstallDirs)
 install(FILES
   all.dai
   beet-old.dai
@@ -61,4 +62,4 @@ install(FILES
   wrape-old.dai
   wwheat.dai
   wwheat-old.dai
-  DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/daisy/lib)
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/daisy/lib)

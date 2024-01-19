@@ -1,5 +1,3 @@
-include(GNUInstallDirs)
-
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
@@ -67,4 +65,6 @@ target_compile_options(daisy PRIVATE
 )
 
 install(TARGETS daisy DESTINATION bin)
+
+# Contains .dai files that define functionality
 add_subdirectory(lib)
