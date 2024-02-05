@@ -19,7 +19,10 @@ if (NOT CMAKE_BUILD_TYPE)
        FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-add_compile_options(${COMPILER_OPTIONS_WARNING})
+add_compile_options(
+  ${COMPILER_OPTIONS_WARNING}
+  ${COMPILER_OPTIONS_NO_WARNING}
+ )
 
 if (MAKE_PORTABLE)
   set(Boost_USE_STATIC_LIBS ON)
@@ -44,12 +47,16 @@ target_link_libraries(daisy PUBLIC
 )
 
 target_compile_options(daisy PRIVATE
+  ${OS_OPTIONS}
   "$<$<CONFIG:RELEASE>:${COMPILER_OPTIONS_RELEASE}>"
   "$<$<CONFIG:COVERAGE>:${COMPILER_OPTIONS_COVERAGE}>"
   "$<$<BOOL:${USE_PROFILE}>:${COMPILER_OPTIONS_PROFILE}>"
   "$<IF:$<BOOL:${MAKE_PORTABLE}>,${COMPILER_OPTIONS_PORTABLE},${COMPILER_OPTIONS_NATIVE}>"
 )
 
+target_link_directories(daisy PRIVATE
+  "${LINKER_DIRS}"
+ )
 
 target_link_options(daisy PRIVATE
   "$<$<CONFIG:COVERAGE>:${LINKER_OPTIONS_COVERAGE}>"
