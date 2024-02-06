@@ -234,7 +234,7 @@ TransportMollerup::cell_based_flux (const Geometry& geo,
   ublas::vector<double> wx_cell = ublas::zero_vector<double> (cell_size);
   ublas::vector<double> wz_cell = ublas::zero_vector<double> (cell_size);
 
-  for (int e = 0; e < edge_size; e++)
+  for (size_t e = 0; e < edge_size; e++)
     {
       const double q = q_edge (e);
       const double sin_angle = geo.edge_sin_angle (e);
@@ -264,7 +264,7 @@ TransportMollerup::cell_based_flux (const Geometry& geo,
         }
     }
 
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     {
       if (wx_cell[c] > 0.0)
         qx_cell[c] /= wx_cell[c];
@@ -282,7 +282,7 @@ TransportMollerup::edge_water_content
   const size_t edge_size = geo.edge_size ();
   //Theta_edge = ublas::zero_vector<double> (edge_size);
   
-  for (int e = 0; e < edge_size; e++)
+  for (size_t e = 0; e < edge_size; e++)
     {
       const int from = geo.edge_from (e);
       const int to = geo.edge_to (e);    
@@ -341,7 +341,7 @@ TransportMollerup::diffusion_tensor (const Geometry& geo,
   cell_based_flux (geo, q_edge, qx_cell, qz_cell);
   
   
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     {
       const double Theta_cell = Theta (c);
       daisy_assert(Theta_cell > 0);
@@ -838,8 +838,8 @@ TransportMollerup::fluxes (const GeometryRect& geo,
           {
             daisy_assert (from >= 0);
             daisy_assert (to >= 0);
-            daisy_assert (from < C.size ());
-            daisy_assert (to < C.size ());
+            daisy_assert (static_cast<size_t>(from) < C.size ());
+            daisy_assert (static_cast<size_t>(to) < C.size ());
             
             //--- Advective part ---
             const double alpha = (q_edge[e] >= 0) 
@@ -944,7 +944,7 @@ TransportMollerup::fluxes (const GeometryRect& geo,
           {
             const int cell = geo.cell_is_internal (to) ? to : from;
             daisy_assert (cell >= 0);
-            daisy_assert (cell < C.size ());
+            daisy_assert (static_cast<size_t>(cell) < C.size ());
             dJ[e] = q_edge[e] * C[cell];
             daisy_assert (std::isfinite (dJ[e]));
           }
@@ -954,7 +954,7 @@ TransportMollerup::fluxes (const GeometryRect& geo,
           {
             const int cell = geo.cell_is_internal (to) ? to : from;
             daisy_assert (cell >= 0);
-            daisy_assert (cell < C.size ());
+            daisy_assert (static_cast<size_t>(cell) < C.size ());
             
             const double in_sign 
               = geo.cell_is_internal (geo.edge_to (e)) ? 1.0 : -1.0;
@@ -1018,15 +1018,15 @@ TransportMollerup::flow (const Geometry& geo_base,
 
   // Solution old
   ublas::vector<double> C_old (cell_size);
-  for (int c = 0; c < cell_size; c++)  
+  for (size_t c = 0; c < cell_size; c++)  
     C_old (c) = C[c];
   
   // Water content old and new 
   ublas::vector<double> Theta_cell_old (cell_size);     
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Theta_cell_old (c) = Theta_old[c];
   ublas::vector<double> Theta_cell (cell_size); 
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Theta_cell (c) = Theta_new[c];
 
   // Average water content in large timestep
@@ -1035,7 +1035,7 @@ TransportMollerup::flow (const Geometry& geo_base,
   
   // Flux in timestep
   ublas::vector<double> q_edge (edge_size);     
-  for (int e = 0; e < edge_size; e++)
+  for (size_t e = 0; e < edge_size; e++)
     q_edge (e) = q[e];
   
   //Cell diffusion tensor
@@ -1178,7 +1178,7 @@ TransportMollerup::flow (const Geometry& geo_base,
   
   //Boundary matrices and vectors  
   ublas::banded_matrix<double> B_mat (cell_size, cell_size, 0, 0); 
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     B_mat (c, c) = 0.0;
   ublas::vector<double> B_vec = ublas::zero_vector<double> (cell_size); 
   
@@ -1186,13 +1186,13 @@ TransportMollerup::flow (const Geometry& geo_base,
   
   ublas::banded_matrix<double>  diffm_xx_zz_mat (cell_size, cell_size,      
                                                  0, 0); // Dir bc
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     diffm_xx_zz_mat (c, c) = 0.0;
   
   ublas::vector<double> diffm_xx_zz_vec (cell_size); // Dir bc
   diffm_xx_zz_vec = ublas::zero_vector<double> (cell_size);
   ublas::banded_matrix<double> advecm_mat (cell_size, cell_size, 0, 0);   
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     advecm_mat (c, c) = 0.0;
   ublas::vector<double> advecm_vec (cell_size);
   advecm_vec = ublas::zero_vector<double> (cell_size);  
@@ -1229,7 +1229,7 @@ TransportMollerup::flow (const Geometry& geo_base,
   ublas::vector<double> Theta_cell_np1 (cell_size);     
   
   ublas::banded_matrix<double> QTheta_mat_n (cell_size, cell_size, 0 ,0);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     QTheta_mat_n (c, c) = geo.cell_volume (c) * Theta_cell_n (c);
   ublas::banded_matrix<double> QTheta_mat_np1 (cell_size, cell_size, 0, 0);
 
@@ -1262,7 +1262,7 @@ TransportMollerup::flow (const Geometry& geo_base,
       //Calculate water content 
       interpol(Theta_cell_old, Theta_cell, dt, dtime, Theta_cell_np1);
       
-      for (int c = 0; c < cell_size; c++)
+      for (size_t c = 0; c < cell_size; c++)
         QTheta_mat_np1 (c, c) = geo.cell_volume (c) * Theta_cell_np1 (c);
 
       lowerboundary (geo, C_border, q_edge, ThetaD_xx_zz_avg,
@@ -1338,7 +1338,7 @@ TransportMollerup::flow (const Geometry& geo_base,
       fluxes (geo, edge_type, q_edge, ThetaD_xx_zz_avg, ThetaD_xz_zx_avg,
               C_gamma, J_forced, C_border, B_dir_vec, dJ); 
             
-      for (int e=0; e<edge_size; e++)
+      for (size_t e=0; e<edge_size; e++)
         {
           daisy_assert (std::isfinite (J[e]));
           daisy_assert (std::isfinite (dJ[e]));

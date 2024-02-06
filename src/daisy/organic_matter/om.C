@@ -49,7 +49,7 @@ OM::output (Log& log) const
       std::vector<double> C_per_N;
       size_t size = N.size ();
       daisy_assert (C.size () >= size);
-      for (int i = 0; i < size; i++)
+      for (size_t i = 0; i < size; i++)
 	{
 	  if (N[i] < 1e-51)
 	    C_per_N.push_back (Unspecified);
@@ -354,7 +354,7 @@ You cannot specify 'C_per_N' for intervals where 'C' is unspecified.");
 	  bool bogus = false;
 	  const std::vector<double>& N = al.number_sequence ("N");
 
-	  const int check_size = std::min (N.size (), C_per_N.size ());
+	  const size_t check_size = std::min (N.size (), C_per_N.size ());
 	  for (size_t i = 0; i < check_size; i++)
 	    {
 	      if (C_per_N[i] < 0.0)

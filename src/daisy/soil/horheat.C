@@ -39,8 +39,8 @@ HorHeat::heat_conductivity (double Theta, double Ice) const
   const int entry = int ((Theta + Ice) * intervals);
   daisy_assert (entry >= 0);
   daisy_assert (entry < intervals);
-  daisy_assert (entry < K_ice.size ());
-  daisy_assert (entry < K_water.size ());
+  daisy_assert (static_cast<size_t>(entry) < K_ice.size ());
+  daisy_assert (static_cast<size_t>(entry) < K_water.size ());
   return ((K_ice[entry] * Ice + K_water[entry] * Theta) 
           / (Theta + Ice))
     * 3600;                     // erg/s / cm / K -> erg/h / cm / K

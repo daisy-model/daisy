@@ -354,7 +354,7 @@ Geometry::cell_pseudo_number (const int n) const
       return cell_size () + 5;
     default:
       daisy_assert (n >= 0);
-      daisy_assert (n < cell_size ());
+      daisy_assert (static_cast<size_t>(n) < cell_size ());
       return n;
     }
 }

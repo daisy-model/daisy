@@ -46,7 +46,7 @@ public:
              std::vector<double>& q_base, 
              double /* dt */)
   {
-    for (int i = first; i <= last; i++)
+    for (unsigned int i = first; i <= last; i++)
       {
         q_base[q_offset + i] = 0.0;
         Theta[i] = Theta_old[i];

@@ -50,7 +50,7 @@ public:
 void
 ClayOMOld::set_rates (const Soil& soil, const std::vector<SMB*>& smb) const
 { 
-  for (int pool = 0; pool < smb.size (); pool++)
+  for (size_t pool = 0; pool < smb.size (); pool++)
     {
       daisy_assert (smb[pool]->clay_maintenance.size () == 0);
       smb[pool]->clay_maintenance.insert (smb[pool]->clay_maintenance.end (),

@@ -377,7 +377,7 @@ CropStandard::find_stomata_conductance (const Time& time,
 
   // Calculate shadow PAR.
   std::vector<double> shadow_PAR;
-  for(int i = 0; i < total_PAR.size (); i++) 
+  for(size_t i = 0; i < total_PAR.size (); i++) 
     shadow_PAR.push_back(total_PAR[i] - sun_PAR[i]);
       
   // Accumulate.

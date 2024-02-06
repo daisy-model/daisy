@@ -220,7 +220,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
   //Make Qmat area diagonal matrix 
   //Note: This only needs to be calculated once... 
   ublas::banded_matrix<double> Qmat (cell_size, cell_size, 0, 0);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Qmat (c, c) = geo.cell_volume (c);
  
   // make vectors 
@@ -428,7 +428,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
               break;
           }
 
-	  for (int c=0; c < cell_size; c++) // update Theta 
+	  for (size_t c=0; c < cell_size; c++) // update Theta 
 	    Theta (c) = soil.Theta (c, h (c), h_ice (c)); 
 
 	  if (debug > 1)
@@ -442,7 +442,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
 	      msg.message (tmp.str ());
 	    }
           
-          for (int c=0; c < cell_size; c++)
+          for (size_t c=0; c < cell_size; c++)
             {
               if (h (c) < min_pressure_potential || h (c) > max_pressure_potential)
                 {

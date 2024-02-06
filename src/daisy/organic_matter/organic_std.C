@@ -74,9 +74,9 @@ static void
 validate_am (const std::vector <AM*>& am)
 {
   std::vector<AOM*> added;
-  for (int i = 0; i < am.size (); i++)
+  for (size_t i = 0; i < am.size (); i++)
     am[i]->append_to (added);
-  for (int i = 0; i < added.size (); i++)
+  for (size_t i = 0; i < added.size (); i++)
     daisy_assert (std::isfinite (added[i]->initial_C_per_N));
 }
 
@@ -744,7 +744,7 @@ OrganicStandard::total_N (const Geometry& geo) const
     result += som[i]->soil_N (geo);
   for (size_t i = 0; i < dom.size (); i++)
     result += dom[i]->soil_N (geo);
-  for (int i = 0; i < am.size (); i++)
+  for (size_t i = 0; i < am.size (); i++)
     result += am[i]->total_N (geo);
   
   return result;
@@ -761,7 +761,7 @@ OrganicStandard::total_C (const Geometry& geo) const
     result += som[i]->soil_C (geo);
   for (size_t i = 0; i < dom.size (); i++)
     result += dom[i]->soil_C (geo);
-  for (int i = 0; i < am.size (); i++)
+  for (size_t i = 0; i < am.size (); i++)
     result += am[i]->total_C (geo);
   
   return result;
@@ -857,7 +857,7 @@ OrganicStandard::output (Log& log) const
 	      total_C[i] += dom[j]->C_at (i);
 	      total_N[i] += dom[j]->N_at (i);
 	    }
-	  for (int j = 0; j < am.size (); j++)
+	  for (size_t j = 0; j < am.size (); j++)
 	    {
 	      total_C[i] += am[j]->C_at (i);
 	      total_N[i] += am[j]->N_at (i);
@@ -1353,7 +1353,7 @@ OrganicStandard::tick (const Geometry& geo,
 
   // Mass balance.
   double N_to_DOM = 0.0;
-  for (int j = 0; j < dom.size (); j++)
+  for (size_t j = 0; j < dom.size (); j++)
     N_to_DOM += dom[j]->N_source (geo) * dt;
   const double new_N = total_N (geo) + N_to_DOM;
   const double delta_N = old_N - new_N;
@@ -1373,7 +1373,7 @@ OrganicStandard::tick (const Geometry& geo,
       msg.error (tmp.str ());
     }
   double C_to_DOM = 0.0;
-  for (int j = 0; j < dom.size (); j++)
+  for (size_t j = 0; j < dom.size (); j++)
     C_to_DOM += dom[j]->C_source (geo) * dt;
   const double new_C = total_C (geo) + C_to_DOM;
   const double delta_C = old_C - new_C;
@@ -2810,7 +2810,7 @@ double
 OrganicStandard::top_DM () const
 {
   double result = 0.0;
-  for (int i = 0; i < am.size (); i++)
+  for (size_t i = 0; i < am.size (); i++)
     result += am[i]-> top_DM ();
   return result * 10; // [g DM/cm^2] -> [kg DM/m^2]
 }

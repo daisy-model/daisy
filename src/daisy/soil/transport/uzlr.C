@@ -106,7 +106,7 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
   const bool use_darcy = (h_old[first] < h_fc) && (q_up > 0.0);
 
   // Intermediate cells.
-  for (int i = first; i <= last; i++)
+  for (unsigned int i = first; i <= last; i++)
     {
       const double z = geo.cell_z (i);
       const double dz = geo.dz (i);
@@ -307,13 +307,13 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
 
   // Saturated pressure.
   double table = geo.cell_z (last) + h[last];
-  for (int i = last; i > first; i--)
+  for (unsigned int i = last; i > first; i--)
     if (h[i] < 0.0)
       {
         table = geo.cell_z (i) + h[i];
         break;
       }
-  for (int i = last; i > first; i--)
+  for (unsigned int i = last; i > first; i--)
     if (geo.cell_z (i) < table)
       {
         daisy_assert (h[i] >= 0.0);

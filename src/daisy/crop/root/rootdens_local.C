@@ -189,7 +189,7 @@ RootdensLocal::expansion (const Geometry& geo,
 
 	  const int o = geo.edge_other (e, c);
 	  daisy_assert (geo.cell_is_internal (o));
-	  daisy_assert (o >= 0 && o < cell_size);
+	  daisy_assert (o >= 0 && static_cast<size_t>(o) < cell_size);
 
 	  if (L[o] < DensRtTip)
 	    // Only cells above DensRtTip expand to neighbors.
@@ -221,7 +221,7 @@ RootdensLocal::expansion (const Geometry& geo,
     return;
 
   // Shrink for available root length.
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     E[c] *= factor;
   daisy_approximate (geo.total_soil (E), delta_root);
   E_tot = delta_root;
@@ -265,7 +265,7 @@ RootdensLocal::internal_growth (const Geometry& geo,
 
 	  const int o = geo.edge_other (e, c);
 	  daisy_assert (geo.cell_is_internal (o));
-	  daisy_assert (o >= 0 && o < cell_size);
+	  daisy_assert (o >= 0 && static_cast<size_t>(o) < cell_size);
 
 	  if (iszero (L[o]))
 	    continue;
@@ -283,12 +283,12 @@ RootdensLocal::internal_growth (const Geometry& geo,
   // Scale to available roots.
   const double I_tot = geo.total_soil (I);
   const double factor = delta_root / I_tot;
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     I[c] *= factor;
   
   daisy_approximate (geo.total_soil (I), delta_root);
 
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     I[c] = std::min (I[c], L[c] * max_internal_growth_rate);
 }
 
