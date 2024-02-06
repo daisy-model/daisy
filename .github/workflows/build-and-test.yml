@@ -1,0 +1,49 @@
+name: Build daisy and run tests
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
+      # Consider changing this to true when your workflow is stable.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        cmake_preset: [gcc-release, clang-release]
+        exclude:
+          - os: macos-latest
+            cmake_preset: gcc-release
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install macOS dependencies
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      run: brew install cmake boost suite-sparse
+      
+    - name: Install ubuntu dependencies
+      if: ${{ startsWith(matrix.os == 'ubuntu') }}
+      run: apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -S ${{ github.workspace }}
+        --preset ${{ matrix.cmake_preset }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest
