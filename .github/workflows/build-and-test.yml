@@ -15,9 +15,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         cmake_preset: [gcc-release, clang-release]
-        exclude:
-          - os: macos-latest
-            cmake_preset: gcc-release
     steps:
     - uses: actions/checkout@v3
 
@@ -26,8 +23,8 @@ jobs:
       run: brew install cmake boost suite-sparse
       
     - name: Install ubuntu dependencies
-      if: ${{ startsWith(matrix.os == 'ubuntu') }}
-      run: apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
+      if: ${{ startsWith(matrix.os, 'ubuntu') }}
+      run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
 
     - name: Set reusable strings
       id: strings
