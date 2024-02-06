@@ -12,7 +12,7 @@
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
                 "COMPILER_OPTIONS_WARNING" : "-Wpedantic;-Wall;-Wextra;-Wvariadic-macros;-Wvla;-Wmissing-declarations;-Wfloat-equal;-Wcast-qual;-Woverloaded-virtual;-Wundef;-Wpointer-arith;-Wwrite-strings;-Wcast-align;-Wmissing-format-attribute;-Wold-style-cast;-Wformat=2;-Winit-self;-Wsign-promo;-Wredundant-decls",
-                "COMPILER_OPTIONS_NO_WARNING" : "-Wno-unused-parameter;-Wno-sign-compare;-Wno-mismatched-tags;-Wno-invalid-utf8",
+                "COMPILER_OPTIONS_NO_WARNING" : "-Wno-unused-parameter;-Wno-sign-compare;-Wno-mismatched-tags",
                 "COMPILER_OPTIONS_PROFILE" : "-pg",
                 "COMPILER_OPTIONS_RELEASE" : "-ffast-math;-fno-finite-math-only",
                 "COMPILER_OPTIONS_PORTABLE" : "-mtune=generic",
