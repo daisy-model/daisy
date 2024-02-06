@@ -1,192 +1,191 @@
 Has DAISYHOME environment variable
-Using '/home/silas/Projects/daisy/daisy-model/' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/sample'
-Daisy crop/soil simulation version 6.44. (Jan 19 2024)
+Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release/test'
+Daisy crop/soil simulation version 6.44. (Jan 22 2024)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
-Looking for file 'test.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/test.dai' (cwd) success!
-* Parsing file: 'test.dai'
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/sample-2.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/sample-2.dai'
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'tillage.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/tillage.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/tillage.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'crop.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/crop.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/crop.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/crop.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/crop.dai' success!
 ** Parsing file: 'crop.dai'
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'maize.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/maize.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/maize.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/maize.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/maize.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'pea.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/pea.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/pea.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/pea.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/pea.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'potato.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/potato.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/potato.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/potato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/potato.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'rye.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/rye.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/rye.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/rye.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/rye.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'sbarley.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/sbarley.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/sbarley.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'sugarbeet.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/sugarbeet.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/sugarbeet.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/sugarbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sugarbeet.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'fodderbeet.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/fodderbeet.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/fodderbeet.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/fodderbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fodderbeet.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'srape.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/srape.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/srape.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/srape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/srape.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'swheat.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/swheat.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/swheat.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/swheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/swheat.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'wbarley.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/wbarley.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/wbarley.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/wbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wbarley.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'wrape.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/wrape.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/wrape.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/wrape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wrape.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'wwheat.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/wwheat.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/wwheat.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/wwheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wwheat.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'grass.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/grass.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/grass.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/grass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/grass.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'ryegrass.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/ryegrass.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/ryegrass.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/ryegrass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/ryegrass.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'wclover.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/wclover.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/wclover.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/wclover.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wclover.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'beetroot.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/beetroot.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/beetroot.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/beetroot.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/beetroot.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'broccoli.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/broccoli.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/broccoli.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/broccoli.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/broccoli.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'brusselssprouts.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/brusselssprouts.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/brusselssprouts.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/brusselssprouts.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/brusselssprouts.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'celeriac.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/celeriac.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/celeriac.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/celeriac.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/celeriac.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'earlypotato.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/earlypotato.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/earlypotato.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/earlypotato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlypotato.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'whitecabbage.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/whitecabbage.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/whitecabbage.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/whitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/whitecabbage.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'earlywhitecabbage.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/earlywhitecabbage.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/earlywhitecabbage.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/earlywhitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlywhitecabbage.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'onion.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/onion.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/onion.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/onion.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'onion_plantingofsets.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/onion_plantingofsets.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/onion_plantingofsets.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/onion_plantingofsets.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion_plantingofsets.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'log.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/log.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/log.dai' success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/log.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/log.dai' success!
 ** Parsing file: 'log.dai'
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'log-std.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/log-std.dai' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/log-std.dai' success!
-Changing directory to '../test/baseline/Release/test_sample_2' success
-Command line: ../build/release/daisy test.dai -d ../test/baseline/Release/test_sample_2
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/test/baseline/Release/test_sample_2'
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/log-std.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
+Changing directory to '/tmp/tmp73cefzaw' success
+Command line: /home/silas/Projects/daisy-model/daisy/build/release/daisy /home/silas/Projects/daisy-model/daisy/test/dai_test_files/sample-2.dai -d /tmp/tmp73cefzaw -q
+Storing 'daisy.log' in '/tmp/tmp73cefzaw'
 * dk-taastrup.dwf: initializing weather at 1986-12-01T01:00:00
 ** source_initialize
-In directory '/home/silas/Projects/daisy-model/daisy/test/baseline/Release/test_sample_2':
+In directory '/tmp/tmp73cefzaw':
 Looking for file 'dk-taastrup.dwf'
-Trying '../test/baseline/Release/test_sample_2/dk-taastrup.dwf' (cwd)
-Trying '/home/silas/Projects/daisy/daisy-model//lib/dk-taastrup.dwf'
-Trying '/home/silas/Projects/daisy/daisy-model//sample/dk-taastrup.dwf' success!
+Trying '/tmp/tmp73cefzaw/dk-taastrup.dwf' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-taastrup.dwf' success!
 * column: Andeby initialize
 ** Soil
 *** Horizons
@@ -286,9 +285,9 @@ Specified background mineralization	not specified	kg N/ha/y
 Zone input	1336.28	kg C/ha/y
 Zone background mineralization	0	kg C/ha/y
 Zone humus change	0	kg C/ha/y
-Time	Fri Jan 19 14:20:01 2024
+Time	Mon Jan 22 11:07:28 2024
 
-Program started Fri Jan 19 14:20:01 2024., 0 seconds ago.
+Program started Mon Jan 22 11:07:27 2024, 1 second ago.
 * Running
 ** 1986-12-01T01:00:00
 Begin simulation
@@ -338,16 +337,16 @@ Luxury nitrogen uptake initiated
 ** 1987-05-08T08:00:00
 *** crop: Grass tick
 Luxury nitrogen uptake initiated
-** 1987-06-14T15:00:00
+** 1987-06-14T05:00:00
 *** crop: Spring Barley tick
 Crop affected by nitrogen stress
-** 1987-06-17T11:00:00
+** 1987-06-17T22:00:00
 *** crop: Spring Barley tick
 Luxury nitrogen uptake initiated
 ** 1987-07-03T00:00:00
 *** crop: Spring Barley tick
 Flowering
-** 1987-07-03T07:00:00
+** 1987-07-03T06:00:00
 *** crop: Spring Barley tick
 Crop affected by nitrogen stress
 ** 1987-08-07T05:00:00
@@ -359,14 +358,14 @@ Crop affected by nitrogen stress
 ** 1987-08-18T01:00:00
 *** crop: Grass tick
 Luxury nitrogen uptake initiated
-** 1987-08-18T08:00:00
+** 1987-08-18T07:00:00
 *** crop: Grass tick
 Crop affected by nitrogen stress
 ** 1987-08-26T00:00:00
 *** crop: Spring Barley tick
 Ripe
 ** 1987-08-26T01:00:00
-Harvesting Spring Barley, removing 2.69817 + 6.2388 Mg DM/ha
+Harvesting Spring Barley, removing 2.69724 + 6.23787 Mg DM/ha
 ** 1987-09-08T01:00:00
 Fertilizing 80 kg mineral-N/ha
 ** 1987-09-19T13:00:00
@@ -376,7 +375,7 @@ Luxury nitrogen uptake initiated
 *** Andeby
 **** crop: Grass harvest
 Phenology reverted
-Cutting Grass, removing 0 + 4.02214 Mg DM/ha
+Cutting Grass, removing 0 + 4.02197 Mg DM/ha
 ** 1988-02-19T23:00:00
 *** bioclimate: default tick
 **** bioclimate: default WaterDistribution
@@ -408,28 +407,28 @@ Nitrogen balance for the complete system.
                                   -------
                     Total input = 203.898 [kg N/ha]
 
-              N2O-Nitrification =   2.067 [kg N/ha]
+              N2O-Nitrification =   2.064 [kg N/ha]
                 Denitrification =   0.461 [kg N/ha]
                 Matrix-Leaching =   6.282 [kg N/ha]
                Biopore-Leaching =   0.000 [kg N/ha]
                      Soil-Drain =   0.000 [kg N/ha]
                   Biopore-Drain =   0.000 [kg N/ha]
                    Surface-Loss =   0.189 [kg N/ha]
-                        Harvest = 152.087 [kg N/ha]
+                        Harvest = 152.059 [kg N/ha]
                                   -------
-                   Total output = 161.086 [kg N/ha]
+                   Total output = 161.055 [kg N/ha]
 
            Min-Surface increase =   0.110 [kg N/ha]
-              Min-Soil increase =  -8.952 [kg N/ha]
+              Min-Soil increase =  -8.928 [kg N/ha]
           Min-Biopores increase =   0.000 [kg N/ha]
            Org-Surface increase =   0.000 [kg N/ha]
-              Org-Soil increase =  -8.615 [kg N/ha]
-                  Crop increase =  60.270 [kg N/ha]
+              Org-Soil increase =  -8.618 [kg N/ha]
+                  Crop increase =  60.279 [kg N/ha]
                                   -------
-      Total increase in content =  42.812 [kg N/ha]
+      Total increase in content =  42.843 [kg N/ha]
 
                                   -------
-Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+Balance (= In - Out - Increase) =  -0.000 [kg N/ha]
                                   =======
 *** summary: Field mineral nitrogen balance summarize
 Mineral balance for the complete system.
@@ -437,49 +436,49 @@ Mineral balance for the complete system.
          Min-Surface-Fertilizer = 180.000 [kg N/ha]
             Min-Soil-Fertilizer =   0.000 [kg N/ha]
                      Deposition =  17.898 [kg N/ha]
-                 Mineralization =  43.158 [kg N/ha]
+                 Mineralization =  43.152 [kg N/ha]
                                   -------
-                    Total input = 241.056 [kg N/ha]
+                    Total input = 241.050 [kg N/ha]
 
-                 Immobilization =   1.606 [kg N/ha]
+                 Immobilization =   1.613 [kg N/ha]
                 Matrix-Leaching =   6.282 [kg N/ha]
                Biopore-Leaching =   0.000 [kg N/ha]
                      Soil-Drain =   0.000 [kg N/ha]
                   Biopore-Drain =   0.000 [kg N/ha]
                    Surface-Loss =   0.189 [kg N/ha]
-                    Crop-Uptake = 239.293 [kg N/ha]
-              N2O-Nitrification =   2.067 [kg N/ha]
+                    Crop-Uptake = 239.260 [kg N/ha]
+              N2O-Nitrification =   2.064 [kg N/ha]
                 Denitrification =   0.461 [kg N/ha]
                                   -------
-                   Total output = 249.899 [kg N/ha]
+                   Total output = 249.868 [kg N/ha]
 
            Min-Surface increase =   0.110 [kg N/ha]
-              Min-Soil increase =  -8.952 [kg N/ha]
+              Min-Soil increase =  -8.928 [kg N/ha]
           Min-Biopores increase =   0.000 [kg N/ha]
                                   -------
-      Total increase in content =  -8.843 [kg N/ha]
+      Total increase in content =  -8.818 [kg N/ha]
 
                                   -------
-Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+Balance (= In - Out - Increase) =  -0.000 [kg N/ha]
                                   =======
 *** summary: Field organic nitrogen balance summarize
 Organic nitrogen balance for the complete system.
 
-              Residuals-Surface = 19.446 [kg N/ha]
-                 Residuals-Soil = 13.490 [kg N/ha]
+              Residuals-Surface = 19.441 [kg N/ha]
+                 Residuals-Soil = 13.481 [kg N/ha]
                  Org-Fertilizer =  0.000 [kg N/ha]
-                 Immobilization =  1.606 [kg N/ha]
+                 Immobilization =  1.613 [kg N/ha]
                                   ------
-                    Total input = 34.543 [kg N/ha]
+                    Total input = 34.534 [kg N/ha]
 
-                 Mineralization = 43.158 [kg N/ha]
+                 Mineralization = 43.152 [kg N/ha]
                                   ------
-                   Total output = 43.158 [kg N/ha]
+                   Total output = 43.152 [kg N/ha]
 
            Org-Surface increase =  0.000 [kg N/ha]
-              Org-Soil increase = -8.615 [kg N/ha]
+              Org-Soil increase = -8.618 [kg N/ha]
                                   ------
-      Total increase in content = -8.615 [kg N/ha]
+      Total increase in content = -8.618 [kg N/ha]
 
                                   ------
 Balance (= In - Out - Increase) =  0.000 [kg N/ha]
@@ -489,19 +488,19 @@ Crop nitrogen balance for the complete system.
 
                            Seed =   6.000 [kg N/ha]
                         Fixated =   0.000 [kg N/ha]
-                    Crop-Uptake = 239.293 [kg N/ha]
+                    Crop-Uptake = 239.260 [kg N/ha]
                                   -------
-                    Total input = 245.293 [kg N/ha]
+                    Total input = 245.260 [kg N/ha]
 
-                        Harvest = 152.087 [kg N/ha]
-              Residuals-Surface =  19.446 [kg N/ha]
-                 Residuals-Soil =  13.490 [kg N/ha]
+                        Harvest = 152.059 [kg N/ha]
+              Residuals-Surface =  19.441 [kg N/ha]
+                 Residuals-Soil =  13.481 [kg N/ha]
                                   -------
-                   Total output = 185.023 [kg N/ha]
+                   Total output = 184.981 [kg N/ha]
 
-                  Crop increase =  60.270 [kg N/ha]
+                  Crop increase =  60.279 [kg N/ha]
                                   -------
-      Total increase in content =  60.270 [kg N/ha]
+      Total increase in content =  60.279 [kg N/ha]
 
                                   -------
 Balance (= In - Out - Increase) =  -0.000 [kg N/ha]
@@ -517,24 +516,24 @@ NO3- balance for a soil interval.
                  NO3-Biopore-In =   0.000 [kg N/ha]
                      NO3-Incorp =   0.000 [kg N/ha]
                     NO3-Tillage =   0.000 [kg N/ha]
-              NO3-Nitrification = 101.302 [kg N/ha]
+              NO3-Nitrification = 101.146 [kg N/ha]
                                   -------
-                    Total input = 198.067 [kg N/ha]
+                    Total input = 197.911 [kg N/ha]
 
-                NO3-Leak-Matrix =   6.307 [kg N/ha]
+                NO3-Leak-Matrix =   6.330 [kg N/ha]
                NO3-Leak-Biopore =   0.009 [kg N/ha]
                  NO3-Soil-Drain =   0.000 [kg N/ha]
               NO3-Biopore-Drain =   0.000 [kg N/ha]
-                     NO3-Uptake = 198.309 [kg N/ha]
+                     NO3-Uptake = 198.122 [kg N/ha]
                 Denitrification =   0.461 [kg N/ha]
-             NO3-Immobilization =   1.606 [kg N/ha]
+             NO3-Immobilization =   1.613 [kg N/ha]
                                   -------
-                   Total output = 206.692 [kg N/ha]
+                   Total output = 206.534 [kg N/ha]
 
-              NO3-Soil increase =  -8.625 [kg N/ha]
+              NO3-Soil increase =  -8.623 [kg N/ha]
           NO3-Biopores increase =   0.000 [kg N/ha]
                                   -------
-      Total increase in content =  -8.625 [kg N/ha]
+      Total increase in content =  -8.623 [kg N/ha]
 
                                   -------
 Balance (= In - Out - Increase) =  -0.000 [kg N/ha]
@@ -546,23 +545,23 @@ NH4+ balance for a soil interval.
                  NH4-Biopore-In =   0.000 [kg N/ha]
                      NH4-Incorp =   0.000 [kg N/ha]
                     NH4-Tillage =   0.020 [kg N/ha]
-             NH4-Mineralization =  43.158 [kg N/ha]
+             NH4-Mineralization =  43.152 [kg N/ha]
                                   -------
-                    Total input = 143.992 [kg N/ha]
+                    Total input = 143.986 [kg N/ha]
 
                 NH4-Leak-Matrix =  -0.011 [kg N/ha]
                NH4-Leak-Biopore =   0.007 [kg N/ha]
                  NH4-Soil-Drain =   0.000 [kg N/ha]
               NH4-Biopore-Drain =   0.000 [kg N/ha]
-                     NH4-Uptake =  40.985 [kg N/ha]
-              NH4-Nitrification = 103.369 [kg N/ha]
+                     NH4-Uptake =  41.137 [kg N/ha]
+              NH4-Nitrification = 103.210 [kg N/ha]
                                   -------
-                   Total output = 144.349 [kg N/ha]
+                   Total output = 144.343 [kg N/ha]
 
-              NH4-Soil increase =  -0.357 [kg N/ha]
+              NH4-Soil increase =  -0.356 [kg N/ha]
           NH4-Biopores increase =   0.000 [kg N/ha]
                                   -------
-      Total increase in content =  -0.357 [kg N/ha]
+      Total increase in content =  -0.356 [kg N/ha]
 
                                   -------
 Balance (= In - Out - Increase) =   0.000 [kg N/ha]
@@ -578,11 +577,11 @@ Mineral N balance for a soil interval.
                      NH4-Incorp =   0.000 [kg N/ha]
                     NO3-Tillage =   0.000 [kg N/ha]
                     NH4-Tillage =   0.020 [kg N/ha]
-             NH4-Mineralization =  43.158 [kg N/ha]
+             NH4-Mineralization =  43.152 [kg N/ha]
                                   -------
-                    Total input = 240.758 [kg N/ha]
+                    Total input = 240.752 [kg N/ha]
 
-                NO3-Leak-Matrix =   6.307 [kg N/ha]
+                NO3-Leak-Matrix =   6.330 [kg N/ha]
                 NH4-Leak-Matrix =  -0.011 [kg N/ha]
                NO3-Leak-Biopore =   0.009 [kg N/ha]
                NH4-Leak-Biopore =   0.007 [kg N/ha]
@@ -590,44 +589,44 @@ Mineral N balance for a soil interval.
                  NH4-Soil-Drain =   0.000 [kg N/ha]
               NO3-Biopore-Drain =   0.000 [kg N/ha]
               NH4-Biopore-Drain =   0.000 [kg N/ha]
-                     NO3-Uptake = 198.309 [kg N/ha]
-                     NH4-Uptake =  40.985 [kg N/ha]
+                     NO3-Uptake = 198.122 [kg N/ha]
+                     NH4-Uptake =  41.137 [kg N/ha]
                 Denitrification =   0.461 [kg N/ha]
-              N2O-Nitrification =   2.067 [kg N/ha]
-             NO3-Immobilization =   1.606 [kg N/ha]
+              N2O-Nitrification =   2.064 [kg N/ha]
+             NO3-Immobilization =   1.613 [kg N/ha]
                                   -------
-                   Total output = 249.739 [kg N/ha]
+                   Total output = 249.731 [kg N/ha]
 
-              NO3-Soil increase =  -8.625 [kg N/ha]
-              NH4-Soil increase =  -0.357 [kg N/ha]
+              NO3-Soil increase =  -8.623 [kg N/ha]
+              NH4-Soil increase =  -0.356 [kg N/ha]
           NO3-Biopores increase =   0.000 [kg N/ha]
           NH4-Biopores increase =   0.000 [kg N/ha]
                                   -------
-      Total increase in content =  -8.982 [kg N/ha]
+      Total increase in content =  -8.979 [kg N/ha]
 
                                   -------
-Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+Balance (= In - Out - Increase) =  -0.000 [kg N/ha]
                                   =======
 *** summary: Soil organic-N balance summarize
 Organic nitrogen balance for a soil interval.
 
-                    Residuals-N = 13.490 [kg N/ha]
+                    Residuals-N = 13.481 [kg N/ha]
                   Tillage-Org_N =  0.000 [kg N/ha]
-             NO3-Immobilization =  1.606 [kg N/ha]
-               Bioincorporation = 19.446 [kg N/ha]
+             NO3-Immobilization =  1.613 [kg N/ha]
+               Bioincorporation = 19.441 [kg N/ha]
                                   ------
-                    Total input = 34.543 [kg N/ha]
+                    Total input = 34.534 [kg N/ha]
 
-             NH4-Mineralization = 43.158 [kg N/ha]
+             NH4-Mineralization = 43.152 [kg N/ha]
                                   ------
-                   Total output = 43.158 [kg N/ha]
+                   Total output = 43.152 [kg N/ha]
 
-                   AOM increase = -0.850 [kg N/ha]
-                   SOM increase = -8.008 [kg N/ha]
-                   SMB increase =  0.243 [kg N/ha]
+                   AOM increase = -0.851 [kg N/ha]
+                   SOM increase = -8.007 [kg N/ha]
+                   SMB increase =  0.241 [kg N/ha]
                 Buffer increase =  0.000 [kg N/ha]
                                   ------
-      Total increase in content = -8.615 [kg N/ha]
+      Total increase in content = -8.618 [kg N/ha]
 
                                   ------
 Balance (= In - Out - Increase) =  0.000 [kg N/ha]
@@ -643,13 +642,13 @@ Nitrogen balance for a soil interval.
                      NH4-Incorp =   0.000 [kg N/ha]
                     NO3-Tillage =   0.000 [kg N/ha]
                     NH4-Tillage =   0.020 [kg N/ha]
-                    Residuals-N =  13.490 [kg N/ha]
+                    Residuals-N =  13.481 [kg N/ha]
                   Tillage-Org_N =   0.000 [kg N/ha]
-               Bioincorporation =  19.446 [kg N/ha]
+               Bioincorporation =  19.441 [kg N/ha]
                                   -------
-                    Total input = 230.536 [kg N/ha]
+                    Total input = 230.522 [kg N/ha]
 
-                NO3-Leak-Matrix =   6.307 [kg N/ha]
+                NO3-Leak-Matrix =   6.330 [kg N/ha]
                 NH4-Leak-Matrix =  -0.011 [kg N/ha]
                NO3-Leak-Biopore =   0.009 [kg N/ha]
                NH4-Leak-Biopore =   0.007 [kg N/ha]
@@ -657,20 +656,20 @@ Nitrogen balance for a soil interval.
                  NH4-Soil-Drain =   0.000 [kg N/ha]
               NO3-Biopore-Drain =   0.000 [kg N/ha]
               NH4-Biopore-Drain =   0.000 [kg N/ha]
-                     NO3-Uptake = 198.309 [kg N/ha]
-                     NH4-Uptake =  40.985 [kg N/ha]
+                     NO3-Uptake = 198.122 [kg N/ha]
+                     NH4-Uptake =  41.137 [kg N/ha]
                 Denitrification =   0.461 [kg N/ha]
-              N2O-Nitrification =   2.067 [kg N/ha]
+              N2O-Nitrification =   2.064 [kg N/ha]
                                   -------
-                   Total output = 248.133 [kg N/ha]
+                   Total output = 248.118 [kg N/ha]
 
-              NO3-Soil increase =  -8.625 [kg N/ha]
-              NH4-Soil increase =  -0.357 [kg N/ha]
+              NO3-Soil increase =  -8.623 [kg N/ha]
+              NH4-Soil increase =  -0.356 [kg N/ha]
           NO3-Biopores increase =   0.000 [kg N/ha]
           NH4-Biopores increase =   0.000 [kg N/ha]
-                   AOM increase =  -0.850 [kg N/ha]
-                   SOM increase =  -8.008 [kg N/ha]
-                   SMB increase =   0.243 [kg N/ha]
+                   AOM increase =  -0.851 [kg N/ha]
+                   SOM increase =  -8.007 [kg N/ha]
+                   SMB increase =   0.241 [kg N/ha]
                 Buffer increase =   0.000 [kg N/ha]
                                   -------
       Total increase in content = -17.597 [kg N/ha]
@@ -787,4 +786,4 @@ Balance for the matrix domain in the soil.
                                   -----
 Balance (= In - Out - Increase) =   0.0 [mm]
                                   =====
-Program finished after 2 seconds.
+Program finished after 3 seconds.

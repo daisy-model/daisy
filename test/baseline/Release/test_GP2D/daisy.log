@@ -1,14 +1,14 @@
 Has DAISYHOME environment variable
 Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release'
-Daisy crop/soil simulation version 6.44. (Jan 19 2024)
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release/test'
+Daisy crop/soil simulation version 6.44. (Jan 22 2024)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-In directory '/home/silas/Projects/daisy-model/daisy/build/release':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-GP2D.dai'
-Changing directory to 'tmp' success
-Command line: /home/silas/Projects/daisy-model/daisy/build/release/daisy /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-GP2D.dai -d tmp
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/release/tmp'
-Program started Fri Jan 19 12:12:13 2024., 0 seconds ago.
+Changing directory to '/tmp/tmp2gj3xu97' success
+Command line: /home/silas/Projects/daisy-model/daisy/build/release/daisy /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-GP2D.dai -d /tmp/tmp2gj3xu97 -q
+Storing 'daisy.log' in '/tmp/tmp2gj3xu97'
+Program started Mon Jan 22 11:07:32 2024., 0 seconds ago.
 * rootdens: GP2D set_density
 R =	70	cm	Row distance
 M_r =	0.015	g/cm^2	Root dry matter per area
@@ -25,7 +25,7 @@ D =	0.1		Minimum root length as fraction of total root length
 Q_max =	-2		The function g has a local maximum at -2
 D_max =	0.541341		There is no solution when D is above the value at Q_max
 Q =	-5.8279		Solution to 'g (Q) = 0'
-g_Q =	-2.77556e-17		g (Q)
+g_Q =	-1.38778e-17		g (Q)
 a_z =	0.0388527	cm^-1	Vertical decrease
 a_x =	0.0777053	cm^-1	Horisontal decrease
 L00 =	15.85	cm/cm^3	Density at (0, 0)	

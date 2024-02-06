@@ -1,0 +1,47 @@
+dlf-0.0 -- Field nitrogen (defined in 'log-std.dai').
+
+VERSION: 6.44
+LOGFILE: field_nitrogen.dlf
+RUN: Mon Jan 22 13:35:14 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Nitrogen input, output, transformation and content for the system.
+LOG: 
+LOG: The intended use of this log is large scale nitrogen balance, for
+LOG: example reservoir management. It provide information about how
+LOG: much nitrogen is in the field (down to a specified depth), where
+LOG: it is located in the field (surface, soil matrix or in biopores),
+LOG: what form is has (crop, soil organic matter, or mineral) as well
+LOG: as the sources, sinks and amounts of nitrogen entering or leaving
+LOG: the system, and transformation between the four forms.  It does
+LOG: not provide information about internal translocation of nitrogen
+LOG: between surface, soil matrix and biopores, use see the 'Soil
+LOG: nitrogen' log instead for that.
+LOG: 
+LOG: For the balances of this log to work, you must include the entire
+LOG: root zone
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai_test_files/sample-2.dai
+
+--------------------
+year	month	mday	hour	Min-Surface-Fertilizer	Min-Soil-Fertilizer	Deposition	Matrix-Leaching	Biopore-Leaching	Soil-Drain	Biopore-Drain	Surface-Loss	Min-Surface	Min-Soil	Min-Biopores	Error	Mineralization	Immobilization	Crop-Uptake	Volatilization	N2O-Nitrification	Denitrification	Fixated	Org-Fertilizer	Seed	Harvest	Residuals-Surface	Residuals-Soil	Org-Surface	Org-Soil	Crop
+				kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha
+1986	12	1	1	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	0	24.4613	0	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	0	4002.27	0
+1987	1	1	0	0	0	1.29071	0.0363531	-0	-0	0	0	0.132573	28.3931	0	0	2.84105	-0	-0	0	0.0294703	0.00150459	0	0	0	0	0	0	0	3999.43	0
+1987	2	1	0	0	0	0.623588	0.034197	-0	-0	0	0	0.564066	28.5584	0	0	0.00739099	-0	-0	0	1.6353e-05	0	0	0	0	0	0	0	0	3999.42	0
+1987	3	1	0	0	0	0.500483	0.0296518	-0	-0	0	0	0.114888	29.5217	0	0	0.0432743	-0	-0	0	0	0	0	0	0	0	0	0	0	3999.38	0
+1987	4	1	0	0	0	0.733088	0.032204	-0	-0	0	0	0.035561	31.0046	0	0	0.714519	-0	-0	0	0.0118569	0	0	0	0	0	0	0	0	3998.67	0
+1987	5	1	0	100	0	0.769053	0.0316362	-0	-0	0	0	0.096655	135.741	0	0	4.56138	-0	-0	0	0.481157	0.0198081	0	0	6	0	0	0	0	3994.11	6
+1987	6	1	0	0	0	1.04059	0.0341135	-0	-0	0	0	0.144291	82.9911	0	0	6.97395	-0	60.0672	0	0.615797	0	0	0	0	0	0	1.61814	0	3988.75	64.4491
+1987	7	1	0	0	0	1.63905	0.0348966	-0	-0	0	0	0.230795	24.4916	0	0	6.61753	0.0110953	66.4477	0	0.175826	0	0	0	0	0	2.25884	1.00222	0.00537943	3985.4	127.636
+1987	8	1	0	0	0	2.15959	0.041102	-0	-0	0	0	0.328862	22.7882	0	0	5.68379	0.0936244	9.01516	0	0.110527	0.188316	0	0	0	0	3.20418	2.28535	0.131334	3985.17	131.161
+1987	9	1	0	0	0	1.44709	0.088597	-0	-0	0	0.0101677	0.183985	21.8841	0	0	3.60739	0.172351	5.74508	0	0.0729103	0.0143462	0	0	0	84.4799	7.74659	7.49668	2.9208	3994.19	37.1833
+1987	10	1	0	80	0	1.24155	0.377548	-0	-0	0	0	0.168318	47.9821	0	0	2.43733	0.973153	55.8179	0	0.417324	0.0106977	0	0	0	0	4.44321	0.794585	1.32579	3999.56	87.7634
+1987	11	1	0	0	0	0.521588	0.540282	-0	-0	0	0.178708	0.162434	21.0186	0	0	2.97896	0.320144	29.3358	0	0.0950029	0	0	0	0	67.561	1.78675	0.283559	6.16744e-05	4000.3	47.4679
+1987	12	1	0	0	0	1.09455	0.446382	-0	-0	0	0	0.108251	20.3668	0	0	2.26451	0.0331571	3.52679	0	0.0275941	0.0310753	0	0	0	0	0	0	9.19535e-16	3998.07	50.9946
+1988	1	1	0	0	0	1.03909	0.377069	-0	-0	0	0	0.0539689	19.9764	0	0	1.28858	0.00373669	2.33102	0	0.00953588	0.0509911	0	0	0	0	0	0	4.34101e-21	3996.78	53.3257
+1988	2	1	0	0	0	1.77559	0.317555	-0	-0	0	0	0.0502997	19.5543	0	0	1.57289	0.00379611	3.32358	0	0.0108757	0.118472	0	0	0	0	0	0	2.53861e-24	3995.21	56.6492
+1988	3	1	0	0	0	1.15452	1.0238	-0	-0	0	0	0.0734875	18.3149	0	0	0.868679	0.00110869	2.18615	0	0.00353626	0.02482	0	0	0	0	0	0	1.03194e-24	3994.34	58.8354
+1988	4	1	0	0	0	0.868088	2.83698	-0	-0	0	0	0.109782	15.5335	0	0	0.673339	0.000177356	1.44634	0	0.00230909	0.000761887	0	0	0	0	0	0	8.17508e-26	3993.67	60.2817

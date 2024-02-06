@@ -11,25 +11,46 @@
             "hidden" : true,
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
-                "WARNING_COMPILE_OPTIONS" : "-Wpedantic;-Wall;-Wextra;-Wvariadic-macros;-Wvla;-Wmissing-declarations;-Wfloat-equal;-Wcast-qual;-Woverloaded-virtual;-Wundef;-Wpointer-arith;-Wwrite-strings;-Wcast-align;-Wmissing-format-attribute;-Wold-style-cast;-Wformat=2;-Winit-self;-Wsign-promo;-Wredundant-decls;-Wno-unused-parameter;-Wno-sign-compare;-Wno-mismatched-tags",
-                "PROFILE_COMPILE_OPTIONS" : "-pg",
-                "RELEASE_COMPILE_OPTIONS" : "-ffast-math;-fno-finite-math-only",
-                "PORTABLE_COMPILE_OPTIONS" : "-mtune=generic",
-                "NATIVE_COMPILE_OPTIONS" : "-march=native;-mtune=native"
+                "COMPILER_OPTIONS_WARNING" : "-Wpedantic;-Wall;-Wextra;-Wvariadic-macros;-Wvla;-Wmissing-declarations;-Wfloat-equal;-Wcast-qual;-Woverloaded-virtual;-Wundef;-Wpointer-arith;-Wwrite-strings;-Wcast-align;-Wmissing-format-attribute;-Wold-style-cast;-Wformat=2;-Winit-self;-Wsign-promo;-Wredundant-decls",
+                "COMPILER_OPTIONS_NO_WARNING" : "-Wno-unused-parameter;-Wno-sign-compare;-Wno-mismatched-tags;-Wno-invalid-utf8",
+                "COMPILER_OPTIONS_PROFILE" : "-pg",
+                "COMPILER_OPTIONS_RELEASE" : "-ffast-math;-fno-finite-math-only",
+                "COMPILER_OPTIONS_PORTABLE" : "-mtune=generic",
+                "COMPILER_OPTIONS_NATIVE" : "-march=native;-mtune=native",
+                "COMPILER_OPTIONS_COVERAGE" : "-O1;--coverage",
+                "LINKER_DIRS" : "/usr/local/lib", // For lld on Mac OS
+                "LINKER_OPTIONS_COVERAGE" : "--coverage",
+                "LINKER_OPTIONS_PORTABLE" : "-static",
+                "OS_OPTIONS" : "-D__unix"
             }
         },
-        {            
+        {
+            "name" : "coverage",
+            "hidden" : true,
+            "cacheVariables" : {
+                "CMAKE_BUILD_TYPE" : "Coverage"
+            }
+        },
+
+        {
             "name" : "debug",
             "hidden" : true,
             "cacheVariables" : {
                 "CMAKE_BUILD_TYPE" : "Debug"
             }
         },
-        {            
+        {
             "name" : "release",
             "hidden" : true,
             "cacheVariables" : {
                 "CMAKE_BUILD_TYPE" : "Release"
+            }
+        },
+        {
+            "name" : "portable",
+            "hidden" : true,
+            "cacheVariables" : {
+                "MAKE_PORTABLE" : "ON"
             }
         },
         {
@@ -46,7 +67,11 @@
                 "CMAKE_CXX_COMPILER" : "clang++"
             }
         },
-        
+
+        {
+            "name" : "gcc-coverage",
+            "inherits" : [ "gcc", "unix", "coverage" ]
+        },
         {
             "name" : "gcc-debug",
             "inherits" : [ "gcc", "unix", "debug" ]
@@ -54,6 +79,10 @@
         {
             "name" : "gcc-release",
             "inherits" : [ "gcc", "unix", "release" ]
+        },
+        {
+            "name" : "gcc-release-portable",
+            "inherits" : [ "gcc", "unix", "release", "portable" ]
         },
         
         {

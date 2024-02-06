@@ -22,8 +22,6 @@ def main():
     parser.add_argument('out_dir', type=str, help='Output directory for errors')
     args = parser.parse_args()
 
-    os.makedirs(args.out_dir, exist_ok=True)
-        
     with tempfile.TemporaryDirectory() as tmpdir:
         daisy_args = [args.daisy_binary, args.program, '-d', tmpdir, '-q']
         print(' '.join(daisy_args))
@@ -48,9 +46,10 @@ def main():
                     elif entry.name[-4:] == '.dai':
                         match = compare_checkpoints(entry.path, new_file_path)
                     else:
-                        errors.append(entry.name)                        
+                        errors.append(entry.name)
                     if not match:
                         mismatch.append(entry.name)
+                        os.makedirs(args.out_dir, exist_ok=True)
                         shutil.copy(new_file_path, error_file_path)
 
     if len(errors) > 0:
@@ -100,7 +99,7 @@ def compare_dlf_files(path1, path2):
 
 def compare_log_files(path1, path2):
     ignore_tokens = ['*', 'Changing', 'Command', 'In', 'Looking', 'Opening', 'Program', 'Reseting',
-                     'Storing', 'Time', 'Trying', 'Using']
+                     'Storing', 'Time', 'Trying', 'Using', 'Daisy']
     keep = keep_line(ignore_tokens)
     with open(path1) as f1, open(path2) as f2:
         lines1 = filter(keep, f1)

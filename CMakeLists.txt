@@ -5,33 +5,28 @@ project(
   LANGUAGES CXX
 )
 
+include(cmake/AddCoverageBuildType.cmake)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(USE_PROFILE "Set to ON to build for profiling" OFF)
 option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
 
-SET(CMAKE_CXX_FLAGS_COVERAGE
-  "--coverage -O1"
-  CACHE STRING "Flags used by the CXX compiler during COVERAGE builds"
-)
-SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE
-  "--coverage"
-  CACHE STRING "Flags used by the linker during COVERAGE builds"
-)
-MARK_AS_ADVANCED(
-  CMAKE_CXX_FLAGS_COVERAGE,
-  CMAKE_EXE_LINKER_FLAGS_COVERAGE
-)
-
-IF(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Release
        CACHE STRING "Choose the type of build : None Debug Release RelWithDebInfo MinSizeRel Coverage."
        FORCE)
-ENDIF(NOT CMAKE_BUILD_TYPE)
+endif (NOT CMAKE_BUILD_TYPE)
 
-add_compile_options(${WARNING_COMPILE_OPTIONS})
+add_compile_options(
+  ${COMPILER_OPTIONS_WARNING}
+  ${COMPILER_OPTIONS_NO_WARNING}
+ )
 
+if (MAKE_PORTABLE)
+  set(Boost_USE_STATIC_LIBS ON)
+endif (MAKE_PORTABLE)
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
@@ -40,15 +35,6 @@ add_executable(daisy)
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
 
-if (USE_PROFILE)
-  target_compile_options(daisy PRIVATE ${PROFILE_COMPILE_OPTIONS})
-endif()
-
-if (MAKE_PORTABLE)
-  target_compile_options(daisy PRIVATE ${PORTABLE_COMPILE_OPTIONS})
-else()
-  target_compile_options(daisy PRIVATE ${NATIVE_COMPILE_OPTIONS})
-endif()
 
 target_include_directories(daisy PUBLIC include)
 target_link_directories(daisy INTERFACE Boost::Boost)
@@ -61,8 +47,24 @@ target_link_libraries(daisy PUBLIC
 )
 
 target_compile_options(daisy PRIVATE
-  "$<$<CONFIG:RELEASE>:${RELEASE_COMPILE_OPTIONS}>"
+  ${OS_OPTIONS}
+  "$<$<CONFIG:RELEASE>:${COMPILER_OPTIONS_RELEASE}>"
+  "$<$<CONFIG:COVERAGE>:${COMPILER_OPTIONS_COVERAGE}>"
+  "$<$<BOOL:${USE_PROFILE}>:${COMPILER_OPTIONS_PROFILE}>"
+  "$<IF:$<BOOL:${MAKE_PORTABLE}>,${COMPILER_OPTIONS_PORTABLE},${COMPILER_OPTIONS_NATIVE}>"
 )
+
+target_link_directories(daisy PRIVATE
+  "${LINKER_DIRS}"
+ )
+
+target_link_options(daisy PRIVATE
+  "$<$<CONFIG:COVERAGE>:${LINKER_OPTIONS_COVERAGE}>"
+  "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
+)
+
+
+
 
 install(TARGETS daisy DESTINATION bin)
 

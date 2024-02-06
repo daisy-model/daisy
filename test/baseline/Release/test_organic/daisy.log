@@ -1,49 +1,53 @@
 Has DAISYHOME environment variable
 Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/sample'
-Daisy crop/soil simulation version 6.44. (Jan 19 2024)
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/release/test'
+Daisy crop/soil simulation version 6.44. (Jan 22 2024)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
-Looking for file 'test-organic.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/test-organic.dai' (cwd) success!
-* Parsing file: 'test-organic.dai'
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-organic.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-organic.dai'
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'sbarley.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/sbarley.dai' (cwd)
 Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'tillage.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/tillage.dai' (cwd)
 Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'dk-soil.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' (cwd) success!
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/dk-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'log.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/log.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/log.dai' (cwd)
 Trying '/home/silas/Projects/daisy-model/daisy/lib/log.dai' success!
 ** Parsing file: 'log.dai'
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/home/silas/Projects/daisy-model/daisy/build/release/test':
 Looking for file 'log-std.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/log-std.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/build/release/test/log-std.dai' (cwd)
 Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
-Command line: ../build/release/daisy test-organic.dai
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/sample'
+Changing directory to '/tmp/tmp0kzr0dkk' success
+Command line: /home/silas/Projects/daisy-model/daisy/build/release/daisy /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-organic.dai -d /tmp/tmp0kzr0dkk -q
+Storing 'daisy.log' in '/tmp/tmp0kzr0dkk'
 * dk-taastrup.dwf: initializing weather at 1986-12-01T01:00:00
 ** source_initialize
-In directory '/home/silas/Projects/daisy-model/daisy/sample':
+In directory '/tmp/tmp0kzr0dkk':
 Looking for file 'dk-taastrup.dwf'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-taastrup.dwf' (cwd) success!
+Trying '/tmp/tmp0kzr0dkk/dk-taastrup.dwf' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-taastrup.dwf' success!
 * column: MyColumn initialize
 ** Soil
 *** Horizons
@@ -95,11 +99,11 @@ lay	humus	humus	input	input	AOM	SMB1	SMB2	SOM1	SOM2	SOM3	dSMB1	dSMB1	dSMB2	dSMB2
 0	2365.61	2.6	162.88	6.88533	1.79944	1.45788	0.691329	57.0012	39.0502	0	0	0	0	0	-4.22732	-0.003135	0	0	-0	-nan
 1	2365.61	2.6	127.162	5.37544	1.40484	1.32865	0.540285	66.1078	30.6184	0	0	0	0	0	-8.11462	-0.00518886	0	0	-0	-nan
 2	2365.61	2.6	87.7184	3.70807	0.969083	1.18594	0.373487	76.1643	21.3072	0	0	0	0	0	-12.4074	-0.00688628	0	0	-0	-nan	Above SOM1 limit
-2	2365.61	2.6	87.7184	3.70807	0.969083	1.31135	0.373854	68.142	29.2037	1.46662e-13	0	0	0	0	-8.88031	-0.00550896	-5.69961	-0.00825019	-0	-0
+2	2365.61	2.6	87.7184	3.70807	0.969083	1.31135	0.373854	68.142	29.2037	8.0664e-14	0	0	0	0	-8.88031	-0.00550896	-5.69961	-0.00825019	-0	-0
 3	2365.61	2.6	46.0854	1.94814	0.509135	1.03531	0.197429	86.7791	11.4791	0	0	0	0	0	-16.9384	-0.00825116	0	0	-0	-nan	Above SOM1 limit
-3	2365.61	2.6	46.0854	1.94814	0.509135	1.3198	0.198262	68.581	29.3918	2.05327e-13	0	0	0	0	-8.93751	-0.00550896	-12.9292	-0.0185952	-0	-0
+3	2365.61	2.6	46.0854	1.94814	0.509135	1.3198	0.198262	68.581	29.3918	1.46662e-13	0	0	0	0	-8.93751	-0.00550896	-12.9292	-0.0185952	-0	-0
 4	2365.61	2.6	19.8622	0.839621	0.21943	0.94043	0.0865367	93.4649	5.28869	0	0	0	0	0	-19.7924	-0.00895171	0	0	-0	-nan	Above SOM1 limit
-4	2365.61	2.6	19.8622	0.839621	0.21943	1.32512	0.0876634	68.8574	29.5103	-1.75994e-13	0	0	0	0	-8.97355	-0.00550896	-17.4829	-0.0250435	-0	0
+4	2365.61	2.6	19.8622	0.839621	0.21943	1.32512	0.0876634	68.8574	29.5103	1.75994e-13	0	0	0	0	-8.97355	-0.00550896	-17.4829	-0.0250435	-0	-0
 5	434.38	0.5	8.99482	2.07073	0.541173	0.566848	0.207766	16.7024	17.1001	64.8817	0	0	0	0	0	0	0	0	-0	-0
 6	434.38	0.5	4.28016	0.98535	0.257516	0.269733	0.098865	7.9478	8.13706	83.289	0	0	0	0	0	0	0	0	-0	-0
 7	434.38	0.5	2.0367	0.468876	0.122538	0.128352	0.0470447	3.78194	3.872	92.0481	0	0	0	0	0	0	0	0	-0	-0
@@ -133,8 +137,8 @@ Expected humus change: -516.796 [kg C/ha/y], -3.5705e-07 [y^-1].
 Expected background mineralization: 46.9814 [kg N/ha/y].
 *** Top soil summary
 	SOM1	SOM2	SOM3	SMB1	SMB2	AOM1	AOM2	total
-kg C/ha	42979.5	19419.7	5.6205e-11	851.799	173.242	357.757	89.4394	63871.5
-kg N/ha	3886.06	1756.27	5.08159e-12	127.134	25.8571	3.97508	7.20484	5806.5
+kg C/ha	42979.5	19419.7	7.47666e-11	851.799	173.242	357.757	89.4394	63871.5
+kg N/ha	3886.06	1756.27	6.75211e-12	127.134	25.8571	3.97508	7.20484	5806.5
 
 Depth	27	cm
 T	7.8	dg C
@@ -145,9 +149,9 @@ Specified background mineralization	not specified	kg N/ha/y
 Zone input	1711.14	kg C/ha/y
 Zone background mineralization	0	kg C/ha/y
 Zone humus change	0	kg C/ha/y
-Time	Fri Jan 19 12:22:50 2024
+Time	Mon Jan 22 11:07:49 2024
 
-Program started Fri Jan 19 12:22:50 2024., 0 seconds ago.
+Program started Mon Jan 22 11:07:49 2024., 0 seconds ago.
 * Running
 ** 1986-12-01T01:00:00
 Begin simulation
@@ -192,7 +196,7 @@ Making checkpoint of MySim
 *** crop: NewSB tick
 Ripe
 ** 1987-08-26T01:00:00
-Harvesting NewSB, removing 4.18736 + 6.72927 Mg DM/ha
+Harvesting NewSB, removing 4.18736 + 6.7292 Mg DM/ha
 ** 1988-02-19T23:00:00
 *** bioclimate: default tick
 **** bioclimate: default WaterDistribution

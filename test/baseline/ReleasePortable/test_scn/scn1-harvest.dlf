@@ -1,0 +1,14 @@
+dlf-0.0 -- harvest
+
+VERSION: 6.44
+LOGFILE: harvest.dlf
+RUN: Mon Jan 22 13:35:39 2024
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-scn.dai
+SIM: Simulation with spring barley
+
+--------------------
+year	month	day	column	crop	stem_DM	dead_DM	leaf_DM	sorg_DM	stem_N	dead_N	leaf_N	sorg_N	WStress	NStress	WP_ET	HI
+					Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	d	d	kg/m^3	
+1987	8	20	Askov	Spring Barley	3.66085	0.35496	0.314441	4.03179	31.3724	2.39981	8.07405	93.2077	0	0	1.78666	0.344141
+1989	8	10	Askov	Spring Barley	2.8716	0.439156	0.224578	4.13879	28.8988	3.04272	6.77308	117.333	17.7972	1.39545	1.7536	0.389807

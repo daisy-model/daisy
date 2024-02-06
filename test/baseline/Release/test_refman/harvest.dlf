@@ -2,12 +2,12 @@ dlf-0.0 -- harvest
 
 VERSION: 6.44
 LOGFILE: harvest.dlf
-RUN: Fri Jan 19 14:13:54 2024
+RUN: Mon Jan 22 11:07:51 2024
 
-SIMFILE: test-refman.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai_test_files/test-refman.dai
 SIM: Simulation for use in reference manual.
 
 --------------------
 year	month	day	column	crop	stem_DM	dead_DM	leaf_DM	sorg_DM	stem_N	dead_N	leaf_N	sorg_N	WStress	NStress	WP_ET	HI
 					Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	d	d	kg/m^3	
-1987	8	20	Askov	Spring Barley	3.66085	0.35496	0.314441	4.03179	31.3724	2.39981	8.07405	93.2077	0	0	1.78666	0.344141
+1987	8	20	Askov	Spring Barley	3.66083	0.354949	0.314441	4.03179	31.3731	2.39939	8.07421	93.2097	0	0	1.78666	0.344143
