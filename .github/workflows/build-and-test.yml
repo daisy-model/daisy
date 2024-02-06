@@ -3,6 +3,9 @@ name: Build daisy and run tests
 on:
   pull_request:
     branches: [ "main" ]
+    
+  push:
+    branches: "improve-build-setup"
 
 jobs:
   build:
