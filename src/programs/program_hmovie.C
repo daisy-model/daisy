@@ -33,8 +33,6 @@
 #include "daisy_time.h"
 #include "units.h"
 
-#define BOOST_UBLAS_NDEBUG
-#define NDEBUG
 #include <boost/numeric/ublas/matrix.hpp>
 namespace ublas = boost::numeric::ublas;
 
