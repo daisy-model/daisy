@@ -30,7 +30,7 @@ jobs:
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
-      run: apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
+      run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
 
     - name: Set reusable strings
       id: strings
