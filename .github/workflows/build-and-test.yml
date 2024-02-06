@@ -3,9 +3,6 @@ name: Build daisy and run tests
 on:
   pull_request:
     branches: [ "main" ]
-    
-  push:
-    branches: "improve-build-setup"
 
 jobs:
   build:
@@ -18,11 +15,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         cmake_preset: [gcc-release, clang-release]
-        exclude:
-          - os: macos-latest
-            cmake_preset: gcc-release
-          - os: ubuntu-latest
-            cmake_preset: clang-release
     steps:
     - uses: actions/checkout@v3
 
