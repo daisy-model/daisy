@@ -111,7 +111,10 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
       const double z = geo.cell_z (i);
       const double dz = geo.dz (i);
       const double Theta_sat = soil.Theta (i, 0.0, h_ice[i]);
+#ifdef THETA_RES
+      // Theta_res is only used in a check further down that is conditioned on THETA_RES being set
       const double Theta_res = soil.Theta_res (i);
+#endif      
       const double h_min = pF2h (10.0);
       const double Theta_min = soil.Theta (i, h_min, h_ice[i]);
       double Theta_new = Theta_old[i] - q[i] * dt / dz - S[i] * dt;
