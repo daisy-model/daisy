@@ -21,6 +21,8 @@ jobs:
         exclude:
           - os: macos-latest
             cmake_preset: gcc-release
+          - os: ubuntu-latest
+            cmake_preset: clang-release
     steps:
     - uses: actions/checkout@v3
 
