@@ -361,6 +361,7 @@ SoilWater::tick_ice (const Geometry& geo, const Soil& soil,
       if (total_ice > 0.0)
         {
 #ifdef THETA_RES
+          // TODO: Figure out why this is not checked
           if (Theta_[i] < Theta_res)
             {
               std::ostringstream tmp;

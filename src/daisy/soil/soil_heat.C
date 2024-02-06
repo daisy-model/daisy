@@ -536,6 +536,7 @@ SoilHeat::update_state (const Geometry& geo,
               // Check if there are sufficient water.
               const double Theta_min = soil.Theta (i, h_frozen - 1000.0, 0.0);
 #ifdef THETA_RES
+              // TODO: Figure out why this is not checked
               daisy_assert (Theta_min >= soil.Theta_res (i));
 #endif
               const double available_water = soil_water.Theta (i) - Theta_min;

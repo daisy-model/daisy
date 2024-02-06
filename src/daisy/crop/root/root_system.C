@@ -71,6 +71,7 @@ RootSystem::potential_water_uptake (const double h_x,
       daisy_assert (soil_water.Theta_ice (soil, i, h_wp) > 0.0);
       daisy_assert (soil.Theta_res (i) >= 0.0);
 #ifdef THETA_RES
+      // TODO: Figure out why this is not checked
       daisy_assert (soil_water.Theta_ice (soil, i, h_wp) 
                     >= soil.Theta_res (i));
 #endif
