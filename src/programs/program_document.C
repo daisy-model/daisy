@@ -475,11 +475,7 @@ ProgramDocument::print_entry_value (const symbol name,
 	      if (y_vals.size () > 1)
 		{
 		  print_default_value = true;
-		  const int count = plotter->plot_plf (plf, domain, range);
-#if 0
-		  format->raw ("LaTeX", "\n\n\
-\\input{gnufig/plf-" + std::to_string (count) + ".tex}\n");
-#endif
+		  plotter->plot_plf (plf, domain, range);
 		}
 	    }
 	    break;
