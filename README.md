@@ -7,8 +7,12 @@ Refactor of Daisy from https://github.com/perabrahamsen/daisy-model
 ### Linux
 Install dependencies
 * cmake
-* boost
-* suite-sparse 
+* boost (filesystem and system)
+* suitesparse 
+
+Using apt
+
+    apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
 
 [CMakePresets.json](CMakePresets.json) define setups for building with gcc and clang on linux.
 
