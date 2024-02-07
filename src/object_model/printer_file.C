@@ -715,11 +715,6 @@ struct FoundEntry
       element (e),
       sequence (s)
   { }
-  FoundEntry (const FoundEntry& e)
-    : library_name (e.library_name),
-      element (e.element),
-      sequence (e.sequence)
-  { }
 };
 
 void
