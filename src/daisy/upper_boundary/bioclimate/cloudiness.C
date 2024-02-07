@@ -181,21 +181,6 @@ struct CloudinessClear : public Cloudiness
 	const double x = bound (min_radiation_ratio, Si / Si0, 1.0);
 	cloudiness = a * x + 1 - a;
       }
-
-#if 0
-    std::ostringstream tmp;
-    tmp << "rad = " << rad
-	<< ", min_rad = " << min_rad
-	<< ", sin_theta = " << sin_theta
-	<< ", min_sin_theta = " << min_sin_theta
-	<< ", now = " << now
-	<< ", sunrise = " << sunrise
-	<< ", min_time_from_sunrise = " << min_time_from_sunrise
-	<< ", sunset = " << sunset
-	<< ", min_time_to_sunset = " << min_time_to_sunset;
-    msg.message (tmp.str ());
-#endif
-
     // Otherwise, use value from previous timestep.
   }
   virtual double find_clear_sky_radiation (const Weather&) const = 0;

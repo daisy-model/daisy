@@ -568,7 +568,7 @@ ActionMarkvand::doIt (Daisy& daisy, const Scope&, Treelog& msg)
   V_r += P_I;
 
   // Actual evaporation.
-  double E_a = 0.0;
+  double E_a = 0.0; // FIXME: E_a is calculated but never used. 
   
   // Soil surface evaporation.
   {
@@ -629,22 +629,6 @@ ActionMarkvand::doIt (Daisy& daisy, const Scope&, Treelog& msg)
     : 0.0;
   V_r -= D_r;
   V_b += D_r - D_b;
-
-#if 0
-  std::ostringstream debug;
-  debug << "T_sum = " << T_sum 
-        << ", phase = " << (crop ? crop->phase (T_sum) : 999)
-        << ", A = " << A << ", A_u = " << A_u 
-        << " and A_r = " << A_r << "\n";
-
-  debug << "P_I = " << P_I << ", E_a = " << E_a << ", D_r = " << D_r
-        << ", V_r = " << V_r 
-        << ", V_e = " << V_e 
-        << ", V_u = " << V_u
-        << ", V_b = " << V_b 
-        << ", V_I = " << V_I;
-  msg.message (debug.str ());
-#endif
 }
 
 void

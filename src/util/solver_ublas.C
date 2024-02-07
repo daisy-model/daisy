@@ -20,10 +20,6 @@
 
 #define BUILD_DLL
 
-// Uncomment for fast code that does not catches bugs.
-#define BOOST_UBLAS_NDEBUG
-#define NDEBUG
-
 #include "solver.h"
 #include "assertion.h"
 #include "librarian.h"
@@ -58,7 +54,7 @@ static struct SolverUBLASSyntax : public DeclareModel
   SolverUBLASSyntax ()
     : DeclareModel (Solver::component, "ublas", "Solve equation using UBLAS lu functions.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   {
   }
 } SolverUBLAS_syntax;

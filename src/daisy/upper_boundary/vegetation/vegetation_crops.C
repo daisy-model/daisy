@@ -664,11 +664,6 @@ VegetationCrops::transpiration (const double potential_transpiration,
     {
       // Distribute potential transpiration on crops.
       const double pt_per_LAI = potential_transpiration / LAI_;
-#if 0
-      // Shouldn't we split canopy_evaporation among the different crops?
-      const double ce_per_LAI = canopy_evaporation / LAI_;
-#endif
-
       for (CropList::iterator crop = crops.begin();
 	   crop != crops.end();
 	   crop++)

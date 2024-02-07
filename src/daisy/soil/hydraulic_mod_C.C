@@ -69,17 +69,10 @@ Hydraulic_mod_C::Cw2 (const double h) const
 {
   if (h < 0.0)
     {
-#if 0 
-      return - (Theta_sat
-		* (pow (1.0 / (1 + pow ((1.0/h_b) * h, 5)), 1.0/b - 1.0)
-		   * (5 * (pow ((1.0/h_b) * h, 5 - 1) * (1.0/h_b))))
-		/ (b * pow (1 + pow((1.0/h_b) * h, 5), 2)));
-#else
       return -(Theta_sat 
 	       * pow (h / h_b, 4.) 
 	       * pow (1. / (pow (h / h_b, 5.) + 1.), 0.2 / b - 1) 
 	       / (b * h_b * pow (pow (h / h_b, 5.) + 1., 2)));
-#endif
     }
   else
     return 0.0;

@@ -321,7 +321,7 @@ complex<double> log_A_sum_init (const int m,const complex<double> &eps)
 // prod3: E(eps,log(1-z)) Gamma_inv(a+m) Gamma_inv(b+m) Gamma_inv(1+m+eps) 
 // res: returned \beta_0/(1-z)^m value in all cases.
 
-complex<double> B_sum_init_PS_one (const complex<double> &a,const complex<double> &b,const complex<double> &c,
+complex<double> B_sum_init_PS_one (const complex<double> &a,const complex<double> &b,const complex<double> &c, // FIXME: Why is c not used?
 				   const complex<double> &Gamma_c,const complex<double> &Gamma_inv_one_meps,
 				   const complex<double> &Gamma_inv_eps_pa_pm,const complex<double> &Gamma_inv_eps_pb_pm,
 				   const complex<double> &one_minus_z,const int m,const complex<double> &eps)
@@ -435,7 +435,7 @@ complex<double> B_sum_init_PS_infinity (const complex<double> &a,const complex<d
 					const complex<double> &z,const int m,const complex<double> &eps)
 {
   const double inf_norm_eps = inf_norm (eps),phase = (m%2 == 0) ? (1) : (-1);
-  const complex<double> cma = c - a,a_mc_p1 = 1.0 - c + a,a_mc_p1_pm = a_mc_p1 + m,cma_meps = cma - eps,eps_pa_mc_p1 = eps + a_mc_p1,a_pm = a + m;
+  const complex<double> cma = c - a,a_mc_p1 = 1.0 - c + a,cma_meps = cma - eps,eps_pa_mc_p1 = eps + a_mc_p1,a_pm = a + m;
   const complex<double> Gamma_inv_cma_meps = Gamma_inv (cma_meps),one_meps = 1.0 - eps,Pi_eps = M_PI*eps,Pi_eps_pm = M_PI*(eps + m);
 
   complex<double> Gamma_inv_one_meps_mm = Gamma_inv_one_meps;
@@ -701,7 +701,8 @@ complex<double> hyp_PS_one (const complex<double> &a,const complex<double> &b,co
   if (!isfinite (A_first_term)) 
   {
     A_sum = A_term = exp (log_Gamma (c) - log_Gamma (eps_pa_pm) - log_Gamma (eps_pb_pm) + log_A_sum_init (m,eps));
-    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term);
+    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term); // FIXME: This is pointless.
+    // setting to the real part of A_term just sets the imag part to 0, but it is already zero
   }
 
   const complex<double> pow_mzp1_m = pow (one_minus_z,m);
@@ -730,7 +731,7 @@ complex<double> hyp_PS_one (const complex<double> &a,const complex<double> &b,co
   {
     const int n_pm_p1 = n + m_p1,n_p1 = n + 1;
     const complex<double> a_pm_pn = a_pm + n,b_pm_pn = b_pm + n,eps_pm_p1_pn = eps_pm_p1 + n,n_p1_meps = one_meps + n;
-    const complex<double> eps_pa_pm_pn = eps_pa_pm + n,eps_pb_pm_pn = eps_pb_pm + n,eps_pm_pn = eps_pm + n;
+    const complex<double> eps_pa_pm_pn = eps_pa_pm + n,eps_pb_pm_pn = eps_pb_pm + n;
     const complex<double> prod1 = eps_pa_pm_pn*eps_pb_pm_pn,prod2 = eps_pm_p1_pn*n_p1,prod3 = a_pm_pn*b_pm_pn;
 
     B_term = one_minus_z*(B_term*prod1/prod2 + B_extra_term*(prod3/n_pm_p1 - a_pm_pn - b_pm_pn - eps + prod1/n_p1)/(eps_pm_p1_pn*n_p1_meps));
@@ -793,7 +794,7 @@ complex<double> hyp_PS_infinity (const complex<double> &a,const complex<double> 
   const int m = static_cast<int> (rint (real (b - a))),phase = (m%2 == 0) ? (1) : (-1), m_m1 = m - 1,m_p1 = m + 1;
   const complex<double> eps = b - a - m,a_mc_p1 = 1.0 - c + a,one_meps = 1.0 - eps,one_meps_mm = one_meps - m,a_pm = a + m,a_mc_p1_pm = a_mc_p1 + m,cma = c - a;
   const complex<double> eps_pa = eps + a, eps_pm_p1 =  eps + m + 1,eps_pa_mc_p1_pm = eps + a_mc_p1_pm,Pi_eps = M_PI*eps;
-  const complex<double> eps_pa_pm = eps_pa + m,eps_pm = eps + m,Gamma_c = 1.0/Gamma_inv (c),Gamma_inv_eps_pa_pm = Gamma_inv (eps_pa_pm);
+  const complex<double> eps_pa_pm = eps_pa + m,Gamma_c = 1.0/Gamma_inv (c),Gamma_inv_eps_pa_pm = Gamma_inv (eps_pa_pm);
   const complex<double> Gamma_inv_cma = Gamma_inv (cma),z_inv = 1.0/z,pow_mz_ma = pow (-z,-a),Gamma_inv_one_meps = Gamma_inv (one_meps);
   const complex<double> Gamma_prod = Gamma_c*Gamma_inv_cma*Gamma_inv_eps_pa_pm;
 
@@ -803,7 +804,8 @@ complex<double> hyp_PS_infinity (const complex<double> &a,const complex<double> 
   if (!isfinite (A_first_term)) 
   {
     A_sum = A_term = exp (log_Gamma (c) - log_Gamma (cma) - log_Gamma (b) + log_A_sum_init (m,eps));
-    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term);
+    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term); // FIXME: This is pointless.
+    // setting to the real part of A_term just sets the imag part to 0, but it is already zero
   }
 
   const complex<double> pow_z_inv_m = pow (z_inv,m);
@@ -832,7 +834,7 @@ complex<double> hyp_PS_infinity (const complex<double> &a,const complex<double> 
   {
     const int n_pm_p1 = n + m_p1,n_p1 = n + 1;
     const complex<double> a_pm_pn = a_pm + n,a_mc_p1_pm_pn = a_mc_p1_pm + n,eps_pm_p1_pn = eps_pm_p1 + n,n_p1_meps = one_meps + n;
-    const complex<double> eps_pa_pm_pn = eps_pa_pm + n,eps_pa_mc_p1_pm_pn = eps_pa_mc_p1_pm + n,eps_pm_pn = eps_pm + n;
+    const complex<double> eps_pa_pm_pn = eps_pa_pm + n,eps_pa_mc_p1_pm_pn = eps_pa_mc_p1_pm + n;
     const complex<double> prod1 = eps_pa_pm_pn*eps_pa_mc_p1_pm_pn,prod2 = eps_pm_p1_pn*n_p1,prod3 = a_pm_pn*a_mc_p1_pm_pn;
 
     B_term = z_inv*(B_term*prod1/prod2 + B_extra_term*(prod3/n_pm_p1 - a_pm_pn - a_mc_p1_pm_pn - eps + prod1/n_p1)/(eps_pm_p1_pn*n_p1_meps));

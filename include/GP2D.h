@@ -33,7 +33,7 @@ class GP1D
   const double SpRtLength;     // Specific root length [m/g]
 
   // Helper class.
-  class InvW;
+  struct InvW;
 
   // Calculated parameters.
 public:
@@ -69,7 +69,7 @@ public:
 
   // Helper class.
 private:
-  class InvQ;
+  struct InvQ;
 
   // Calculated parameters.
 public:

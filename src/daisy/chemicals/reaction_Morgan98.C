@@ -77,7 +77,7 @@ ReactionMorgan98::colloid_generation (const double total_rain /* [mm/h] */,
                                       const double direct_rain /* [mm/h] */,
                                       const double canopy_drip /* [mm/h] */,
                                       const double canopy_height /* [m] */,
-                                      const double h_pond /* [mm] */,
+                                      const double h_pond /* [mm] */, // FIXME: Why is h_pond not used?
                                       const double dt /* [h] */)
 {
   // Energy for colloid generation. [J cm^-2 h^-1]

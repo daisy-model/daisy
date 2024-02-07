@@ -159,14 +159,12 @@ Rootdens_G_P::set_density  (const Geometry& geo,
 	  // We don't have MinDens all the way down.
 	  const double NewLengthPrArea 
 	    =  LengthPrArea - MinDens * Depth; // [cm/cm^2]
-#if 1
 	  Treelog::Open nest (msg, "RootDens G+P");
 	  std::ostringstream tmp;
 	  tmp << "too_low = " << too_low 
 		 << ", NewLengthPrArea = " << NewLengthPrArea
 		 << "MinLengthPrArea = " << MinLengthPrArea;
 	  msg.warning (tmp.str ());
-#endif	    
 	  if (too_low > 0.0 && NewLengthPrArea > too_low * DensRtTip * 1.2)
 	    {
 	      // There is enough to have MinDens all the way, spend
@@ -189,7 +187,6 @@ Rootdens_G_P::set_density  (const Geometry& geo,
 
   const size_t size = geo.cell_size ();
   daisy_assert (Density.size () == size);
-#if 1
   for (size_t i = 0; i < size; i++)
     {
       const double f = geo.fraction_in_z_interval (i, 0.0, -Depth);
@@ -199,17 +196,6 @@ Rootdens_G_P::set_density  (const Geometry& geo,
       else
         Density[i] = 0.0;
     }
-#else // 0
-  unsigned int i = 0;
-  for (; i == 0 || -geo.zplus (i-1) < Depth; i++)
-    {
-      daisy_assert (i < geo.size ());
-      Density[i] = extra + L0 * exp (a * geo.cell_z (i));
-    }
-
-  for (; i < geo.size (); i++)
-    Density[i] = 0.0;
-#endif // 0
 }
 
 void 

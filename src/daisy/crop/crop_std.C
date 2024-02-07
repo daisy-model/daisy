@@ -243,16 +243,6 @@ CropStandard::DM (const double height) const
     + leaf_harvest * production.WLeaf 
     + sorg_harvest * production.WSOrg;
 
-#if 0
-  std::ostringstream tmp;
-  tmp << "height = " << height << ", CAI (height) = "  
-      << ((leaf_harvest > 0.0) ? canopy->LAIvsH (height) : 0.0 )
-      << ", CAI = " << canopy->CAI 
-      << ", leaf_harvest = " << leaf_harvest 
-      << ", sorg_harvest = " << sorg_harvest << ", total = " << total * 10.0;
-  Assertion::message (tmp.str ());
-#endif
-
   return total * 10.0;          // [g/m^2 -> kg/ha]
 }
 
@@ -377,7 +367,7 @@ CropStandard::find_stomata_conductance (const Time& time,
 
   // Calculate shadow PAR.
   std::vector<double> shadow_PAR;
-  for(int i = 0; i < total_PAR.size (); i++) 
+  for(size_t i = 0; i < total_PAR.size (); i++) 
     shadow_PAR.push_back(total_PAR[i] - sun_PAR[i]);
       
   // Accumulate.
@@ -838,16 +828,12 @@ CropStandard::output (Log& log) const
   output_submodule (*root_system, "Root", log);
   output_submodule (*canopy, "Canopy", log);
   output_submodule (*harvesting, "Harvest", log);
-#if 1
   static const symbol Prod_symbol ("Prod");
   if (log.check_interior (Prod_symbol))
     {
       Log::Open open (log, Prod_symbol);
       production.output (log);
     }
-#else
-  output_submodule (production, "Prod", log);
-#endif
   if (last_time != Time::null ())
     output_submodule (last_time, "last_time", log);
   if (sow_time != Time::null ())

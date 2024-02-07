@@ -69,7 +69,7 @@ public:
 
   // Create and Destroy.
 private:
-  friend class HydraulicOld2Syntax;
+  friend struct HydraulicOld2Syntax;
   static Model& make (BlockModel& al);
   HydraulicOld2 (const BlockModel&);
 public:
@@ -122,10 +122,6 @@ HydraulicOld2::HydraulicOld2 (const BlockModel& al)
     {
       throw (name + "read error");
     }
-#if 0
-  while (file.good () && file.get () != '\n')
-    ;
-#endif
   
   int line = 0;
   double pF;

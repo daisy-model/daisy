@@ -264,12 +264,6 @@ LogAll::column_add_to_total (const Column& column)
        i++)
     {
       Select& select = **i;
-#if 0
-      std::ostringstream tmp;
-      tmp << "Column " << column.name << " select " << select.tag ()
-          << " current name " << select.current_name;
-      msg->message (tmp.str ());
-#endif
       if (select.path.size () < 2)
         continue;
       if (select.path[0] != collib)
@@ -279,9 +273,6 @@ LogAll::column_add_to_total (const Column& column)
         continue;
       column_entries[&column].push_back (&select);
       select.total_weight += column.area;
-#if 0
-      msg->message ("Added");
-#endif
     }
 }
 
@@ -301,13 +292,6 @@ LogAll::column_select (const Column& column)
         select.relative_weight = column.area / select.total_weight;
       else
         select.relative_weight = 1.0;
-#if 0
-      std::ostringstream tmp;
-      tmp << "Column " << column.name << " matched by " 
-          << select.current_name << " has relative weight " 
-          << select.relative_weight << " for " << select.tag ();
-      msg->message (tmp.str ());
-#endif
     }
 }
 

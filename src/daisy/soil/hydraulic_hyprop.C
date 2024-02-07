@@ -71,25 +71,6 @@ class HydraulicHyprop : public Hydraulic
       =  1.0
       + (1.0 / (xa - x0))
       * (x - xa + b * std::log (1.0 + std::exp ((xa - x) / b)));
-
-#if 0
-    std::ostringstream tmp;
-    tmp << "result  = " << result
-	<< "; ha = " << ha
-	<< "; xa = " << xa
-	<< "; x0 = " << x0
-	<< "; b = " << b
-	<< "; h = " << h
-	<< "; x = " << x
-	<< "; (xa - x) / b) = " << (xa - x) / b
-	<< "; std::exp ((xa - x) / b) = " << std::exp ((xa - x) / b)
-	<< "; std::log (1.0 + std::exp ((xa - x) / b)) = " << std::log (1.0 + std::exp ((xa - x) / b))
-	<< "; (1.0 / (xa - x0)) = " << (1.0 / (xa - x0))
-	<< "; (xa - x) / b = " << (xa - x) / b
-    	<< "; std::exp ((xa - x) / b) = " << std::exp ((xa - x) / b);
-
-    Assertion::message (tmp.str ());
-#endif
     
     daisy_assert (result >= 0.0);
     daisy_assert (result <= 1.01);

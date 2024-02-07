@@ -1061,82 +1061,6 @@ int EBAL_DT(double tair, double e_pa, double netrad_brunt, double esta,
   return 0;
 }
 
-#if 0
-// Newton-Raphson method: solves for dt (=tsurf-tair)
-static double 
-RTSAFE_DT(void (*funcd)(double tsurf,double tair,double e_pa,double srad,
-                        double relsun,double kh,double r_aa,double r_ac,double temp_0,
-                        double z_sz,double LAI,double &rrsc_pm,double *, double *), double tair,
-          double e_pa,double srad,double relsun,double kh,double r_aa,double r_ac,
-          double temp_0,double z_sz,double LAI,double &rrsc_pm, double x1,
-          double x2, double xacc)
-
-  // Uses a combination of Newton-Raphson and bisection, find the root of a
-  // function bracketed between x1 and x2. The root, returned as a function
-  // value rtsafe, will be refined until its accuracy is known within +/-
-  // xacc. Funcd is a user supplied routine that returns both the function
-  // value and the first derivative of the function
-{
-  int j;
-  double df,dx,dxold,f,fh,fl;
-  double temp,xh,xl,rts;
-
-  (*funcd)(x1,tair,e_pa,srad,relsun,kh,r_aa,r_ac,temp_0,z_sz,LAI,rrsc_pm,
-           &fl,&df);
-  (*funcd)(x2,tair,e_pa,srad,relsun,kh,r_aa,r_ac,temp_0,z_sz,LAI,rrsc_pm,
-           &fh,&df);
-  if((fl>0.0 && fh>0.0)||(fl<0.0 && fh<0.0))
-    daisy_warning("root must be bracketed in rtsafe");
-
-  if (fl==0.0) return x1;
-  if (fh==0.0) return x2;
-  if (fl<0.0)  // orient the search so that f(xl)<0
-    {
-      xl=x1;
-      xh=x2;
-    } else
-      {
-        xh=x1;
-        xl=x2;
-      }
-  rts=0.5*(x1+x2); // initialize the guess for root,
-  dxold=fabs(x2-x1); // the 'stepsize before last',
-  dx=dxold; // and the last step
-  (*funcd)(rts,tair,e_pa,srad,relsun,kh,r_aa,r_ac,temp_0,z_sz,LAI,rrsc_pm,
-           &f,&df);
-  for(j=1;j<=100;j++) // loop over allowed iterations
-    {
-      if ((((rts-xh)*df-f)*((rts-xl)*df-f) >= 0.0) // bisect if NR out of range
-          || (fabs(2.0*f) > fabs(dxold*df))) // or not decreasing fast enough
-        {
-          dxold=dx;
-          dx=0.5*(xh-xl);
-          rts=xl+dx;
-          if (xl==rts) return rts; // change in root is negligible
-        } else  // Newton step acceptable. Take it
-          {
-            dxold=dx;
-            dx=f/df;
-            temp=rts;
-            rts -= dx;
-            if (temp == rts) return rts;
-          }
-      if (fabs(dx) < xacc) return rts; // convergence criterion
-      (*funcd)(rts,tair,e_pa,srad,relsun,kh,r_aa,r_ac,temp_0,z_sz,LAI,
-               rrsc_pm,&f,&df);
-      // the one new function evaluation per iteration
-      if (f < 0.0) // maintain the bracket on the root
-        xl=rts;
-      else
-        xh=rts;
-    } // end for
-  daisy_warning("maximum number of iterations exceeded in rtsafe");
-
-  return 0.0;
-
-} // end rtsafe function
-#endif
-
 int EBAL_PM(double tair,double tsurf_pm,double srad,double e_pa,double relsun,
             double kh,double temp_0,double z_sz,double r_aa,double r_ac,
             double rsc_pm,double &rnetshortwave_pm,double &rnetlongwave_pm,
@@ -1565,17 +1489,6 @@ SVAT_PMSW::tick (const Weather& weather, const Vegetation& crops,
       // aerodynamic resistance between soil surface and mean source height
       RAS (z_ref, u,h,LAI,z_0s,alpha_k,c_d,k_h,r_as);
 
-#if 0
-      // mean stomatal resistance following Jacquemin & Noilhan (1990) and
-      // Verma et al.(1993), return r_sc_js (from f1_dolman, f_def, f_3 and f_etep
-      RSC (z_ref, LAI,tair,srad,e_pa,theta_0_20,esta,theta_w,theta_c,rcmin,
-           rcmax,
-           zeta,f3const,tref,spar,tmin,tmax,nu_1,nu_2,nu_3,crop_ea_w,crop_ep_w,
-           rcmin_star,fpar,f_1,f_2,f_3,f_4,r_sc_1,r_tot_1,bf_temp,
-           f_temp,f_def,f_theta,f1_dolman,r_sc_2,r_tot_2,f_etep,r_sc_3,r_tot_3,
-           r_sc_4,r_tot_4,r_sc_5,r_tot_5,r_sc_min,r_sc_js);
-
-#endif
       // Net radiation by brunt's equation
       NETRAD(srad,e_pa,tair,relsun,b1,b2,b3,b4,albedo,netlong_brunt,
              netlong_satt,netshort,netrad_brunt,netrad_satt);
@@ -1779,11 +1692,6 @@ SVAT_PMSW::tick (const Weather& weather, const Vegetation& crops,
       // convert vapor pressure from kg/m^3 to Pa
       EABS2PA(e_c_abs,tcan,e_c);  // at canopy temperature
       EABS2PA(e_sl_abs,tleaf,e_sl); // at leaf temperature
-#if 0
-      // abraham 11-03-2002:  BUG: uninitialised and unused variables.
-      EABS2PA(e_c_abs_star,tcan_star,e_c_star);  // at canopy temperature
-      EABS2PA(e_sl_abs_star,tleaf_star,e_sl_star); // at leaf temperature
-#endif
 
       // solve directly for dt by closure(dt)=netrad-le(dt)-h(dt)-g(dt)
       // One layer model: use r_a from RASTAB ()

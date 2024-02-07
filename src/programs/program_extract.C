@@ -109,7 +109,7 @@ static struct ListsumSumSyntax : DeclareModel
     : DeclareModel (Listsum::component, "sum", "\
 The sum of all members of a list.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } ListsumSum_syntax;
 
@@ -144,7 +144,7 @@ static struct ListsumMaxSyntax : DeclareModel
     : DeclareModel (Listsum::component, "max", "\
 The maximum of all members of a list.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } ListsumMax_syntax;
 
@@ -179,7 +179,7 @@ static struct ListsumMinSyntax : DeclareModel
     : DeclareModel (Listsum::component, "min", "\
 The minimum of all members of a list.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } ListsumMin_syntax;
 
@@ -211,7 +211,7 @@ static struct ListsumCountSyntax : DeclareModel
     : DeclareModel (Listsum::component, "count", "\
 Count all members of a list.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } ListsumCount_syntax;
 
@@ -250,7 +250,7 @@ static struct ListsumArithmeticSyntax : DeclareModel
     : DeclareModel (Listsum::component, "arithmetic", "\
 Arithmetic average of all members of a list.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } ListsumArithmetic_syntax;
 

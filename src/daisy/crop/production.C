@@ -475,15 +475,11 @@ Production::tick (const double AirT, const double SoilT,
 
   if (root_death_rate > 0.0 && WRoot > 0.0)
     {
-#if 1
       {
 	double WRoot_new_dummy = NAN;
 	first_order_change (WRoot, 0.0, root_death_rate / 24.0, dt,
 			    WRoot_new_dummy, DeadWRoot);
       }
-#else			  
-      DeadWRoot = root_death_rate / 24.0 * WRoot;
-#endif
       double DdRootCnc;
       const double ActRootCnc = NRoot/WRoot;
       if (NCrop > 1.05 * nitrogen.PtNCnt

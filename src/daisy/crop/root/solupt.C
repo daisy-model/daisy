@@ -464,7 +464,7 @@ SoluptVariable::estimate_C_root (const double I_max)
         }
       // Solve A - B C = F1 C / (K1 + C) + F2 C / (K2 + C)
 
-#if 1             // Textbook solution.
+      // Textbook solution.
       // Case 1: C >> K1
       // A - B C ~= F1 + F2 C / (K2 + C) <=>
       // -B C^2 + (A - F1 - F2 - B K2) C + (A - F1) K2 = 0
@@ -485,23 +485,6 @@ SoluptVariable::estimate_C_root (const double I_max)
         const double d = sqr (b) - 4 * a * c;
         C2[i] = (- b - std::sqrt (d)) / (2.0 * a);
       }
-#else  // SH solution
-      // Case 1: C >> K1
-      // A - B C ~= F1 + F2 C / (K2 + C)
-      {
-        const double a1 = (A[i] - F1 - B[i] * K2 - F2) / B[i];
-        const double a2 = (A[i] - F1) * K2 / B[i];
-        C1[i] = 0.5 * a1 + std::sqrt (0.25 * a1 * a1 + a2);
-      }
-      // Case: C << K2
-      // A - B C ~= F1 C / (K1 + C) + F2 C / K2
-      {
-        const double a1 = (A[i] - B[i] * K1 - F1 - F2 * K1 / K2)
-          / (B[i] + F2 / K2);
-        const double a2 = A[i] * K1 / (B[i] + F2 / K2);
-        C2[i] = 0.5 * a1 + std::sqrt (0.25 * a1 * a1 + a2);
-      }
-#endif
 
       daisy_assert (std::isfinite (C1[i]) || std::isfinite (C2[i]));
       if (!std::isfinite (C1[i]))
@@ -1107,12 +1090,6 @@ solute_uptake2 (const double Theta,            // []
   // Case 1: C >> K1
   // I_zero - B_zero C ~= F1 + F2 C / (K2 + C)
   {
-#if 0
-    // SH solution
-    const double a1 = (I_zero - F1 - B_zero * K2 - F2) / B_zero;
-    const double a2 = (I_zero - F1) * K2 / B_zero;
-    C1 = 0.5 * a1 + std::sqrt (0.25 * a1 * a1 + a2);
-#else
     // Textbook solution.
     const double a = - B_zero;
     const double b = I_zero - F1 - F2 - B_zero * K2;
@@ -1120,17 +1097,10 @@ solute_uptake2 (const double Theta,            // []
     const double d = sqr (b) - 4 * a * c;
     C1 = (- b - sqrt (d)) / (2.0 * a);
   }
-#endif
+
   // Case: C << K2
   // I_zero - B_zero C ~= F1 C / (K1 + C) + F2 C / K2
   {
-#if 0
-    // SH solution.
-    const double a1 = (I_zero - B_zero * K1 - F1 - F2 * K1 / K2)
-      / (B_zero + F2 / K2);
-    const double a2 = I_zero * K1 / (B_zero + F2 / K2);
-    C2 = 0.5 * a1 + std::sqrt (0.25 * a1 * a1 + a2);
-#else
     // Textbook solution.
     const double a = - B_zero - F2 / K2;
     const double b = I_zero - B_zero * K1 - F1 - F2 * K1 / K2;
@@ -1138,16 +1108,9 @@ solute_uptake2 (const double Theta,            // []
     const double d = sqr (b) - 4 * a * c;
     C2 = (- b - sqrt (d)) / (2.0 * a);
   }
-#endif
-
-#if 0
-  const double C_lim = std::exp (0.5 * (std::log (K1) + std::log (K2)));
-  C_root = (0.5 * (C1 + C2) > C_lim) ? C1 : C2; // [g/cm^3]
-#endif
 
   // Which assumption is best? C1 >> K1 or C2 << K2?
   C_root = (C1 / K1 > K2 / C2) ? C1 : C2;
-#if 1
   auto fun = [=] (const double C) -> double
     {
       return -I_zero + B_zero * C + F1 * C / (K1 + C) + F2 * C / (K2 + C);
@@ -1158,7 +1121,6 @@ solute_uptake2 (const double Theta,            // []
     };
 
   C_root = Newton (0.0, fun, derived);
-#endif
   // [g/cm^3 S/h] = [cm R/cm^3 S] * ([g/cm R/h] - [cm^3 W/cm R/h] * [g/cm^3 W])
   uptake = L * (I_zero - B_zero * C_root);
 }

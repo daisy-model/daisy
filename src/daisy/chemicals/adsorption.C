@@ -148,7 +148,7 @@ static struct AdsorptionNoneSyntax : DeclareModel
     : DeclareModel (Adsorption::component, "none", "No adsorption.\n\
 Used for solutes that are not adsorped to the soil.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } AdsorptionNone_syntax;
 
@@ -187,7 +187,7 @@ static struct AdsorptionFullSyntax : DeclareModel
     : DeclareModel (Adsorption::component, "full", "Full adsorption.\n\
 Used for non-solutes, fully adsorped in the soil.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } AdsorptionFull_syntax;
 

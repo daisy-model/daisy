@@ -46,7 +46,7 @@ public:
   };
   // Database.
 private:
-  class DB;
+  struct DB;
   static DB* data;
   friend class Init;
 
@@ -77,13 +77,6 @@ public:
   symbol (const char*);
   symbol (const std::string&);
   explicit symbol (int);
-#if 0
-  symbol (const symbol& other)
-    : id (other.id)
-  { }
-  void operator= (const symbol other)
-  { id = other.id; }
-#endif
   ~symbol ()
   { }
 };

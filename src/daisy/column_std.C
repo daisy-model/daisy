@@ -504,11 +504,6 @@ ColumnStandard::overflow (const double extra, Treelog& msg)
 {
   if (extra > 0.0)
     {
-#if 0
-      std::ostringstream tmp;
-      tmp << "Adding " << extra << " [mm] overflow to surface";
-      msg.message (tmp.str ());
-#endif
       bioclimate->add_tillage_water (extra);
     }
 }

@@ -69,30 +69,30 @@ Type::cite () const
 
 bool
 Type::is_text () const
-{ return false; }
+{ return false; } // FIXME: Why is this always false?
 
 symbol 
-Type::dimension () const
+Type::dimension () const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 bool
-Type::verify (const double value, Treelog& msg) const
+Type::verify (const double value, Treelog& msg) const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 Frame::load_syntax_t  
-Type::load_syntax () const
+Type::load_syntax () const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 symbol 
-Type::domain () const
+Type::domain () const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 symbol 
-Type::range () const
+Type::range () const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 symbol 
-Type::component () const
+Type::component () const // FIXME: Why is it defined if never reached?
 { daisy_notreached (); }
 
 Type::Type (const Attribute::category c, const int s, const symbol d)

@@ -73,7 +73,7 @@ SoilHeat::set_energy (const Geometry& geo,
 
   // Find total energy capacity and volume.
   double capacity = 0.0;
-  double volume = 0.0;
+  double volume = 0.0; // FIXME: volume is calculated but not used
 
   for (size_t i = 0; i < cell_size; i++)
     {
@@ -262,12 +262,8 @@ SoilHeat::exptected_T_z0 (const Geometry& geo, const Soil& soil,
       const double Theta = soil_water.Theta (c);
       const double X_ice = soil_water.X_ice (c);
       conductivity[c] = soil.heat_conductivity (c, Theta, X_ice);
-#if 1
       daisy_assert (iszero (soil_water.S_ice_water (c)));
       S_water[c] = soil_water.S_sum (c) - soil_water.S_ice_water (c);
-#else
-      S_water[c] = 0.0;
-#endif
       // Changes with ice state.
       T[c] = this->T (c);
       capacity[c] = this->capacity_apparent (soil, soil_water, c);
@@ -326,12 +322,8 @@ SoilHeat::tick (const Geometry& geo, const Soil& soil, SoilWater& soil_water,
       const double Theta = soil_water.Theta (c);
       const double X_ice = soil_water.X_ice (c);
       conductivity[c] = soil.heat_conductivity (c, Theta, X_ice);
-#if 1
       daisy_assert (iszero (soil_water.S_ice_water (c)));
       S_water[c] = soil_water.S_sum (c) - soil_water.S_ice_water (c);
-#else
-      S_water[c] = 0.0;
-#endif
       // Changes with ice state.
       T[c] = this->T (c);
       capacity_apparent_[c] = this->capacity_apparent (soil, soil_water, c);
@@ -536,7 +528,7 @@ SoilHeat::update_state (const Geometry& geo,
               // Check if there are sufficient water.
               const double Theta_min = soil.Theta (i, h_frozen - 1000.0, 0.0);
 #ifdef THETA_RES
-              daisy_assert (Theta_min >= soil.Theta_res (i));
+              daisy_assert (Theta_min >= soil.Theta_res (i)); // FIXME: Why is this not checked?
 #endif
               const double available_water = soil_water.Theta (i) - Theta_min;
               if (freezing_rate_[i] * dt > available_water)
@@ -797,15 +789,6 @@ SoilHeat::limit_T_top (const Geometry& geo,
   const double T_soil = total_T / total_area;
   const double K = total_K / total_area;
   const double q = K * (T_soil - T_surface) / dz;
-#if 0
-  std::ostringstream tmp;
-  tmp << "q = " << q << "; q_lim = " << q_lim
-      << "; dz = " << dz
-      << "; T_soil  = " << T_soil
-      << "; K = " << K
-      << "; T_surface = " << T_surface;
-  Assertion::message (tmp.str ());
-#endif
   if (std::fabs (q) < q_lim)
     return T_surface;
 

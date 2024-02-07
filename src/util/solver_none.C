@@ -20,10 +20,6 @@
 
 #define BUILD_DLL
 
-// Uncomment for fast code that does not catches bugs.
-#define BOOST_UBLAS_NDEBUG
-#define NDEBUG
-
 #include "solver.h"
 #include "librarian.h"
 #include "frame.h"
@@ -44,7 +40,7 @@ static struct SolverNoneSyntax : public DeclareModel
   SolverNoneSyntax ()
     : DeclareModel (Solver::component, "none", "Don't solve the equation.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   {
   }
 } SolverNone_syntax;

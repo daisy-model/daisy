@@ -102,8 +102,8 @@ struct ReactionShoot : public Reaction
   { }
 
   bool check (const Geometry&, 
-              const Soil& soil, const SoilWater& soil_water, 
-	      const SoilHeat& soil_heat,
+              const Soil& soil, const SoilWater& soil_water, // FIXME: soil, soil_water not used
+	      const SoilHeat& soil_heat, // FIXME: soil_heat not used
 	      const OrganicMatter&,
 	      const Chemistry& chemistry, Treelog& msg) const
   { 

@@ -217,7 +217,7 @@ DestinationTable::column_tag (const Select& select)
     {
       const size_t cell_size = geometry->cell_size ();
       const size_t edge_size = geometry->edge_size ();
-      if (value_size == cell_size)
+      if (static_cast<size_t>(value_size) == cell_size)
 	// SoilCells.
 	{
 	  for (size_t c = 0; c < cell_size; ++c)
@@ -230,7 +230,7 @@ DestinationTable::column_tag (const Select& select)
 	    }
 	  return;
 	}
-      if (value_size == edge_size)
+      if (static_cast<size_t>(value_size) == edge_size)
 	// SoilEdges.
 	{
 	  for (size_t e = 0; e < edge_size; ++e)
@@ -323,7 +323,7 @@ DestinationTable::column_dimension (const Select& select)
   const int value_size = select.size ();
   if (value_size < 0)		// Singleton
     out << dimension;
-  else for (size_t j = 0; j < value_size; j++)
+  else for (int j = 0; j < value_size; j++)
 	 {
 	   if (j != 0)
 	     out << array_separator;

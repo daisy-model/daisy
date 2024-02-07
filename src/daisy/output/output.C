@@ -224,10 +224,6 @@ List of default time components to include in log files.");
   default_time.push_back (symbol ("month"));
   default_time.push_back (symbol ("mday"));
   default_time.push_back (symbol ("hour"));
-#if 0
-  default_time.push_back (symbol ("minute"));
-  default_time.push_back (symbol ("second"));
-#endif
   frame.set ("log_time_columns", default_time);
 
    frame.declare_string ("log_prefix", Attribute::Const, "\

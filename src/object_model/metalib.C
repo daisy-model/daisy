@@ -107,17 +107,6 @@ Metalib::clear_all_parsed ()
     (*i).second->clear_parsed ();
 }
 
-#if 0
-void 
-Metalib::refile_parsed (const std::string& from, const std::string& to)
-{
-  for (Implementation::library_map::iterator i = impl->all.begin (); 
-       i != impl->all.end (); 
-       i++)
-    (*i).second->refile_parsed (from, to);
-}
-#endif
-
 void 
 Metalib::added_object (const symbol library, const symbol object)
 {

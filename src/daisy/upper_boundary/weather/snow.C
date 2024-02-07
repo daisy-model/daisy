@@ -273,11 +273,6 @@ Snow::Implementation::tick (Treelog& msg,
 	  const double rho_c
 	    = std::max (Ssnow_old / (f * dZs), 
 		   rho_s + rho_1 * Swater_new / Scapacity + rho_2 * Ssnow_old);
-#if 0
-	  cerr << "rho_c == " << rho_c << " Ssnow _old== " << Ssnow_old
-	       << " dZs == " << dZs << " Swater_new == " << Swater_new
-	       << " Scapacity == " << Scapacity << "\n";
-#endif
 	  daisy_assert (rho_c > 0.0);
 	  //daisy_assert (rho_c < rho_i * 1.01);
 	  daisy_assert (approximate (rho_c, Ssnow_old / (f * dZs))

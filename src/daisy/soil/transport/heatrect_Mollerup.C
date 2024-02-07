@@ -29,10 +29,6 @@
 #include "treelog.h"
 #include "frame.h"
 
-// Uncomment for fast code that does not catches bugs.
-#define NDEBUG
-//#define BOOST_UBLAS_NDEBUG
-
 #include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
@@ -81,7 +77,7 @@ cond_cell2edge (const GeometryRect& geo,
 {
   const size_t edge_size = geo.edge_size ();
   
-  for (int e = 0; e < edge_size; e++)
+  for (size_t e = 0; e < edge_size; e++)
     {
       const int from = geo.edge_from (e);
       const int to = geo.edge_to (e);    
@@ -234,8 +230,8 @@ fluxes (const GeometryRect& geo,
           
           daisy_assert (from >= 0);
           daisy_assert (to >= 0);
-          daisy_assert (from < T.size ());
-          daisy_assert (to < T.size ());
+          daisy_assert (static_cast<size_t>(from) < T.size ());
+          daisy_assert (static_cast<size_t>(to) < T.size ());
           
           //--- Convective part ---
           const double alpha = (q_edge[e] >= 0) 
@@ -272,7 +268,7 @@ fluxes (const GeometryRect& geo,
               const int cell = geo.edge_other (edge, Geometry::cell_below);
               daisy_assert (geo.cell_is_internal (cell));
               daisy_assert (cell >= 0);
-              daisy_assert (cell < T.size ());
+              daisy_assert (static_cast<size_t>(cell) < T.size ());
               const double in_sign 
                 = geo.cell_is_internal (geo.edge_to (edge)) ? 1.0 : -1.0;
               dQ[edge] = in_sign * B_dir (cell) / geo.edge_area (edge);
@@ -295,7 +291,7 @@ fluxes (const GeometryRect& geo,
               const int cell = geo.edge_other (edge, Geometry::cell_above);
               daisy_assert (geo.cell_is_internal (cell));
               daisy_assert (cell >= 0);
-              daisy_assert (cell < T.size ());
+              daisy_assert (static_cast<size_t>(cell) < T.size ());
               const double in_sign 
                 = geo.cell_is_internal (geo.edge_to (edge)) ? 1.0 : -1.0;
               dQ[edge] = in_sign * B_dir (cell) / geo.edge_area (edge);
@@ -363,7 +359,7 @@ HeatrectMollerup::solve (const GeometryRect& geo,
   
   // Solution old
   ublas::vector<double> T_old (cell_size);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     T_old (c) = T[c];
   ublas::vector<double> T_n (cell_size);  // Maybe not neccessary with both T_old and T_n
   T_n = T_old;
@@ -373,15 +369,15 @@ HeatrectMollerup::solve (const GeometryRect& geo,
 
   // Area (volume) Multiplied with heat capacity 
   ublas::banded_matrix<double> Q_Ch_mat_n (cell_size, cell_size, 0 ,0);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Q_Ch_mat_n (c, c) = geo.cell_volume (c) * capacity_new[c];
   ublas::banded_matrix<double> Q_Ch_mat_np1 (cell_size, cell_size, 0 ,0);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Q_Ch_mat_np1 (c, c) = geo.cell_volume (c) * capacity_new[c];
   
   // Flux in timestep
   ublas::vector<double> q_edge (edge_size);	
-  for (int e = 0; e < edge_size; e++)
+  for (size_t e = 0; e < edge_size; e++)
     q_edge (e) = q_water[e];
   
   //Convection

@@ -115,7 +115,7 @@ static struct ScopeselNameSyntax : public DeclareModel
 struct ScopeselNull : public Scopesel
 {
   // Simulation.
-  const Scope* lookup (const std::vector<const Scope*>&, Treelog& msg) const
+  const Scope* lookup (const std::vector<const Scope*>&, Treelog&) const
   { return &Scope::null (); }
 
   // Create.

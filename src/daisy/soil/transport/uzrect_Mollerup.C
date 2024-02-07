@@ -17,9 +17,7 @@
 // along with Daisy; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#define BUILD_DLL// Uncomment for fast code that does not catches bugs.
-#define BOOST_UBLAS_NDEBUG
-#define NDEBUG
+#define BUILD_DLL
 
 #include "uzrect.h"
 #include "geometry_rect.h"
@@ -222,7 +220,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
   //Make Qmat area diagonal matrix 
   //Note: This only needs to be calculated once... 
   ublas::banded_matrix<double> Qmat (cell_size, cell_size, 0, 0);
-  for (int c = 0; c < cell_size; c++)
+  for (size_t c = 0; c < cell_size; c++)
     Qmat (c, c) = geo.cell_volume (c);
  
   // make vectors 
@@ -430,7 +428,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
               break;
           }
 
-	  for (int c=0; c < cell_size; c++) // update Theta 
+	  for (size_t c=0; c < cell_size; c++) // update Theta 
 	    Theta (c) = soil.Theta (c, h (c), h_ice (c)); 
 
 	  if (debug > 1)
@@ -444,7 +442,7 @@ UZRectMollerup::tick (const GeometryRect& geo,
 	      msg.message (tmp.str ());
 	    }
           
-          for (int c=0; c < cell_size; c++)
+          for (size_t c=0; c < cell_size; c++)
             {
               if (h (c) < min_pressure_potential || h (c) > max_pressure_potential)
                 {
@@ -1017,57 +1015,6 @@ UZRectMollerup::drain (const GeometryRect& geo,
     }
 }
 
-
-
-
-#if 0
-      // Guestimate pressure in cell from surrounding cells.
-      const std::vector<size_t>& edges = geo.cell_edges (cell);
-      const size_t edge_size = edges.size ();
-      const double z_drain = geo.cell_z (cell);      
-      double h_sum = h (cell);
-
-      for (size_t i = 0; i < edge_size; i++)
-	{
-	  const size_t edge =  edges[i];
-	  if (!geo.edge_is_internal (edge))
-	    continue;
-	  const size_t other = geo.edge_other (edge, cell);
-	  const double z_other = geo.cell_z (other);	// Compensate for z difference.
-	  h_sum += h (other) + (z_other - z_drain);  
-	}
-
-      if (debug == 4)
-	tmp << "drain[" << d << "], cell " << cell << ", has h_sum = " 
-	    << h_sum << "\n";
-
-      if (h_sum < 0)
-	// Drain not active, treat as normal cell.
-	continue;
-
-      // Force pressure to be zero.
-      for (size_t i = 0; i < edge_size; i++)
-	{
-	  const size_t edge =  edges[i];
-	  if (!geo.edge_is_internal (edge))
-	    continue;
-
-	  const size_t other = geo.edge_other (edge, cell);
-	  A (cell, other) = 0.0;
-	}
-      A (cell, cell) = 1.0;
-      b (cell) = 0.0;
-
-      const size_t cell_size = geo.cell_size ();
-      for (size_t other = 0; other < cell_size; other++)
-	daisy_assert (cell == other 
-		      ? approximate (A (cell, other), 1.0)
-		      : iszero (A (cell, other)));
-    }
-  if (tmp.str ().size () > 0)
-    msg.message (tmp.str ());
-}
-#endif 
 //-------End, dr-----
 
 

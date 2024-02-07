@@ -770,7 +770,6 @@ SVAT_SSOC::calculate_temperatures (const Geometry& geo, const Soil& soil,
       // Latent heat "conductance" between sunlit leaves and canopy point
       G_W_leaf_c =  c_p * rho_a * g_W_leaf_c / gamma;// * cover *  (1.-sun_LAI_fraction_total);  //[m s^-1] 
 
-#if 1
       // We have an equation system with four unknowns, and four equations.
 
       // We assign a number and an equation to each unknown.
@@ -867,57 +866,6 @@ SVAT_SSOC::calculate_temperatures (const Geometry& geo, const Soil& soil,
       T_c = x[iT_c];
       T_shadow = T_sun = x[iT_leaf];
       e_c = x[ie_c];
-
-#else
-
-      // inter-inter-intermediate variables
-      const double a_soil = ((R_eq_abs_soil + G_R_soil * (T_a - T_a)
-                              + k_h/z0 * (T_z0 - T_a) - lambda * E_soil) 
-                             / (G_R_soil + G_H_s_c + k_h/z0)); //[K]
-      
-      const double a_soil_c = G_H_s_c / (G_R_soil + G_H_s_c + k_h/z0); // []
-      
-      const double a_can = ((G_H_a * (T_a - T_a) + G_H_s_c * a_soil)
-                            /(G_H_a + G_H_s_c * (1. - a_soil_c) + G_H_leaf_c));//[K]
-      
-      const double a_can_leaf = G_H_leaf_c / (G_H_a + G_H_s_c * (1. - a_soil_c) 
-                                              + G_H_leaf_c); // []
-      
-      const double b_can = ((G_W_a * (e_a - e_a) + lambda * E_soil 
-                             + G_W_leaf_c * ((e_sat_air - e_a) - s * (T_a - T_a)))
-                            /(G_W_a + G_W_leaf_c)); //[W s m^-3]
-      
-      const double b_can_leaf = ((G_W_leaf_c /*[m s^-1]*/ * s /*[W s m^-3 K^-1]*/)
-                                 /(G_W_a + G_W_leaf_c)); //[W s m^-3 K^-1]
-
-      const double T_leaf = ((R_eq_abs_shadow + G_R_leaf * (T_a - T_a) 
-                              + G_H_leaf_c * a_can 
-                              + G_W_leaf_c * (s * (T_a - T_a) - (e_sat_air - e_a) 
-                                              + b_can)) /*[W m^-2]*/
-                             / (G_R_leaf + G_H_leaf_c * (1. - a_can_leaf)
-                                + G_W_leaf_c * (s - b_can_leaf))/*[W m^-2 K^-1]*/
-                             + T_a);//[K]
-      // -------------------------------------------
-      // Temperature of leaves 
-      // -------------------------------------------
-      T_sun = T_shadow = T_leaf; //[K]
-      
-      // -------------------------------------------
-      // Canopy-point temperature
-      // -------------------------------------------
-      T_c = a_can + a_can_leaf * (T_leaf - T_a) + T_a; //[K]
-
-      // -------------------------------------------
-      // Soil surface temperature
-      // -------------------------------------------
-      T_s = a_soil + a_soil_c * (T_c - T_a) + T_a;  //[K]
-
-      // -------------------------------------------
-      // Canopy vapour pressure 
-      // -------------------------------------------
-      e_c = b_can + b_can_leaf * (T_leaf - T_a) + e_a; //[Pa]
-#endif
-
     }
 
   else // bare soil

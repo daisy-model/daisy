@@ -32,17 +32,6 @@
 double
 BD_convert::operator()(double value) const
 { 
-#if 0
-  if (!std::isnormal (value))
-    return 0.0;
-
-  std::ostringstream tmp;
-  tmp << "value = " << value << ", bulk = " << bulk
-      << ", in (value) = " << in (value) << ", in (value) / bulk = "
-      << in (value) / bulk << ", result = " << out (in (value) / bulk);
-  Assertion::message (tmp.str ());
-#endif
-
   daisy_assert (bulk > 0.0);
   return out (in (value) / bulk); 
 }
@@ -59,13 +48,7 @@ BD_convert::BD_convert (const Units& units, const symbol has, const symbol want,
   : in (units.get_convertion (has, bulk_unit)),
     out (units.get_convertion (Units::dry_soil_fraction (), want)),
     bulk (-42.42e42)
-{ 
-#if 0
-  std::ostringstream tmp;
-  tmp << "has = " << has << ", bulk_unit = " << bulk_unit
-      << ", dsf = " << Units::dry_soil_fraction () << ", want = " << want;
-  Assertion::message (tmp.str ());
-#endif  
+{
 }
 
 // bdconv.C ends here.

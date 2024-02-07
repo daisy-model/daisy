@@ -274,7 +274,7 @@ SoilWater::set_tertiary (const std::vector<double>& Theta_p,
 }
 
 void 
-SoilWater::tick_source (const Geometry& geo, const Soil& soil, Treelog& msg)
+SoilWater::tick_source (const Geometry& geo, const Soil& soil, Treelog& msg) // FIXME: Why is msg not used?
 {
   const size_t cell_size = geo.cell_size ();
 
@@ -309,7 +309,7 @@ SoilWater::suggest_dt ()
 { return std::fabs (sink_dt); }
 
 void
-SoilWater::tick_before (const Geometry& geo, const Soil& soil, 
+SoilWater::tick_before (const Geometry& geo, const Soil& soil, // FIXME: Why is soil not used?
                         const double dt, Treelog& msg)
 {
   TREELOG_SUBMODEL (msg, "SoilWater");
@@ -361,7 +361,7 @@ SoilWater::tick_ice (const Geometry& geo, const Soil& soil,
       if (total_ice > 0.0)
         {
 #ifdef THETA_RES
-          if (Theta_[i] < Theta_res)
+          if (Theta_[i] < Theta_res) // FIXME: Why is this not checked?
             {
               std::ostringstream tmp;
               tmp << "Theta[" << i << "] = " << Theta_[i]
@@ -492,21 +492,6 @@ SoilWater::tick_after (const Geometry& geo,
             }
         }
     }
-
-#if 0
-  if (!std::isfinite (table_high))
-    {
-      // No saturated cell, use lowest unsaturated.
-      // daisy_assert (std::isfinite (table_low));
-      table_high = table_low;
-    }
-  else if (!std::isfinite (table_low))
-    {
-      // No unsaturated cell, use highest saturated.
-      // daisy_assert (std::isfinite (table_high));
-      table_low = table_high;
-    }
-#endif
   // Initialize
   if (initial)
     {

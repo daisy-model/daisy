@@ -515,16 +515,6 @@ PrinterFile::Implementation::print_alist (const Frame& frame,
 
       if (frame.check (key))
 	{
-#if 0
-	  // Design bug: We usually need to put parentheses around
-	  // ordered complex values.  However, the parser doesn't
-	  // expect these for alist sequences, so we don't print them
-	  // either. 
-	  if (frame.lookup (key) == Attribute::Submodel
-	      && frame.type_size (key) != Attribute::Singleton)
-	    print_entry (frame, super, key, indent, false);
-	  else
-#endif
 	    print_entry (frame, super, key, indent, true);
 	}
       else if (!frame.is_optional (key))
@@ -714,11 +704,6 @@ struct FoundEntry
     : library_name (l),
       element (e),
       sequence (s)
-  { }
-  FoundEntry (const FoundEntry& e)
-    : library_name (e.library_name),
-      element (e.element),
-      sequence (e.sequence)
   { }
 };
 

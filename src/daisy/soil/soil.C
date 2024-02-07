@@ -716,7 +716,7 @@ Soil::initialize (const Time& time, Geometry& geo,
   std::vector<const Implementation::Layer*>::const_iterator layer;
 
   // Initialize zone horizons.
-  for (int i = 0; i < impl->zones.size (); i++)
+  for (size_t i = 0; i < impl->zones.size (); i++)
     {
       const Zone& zone = *impl->zones[i]->volume;
       const double center_z = zone.center_z ();
@@ -817,7 +817,7 @@ Soil::initialize (const Time& time, Geometry& geo,
     }
   daisy_assert (impl->hydraulic_.size () == cell_size);
 
-  for (int i = 0; i < impl->zones.size (); i++)
+  for (size_t i = 0; i < impl->zones.size (); i++)
     {
       const Horizon* h = impl->zones[i]->horizon.get ();
       if (impl->volume[h] > 0.0)

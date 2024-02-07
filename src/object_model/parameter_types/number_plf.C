@@ -93,59 +93,8 @@ struct NumberPLF : public Number
   static bool check_alist (const Metalib& metalib, 
                            const Frame& al, Treelog& msg) 
   {
-#if 1
+    // FIXME: What is the point of this
     return true;
-#else
-    const Units& units = metalib.units ();
-    const symbol domain (al.name ("domain"));
-    const symbol range (al.name ("range"));
-    const auto_vector<const Point*> points 
-      = map_construct_const<Point> (al.submodel_sequence ("points"));
-
-    if (points.size () < 1)
-      {
-	msg.error ("Need at least one point for a line");
-	return false;
-      }
-
-    bool ok = true;
-    double last_x = 42.42e42;
-    for (size_t i = 0; i < points.size (); i++)
-      {
-	const Point& point = *points[i];
-
-	double x = point.x_value;
-	const symbol x_dim = point.x_dimension;
-
-	if (domain != Attribute::Unknown () && x_dim != Attribute::Unknown ())
-	  try
-	    { x = units.convert (x_dim, domain, x); }
-	  catch (const std::string& err)
-	    { 
-	      msg.error (err);
-	      ok = false;
-	    }
-	if (ok && i > 0 && x <= last_x)
-	  {
-	    std::ostringstream tmp;
-	    tmp << x << " <= " << last_x << ", x values should be increasing";
-	    msg.error (tmp.str ());
-	    ok = false;
-	  }
-	last_x = x;
-
-	const symbol y_dim = point.y_dimension;
-	if (domain != Attribute::Unknown () && y_dim != Attribute::Unknown ())
-	  try
-	    { (void) units.convert (x_dim, domain, x); }
-	  catch (const std::string& err)
-	    { 
-	      msg.error (err);
-	      ok = false;
-	    }
-      }
-    return ok;
-#endif
   }
 
   static const PLF build_plf (const BlockModel& al) 

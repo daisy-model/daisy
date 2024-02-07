@@ -309,10 +309,6 @@ BioporeMatrix::infiltration_capacity (const Geometry& geo, size_t e,
     }
 
   // Choose the lower limit;
-#if 0
-  daisy_assert (max_infiltration >= 0); // May fail due to numerics.
-  daisy_assert (max_capacity >= 0);
-#endif
   return std::max (std::min (max_infiltration, max_capacity),
 		   0.0);
 }
@@ -414,25 +410,6 @@ BioporeMatrix::matrix_biopore_matrix (size_t c, const Geometry& geo,
         : - wall_fraction * biopore_to_secondary (K_crack, M_c, r_c, h3_cell);
       daisy_assert (std::isfinite (S2));
       S = std::min (S1, S2);
-
-#if 0 // The matrix can be drier than pF 6.
-      if (h < -100000)
-        {
-          std::ostringstream tmp;
-          tmp << "S1 = " << S1
-              << "\nS2  = " << S2
-              << "\nS  = " << S
-              << "\nK_xx  = " << K_xx
-              << "\nK_crack  = " << K_crack
-              << "\nK_wall_relative  = " << K_wall_relative
-              << "\nwall_fraction  = " << wall_fraction
-              << "\nM_c  = " << M_c
-              << "\nr_c  = " << r_c
-              << "\nh  = " << h
-              << "\nh3_cell  = " << h3_cell;
-          Assertion::message (tmp.str ());
-        }
-#endif
     }
   else if ((allow_upward_flow || cell_z > z3_lowest) 
            && active && h>h3_cell + h_barrier)

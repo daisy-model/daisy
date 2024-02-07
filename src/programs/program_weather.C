@@ -192,7 +192,7 @@ struct ProgramWeather : public Program
     // Day cycle.
     {
       // Rad
-      double a0 = 0.0;
+      double a0 = 0.0; // FIXME: a0 is calculated but not used
       double a1 = 0.0;
       double b1 = 0.0;
       for (int i = 0; i < 24; i++)
@@ -208,10 +208,6 @@ struct ProgramWeather : public Program
       a1 *= 2.0 / 24.0;
       b1 *= 2.0 / 24.0;
       
-#if 0
-      const double A0 = a0;
-      const double A1 = std::sqrt (a1 * a1 + b1 * b1);
-#endif
       double phi = std::atan2 (b1, a1);
       if (phi < 0.0)
 	phi += 2.0 * M_PI;

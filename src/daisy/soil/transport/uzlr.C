@@ -106,12 +106,15 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
   const bool use_darcy = (h_old[first] < h_fc) && (q_up > 0.0);
 
   // Intermediate cells.
-  for (int i = first; i <= last; i++)
+  for (unsigned int i = first; i <= last; i++)
     {
       const double z = geo.cell_z (i);
       const double dz = geo.dz (i);
       const double Theta_sat = soil.Theta (i, 0.0, h_ice[i]);
+#ifdef THETA_RES
+      // Theta_res is only used in a check further down that is conditioned on THETA_RES being set
       const double Theta_res = soil.Theta_res (i);
+#endif      
       const double h_min = pF2h (10.0);
       const double Theta_min = soil.Theta (i, h_min, h_ice[i]);
       double Theta_new = Theta_old[i] - q[i] * dt / dz - S[i] * dt;
@@ -249,7 +252,7 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
       daisy_assert (std::isfinite (q[i+1]));
       daisy_assert (Theta[i] <= Theta_sat);
 #ifdef THETA_RES
-      daisy_assert (Theta[i] > Theta_res);
+      daisy_assert (Theta[i] > Theta_res); // FIXME: Why this is not checked?
 #endif
     }
 
@@ -303,13 +306,13 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
 
   // Saturated pressure.
   double table = geo.cell_z (last) + h[last];
-  for (int i = last; i > first; i--)
+  for (unsigned int i = last; i > first; i--)
     if (h[i] < 0.0)
       {
         table = geo.cell_z (i) + h[i];
         break;
       }
-  for (int i = last; i > first; i--)
+  for (unsigned int i = last; i > first; i--)
     if (geo.cell_z (i) < table)
       {
         daisy_assert (h[i] >= 0.0);

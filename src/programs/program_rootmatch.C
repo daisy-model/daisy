@@ -715,7 +715,7 @@ static struct ProgramRootmatchSyntax : public DeclareModel
     : DeclareModel (Program::component, "rootmatch", "\
 Match root data with GP2D model.")
   { }
-  bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
+  bool check_alist (const Metalib&, const Frame& al, Treelog& msg) // FIXME: Why does this not check anything?
   {
     bool ok = true;
     return ok;

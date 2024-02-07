@@ -148,12 +148,6 @@ private:
   {
     int nest;
     std::string text;
-    const Entry& operator= (const Entry& other)
-    { 
-      nest = other.nest; 
-      text = other.text; 
-      return *this;
-    }
     Entry (int n, const std::string& t)
       : nest (n),
         text (t)

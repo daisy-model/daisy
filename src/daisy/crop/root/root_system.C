@@ -71,7 +71,7 @@ RootSystem::potential_water_uptake (const double h_x,
       daisy_assert (soil_water.Theta_ice (soil, i, h_wp) > 0.0);
       daisy_assert (soil.Theta_res (i) >= 0.0);
 #ifdef THETA_RES
-      daisy_assert (soil_water.Theta_ice (soil, i, h_wp) 
+      daisy_assert (soil_water.Theta_ice (soil, i, h_wp) // FIXME: Why is this not checked?
                     >= soil.Theta_res (i));
 #endif
       const double max_uptake

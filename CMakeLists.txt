@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
-  VERSION 6.44
+  VERSION 7.0.0
   LANGUAGES CXX
 )
 

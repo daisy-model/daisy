@@ -153,17 +153,7 @@ LogExtern::lookup (const symbol tag) const
       for (size_t j = 0; j < LogSelect::entries.size (); j++)
         if (LogSelect::entries[j]->tag () == tag)
           {
-#if 0
-            switch (LogSelect::entries[j]->type ())
-              {
-              case Select::NumberSingleton:
-              case Select::NumberSequence:
-                return Attribute::Number;
-              }
-            daisy_notreached ();
-#else
             return LogSelect::entries[j]->type ();
-#endif
           }
       return Attribute::Error;
     }

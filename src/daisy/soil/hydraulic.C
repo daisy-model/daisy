@@ -236,20 +236,6 @@ Hydraulic::initialize (const Texture&,
     }
 }
 
-#if 0
-bool 
-Hydraulic::check (Treelog& msg) const
-{ 
-  bool ok = true;
-  if (K_sat < 0.0)
-    {
-      msg.error ("Not initialized");
-      ok = false;
-    }
-  return ok;
-}
-#endif
-
 Hydraulic::Hydraulic (const BlockModel& al)
   : ModelFramed (al),
     K_init (al.check ("K_at_h")

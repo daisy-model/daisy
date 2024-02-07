@@ -496,11 +496,8 @@ ChemistryMulti::output (Log& log) const
   Chemistry::output (log);
   output_list (combine, "combine", log, chemistry_lib);
   output_list (chemicals, "trace", log, chemical_lib);
-
-  // We can't log identifier_sequence yet.
-#if 0
-  output_variable (ignore, log);
-#endif
+  // FIXME: We can't log identifier_sequence yet.
+  // output_variable (ignore, log);
 }
 
 void 

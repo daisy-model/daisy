@@ -166,7 +166,7 @@ KH = (h / dds)^-0.8")
 struct PonddampNone : public Ponddamp
 {
   // Simulation.
-  double value (const double h, const double P) const
+  double value (const double, const double) const
   { return 1.0; }
 
   // Create and Destroy.
@@ -184,7 +184,7 @@ static struct PonddampNoneSyntax : DeclareModel
     : DeclareModel (Ponddamp::component, "none", "\
 KH = 1.0")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } PonddampNone_syntax;
 

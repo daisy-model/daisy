@@ -220,7 +220,7 @@ Format::initialize (std::ostream& o)
   output = &o;
 }
 
-Format::Format (const BlockModel& al)
+Format::Format (const BlockModel& al) // FIXME: Why does this take a BlockModel?
   : output (NULL)
 { }
 

@@ -101,11 +101,11 @@ ReactionDOM::output (Log& log) const
 
 void 
 ReactionDOM::tick_soil (const Geometry& geo,
-			const Soil& soil, const SoilWater& soil_water,
+			const Soil& soil, const SoilWater& soil_water, // FIXME: soil not used
 			const SoilHeat& soil_heat,
 			OrganicMatter& organic, 
 			Chemistry& chemistry, 
-			const double dt, Treelog& msg)
+			const double dt, Treelog& msg) // FIXME: msg not used
 {
   // Code.
   const size_t cell_size = geo.cell_size ();
@@ -212,13 +212,11 @@ ReactionDOM::tick_soil (const Geometry& geo,
     }
   
   // Make it official.
-#if 1
   soil_NH4.add_to_transform_source (NH4);
   soil_NO3.add_to_transform_source (NO3);
   soil_DOC.add_to_transform_sink (DOC);
   soil_DON.add_to_transform_sink (DON);
   organic.add_stationary (SOC, SON, where, dt);
-#endif
 }
 
 bool 

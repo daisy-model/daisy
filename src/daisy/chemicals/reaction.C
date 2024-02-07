@@ -34,7 +34,7 @@ Reaction::library_id () const
 }
 
 void 
-Reaction::tick_top (const Vegetation&, const Bioclimate&,
+Reaction::tick_top (const Vegetation&, const Bioclimate&, // FIXME: What is the point of this function?
 		    const double tillage_age /* [d] */,
                     const double total_rain, 
                     const double h_pond,
@@ -43,14 +43,14 @@ Reaction::tick_top (const Vegetation&, const Bioclimate&,
 { }
 
 void 
-Reaction::tick_surface (const Geometry&, 
+Reaction::tick_surface (const Geometry&, // FIXME: What is the point of this function?
                         const Soil&, const SoilWater&, const SoilHeat&,
                         const Surface&,
 			OrganicMatter&, Chemistry&, const double dt, Treelog&)
 { }
 
 void 
-Reaction::tick_soil (const Geometry&, const Soil&, const SoilWater&,
+Reaction::tick_soil (const Geometry&, const Soil&, const SoilWater&, // FIXME: What is the point of this function?
                      const SoilHeat&, OrganicMatter&, Chemistry&,
                      const double, Treelog&)
 { }

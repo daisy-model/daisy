@@ -34,11 +34,11 @@ Scope::can_extract_as (const symbol tag, Attribute::type type) const
 { return lookup (tag) == type; }
 
 int 
-Scope::type_size (const symbol tag) const
+Scope::type_size (const symbol) const
 { return Attribute::Singleton; }
 
 int 
-Scope::value_size (const symbol tag) const
+Scope::value_size (const symbol) const
 { return Attribute::Singleton; }
 
 symbol

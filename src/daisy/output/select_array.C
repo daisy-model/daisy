@@ -237,7 +237,7 @@ struct SelectArray : public Select
           size = geo->edge_size ();
       }
     daisy_assert (size >= 0);
-    for (size_t i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
       dest.missing ();
   }
 

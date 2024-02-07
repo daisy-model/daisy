@@ -64,7 +64,7 @@ Lexer::get ()
 bool
 Lexer::good ()
 {
-#if 1 
+#if 1 // FIXME: Is this still relevant?
   // BCC and GCC 3.0 requires that you try to read beyond the eof
   // to detect eof.
   char c;

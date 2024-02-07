@@ -366,7 +366,7 @@ do { \
 
 template <class T> void
 output_list_ (T const& items, const symbol name, Log& log,
-              const symbol library)
+              const symbol library) // FIXME: Why is library not used?
 {
   if (log.check_interior (name))
     {

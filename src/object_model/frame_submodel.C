@@ -27,10 +27,6 @@ bool
 FrameSubmodel::subset (const Metalib& metalib,
                        const FrameSubmodel& other) const
 {
-#if 0
-  if (!this->load_syntax == other.load_syntax)
-    return false;
-#endif
   return subset_elements (metalib, other);
 }
 

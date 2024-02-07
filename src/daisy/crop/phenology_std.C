@@ -109,16 +109,6 @@ PhenologyStandard::adjust_DS (const Scope& scope, Treelog& msg)
   if (isequal (new_DS, DS))
     return;
 
-#if 0
-  const double X = scope.number (DS_name);
-  const double Y = scope.number ("BBCH");
-  
-  std::ostringstream tmp;
-  tmp << "Adjusting DS from " << DS << " to " << new_DS << " X = " << X
-  << " Y = " << Y << " Mod = " << modified_DS;
-  msg.message (tmp.str ());
-#endif
-
   if (!isequal (new_DS, modified_DS))
     {
       std::ostringstream tmp;

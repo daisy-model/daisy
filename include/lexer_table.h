@@ -36,7 +36,7 @@ class LexerTable : private boost::noncopyable
 {
   // Content.
 private:
-  class Implementation;
+  struct Implementation;
   const std::unique_ptr<Implementation> impl;
 
   // Use.

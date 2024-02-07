@@ -266,7 +266,7 @@ Buggy implementation included as vS_S before Daisy 6.47.\n\
 Included here as reference.\n\
 Note, linear sorption was used as default for NH4 as slong as memeory serve.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } Adsorption_vS_S_old_syntax;
 

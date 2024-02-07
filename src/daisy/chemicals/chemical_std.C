@@ -934,7 +934,7 @@ ChemicalBase::swap (const Geometry& geo,
 }
 
 void 
-ChemicalBase::tick_source (const Scope& scope, const Geometry& geo,
+ChemicalBase::tick_source (const Scope& scope, const Geometry& geo, // FIXME: Why are params not used
 			   const Soil& soil, const SoilWater& soil_water, 
 			   const SoilHeat& soil_heat, 
 			   const OrganicMatter& organic, 
@@ -1241,19 +1241,6 @@ ChemicalBase::tick_surface (const double pond /* [cm] */,
       total_area += area;
       surface_solute += C * area * Theta;       // [g/cm]
       daisy_assert (surface_solute >= 0.0);
-
-#if 0
-      if (M < 1e-20)
-	continue;
-      
-      std::ostringstream tmp;
-      tmp << "C = " << C
-	  << "; M = " << M
-	  << "; A = " << (M - Theta * C)
-	  << "; Theta = " << Theta
-	  << "; Theta_pond = " << Theta_pond;
-      msg.message (tmp.str ());
-#endif
     }
   
   // Convert solute back to surface dimensions.
@@ -1499,7 +1486,7 @@ ChemicalBase::down ()                 // [g/m^2/h]
 void 
 ChemicalBase::uptake (const Soil& soil, 
 		      const SoilWater& soil_water,
-		      const double dt)
+		      const double dt) // FIXME: Why is dt not used?
 {
   std::vector<double> uptaken (soil.size (), 0.0);
 
@@ -2708,7 +2695,7 @@ struct ChemicalStandard : public ChemicalBase
 double
 ChemicalStandard::decompose_soil_factor
 /**/ (size_t c, const Geometry& geo,
-      const Soil& soil, const SoilWater& soil_water, const SoilHeat& soil_heat, 
+      const Soil& soil, const SoilWater& soil_water, const SoilHeat& soil_heat, // FIXME: Why is soil not used?
       const OrganicMatter& organic_matter) const
 {
   double factor = 1.0;
@@ -2910,7 +2897,7 @@ Depth factor is specified by 'z' and 'z_factor'.")
 
 struct ChemicalNutrient : public ChemicalBase 
 {
-  double decompose_soil_factor (size_t c,
+  double decompose_soil_factor (size_t c, // FIXME: WHy is c not used?
 				const Geometry&, const Soil&, 
 				const SoilWater&, const SoilHeat&, 
 				const OrganicMatter&) const
