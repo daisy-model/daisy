@@ -73,7 +73,7 @@ SoilHeat::set_energy (const Geometry& geo,
 
   // Find total energy capacity and volume.
   double capacity = 0.0;
-  double volume = 0.0;
+  double volume = 0.0; // FIXME: volume is calculated but not used
 
   for (size_t i = 0; i < cell_size; i++)
     {

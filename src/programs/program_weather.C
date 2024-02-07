@@ -192,7 +192,7 @@ struct ProgramWeather : public Program
     // Day cycle.
     {
       // Rad
-      double a0 = 0.0;
+      double a0 = 0.0; // FIXME: a0 is calculated but only used in block of code excluded with #if 0
       double a1 = 0.0;
       double b1 = 0.0;
       for (int i = 0; i < 24; i++)

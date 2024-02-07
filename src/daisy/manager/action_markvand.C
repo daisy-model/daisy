@@ -568,7 +568,8 @@ ActionMarkvand::doIt (Daisy& daisy, const Scope&, Treelog& msg)
   V_r += P_I;
 
   // Actual evaporation.
-  double E_a = 0.0;
+  double E_a = 0.0; // FIXME: E_a is calculated but never used. The only place is is used is in a
+                    // block of code that is excluded with #if 0
   
   // Soil surface evaporation.
   {
