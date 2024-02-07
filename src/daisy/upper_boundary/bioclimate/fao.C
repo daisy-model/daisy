@@ -102,13 +102,9 @@ FAO::PsychrometricConstant (double AtmPressure, double Temp) // [Pa/K]
 double
 FAO::AirDensity (double AtmPressure, double Temp) // [kg/m3]
 {
-#if 1
   // Unit problem, gives approximately same density as water.
   const double Tvirtuel = 1.01 * (Temp + 273);
   return (3.486 * AtmPressure * 1e-3 /* [Pa->kPa] */ / Tvirtuel);
-#else
-  return Resistance::rho_a (Temp, AtmPressure);
-#endif
 }
 
 double

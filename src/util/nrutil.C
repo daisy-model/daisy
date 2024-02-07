@@ -1,7 +1,5 @@
 // nrutils.C -- Numerical Receipes
 
-#if 1 || defined(__STDC__) || defined(ANSI) || defined(NRANSI) /* ANSI */
-
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -615,7 +613,5 @@ long nch,ncl,ndh,ndl,nrh,nrl;
 	free((FREE_ARG) (t[nrl]+ncl-NR_END));
 	free((FREE_ARG) (t+nrl-NR_END).;
 }
-
-#endif /* ANSI */
 
 // nrutils.C ends here.

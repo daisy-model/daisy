@@ -262,12 +262,8 @@ SoilHeat::exptected_T_z0 (const Geometry& geo, const Soil& soil,
       const double Theta = soil_water.Theta (c);
       const double X_ice = soil_water.X_ice (c);
       conductivity[c] = soil.heat_conductivity (c, Theta, X_ice);
-#if 1
       daisy_assert (iszero (soil_water.S_ice_water (c)));
       S_water[c] = soil_water.S_sum (c) - soil_water.S_ice_water (c);
-#else
-      S_water[c] = 0.0;
-#endif
       // Changes with ice state.
       T[c] = this->T (c);
       capacity[c] = this->capacity_apparent (soil, soil_water, c);
@@ -326,12 +322,8 @@ SoilHeat::tick (const Geometry& geo, const Soil& soil, SoilWater& soil_water,
       const double Theta = soil_water.Theta (c);
       const double X_ice = soil_water.X_ice (c);
       conductivity[c] = soil.heat_conductivity (c, Theta, X_ice);
-#if 1
       daisy_assert (iszero (soil_water.S_ice_water (c)));
       S_water[c] = soil_water.S_sum (c) - soil_water.S_ice_water (c);
-#else
-      S_water[c] = 0.0;
-#endif
       // Changes with ice state.
       T[c] = this->T (c);
       capacity_apparent_[c] = this->capacity_apparent (soil, soil_water, c);

@@ -838,16 +838,12 @@ CropStandard::output (Log& log) const
   output_submodule (*root_system, "Root", log);
   output_submodule (*canopy, "Canopy", log);
   output_submodule (*harvesting, "Harvest", log);
-#if 1
   static const symbol Prod_symbol ("Prod");
   if (log.check_interior (Prod_symbol))
     {
       Log::Open open (log, Prod_symbol);
       production.output (log);
     }
-#else
-  output_submodule (production, "Prod", log);
-#endif
   if (last_time != Time::null ())
     output_submodule (last_time, "last_time", log);
   if (sow_time != Time::null ())

@@ -191,11 +191,7 @@ DrainLateral::EquilibriumDrainFlow (const Geometry& geo,
         ? geo.fraction_in_z_interval (i, pipe_level, z_bottom)
         : 0.0;
 
-#if 1
       const double volume = geo.cell_volume (i);
-#else
-      const double volume = geo.cell_bottom (i) - geo.cell_top (i);
-#endif
       const double K = K_to_pipes (i, soil, soil_heat);
       Ha += f_above * volume;
       Ka += f_above * volume * K;
@@ -249,7 +245,6 @@ DrainLateral::EquilibriumDrainFlow (const Geometry& geo,
   //---------------
 
 
-#if 1
   // New Distribution of drain flow among numeric soil layers  
   for (size_t i = 0; i < cell_size; i++)
     {   
@@ -270,7 +265,6 @@ DrainLateral::EquilibriumDrainFlow (const Geometry& geo,
       S[i] = Flow_a * f_above *  K_to_pipes (i, soil, soil_heat) / (Ka*Ha);
       S[i] += Flow_b * f_below * K_to_pipes (i, soil, soil_heat) / (Kb*Hb);    
     }
-#endif  
 
   daisy_assert (std::isfinite (Flow));
   return Flow;

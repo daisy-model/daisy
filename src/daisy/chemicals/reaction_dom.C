@@ -212,13 +212,11 @@ ReactionDOM::tick_soil (const Geometry& geo,
     }
   
   // Make it official.
-#if 1
   soil_NH4.add_to_transform_source (NH4);
   soil_NO3.add_to_transform_source (NO3);
   soil_DOC.add_to_transform_sink (DOC);
   soil_DON.add_to_transform_sink (DON);
   organic.add_stationary (SOC, SON, where, dt);
-#endif
 }
 
 bool 
