@@ -64,9 +64,6 @@ private:
   // Metalib
 public:
   void clear_parsed ();
-#if 0
-  void refile_parsed (const std::string& from, const std::string& to);
-#endif
 
   // Use.
 public:

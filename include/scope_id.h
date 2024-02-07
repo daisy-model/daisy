@@ -54,9 +54,6 @@ private:
   ScopeID (const ScopeID&);
 public:
   explicit ScopeID (const symbol tag, const symbol dim);
-#if 0
-  explicit ScopeID (const BlockModel&);
-#endif
   ~ScopeID ();
 };
 

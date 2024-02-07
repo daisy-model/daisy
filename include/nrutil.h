@@ -4,9 +4,6 @@
 #define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
 
 void nrerror(const char error_text[]);
-#if 0
-float *vector(long nl, long nh);
-#endif
 int *ivector(long nl, long nh);
 unsigned char *cvector(long nl, long nh);
 unsigned long *lvector(long nl, long nh);
