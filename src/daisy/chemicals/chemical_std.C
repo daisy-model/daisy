@@ -1241,19 +1241,6 @@ ChemicalBase::tick_surface (const double pond /* [cm] */,
       total_area += area;
       surface_solute += C * area * Theta;       // [g/cm]
       daisy_assert (surface_solute >= 0.0);
-
-#if 0
-      if (M < 1e-20)
-	continue;
-      
-      std::ostringstream tmp;
-      tmp << "C = " << C
-	  << "; M = " << M
-	  << "; A = " << (M - Theta * C)
-	  << "; Theta = " << Theta
-	  << "; Theta_pond = " << Theta_pond;
-      msg.message (tmp.str ());
-#endif
     }
   
   // Convert solute back to surface dimensions.

@@ -789,15 +789,6 @@ SoilHeat::limit_T_top (const Geometry& geo,
   const double T_soil = total_T / total_area;
   const double K = total_K / total_area;
   const double q = K * (T_soil - T_surface) / dz;
-#if 0
-  std::ostringstream tmp;
-  tmp << "q = " << q << "; q_lim = " << q_lim
-      << "; dz = " << dz
-      << "; T_soil  = " << T_soil
-      << "; K = " << K
-      << "; T_surface = " << T_surface;
-  Assertion::message (tmp.str ());
-#endif
   if (std::fabs (q) < q_lim)
     return T_surface;
 

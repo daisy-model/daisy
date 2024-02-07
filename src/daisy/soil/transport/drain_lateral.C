@@ -228,23 +228,7 @@ DrainLateral::EquilibriumDrainFlow (const Geometry& geo,
   const double Flow_a = Ka*Ha*Ha / (L*x - x*x);   //Flow above drainpipes
   const double Flow_b = 2*Kb*De*Ha / (L*x - x*x); //Flow below drainpipes 
   const double Flow = Flow_a + Flow_b;
-
   
-
-  //-------old-----
-  //// Distribution of drain flow among numeric soil layers 
-#if 0
-  const double a = Flow / (Ka*Ha + Kb*Hb);
-  for (size_t i = 0; i < cell_size; i++)
-    {
-      const double soil_bottom = geo.bottom ();
-      const double f = geo.fraction_in_z_interval (i, height, soil_bottom);
-      S[i] = f * a * K_to_pipes (i, soil, soil_heat);
-    }
-#endif
-  //---------------
-
-
   // New Distribution of drain flow among numeric soil layers  
   for (size_t i = 0; i < cell_size; i++)
     {   

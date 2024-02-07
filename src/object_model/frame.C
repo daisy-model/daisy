@@ -1802,33 +1802,11 @@ void
 Frame::reset ()
 { impl.reset (new Implementation (impl->count, impl->children)); }
 
-#if 0
-static void describe_frame (const Frame& frame, std::ostream& out)
-{
-  out << typeid (frame).name () << " " << frame.impl->count << " " 
-      << frame.type_name ();
-}
-#endif
-
 Frame::~Frame ()
 { 
   const size_t size = impl->children.size ();
   if (size != 0)
     {
-#if 0
-      std::ostringstream tmp;
-      tmp << "Reparenting children of ";
-      describe_frame (*this, tmp);
-      for (Implementation::child_set::const_iterator i
-             = impl->children.begin ();
-           i != impl->children.end ();
-           i++)
-        {
-          tmp << "\n" << "child" << ": ";
-          describe_frame (**i, tmp);
-        }
-      daisy_warning (tmp.str ());
-#endif
       reparent_children (parent ());
     }
 }

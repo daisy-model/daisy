@@ -286,16 +286,6 @@ WSourceWeather::Implementation::number_average (const Time& from,
   
   if (e == numbers.end ())
     {
-#if 0
-      std::ostringstream tmp;
-      tmp << "Can't average '" + key + "'; know";
-      for (number_map_t::const_iterator i = numbers.begin ();
-           i != numbers.end ();
-           i++)
-        tmp << " " << i->first;
-
-      Assertion::message (tmp.str ());
-#endif
       return NAN;
     }
 
@@ -1038,11 +1028,6 @@ WSourceWeather::Implementation::tick_weather (const Time& time, Treelog& msg)
 void
 WSourceWeather::Implementation::check_state (const symbol key, const double value, Treelog& msg)
 {
-#if 0
-  std::ostringstream tmp;
-  tmp << "Value of " << key << " is " << value;
-  msg.message (tmp.str ());
-#endif
   if (std::isfinite (value))
     return;
   msg.error ("No data for '" + key + "'");

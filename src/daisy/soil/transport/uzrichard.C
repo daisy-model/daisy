@@ -179,15 +179,6 @@ UZRichard::richard (Treelog& msg,
 
   // If top node is unsaturated, we start with a flux boundary.
   bool flux = h[0] < 0.0;
-
-#if 0
-      if (available_water
-	  > soil.K (first, 0.0, h_ice[first], soil_heat.T (first)) * dt
-	  + (soil.Theta (first, 0.0, h_ice[first]) - Theta_old[first])
-	  * geo.dz (first))
-	flux = false;
-#endif
-
   bool switched_top = false;  // Switched top this timestep?
   double time_left = dt;	// How much of the large time step left.
   double ddt = dt;		// We start with small == large time step.

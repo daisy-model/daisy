@@ -99,23 +99,6 @@ struct GroundwaterAquitard : public Groundwater
         const double q_up = -K_aquitard * (numerator / denominator 
                                            - h_aquifer / Z_aquitard + 1.0);
         edge_flux[edge] = in_sign * q_up;
-
-#if 0
-        Treelog::Open nest (msg, geo.edge_name (edge));
-        std::ostringstream tmp;
-        tmp << "cell = " << geo.cell_name (cell) << "\n"
-            << "in_sign = " << in_sign << "\n"
-            << "Dz_i = " <<  Dz_i << "\n"
-            << "K_i = " << K_i << "\n"
-            << "h_i = " << h_i << "\n"
-            << "numerator = " << numerator << "\n"
-            << "denominator = " << denominator << "\n"
-            << "q_up = " << q_up << "\n"
-            << "h_aquifer = " << h_aquifer << "\n"
-            << "Z_aquitard = " << Z_aquitard << "\n"
-            << "K_aquitard = " << K_aquitard;
-        msg.message (tmp.str ());
-#endif
       }
   }
   void output (Log& log) const

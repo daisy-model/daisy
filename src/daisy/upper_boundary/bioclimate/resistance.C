@@ -287,14 +287,6 @@ Resistance::r_a (const double z /* reference height above canopy [m]*/,
     r_a = (log((z - d)/z_0) * log((z - d)/z_0h))
       / (sqr(k) * U_z * pow(1. + N, 3./4.));
 
-#if 0
-  std::ostringstream tmp;
-  tmp << "z_0 = " << z_0 << ", z = " << z << ", z0_h " << z_0h << ", d = " << d 
-      << ", N = " << N << ", U_z = " << U_z << ", S = " << S 
-      << ", r_a = " << r_a;
-  Assertion::message (tmp.str ());
-#endif
-
   return r_a; // [s m^-1]
 }
 

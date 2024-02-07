@@ -173,21 +173,6 @@ BioporeDrain::matrix_biopore_drain (size_t c, const Geometry& geo,
     return 0.0;
   const double r_c = diameter / 2.0;
   const double h_3 = air_bottom (c) - geo.cell_z (c);
-
-#if 0
-  //--------------------------------------
-  std::ostringstream tmp;
-  tmp << "c = " << c 
-      << " airbottom = " << air_bottom (c) 
-      << " cell_z = " <<  geo.cell_z (c)
-      << " h = " << h
-      << " h_3 = " << h_3 
-      << " h + p_end = " << h+pressure_limit; 
-  Assertion::message (tmp.str ());  
-  //--------------------------------------
-#endif
-
-
   double S;
   if (active && h>h_3 + h_barrier)
     {

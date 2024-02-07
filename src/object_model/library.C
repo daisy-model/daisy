@@ -160,21 +160,6 @@ Library::Implementation::clear_parsed ()
     }
 }
 
-#if 0
-void
-Library::Implementation::refile_parsed (const std::string& from, const std::string& to)
-{
-  daisy_assert (from != to);
-  for (frame_map::iterator i = frames.begin (); i != frames.end (); i++)
-    {
-      const Frame& frame = *((*i).second);
-      const Filepos& pos = frame.own_position ();
-      if (pos.filename () == from)
-        frame.reposition (Filepos (to, pos.line (), pos.column ()));
-    }
-}
-#endif
-
 Library::Implementation::Implementation (const symbol n) 
   : name (symbol (n))
 { }
@@ -185,12 +170,6 @@ Library::Implementation::~Implementation ()
 void 
 Library::clear_parsed ()
 { impl->clear_parsed (); }
-
-#if 0
-void 
-Library::refile_parsed (const std::string& from, const std::string& to)
-{ impl->refile_parsed (from, to); }
-#endif
 
 symbol
 Library::name () const

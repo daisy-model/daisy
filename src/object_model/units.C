@@ -195,19 +195,6 @@ Units::unit_convert (const Unit& from, const Unit& to,
                                        to.base_name (), 
                                        from_base);
   const double native = to.to_native (to_base);
-  
-#if 0
-  std::ostringstream tmp;
-  tmp << "Converting " << value << " [" << from.native_name () << "] to " << native 
-      << " [" << to.native_name () << "] through " << from_base << " [" 
-      << from.base_name () << "]";
-  if (from.base_name () == to.base_name ())
-    daisy_approximate (from_base, to_base);
-  else
-    tmp << " and " << to_base << " [" << to.base_name () << "]";
-  Assertion::message (tmp.str ());
-#endif
-
   return native;
 }
 

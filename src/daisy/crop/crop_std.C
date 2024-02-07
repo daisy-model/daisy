@@ -243,16 +243,6 @@ CropStandard::DM (const double height) const
     + leaf_harvest * production.WLeaf 
     + sorg_harvest * production.WSOrg;
 
-#if 0
-  std::ostringstream tmp;
-  tmp << "height = " << height << ", CAI (height) = "  
-      << ((leaf_harvest > 0.0) ? canopy->LAIvsH (height) : 0.0 )
-      << ", CAI = " << canopy->CAI 
-      << ", leaf_harvest = " << leaf_harvest 
-      << ", sorg_harvest = " << sorg_harvest << ", total = " << total * 10.0;
-  Assertion::message (tmp.str ());
-#endif
-
   return total * 10.0;          // [g/m^2 -> kg/ha]
 }
 

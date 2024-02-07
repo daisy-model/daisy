@@ -746,10 +746,6 @@ Time::operator<  (const Time& other) const
     return false;
   if (impl->microsecond < other.impl->microsecond)
     return true;
-#if 0
-  if (impl->microsecond > other.impl->microsecond)
-    return false;
-#endif
   return false;
 }
 

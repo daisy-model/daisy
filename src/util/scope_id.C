@@ -23,11 +23,6 @@
 #include "scope_id.h"
 #include "assertion.h"
 #include "mathlib.h"
-#if 0
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#endif
 
 void 
 ScopeID::entries (std::set<symbol>& all) const
@@ -68,37 +63,7 @@ ScopeID::ScopeID (const symbol name, const symbol d)
     dim (d)
 { }
 
-#if 0
-ScopeID::ScopeID (const BlockModel& al)
-  : WScope (al),
-    tag (al.name ("name")), 
-    value (al.number ("value")),
-    dim (al.name ("value"))
-{ }
-#endif
-
 ScopeID::~ScopeID ()
 { }
-
-#if 0
-static struct ScopeIDSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new ScopeID (al); }
-
-  ScopeIDSyntax ()
-    : DeclareModel (Scope::component, "id", 
-               "A scope containing just a single number.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-
-    frame.declare_string ("name", Attribute::Const, 
-                "Identifier name.");
-    frame.declare ("value", Attribute::User (), Attribute::Const, 
-                "Initial value and dimension.");
-  }
-} ScopeID_syntax;
-#endif
 
 // scope_id.C ends here

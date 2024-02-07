@@ -269,9 +269,6 @@ WSourceCombine::find_source (const symbol key) const
     }
 
   // Nope.
-#if 0
-  Assertion::message (" source found for '" + key + "'");
-#endif
   return *reserve;
 }
 
@@ -300,9 +297,6 @@ WSourceCombine::find_end (const symbol key) const
     }
 
   // Nope.
-#if 0
-  Assertion::message ("No end source found for '" + key + "'");
-#endif
   return *reserve;
 }
 
@@ -331,11 +325,6 @@ WSourceCombine::entries (std::set<symbol>& result) const
     {
       Entry& e = *(entry[i]);
 
-#if 0
-      std::ostringstream tmp;
-      tmp << "Hej ";
-#endif
-
       // Within period?
       if (my_end < e.begin || my_begin > e.end)
         continue;
@@ -346,13 +335,6 @@ WSourceCombine::entries (std::set<symbol>& result) const
       if (e.use.find (Any ()) != e.use.end ())
         {
           source.entries (result);
-#if 0
-          for (std::set<symbol>::const_iterator i = result.begin ();
-               i != result.end ();
-               i++)
-            tmp << " " << *i;
-          Assertion::message (tmp.str ());
-#endif
           continue;
         }
 
@@ -374,35 +356,6 @@ WSourceCombine::entries (std::set<symbol>& result) const
 
       // Use them.
       result.swap (all);
-
-#if 0
-      tmp << "\nUse";
-      for (std::set<symbol>::const_iterator i = e.use.begin ();
-           i != e.use.end ();
-           i++)
-        tmp << " " << *i;
-      tmp << "\nMine";
-      for (std::set<symbol>::const_iterator i = mine.begin ();
-           i != mine.end ();
-           i++)
-        tmp << " " << *i;
-      tmp << "\nValid";
-      for (std::set<symbol>::const_iterator i = valid.begin ();
-           i != valid.end ();
-           i++)
-        tmp << " " << *i;
-      tmp << "\nAll";
-      for (std::set<symbol>::const_iterator i = all.begin ();
-           i != all.end ();
-           i++)
-        tmp << " " << *i;
-      tmp << "\nResult";
-      for (std::set<symbol>::const_iterator i = result.begin ();
-           i != result.end ();
-           i++)
-        tmp << " " << *i;
-      Assertion::message (tmp.str ());
-#endif
     }
 }
 

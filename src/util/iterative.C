@@ -75,16 +75,6 @@ Fixpoint::solve (Treelog& msg)
   double err_A = diff (A, B);
   int iterations_used = 0;
 
-#if 0
-  std::ostringstream tmp;
-  tmp << " epsilon = " << epsilon;
-  const size_t size = A.size ();
-  tmp << ", err_A = " << err_A;
-  for (size_t i = 0; i < size; i++)
-    tmp << "; " << i << ": A " << A[i] << " B " << B[i];
-  msg.message (tmp.str ());
-#endif
-
   while (err_A > epsilon)
     {
       // Find a better guess.

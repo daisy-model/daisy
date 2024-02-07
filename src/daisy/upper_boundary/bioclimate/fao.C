@@ -270,14 +270,6 @@ FAO::RefPenmanMonteith (double Rn, // [W/m^2]
   daisy_assert (std::isfinite (E3));
   const double value = E3 / 86400.0; // [kg/m^2/s]
   daisy_assert (std::isfinite (value));
-#if 0
-  std::ostringstream tmp;
-  tmp << "Rn = " << Rn << ", G = " << G << ", Temp = " << Temp
-      << ", ea = " << ea << ", U2 = " << U2 << ", AtmPressure = " << AtmPressure
-      << ", s  = " << s << ", gamma = " << gamma << ", e_sat = " << e_sat
-      << ", value = " << value;
-  Assertion::message (tmp.str ());
-#endif
   return value;
 }
 
@@ -290,15 +282,6 @@ FAO::RefPenmanMonteithWet (double Rn, double G, double Temp, double ea,
   const double E1 = ETrad (AtmPressure, Temp, Rn, G, ra, rc);
   const double E2 = ETaero (AtmPressure, Temp, ea, ra, rc);
   //const double E2 = RefETaero (AtmPressure, Temp, ea, U2);
-
-#if 0
-  std::ostringstream tmp;
-  tmp << "Rn = " << Rn << ", G = " << G << ", Temp = " << Temp
-      << ", ea = " << ea << ", U2 = " << U2 << ", AtmPressure = " << AtmPressure
-      << ", ra  = " << ra << ", E1 = " << E1 << ", E2 = " << E2;
-  Assertion::message (tmp.str ());
-#endif
-
   return (E1 + E2);
 }
 
