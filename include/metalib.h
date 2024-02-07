@@ -45,7 +45,7 @@ class Unit;
 class EXPORT Metalib : public Frame
 {
   // Content.
-  class Implementation;
+  struct Implementation;
   std::unique_ptr<Implementation> impl;
 
   // Interface.

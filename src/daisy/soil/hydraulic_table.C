@@ -78,7 +78,7 @@ public:
   
 // Create and Destroy.
 private:
-  friend class HydraulicTableSyntax;
+  friend struct HydraulicTableSyntax;
   static Model& make (BlockModel& al);
   HydraulicTable (const BlockModel&);
 public:

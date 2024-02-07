@@ -121,7 +121,7 @@ TreelogProgress::TreelogProgress ()
 TreelogProgress::~TreelogProgress ()
 { }
 
-class TreelogString::Implementation : public std::ostringstream
+struct TreelogString::Implementation : public std::ostringstream
 { };
 
 void 
@@ -151,7 +151,7 @@ TreelogString::TreelogString ()
 TreelogString::~TreelogString ()
 { }
 
-class TreelogFile::Implementation : public std::ofstream
+struct TreelogFile::Implementation : public std::ofstream
 { 
 public:
   Implementation (const std::string& name)

@@ -69,7 +69,7 @@ public:
 
   // Create and Destroy.
 private:
-  friend class HydraulicOld2Syntax;
+  friend struct HydraulicOld2Syntax;
   static Model& make (BlockModel& al);
   HydraulicOld2 (const BlockModel&);
 public:

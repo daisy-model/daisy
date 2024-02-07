@@ -46,7 +46,7 @@ public:
   };
   // Database.
 private:
-  class DB;
+  struct DB;
   static DB* data;
   friend class Init;
 
