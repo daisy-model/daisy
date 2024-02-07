@@ -194,7 +194,7 @@ ReactionStyczen88::colloid_generation (const double P /* [mm/h] */,
                                        const double f_cov /* [] */,
 				       const double litter_cover /* [] */,
                                        const double h_veg /* [m] */,
-                                       const double h_pond /* [mm] */,
+                                       const double h_pond /* [mm] */, // FIXME: Why is h_pond not used?
                                        const double dt /* [h] */)
 {
   // Direct rainfall momentum

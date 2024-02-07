@@ -35,7 +35,7 @@ Equilibrium::library_id () const
   return id;
 }
 
-Equilibrium::Equilibrium (const BlockModel& al)
+Equilibrium::Equilibrium (const BlockModel& al) // FIXME: Why is al not used?
 { }
 
 Equilibrium::~Equilibrium ()

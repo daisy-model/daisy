@@ -321,7 +321,7 @@ complex<double> log_A_sum_init (const int m,const complex<double> &eps)
 // prod3: E(eps,log(1-z)) Gamma_inv(a+m) Gamma_inv(b+m) Gamma_inv(1+m+eps) 
 // res: returned \beta_0/(1-z)^m value in all cases.
 
-complex<double> B_sum_init_PS_one (const complex<double> &a,const complex<double> &b,const complex<double> &c,
+complex<double> B_sum_init_PS_one (const complex<double> &a,const complex<double> &b,const complex<double> &c, // FIXME: Why is c not used?
 				   const complex<double> &Gamma_c,const complex<double> &Gamma_inv_one_meps,
 				   const complex<double> &Gamma_inv_eps_pa_pm,const complex<double> &Gamma_inv_eps_pb_pm,
 				   const complex<double> &one_minus_z,const int m,const complex<double> &eps)
@@ -701,7 +701,8 @@ complex<double> hyp_PS_one (const complex<double> &a,const complex<double> &b,co
   if (!isfinite (A_first_term)) 
   {
     A_sum = A_term = exp (log_Gamma (c) - log_Gamma (eps_pa_pm) - log_Gamma (eps_pb_pm) + log_A_sum_init (m,eps));
-    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term);
+    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term); // FIXME: This is pointless.
+    // setting to the real part of A_term just sets the imag part to 0, but it is already zero
   }
 
   const complex<double> pow_mzp1_m = pow (one_minus_z,m);
@@ -803,7 +804,8 @@ complex<double> hyp_PS_infinity (const complex<double> &a,const complex<double> 
   if (!isfinite (A_first_term)) 
   {
     A_sum = A_term = exp (log_Gamma (c) - log_Gamma (cma) - log_Gamma (b) + log_A_sum_init (m,eps));
-    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term);
+    if ((imag (a) == 0.0) && (imag (b) == 0.0) && (imag (c) == 0.0)) A_sum = A_term = real (A_term); // FIXME: This is pointless.
+    // setting to the real part of A_term just sets the imag part to 0, but it is already zero
   }
 
   const complex<double> pow_z_inv_m = pow (z_inv,m);

@@ -173,7 +173,7 @@ struct ReactionEquilibrium : public Reaction
                      const Soil& soil, const SoilWater& soil_water, 
                      const SoilHeat& soil_heat, const Surface& surf,
                      OrganicMatter&, Chemistry& chemistry,
-		     const double dt, Treelog& msg)
+		     const double dt, Treelog& msg) // FIXME: dt not used
   { 
     if (!surface)
       // Nothing to do.

@@ -137,7 +137,7 @@ static struct UIProgressSyntax : public DeclareModel
 This is useful when starting the program from a text terminal, or from\n\
 inside another program such as an editor that can capture the output.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   {
 
   }
@@ -207,7 +207,7 @@ static struct UINoneSyntax : public DeclareModel
 This is useful when running from a batch program, or as a component in\n\
 a larger system.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   {
 
   }

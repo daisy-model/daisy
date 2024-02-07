@@ -60,8 +60,8 @@ struct RainergyBrown87 : public Rainergy
   // Simulation.
   double value (const double total_rain /* [mm/h] */, 
                 const double direct_rain /* [mm/h] */,
-                const double canopy_drip /* [mm/h] */,
-                const double canopy_height /* [m] */) const // [J/cm^2/h].
+                const double canopy_drip /* [mm/h] */, // FIXME: Why is canopy_drip not used?
+                const double canopy_height /* [m] */) const // [J/cm^2/h]. // FIXME: Why is canopy_height not used?
   { 
     const double R = total_rain; // [mm/h]
     const double E = 29.0 * (1.0 - 0.72 * std::exp (-0.05 * R)); // [J/m^2/mm]

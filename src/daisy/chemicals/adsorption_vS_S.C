@@ -115,7 +115,7 @@ static struct Adsorption_vS_SSyntax : DeclareModel
 Model by van Schouwenberg and Schuffelen, 1963, with\n\
 parameterization by Hansen et.al., 1990.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   { }
 } Adsorption_vS_S_syntax;
 

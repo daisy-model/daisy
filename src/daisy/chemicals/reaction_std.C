@@ -50,7 +50,7 @@ struct ReactionStandard : public Reaction
   void tick_soil (const Geometry& geo,
                   const Soil& soil, const SoilWater& soil_water, 
                   const SoilHeat& soil_heat, OrganicMatter&,
-                  Chemistry& chemistry, const double dt, Treelog& msg)
+                  Chemistry& chemistry, const double dt, Treelog& msg) // FIXME: dt not used
   {
     TREELOG_MODEL (msg);
     const size_t cell_size = soil.size ();

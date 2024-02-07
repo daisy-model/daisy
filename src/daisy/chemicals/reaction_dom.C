@@ -101,11 +101,11 @@ ReactionDOM::output (Log& log) const
 
 void 
 ReactionDOM::tick_soil (const Geometry& geo,
-			const Soil& soil, const SoilWater& soil_water,
+			const Soil& soil, const SoilWater& soil_water, // FIXME: soil not used
 			const SoilHeat& soil_heat,
 			OrganicMatter& organic, 
 			Chemistry& chemistry, 
-			const double dt, Treelog& msg)
+			const double dt, Treelog& msg) // FIXME: msg not used
 {
   // Code.
   const size_t cell_size = geo.cell_size ();

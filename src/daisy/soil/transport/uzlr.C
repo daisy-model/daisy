@@ -252,8 +252,7 @@ UZlr::tick (Treelog& msg, const GeometryVert& geo,
       daisy_assert (std::isfinite (q[i+1]));
       daisy_assert (Theta[i] <= Theta_sat);
 #ifdef THETA_RES
-      // TODO: Figure out why this is not checked
-      daisy_assert (Theta[i] > Theta_res);
+      daisy_assert (Theta[i] > Theta_res); // FIXME: Why this is not checked?
 #endif
     }
 

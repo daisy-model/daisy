@@ -71,7 +71,7 @@ Fundamentals of Algorithms.\n\
 \n\
 The uBLAS interface was provided by Gunter Winkler <guwi17@gmx.de>.")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame&) const
   {
   }
 } SolverCXSparse_syntax;

@@ -57,7 +57,7 @@ struct ReactionFilter : public Reaction
   void tick_soil (const Geometry& geo, const Soil& soil,
                   const SoilWater& soil_water, const SoilHeat&, 
                   OrganicMatter&, Chemistry& chemistry,
-		  const double dt, Treelog& msg)
+		  const double dt, Treelog& msg) // FIXME: msg not used
   { 
     const size_t cell_size = soil.size ();
     Chemical& mob = chemistry.find (mobile);  
@@ -115,7 +115,7 @@ struct ReactionFilter : public Reaction
 
   // Create.
   bool check (const Geometry&, 
-              const Soil& soil, const SoilWater& soil_water, const SoilHeat&,
+              const Soil& soil, const SoilWater& soil_water, const SoilHeat&, // FIXME soil, soil_water not used
               const OrganicMatter&, const Chemistry& chemistry,
 	      Treelog& msg) const
   { 

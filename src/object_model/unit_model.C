@@ -177,7 +177,7 @@ struct UnitSIFactor : public UnitSI
       const double factor;
       double operator()(const double value) const
       { return factor * value; }
-      bool valid (const double value) const
+      bool valid (const double value) const // FIXME: What is this supposed to do?
       { return true; }
       ConvertFactor (const double f)
         : factor (f)
@@ -818,7 +818,7 @@ static struct UnitpFSyntax : public DeclareModel
   UnitpFSyntax ()
     : DeclareModel (MUnit::component, "pF", "log10 (- cmH2O).")
   { }
-  void load_frame (Frame& frame) const
+  void load_frame (Frame& frame) const // FIXME: Why does this not add the pF model as stated?
   {
     // Add the 'pF' base model.
   }
@@ -832,9 +832,9 @@ struct UnitBase : public MUnit
   { return value; }
   double to_native (double value) const
   { return value; }
-  bool in_native (double value) const
+  bool in_native (double value) const // FIXME: What is this supposed to do?
   { return true; }
-  bool in_base (double value) const
+  bool in_base (double value) const // FIXME: What is this supposed to do?
   { return true; }
 
   UnitBase (const BlockModel& al)
@@ -890,9 +890,9 @@ struct UnitFactor : public MUnit
   { return value * factor; }
   double to_native (double value) const
   { return value / factor; }
-  bool in_native (double value) const
+  bool in_native (double value) const // FIXME: What is this supposed to do?
   { return true; }
-  bool in_base (double value) const
+  bool in_base (double value) const // FIXME: What is this supposed to do?
   { return true; }
 
   UnitFactor (const BlockModel& al)
@@ -965,9 +965,9 @@ struct UnitOffset : public MUnit
   { return value * factor + offset; }
   double to_native (double value) const
   { return (value - offset) / factor; }
-  bool in_native (double value) const
+  bool in_native (double value) const // FIXME: What is this supposed to do?
   { return true; }
-  bool in_base (double value) const
+  bool in_base (double value) const // FIXME: What is this supposed to do?
   { return true; }
 
   UnitOffset (const BlockModel& al)

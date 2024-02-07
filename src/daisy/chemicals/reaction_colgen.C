@@ -61,7 +61,7 @@ ReactionColgen::output_colgen (Log& log) const
 }
 
 bool 
-ReactionColgen::check (const Geometry& geo,
+ReactionColgen::check (const Geometry& geo, // FIXME: Why is geo not used?
                        const Soil&, const SoilWater&, const SoilHeat&,
                        const OrganicMatter&,
 		       const Chemistry& chemistry, Treelog& msg) const
