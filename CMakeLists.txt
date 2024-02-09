@@ -94,6 +94,16 @@ set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postinst;${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postrm;"
 )
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Silas Ørting<silas@di.ku.dk>")
-  
+
+
+# Windows package details
+set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "SetOutPath $INSTDIR"
+SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+  "WriteRegStr HKCU 'Software\\\\Daisy' '${CMAKE_PROJECT_VERSION}' 'Install directory' '$INSTDIR'"
+)
+SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+  "HKCU 'Software\\\\Daisy' '${CMAKE_PROJECT_VERSION}' 'Install directory'"
+)
+
 include(CPack)
 
