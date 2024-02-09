@@ -32,7 +32,6 @@ install(FILES
   log-old.dai
   log-std.dai
   maize.dai
-  Makefile
   markvand.dai
   mini.dai
   onion.dai

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.25)
 project(
   daisy
   VERSION 7.0.0
+  DESCRIPTION "Mechanistic simulation of agricultural fields"
+  HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX
 )
 
@@ -64,12 +66,34 @@ target_link_options(daisy PRIVATE
 )
 
 
-
-
-install(TARGETS daisy DESTINATION bin)
+include(CTest)
+add_subdirectory(test)
 
 # Contains .dai files that define functionality
 add_subdirectory(lib)
+add_subdirectory(sample)
 
-include(CTest)
-add_subdirectory(test)
+
+install(TARGETS daisy RUNTIME DESTINATION bin)
+
+# Packaging
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
+set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
+set(CPACK_SOURCE_IGNORE_FILES
+  /.git*
+  /cmake
+  /.*build.*
+)
+
+# Debian package details
+set(CPACK_DEBIAN_FILE_NAME "DEB-DEFAULT")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS
+  "libsuitesparse-dev, libboost-filesystem-dev, libboost-system-dev"
+)
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA 
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postinst;${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postrm;"
+)
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Silas Ørting<silas@di.ku.dk>")
+  
+include(CPack)
+

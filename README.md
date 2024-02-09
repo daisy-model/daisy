@@ -3,6 +3,13 @@
 Refactor of Daisy from https://github.com/perabrahamsen/daisy-model
 
 ## Building
+There are presets defined in `CMakePresets.json` for building on different platforms.
+
+To see a list of available presets run
+
+    cmake --list-presets
+
+in the source dirrectory.
 
 ### Linux
 Install dependencies
@@ -20,19 +27,30 @@ Using apt
     mkdir -p daisy/build/release
     cd daisy/build/release
 
-To see a list of available presets
-
-    cmake ../../ --list-presets
-
 To build with gcc using release options
 
     cmake ../../ --preset gcc-release
-    make
-    
+    cmake --build . -j <number-of-concurrent-jobs>
+
 To build a portable statically linked binary
 
     cmake ../../ --preset gcc-release-portable
-    make
+    cmake --build . -j <number-of-concurrent-jobs>
+
+#### Installers
+To build .deb package
+
+    cpack -G DEB
+
+To build a generic linux installer
+
+    cpack -G STGZ
+
+For the generic linux installer it is necesary to set the environment variable `DAISYHOME` to the install directory. For example, if daisy was installed in `/home/user-name/daisy`, you would do
+
+    export DAISYHOME=/home/user-name/daisy
+
+TODO: Need to figure out static linking vs specifying depends in the package. The deb package and similar should probably be dynamically linked with depends, and the generic installer should probably be statically linked.
     
 ### MacOS
 Install dependencies
@@ -48,8 +66,11 @@ Download the source code and setup a build dir
 Build it
 
     cmake ../../ --preset clang-release
-    make
+    cmake --build . -j <number-of-concurrent-jobs>
 
+Test it
+
+    ctest
 
 ## Testing
 Test scenarios are in [test/dai_test_files](test/dai_test_files).
