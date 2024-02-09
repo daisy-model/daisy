@@ -72,6 +72,34 @@ Test it
 
     ctest
 
+### Windows
+!NOT TESTED!
+Install [MSYS2](https://www.msys2.org/).
+
+Install build environment
+
+    pacman -S git mingw-w64-ucrt-x86_64-ccmake mingw-w64-ucrt-x86_64-gcc mingw-w64-x86_64-ninja
+
+Install daisy dependencies
+    
+    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost
+    
+Download the source code and setup a build dir
+
+    git clone git@github.com:daisy-model/daisy.git
+    mkdir -p daisy/build/release
+    cd daisy/build/release
+    
+Build it
+
+    cmake ../../ --preset gcc-release -G ninja
+    cmake --build . -j <number-of-concurrent-jobs>
+    
+Test it
+
+    ctest
+
+
 ## Testing
 Test scenarios are in [test/dai_test_files](test/dai_test_files).
 When adding a test you need to add it as a `dai_test_case` in [test/CMakeLists.txt](test/CMakeLists.txt).
