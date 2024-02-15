@@ -1,4 +1,7 @@
 include(GNUInstallDirs)
+set(DAISY_SAMPLE_DESTINATION
+	"$<IF:$<STREQUAL:${OS},win>,sample,${CMAKE_INSTALL_DATADIR}/daisy/sample>"
+)
 install(FILES
   afforestation.dai
   batch.dai
@@ -49,4 +52,4 @@ install(FILES
   test-post.dai
   test-prd.dai
   test-spawn.dai
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/daisy/sample)
+  DESTINATION ${DAISY_SAMPLE_DESTINATION})

@@ -4,7 +4,7 @@ project(
   VERSION 7.0.0
   DESCRIPTION "Mechanistic simulation of agricultural fields"
   HOMEPAGE_URL https://daisy.ku.dk/
-  LANGUAGES CXX
+  LANGUAGES CXX C
 )
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 
@@ -59,14 +59,14 @@ target_link_libraries(core PUBLIC
 )
 target_link_directories(core PRIVATE "${LINKER_DIRS}")
 target_link_options(core PRIVATE ${LINKER_OPTIONS})
-if (${OS} EQUAL "win")
+if (${OS} STREQUAL "mingw")
   # On windows we need to build w32reg to read/write daisy install dir location
   add_library(w32reg SHARED w32reg.c)
   target_link_libraries(core PUBLIC
     w32reg
     ${WIN_LIBS}
   )
-endif (${OS} EQUAL "win") 
+endif (${OS} STREQUAL "mingw")
 
 # Daisy executable
 add_executable(daisy)
@@ -87,9 +87,27 @@ add_subdirectory(test)
 # Contains .dai files that define functionality and should be installed
 add_subdirectory(lib)
 add_subdirectory(sample)
+
+# Install daisy binary
 install(TARGETS daisy RUNTIME DESTINATION bin)
 
+if (${OS} STREQUAL "mingw")
+    # On Windows we need to install the dlls that we build and we need to
+	# install the dlls we depend on.
+	install(TARGETS core RUNTIME DESTINATION bin)
+	install(TARGETS w32reg RUNTIME DESTINATION bin)
+	install(FILES
+		$ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
+		$ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
+		$ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
+		$ENV{MINGW_PREFIX}/bin/libcxsparse.dll
+		$ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
+		TYPE BIN
+	)
+endif (${OS} STREQUAL "mingw")
+
 # General packaging stuff
+set(CPACK_PACKAGE_VENDOR "UCPH")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
 set(CPACK_SOURCE_IGNORE_FILES
   /.git*
@@ -111,12 +129,7 @@ set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Silas Ørting<silas@di.ku.dk>")
 
 # Windows package
-set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "SetOutPath $INSTDIR")
-SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
-  "WriteRegStr HKCU 'Software\\\\Daisy' '${CMAKE_PROJECT_VERSION}' 'Install directory' '$INSTDIR'"
-)
-SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
-  "HKCU 'Software\\\\Daisy' '${CMAKE_PROJECT_VERSION}' 'Install directory'"
-)
+# CPack stores the registry key. Here we define the location so it is available in path.C
+add_definitions( -DWINDOWS_INSTALL_LOCATION_REG_KEY="Software\\\\${CPACK_PACKAGE_VENDOR}\\\\daisy ${CMAKE_PROJECT_VERSION}" )
 
 include(CPack)

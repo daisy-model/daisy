@@ -23,7 +23,7 @@
             "cacheVariables" : {
                 "OS_OPTIONS" : "-DMINGW;-D_WIN32;-DWIN64",
                 "WIN_LIBS" : "ws2_32",
-                "OS" : "win"
+                "OS" : "mingw"
             }
         },
         {

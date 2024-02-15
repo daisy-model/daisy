@@ -89,14 +89,19 @@ Download the source code and setup a build dir
     mkdir -p daisy/build/release
     cd daisy/build/release
     
-Build it (Does not work yet. Issues with linking + wreg32 is not compiled yet)
+Build it
 
     cmake ../../ --preset mingw-gcc-release
-    cmake --build . -j <number-of-concurrent-jobs>
+    cmake --build .
     
 Test it
 
     ctest
+
+Make an installer
+
+    pacman -S mingw-w64-ucrt-x86_64-nsis
+    cpack -G NSIS
 
 
 ## Testing

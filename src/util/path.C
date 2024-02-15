@@ -99,13 +99,7 @@ Path::get_daisy_home ()
 	{
 	  // Check MS Windows registry
 #if defined (_WIN32) || defined (__CYGWIN32__)
-	  const std::string key = "Software\\Daisy " + std::string (version)
-#ifdef _WIN64
-	    + " (w64)"
-#else
-	    + " (w32)"
-#endif
-	    ;
+	  const std::string key = WINDOWS_INSTALL_LOCATION_REG_KEY;
 	  char *const daisy_w32_reg 
 	    = read_w32_registry_string (NULL, key.c_str (), "Install Directory");
 	  if (daisy_w32_reg)
