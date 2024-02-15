@@ -6,6 +6,7 @@ project(
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX
 )
+add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 
 include(cmake/AddCoverageBuildType.cmake)
 
