@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   adsorption.C
   adsorption_freundlich.C
   adsorption_langmuir.C

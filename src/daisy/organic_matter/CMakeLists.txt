@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   am.C
   aom.C
   bioincorporation.C

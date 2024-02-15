@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   litter.C
   litter_mulch.C
   litter_residue.C

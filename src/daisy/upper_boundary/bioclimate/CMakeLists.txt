@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   astronomy.C
   bioclimate.C
   bioclimate_std.C

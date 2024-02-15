@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   boolean.C
   boolean_number.C
   boolean_string.C

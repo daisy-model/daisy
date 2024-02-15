@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC
+target_sources(daisy PRIVATE
   groundwater.C
   groundwater_aquitard.C
   groundwater_deep.C

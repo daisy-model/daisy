@@ -1,6 +1,10 @@
-target_sources(daisy PUBLIC
-  main.C
+target_sources(daisy PRIVATE
+  #main.C
   run.C
   ui.C
   uifilter.C
+)
+
+target_sources(prog PRIVATE
+  main.C
 )
