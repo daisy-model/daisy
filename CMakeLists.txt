@@ -42,11 +42,8 @@ add_subdirectory(src)
 target_include_directories(daisy PUBLIC include)
 target_link_directories(daisy INTERFACE Boost::Boost)
 target_link_libraries(daisy PUBLIC
-  stdc++
   ${Boost_LIBRARIES}
   cxsparse
-  dl
-  pthread
 )
 
 target_compile_options(daisy PRIVATE
