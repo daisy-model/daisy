@@ -11,6 +11,22 @@
             "hidden" : true,
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
+                "LINKER_DIRS" : "/usr/local/lib", // For lld on Mac OS
+                "OS_OPTIONS" : "-D__unix"
+            }
+        },
+        {
+            "name" : "mingw",
+            "hidden" : true,
+            "generator" : "Ninja",
+            "cacheVariables" : {
+                "OS_OPTIONS" : "-DMINGW;-D_WIN32;-DWIN64"
+            }
+        },
+        {
+            "name" : "gcc-like",
+            "hidden" : true,
+            "cacheVariables" : {
                 "COMPILER_OPTIONS_WARNING" : "-Wpedantic;-Wall;-Wextra;-Wvariadic-macros;-Wvla;-Wmissing-declarations;-Wfloat-equal;-Wcast-qual;-Woverloaded-virtual;-Wundef;-Wpointer-arith;-Wwrite-strings;-Wcast-align;-Wmissing-format-attribute;-Wold-style-cast;-Wformat=2;-Winit-self;-Wsign-promo;-Wredundant-decls",
                 "COMPILER_OPTIONS_NO_WARNING" : "-Wno-unused-parameter;-Wno-sign-compare",
                 "COMPILER_OPTIONS_PROFILE" : "-pg",
@@ -18,10 +34,8 @@
                 "COMPILER_OPTIONS_PORTABLE" : "-mtune=generic",
                 "COMPILER_OPTIONS_NATIVE" : "-march=native;-mtune=native",
                 "COMPILER_OPTIONS_COVERAGE" : "-O1;--coverage",
-                "LINKER_DIRS" : "/usr/local/lib", // For lld on Mac OS
                 "LINKER_OPTIONS_COVERAGE" : "--coverage",
-                "LINKER_OPTIONS_PORTABLE" : "-static",
-                "OS_OPTIONS" : "-D__unix"
+                "LINKER_OPTIONS_PORTABLE" : "-static"
             }
         },
         {
@@ -55,6 +69,7 @@
         },
         {
             "name" : "gcc",
+            "inherits" : "gcc-like",
             "hidden" : true,
             "cacheVariables" : {
                 "CMAKE_CXX_COMPILER" : "g++"
@@ -62,6 +77,7 @@
         },
         {
             "name" : "clang",
+            "inherits" : "gcc-like",
             "hidden" : true,
             "cacheVariables" : {
                 "CMAKE_CXX_COMPILER" : "clang++"
@@ -93,5 +109,10 @@
             "name" : "clang-release",
             "inherits" : [ "clang", "unix", "release" ]
         }
+
+        {
+            "name" : "mingw-gcc-release",
+            "inherits" : [ "gcc", "mingw", "release" ]
+        },
     ]
 }

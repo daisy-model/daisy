@@ -73,7 +73,6 @@ Test it
     ctest
 
 ### Windows
-!NOT TESTED!
 Install [MSYS2](https://www.msys2.org/).
 
 Install build environment
@@ -90,9 +89,9 @@ Download the source code and setup a build dir
     mkdir -p daisy/build/release
     cd daisy/build/release
     
-Build it
+Build it (Does not work yet. Issues with linking + wreg32 is not compiled yet)
 
-    cmake ../../ --preset gcc-release -G ninja
+    cmake ../../ --preset mingw-gcc-release
     cmake --build . -j <number-of-concurrent-jobs>
     
 Test it
