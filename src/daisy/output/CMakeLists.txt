@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   bdconv.C
   destination.C
   dlf.C

@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   action.C
   action_BBCH.C
   action_activity.C

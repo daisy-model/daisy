@@ -6,7 +6,7 @@ add_subdirectory(organic_matter)
 add_subdirectory(output)
 add_subdirectory(soil)
 add_subdirectory(upper_boundary)
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   column.C
   column_std.C
   condition.C

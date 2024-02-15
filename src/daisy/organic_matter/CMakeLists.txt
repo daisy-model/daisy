@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   am.C
   aom.C
   bioincorporation.C

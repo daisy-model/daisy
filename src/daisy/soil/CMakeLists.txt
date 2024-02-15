@@ -1,5 +1,5 @@
 add_subdirectory(transport)
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   abiotic.C
   horheat.C
   horizon.C

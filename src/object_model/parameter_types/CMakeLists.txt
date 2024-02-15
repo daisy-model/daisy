@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(object_model PRIVATE
   boolean.C
   boolean_number.C
   boolean_string.C

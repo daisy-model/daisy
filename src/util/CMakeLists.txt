@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(util PRIVATE
   anystate.C
   assertion.C
   complex_functions.C

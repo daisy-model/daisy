@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   average.C
   biopore.C
   biopore_drain.C

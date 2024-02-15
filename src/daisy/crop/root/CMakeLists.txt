@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(core PRIVATE
   ABAprod.C
   ABAprod_root.C
   ABAprod_soil.C

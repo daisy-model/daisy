@@ -1,4 +1,4 @@
-target_sources(daisy PRIVATE
+target_sources(programs PRIVATE
   program.C
   program_GP2D.C
   program_KM2.C

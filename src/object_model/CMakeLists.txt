@@ -1,5 +1,5 @@
 add_subdirectory(parameter_types)
-target_sources(daisy PRIVATE
+target_sources(object_model PRIVATE
   attribute.C
   block.C
   block_model.C
