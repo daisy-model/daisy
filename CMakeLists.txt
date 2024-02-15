@@ -6,6 +6,7 @@ project(
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
 )
+# Make Daisy version available to version.C
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 
 include(cmake/AddCoverageBuildType.cmake)
@@ -20,7 +21,7 @@ if (NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Release
        CACHE STRING "Choose the type of build : None Debug Release RelWithDebInfo MinSizeRel Coverage."
        FORCE)
-endif (NOT CMAKE_BUILD_TYPE)
+endif ()
 
 add_compile_options(
   ${COMPILER_OPTIONS_WARNING}
@@ -29,7 +30,7 @@ add_compile_options(
 
 if (MAKE_PORTABLE)
   set(Boost_USE_STATIC_LIBS ON)
-endif (MAKE_PORTABLE)
+endif ()
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
@@ -46,30 +47,41 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-# Core library
-# Everything except main is compiled into a shared library.
-# This is done to compile on windows. Not exactly sure why it is not possible to compile the
-# executable directly, but it has something to do with symbols not being exported.
-add_library(core SHARED)
-target_include_directories(core PUBLIC include)
-target_compile_options(core PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(core PUBLIC
-  cxsparse
-  Boost::filesystem
-)
-target_link_directories(core PRIVATE "${LINKER_DIRS}")
-target_link_options(core PRIVATE ${LINKER_OPTIONS})
+# On Windows we build everything except main as a shared library (core)
+# On unix we build core as an object library.
+# This also means that we need to distribute the relevant shared libraries on windows
+# whereas we just load them from system locations on unix.
+add_executable(daisy)
+
 if (${OS} STREQUAL "mingw")
-  # On windows we need to build w32reg to read/write daisy install dir location
+  add_library(core SHARED)
+  target_link_libraries(core PUBLIC
+    cxsparse
+    Boost::filesystem
+  )
+  target_link_directories(core PRIVATE "${LINKER_DIRS}")
+  target_link_options(core PRIVATE ${LINKER_OPTIONS})
+  # On windows we need to build w32reg to read daisy install dir location
   add_library(w32reg SHARED w32reg.c)
   target_link_libraries(core PUBLIC
     w32reg
     ${WIN_LIBS}
   )
-endif (${OS} STREQUAL "mingw")
+else()
+  add_library(core OBJECT)
+  # Object libraries cannot be linked against anything, so we need to link the daisy
+  # target instead
+  target_link_libraries(daisy PUBLIC
+    cxsparse
+    Boost::filesystem
+  )
+endif()
+
+target_include_directories(core PUBLIC include)
+target_compile_options(core PRIVATE ${COMPILE_OPTIONS})
+
 
 # Daisy executable
-add_executable(daisy)
 target_include_directories(daisy PUBLIC include)
 target_compile_options(daisy PRIVATE ${COMPILE_OPTIONS})
 target_link_libraries(daisy PUBLIC core)
@@ -84,7 +96,7 @@ include(CTest)
 add_subdirectory(test)
 
 # Packaging
-# Contains .dai files that define functionality and should be installed
+# lib/ and sample/ contain .dai files that define functionality that should be installed
 add_subdirectory(lib)
 add_subdirectory(sample)
 
@@ -104,7 +116,7 @@ if (${OS} STREQUAL "mingw")
 		$ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
 		TYPE BIN
 	)
-endif (${OS} STREQUAL "mingw")
+endif ()
 
 # General packaging stuff
 set(CPACK_PACKAGE_VENDOR "UCPH")
