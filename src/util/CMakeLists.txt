@@ -1,4 +1,4 @@
-target_sources(util PRIVATE
+target_sources(core PRIVATE
   anystate.C
   assertion.C
   complex_functions.C

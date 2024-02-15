@@ -1,4 +1,4 @@
-target_sources(ui PRIVATE
+target_sources(core PRIVATE
   run.C
   ui.C
   uifilter.C

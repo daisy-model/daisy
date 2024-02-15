@@ -1,4 +1,4 @@
-target_sources(gnuplot PRIVATE
+target_sources(core PRIVATE
   gnuplot.C
   gnuplot_base.C
   gnuplot_multi.C

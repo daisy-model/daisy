@@ -12,7 +12,8 @@
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
                 "LINKER_DIRS" : "/usr/local/lib", // For lld on Mac OS
-                "OS_OPTIONS" : "-D__unix"
+                "OS_OPTIONS" : "-D__unix",
+                "OS" : "unix"
             }
         },
         {
@@ -20,7 +21,9 @@
             "hidden" : true,
             "generator" : "Ninja",
             "cacheVariables" : {
-                "OS_OPTIONS" : "-DMINGW;-D_WIN32;-DWIN64"
+                "OS_OPTIONS" : "-DMINGW;-D_WIN32;-DWIN64",
+                "WIN_LIBS" : "ws2_32",
+                "OS" : "win"
             }
         },
         {
@@ -108,11 +111,11 @@
         {
             "name" : "clang-release",
             "inherits" : [ "clang", "unix", "release" ]
-        }
+        },
 
         {
             "name" : "mingw-gcc-release",
             "inherits" : [ "gcc", "mingw", "release" ]
-        },
+        }
     ]
 }

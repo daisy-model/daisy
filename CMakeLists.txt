@@ -46,62 +46,42 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-# Shared libraries
+# Core library
+# Everything except main is compiled into a shared library.
+# This is done to compile on windows. Not exactly sure why it is not possible to compile the
+# executable directly, but it has something to do with symbols not being exported.
 add_library(core SHARED)
 target_include_directories(core PUBLIC include)
 target_compile_options(core PRIVATE ${COMPILE_OPTIONS})
-
-add_library(gnuplot SHARED)
-target_include_directories(gnuplot PUBLIC include)
-target_compile_options(gnuplot PRIVATE ${COMPILE_OPTIONS})
-
-add_library(object_model SHARED)
-target_include_directories(object_model PUBLIC include)
-target_compile_options(object_model PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(object_model PUBLIC gnuplot)
-
-add_library(programs SHARED)
-target_include_directories(programs PUBLIC include)
-target_compile_options(programs PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(programs PUBLIC
-  core
+target_link_libraries(core PUBLIC
+  cxsparse
   Boost::filesystem
 )
-
-add_library(ui SHARED)
-target_include_directories(ui PUBLIC include)
-target_compile_options(ui PRIVATE ${COMPILE_OPTIONS})
-
-add_library(util SHARED)
-target_include_directories(util PUBLIC include)
-target_compile_options(util PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(util PUBLIC
-  cxsparse
-)
+target_link_directories(core PRIVATE "${LINKER_DIRS}")
+target_link_options(core PRIVATE ${LINKER_OPTIONS})
+if (${OS} EQUAL "win")
+  # On windows we need to build w32reg to read/write daisy install dir location
+  add_library(w32reg SHARED w32reg.c)
+  target_link_libraries(core PUBLIC
+    w32reg
+    ${WIN_LIBS}
+  )
+endif (${OS} EQUAL "win") 
 
 # Daisy executable
 add_executable(daisy)
 target_include_directories(daisy PUBLIC include)
 target_compile_options(daisy PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(daisy PUBLIC
-  core
-  gnuplot
-  object_model
-  programs
-  ui
-  util
-)
+target_link_libraries(daisy PUBLIC core)
 target_link_directories(daisy PRIVATE "${LINKER_DIRS}")
 target_link_options(daisy PRIVATE ${LINKER_OPTIONS})
 
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
 
-
 # Test
 include(CTest)
 add_subdirectory(test)
-
 
 # Packaging
 # Contains .dai files that define functionality and should be installed
@@ -129,7 +109,6 @@ set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postinst;${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postrm;"
 )
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Silas Ørting<silas@di.ku.dk>")
-
 
 # Windows package
 set(CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "SetOutPath $INSTDIR")

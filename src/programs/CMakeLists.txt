@@ -1,4 +1,4 @@
-target_sources(programs PRIVATE
+target_sources(core PRIVATE
   program.C
   program_GP2D.C
   program_KM2.C

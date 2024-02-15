@@ -1,4 +1,4 @@
-target_sources(object_model PRIVATE
+target_sources(core PRIVATE
   boolean.C
   boolean_number.C
   boolean_string.C
