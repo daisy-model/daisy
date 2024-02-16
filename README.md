@@ -77,7 +77,7 @@ Install [MSYS2](https://www.msys2.org/).
 
 Install build environment
 
-    pacman -S git mingw-w64-ucrt-x86_64-ccmake mingw-w64-ucrt-x86_64-gcc mingw-w64-x86_64-ninja
+    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-x86_64-ninja
 
 Install daisy dependencies
     
