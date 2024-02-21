@@ -61,10 +61,10 @@ if (${OS} STREQUAL "mingw")
   )
   target_link_directories(core PRIVATE "${LINKER_DIRS}")
   target_link_options(core PRIVATE ${LINKER_OPTIONS})
-  # On windows we need to build w32reg to read daisy install dir location
-  add_library(w32reg SHARED w32reg.c)
+  add_library(windows SHARED)
+  add_subdirectory(src/windows)
   target_link_libraries(core PUBLIC
-    w32reg
+    windows
     ${WIN_LIBS}
   )
 else()
@@ -107,7 +107,7 @@ if (${OS} STREQUAL "mingw")
     # On Windows we need to install the dlls that we build and we need to
 	# install the dlls we depend on.
 	install(TARGETS core RUNTIME DESTINATION bin)
-	install(TARGETS w32reg RUNTIME DESTINATION bin)
+	install(TARGETS windows RUNTIME DESTINATION bin)
 	install(FILES
 		$ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
 		$ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
