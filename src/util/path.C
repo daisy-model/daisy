@@ -101,7 +101,7 @@ Path::get_daisy_home ()
 #if defined (_WIN32) || defined (__CYGWIN32__)
 	  const std::string key = WINDOWS_INSTALL_LOCATION_REG_KEY;
 	  char *const daisy_w32_reg 
-	    = read_w32_registry_string (NULL, key.c_str (), "Install Directory");
+	    = read_w32_registry_string (NULL, key.c_str (), "");
 	  if (daisy_w32_reg)
 	    {
 	      Assertion::debug ("Has '" + key + "' registry entry.");
