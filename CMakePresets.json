@@ -7,13 +7,21 @@
     },
     "configurePresets": [
         {
-            "name" : "unix",
+            "name" : "linux",
             "hidden" : true,
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
-                "LINKER_DIRS" : "/usr/local/lib", // For lld on Mac OS
                 "OS_OPTIONS" : "-D__unix",
-                "OS" : "unix"
+                "OS" : "linux"
+            }
+        },
+        {
+            "name" : "macos",
+            "hidden" : true,
+            "generator" : "Unix Makefiles",
+            "cacheVariables" : {
+                "OS_OPTIONS" : "-D__unix",
+                "OS" : "macos"
             }
         },
         {
@@ -88,34 +96,39 @@
         },
 
         {
-            "name" : "gcc-coverage",
-            "inherits" : [ "gcc", "unix", "coverage" ]
+            "name" : "linux-gcc-coverage",
+            "inherits" : [ "gcc", "linux", "coverage" ]
         },
         {
-            "name" : "gcc-debug",
-            "inherits" : [ "gcc", "unix", "debug" ]
+            "name" : "linux-gcc-debug",
+            "inherits" : [ "gcc", "linux", "debug" ]
         },
         {
-            "name" : "gcc-release",
-            "inherits" : [ "gcc", "unix", "release" ]
+            "name" : "linux-gcc-release",
+            "inherits" : [ "gcc", "linux", "release" ]
         },
         {
-            "name" : "gcc-release-portable",
-            "inherits" : [ "gcc", "unix", "release", "portable" ]
+            "name" : "linux-gcc-portable",
+            "inherits" : [ "gcc", "linux", "release", "portable" ]
         },
         
         {
-            "name" : "clang-debug",
-            "inherits" : [ "clang", "unix", "debug" ]
+            "name" : "linux-clang-debug",
+            "inherits" : [ "clang", "linux", "debug" ]
         },
         {
-            "name" : "clang-release",
-            "inherits" : [ "clang", "unix", "release" ]
+            "name" : "linux-clang-release",
+            "inherits" : [ "clang", "linux", "release" ]
         },
 
         {
             "name" : "mingw-gcc-release",
             "inherits" : [ "gcc", "mingw", "release" ]
+        },
+
+        {
+            "name" : "macos-clang-release",
+            "inherits" : [ "clang", "macos", "release" ]
         }
     ]
 }

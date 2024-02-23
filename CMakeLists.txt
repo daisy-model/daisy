@@ -6,10 +6,10 @@ project(
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
 )
+include(cmake/AddCoverageBuildType.cmake)
+
 # Make Daisy version available to version.C
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
-
-include(cmake/AddCoverageBuildType.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -47,46 +47,13 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-# On Windows we build everything except main as a shared library (core)
-# On unix we build core as an object library.
-# This also means that we need to distribute the relevant shared libraries on windows
-# whereas we just load them from system locations on unix.
-add_executable(daisy)
-
+set(DAISY_BIN_NAME daisy)
+add_executable(${DAISY_BIN_NAME})
 if (${OS} STREQUAL "mingw")
-  add_library(core SHARED)
-  target_link_libraries(core PUBLIC
-    cxsparse
-    Boost::filesystem
-  )
-  target_link_directories(core PRIVATE "${LINKER_DIRS}")
-  target_link_options(core PRIVATE ${LINKER_OPTIONS})
-  add_library(windows SHARED)
-  add_subdirectory(src/windows)
-  target_link_libraries(core PUBLIC
-    windows
-    ${WIN_LIBS}
-  )
-else()
-  add_library(core OBJECT)
-  # Object libraries cannot be linked against anything, so we need to link the daisy
-  # target instead
-  target_link_libraries(daisy PUBLIC
-    cxsparse
-    Boost::filesystem
-  )
+  include(cmake/MinGW.cmake)
+elseif(${OS} STREQUAL "linux")
+  include(cmake/Linux.cmake)
 endif()
-
-target_include_directories(core PUBLIC include)
-target_compile_options(core PRIVATE ${COMPILE_OPTIONS})
-
-
-# Daisy executable
-target_include_directories(daisy PUBLIC include)
-target_compile_options(daisy PRIVATE ${COMPILE_OPTIONS})
-target_link_libraries(daisy PUBLIC core)
-target_link_directories(daisy PRIVATE "${LINKER_DIRS}")
-target_link_options(daisy PRIVATE ${LINKER_OPTIONS})
 
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
@@ -100,49 +67,16 @@ add_subdirectory(test)
 add_subdirectory(lib)
 add_subdirectory(sample)
 
-# Install daisy binary
-install(TARGETS daisy RUNTIME DESTINATION bin)
-
-if (${OS} STREQUAL "mingw")
-    # On Windows we need to install the dlls that we build and we need to
-	# install the dlls we depend on.
-	install(TARGETS core RUNTIME DESTINATION bin)
-	install(TARGETS windows RUNTIME DESTINATION bin)
-	install(FILES
-		$ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
-		$ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
-		$ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
-		$ENV{MINGW_PREFIX}/bin/libcxsparse.dll
-		$ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
-		TYPE BIN
-	)
-endif ()
-
 # General packaging stuff
-set(CPACK_PACKAGE_VENDOR "UCPH")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
-set(CPACK_SOURCE_IGNORE_FILES
-  /.git*
-  /cmake
-  /.*build.*
-)
+include(cmake/Packaging.cmake)
 
 # Source package
 set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 
-# Debian package
-set(CPACK_DEBIAN_FILE_NAME "DEB-DEFAULT")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS
-  "libsuitesparse-dev, libboost-filesystem-dev, libboost-system-dev"
-)
-set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA 
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postinst;${CMAKE_CURRENT_SOURCE_DIR}/cmake/debian/postrm;"
-)
-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Silas Ørting<silas@di.ku.dk>")
-
-# Windows package
-# CPack stores the registry key. Here we define the location so it is available in path.C
-add_definitions( -DWINDOWS_INSTALL_LOCATION_REG_KEY="Software\\\\${CPACK_PACKAGE_VENDOR}\\\\daisy ${CMAKE_PROJECT_VERSION}" )
-set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+if (${OS} STREQUAL "mingw")
+  include(cmake/MingGWPackaging.cmake)
+elseif (${OS} STREQUAL "linux")
+  include(cmake/DebianPackaging.cmake)
+endif()
 
 include(CPack)

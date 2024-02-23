@@ -1,7 +1,4 @@
 include(GNUInstallDirs)
-set(DAISY_LIB_DESTINATION
-	"$<IF:$<STREQUAL:${OS},mingw>,lib,${CMAKE_INSTALL_DATADIR}/daisy/lib>"
-)
 install(FILES
   all.dai
   beet-old.dai

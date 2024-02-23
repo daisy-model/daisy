@@ -1,4 +1,4 @@
-target_sources(core PRIVATE
+target_sources(${DAISY_CORE_NAME} PRIVATE
   program.C
   program_GP2D.C
   program_KM2.C

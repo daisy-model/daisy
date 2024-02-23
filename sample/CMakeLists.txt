@@ -1,7 +1,4 @@
 include(GNUInstallDirs)
-set(DAISY_SAMPLE_DESTINATION
-	"$<IF:$<STREQUAL:${OS},mingw>,sample,${CMAKE_INSTALL_DATADIR}/daisy/sample>"
-)
 install(FILES
   afforestation.dai
   batch.dai
