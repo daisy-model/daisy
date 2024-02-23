@@ -9,5 +9,6 @@ target_link_libraries(${DAISY_BIN_NAME} PUBLIC
   cxsparse
   Boost::filesystem
 )
+target_link_directories(${DAISY_BIN_NAME} PRIVATE ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
 
 install(TARGETS ${DAISY_BIN_NAME} RUNTIME DESTINATION bin)

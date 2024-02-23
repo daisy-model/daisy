@@ -53,6 +53,8 @@ if (${OS} STREQUAL "mingw")
   include(cmake/MinGW.cmake)
 elseif(${OS} STREQUAL "linux")
   include(cmake/Linux.cmake)
+elseif(${OS} STREQUAL "macos")
+  include(cmake/MacOS.cmake)
 endif()
 
 # Sources are added with target_sources in CMakeLists in the source tree
