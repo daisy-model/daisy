@@ -28,9 +28,6 @@ add_compile_options(
   ${COMPILER_OPTIONS_NO_WARNING}
  )
 
-if (MAKE_PORTABLE)
-  set(Boost_USE_STATIC_LIBS ON)
-endif ()
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
@@ -79,6 +76,8 @@ if (${OS} STREQUAL "mingw")
   include(cmake/MingGWPackaging.cmake)
 elseif (${OS} STREQUAL "linux")
   include(cmake/DebianPackaging.cmake)
+elseif (${OS} STREQUAL "macos")
+  include(cmake/MacOSPackaging.cmake)
 endif()
 
 include(CPack)
