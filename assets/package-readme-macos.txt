@@ -1,0 +1,1 @@
+To run Daisy, we suggest you install the TextMate 2.0 editor, and (afterwards) support files for running Daisy. The support files are available in /Applications/Daisy/TextMate after installation of Daisy.

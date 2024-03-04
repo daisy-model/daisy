@@ -1,6 +1,6 @@
 // pet_FAO_PM.C -- FAO potential evopotranspiration using Penman-Monteith.
 // 
-// Copyright 1996-2001, 2003 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001, 2003 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2003 KVL.
 //
 // This file is part of Daisy.

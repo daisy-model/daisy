@@ -30,7 +30,7 @@
 #include "treelog.h"
 #include "frame.h"
 
-static const double Mw = 14.0; //The molecular weight for N [g mol�1]
+static const double Mw = 14.0; //The molecular weight for N [g molÂ¯1]
 static const symbol LAI_symbol ("LAI");
 static const symbol distance_from_top_symbol ("distance_from_top"); // [cm]
 static const symbol relative_LAI_symbol ("relative_LAI");
@@ -134,8 +134,8 @@ rubiscoNdist_expr
 /**/ ::rubiscoN_distribution (const Units& units,
                               const std::vector <double>& PAR_height, 
                               const double LAI, const double DS,
-                              std::vector <double>& rubiscoNdist /*[mol/m�]*/,  
-                              const double cropN /*[g/m�area]*/, Treelog&)
+                              std::vector <double>& rubiscoNdist /*[mol/mÂ²]*/,  
+                              const double cropN /*[g/mÂ²area]*/, Treelog&)
 {
   daisy_assert (std::isfinite (cropN));
   daisy_assert (cropN >= 0.0);
@@ -148,8 +148,8 @@ rubiscoNdist_expr
   daisy_assert (std::isnormal(divisor));
 
   const double total_height = PAR_height[0];
-  double cropN0 = cropN / divisor; // [g/m� leaf]
-  cropN0 = cropN0 / Mw;  // [mol/m� leaf]
+  double cropN0 = cropN / divisor; // [g/mÂ² leaf]
+  cropN0 = cropN0 / Mw;  // [mol/mÂ² leaf]
   daisy_assert (cropN0 >= 0.0);
 
   // Fill photosynthetically active rubisco N (cummulative) for each
@@ -166,7 +166,7 @@ rubiscoNdist_expr
       const double LAI_i = LAI * (i + 0.5)/(No + 0.0);
       rubiscoNdist[i] = f_photo * cropN0 * 
 	function (units, distance_from_top_i, LAI_i, relative_LAI,
-                  relative_distance_from_top, DS); //[mol/m� leaf]
+                  relative_distance_from_top, DS); //[mol/mÂ² leaf]
     }
 }
 

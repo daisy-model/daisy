@@ -1,6 +1,6 @@
 // rootdens_GP2D.C -- Gerwitz and Page model extended for row crops.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2007, 2008 Per Abrahamsen and KVL.
 //

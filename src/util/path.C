@@ -1,6 +1,6 @@
 // path.C -- Handle Unix and WinDOS style paths.
 //
-// Copyright 1996-2007 KVL, Per Abrahamsen and S�ren Hansen
+// Copyright 1996-2007 KVL, Per Abrahamsen and SÃ¸ren Hansen
 //
 // This file is part of Daisy.
 // 
@@ -99,15 +99,9 @@ Path::get_daisy_home ()
 	{
 	  // Check MS Windows registry
 #if defined (_WIN32) || defined (__CYGWIN32__)
-	  const std::string key = "Software\\Daisy " + std::string (version)
-#ifdef _WIN64
-	    + " (w64)"
-#else
-	    + " (w32)"
-#endif
-	    ;
+	  const std::string key = WINDOWS_INSTALL_LOCATION_REG_KEY;
 	  char *const daisy_w32_reg 
-	    = read_w32_registry_string (NULL, key.c_str (), "Install Directory");
+	    = read_w32_registry_string (NULL, key.c_str (), "");
 	  if (daisy_w32_reg)
 	    {
 	      Assertion::debug ("Has '" + key + "' registry entry.");
@@ -124,7 +118,7 @@ Path::get_daisy_home ()
 #else // !MS WINDOWS
 #ifdef __APPLE__
 	  Assertion::debug ("OSX conventional home.");
-	  daisy_home =  "/Library/Daisy";
+	  daisy_home =  "/Applications/Daisy";
 #else
 	  Assertion::debug ("Using standard Unix home.");
 	  daisy_home =  "/opt/daisy";

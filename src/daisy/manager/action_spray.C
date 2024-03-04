@@ -1,6 +1,6 @@
 // action_spray.C -- Spray a chemical on the field.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.

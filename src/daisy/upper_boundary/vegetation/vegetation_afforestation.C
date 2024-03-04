@@ -1,6 +1,6 @@
 // vegetation_afforestation.C
 // 
-// Copyright 1996-2003 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2003 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2003 KVL.
 // Copyright 2013 KU.
 //

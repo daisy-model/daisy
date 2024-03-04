@@ -1,6 +1,6 @@
 // pet_makkink.C -- Potential evopotranspiration using Makkink's Equation.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.

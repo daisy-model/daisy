@@ -1,6 +1,6 @@
 // chemical_std.C
 // 
-// Copyright 1996-2002 Per Abrahamsen and S�ren Hansen
+// Copyright 1996-2002 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2002 KVL.
 //
 // This file is part of Daisy.

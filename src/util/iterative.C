@@ -204,7 +204,7 @@ Iterative::NelderMead (const size_t min_iter, const size_t max_iter,
   
   typedef std::vector<PointValue> SimplexValue;
 
-  // From Wikipedia article 'Nelder–Mead method'.
+  // From Wikipedia article 'NelderâMead method'.
 
   // Parameters;
   const double alpha = 1.0; // Reflection.

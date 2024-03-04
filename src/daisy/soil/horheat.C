@@ -1,6 +1,6 @@
 // horheat.C --- Heat capicity and conductivity for horizons.
 // 
-// Copyright 1996-2004 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2004 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2004 KVL.
 //
 // This file is part of Daisy.
@@ -291,7 +291,7 @@ HorHeat::ThermalConductivity (const Hydraulic& hydraulic,
 }
 
 const double 
-HorHeat::heat_capacity_table[Constituents_End] = // [erg / cm³ / °C]
+HorHeat::heat_capacity_table[Constituents_End] = // [erg / cmÂ³ / Â°C]
   // Ice is given as equivalent amount of water.
   { 4.2e7, 1.9e7 * (1.0 / 0.92), 1.25e4, 2.0e7, 2.0e7, 2.5e7 }; 
 

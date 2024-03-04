@@ -27,7 +27,7 @@
 #include "librarian.h"
 #include "frame.h"
 
-static const double Mw = 14.0; //The molecular weight for N [g mol�1]
+static const double Mw = 14.0; //The molecular weight for N [g molÂ¯1]
 
 struct rubiscoNdistUniform : public RubiscoNdist
 {
@@ -63,16 +63,16 @@ rubiscoNdistUniform::rubiscoN_distribution (const Units&,
   daisy_assert (cropN >= 0.0);
   
   // Crop N in top of the canopy:
-  double cropN0 = cropN; // [g/m� area]
-  cropN0 = cropN0 / Mw;  // [mol/m� area]
-  cropN0 = cropN0 / LAI; // [mol/m� leaf] 
+  double cropN0 = cropN; // [g/mÂ² area]
+  cropN0 = cropN0 / Mw;  // [mol/mÂ² area]
+  cropN0 = cropN0 / LAI; // [mol/mÂ² leaf] 
   daisy_assert (cropN0 >= 0.0);
 
   // Fill photosynthetically active N (cummulative) for each canopy layer in vector
   const int No = rubiscoNdist.size ();
 
   for (int i = 0; i < No; i++)
-     rubiscoNdist[i] = f_photo * cropN0; //[mol/m� leaf]
+     rubiscoNdist[i] = f_photo * cropN0; //[mol/mÂ² leaf]
 
 }
 

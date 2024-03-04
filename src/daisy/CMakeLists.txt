@@ -6,7 +6,7 @@ add_subdirectory(organic_matter)
 add_subdirectory(output)
 add_subdirectory(soil)
 add_subdirectory(upper_boundary)
-target_sources(daisy PUBLIC
+target_sources(${DAISY_CORE_NAME} PRIVATE
   column.C
   column_std.C
   condition.C

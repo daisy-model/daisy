@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>autoScrollOutput</key>
+	<true/>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>#!/bin/bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+/bin/b$ash
+cd """$TM_DIRECTORY"""
+echo Running /Applications/Daisy/bin/daisy """$TM_FILENAME""" in `pwd`
+( /Applications/Daisy/bin/daisy """$TM_FILENAME""" 2&gt;&amp;1 | pre || exit 0) &amp;
+#(cd """$TM_DIRECTORY""" &amp;&amp; cat """$TM_FILENAME"""  )
+exit 0
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@r</string>
+	<key>name</key>
+	<string>Run</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.daisy</string>
+	<key>uuid</key>
+	<string>4D97F769-C2D3-4861-A1C8-8D81A75257DB</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

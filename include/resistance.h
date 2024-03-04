@@ -1,6 +1,6 @@
 // resistance.h --- Resistance utility functions.
 // 
-// 2008 Copyright Per Abrahamsen, Birgitte Gjettermann, and Søren Hansen and KU
+// 2008 Copyright Per Abrahamsen, Birgitte Gjettermann, and SÃ¸ren Hansen and KU
 //
 // This file is part of Daisy.
 // 
@@ -56,48 +56,48 @@ namespace Resistance
                      
   // Boundary conductance for a leaf due to free convection 
   double gbf_heat (const double C1/*[]*/, const double T_air /*[dg C]*/, 
-                   const double T_l_sun /*[dg C]*/, const double wl /*[m]*/);// [m s¯1]
-  double gbf_CO2 (const double gbf_H2O /*[m s¯1]*/, const double Cl /*[]*/); // [m s¯1]
-  double gbf_H2O_amph(const double gbf_heat /*[m s¯1]*/, 
-                      const double Cl /*[]*/);//[m s¯1]
-  double gbf_H2O_hypo(const double gbf_heat /*[m s¯1]*/, 
-                      const double Cl /*[]*/); // [m s¯1]
+                   const double T_l_sun /*[dg C]*/, const double wl /*[m]*/);// [m sÂ¯1]
+  double gbf_CO2 (const double gbf_H2O /*[m sÂ¯1]*/, const double Cl /*[]*/); // [m sÂ¯1]
+  double gbf_H2O_amph(const double gbf_heat /*[m sÂ¯1]*/, 
+                      const double Cl /*[]*/);//[m sÂ¯1]
+  double gbf_H2O_hypo(const double gbf_heat /*[m sÂ¯1]*/, 
+                      const double Cl /*[]*/); // [m sÂ¯1]
 // Boundary conductance for a leaf due to forced convection 
   double gbu_heat (const double Uz /*surface wind speed [m s^-1]*/, 
-                   const double wl /*[m]*/, const double LAI /*[]*/); // [m s¯1]
-  double gbu_CO2 (const double gbu_H2O /*[m s¯1]*/, const double Cl /*[]*/); // [m s¯1]
-  double gbu_H2O_amph (const double gbu_heat /*[m s¯1]*/, 
-                       const double Cl /*[]*/); // [m s¯1]
-  double gbu_H2O_hypo (const double gbu_heat /*[m s¯1]*/,
-                       const double Cl /*[]*/); // [m s¯1
+                   const double wl /*[m]*/, const double LAI /*[]*/); // [m sÂ¯1]
+  double gbu_CO2 (const double gbu_H2O /*[m sÂ¯1]*/, const double Cl /*[]*/); // [m sÂ¯1]
+  double gbu_H2O_amph (const double gbu_heat /*[m sÂ¯1]*/, 
+                       const double Cl /*[]*/); // [m sÂ¯1]
+  double gbu_H2O_hypo (const double gbu_heat /*[m sÂ¯1]*/,
+                       const double Cl /*[]*/); // [m sÂ¯1
 
 // Boundary conductance of the sunlit and shaded canopy fraction due to free convection
-  double gbf_fraction (const double gbf_j /*[m s¯1]*/, 
-                       const double LAI_fraction /*[]*/); // [m s¯1]
+  double gbf_fraction (const double gbf_j /*[m sÂ¯1]*/, 
+                       const double LAI_fraction /*[]*/); // [m sÂ¯1]
 
 // Boundary conductance of the sunlit canopy fraction due to forced convection
-  double gbu_sun (const double gbu_j /*[m s¯1]*/, const double kb /*[]*/, 
-                  const double LAI /*[]*/); // [m s¯1]
+  double gbu_sun (const double gbu_j /*[m sÂ¯1]*/, const double kb /*[]*/, 
+                  const double LAI /*[]*/); // [m sÂ¯1]
 
 // Boundary conductance of the shadow canopy fraction due to forced convection
-  double gbu_shadow (const double gbu_j /*[m s¯1]*/, const double kb /*[]*/,
-                     const double LAI /*[]*/); // [m s¯1]
+  double gbu_shadow (const double gbu_j /*[m sÂ¯1]*/, const double kb /*[]*/,
+                     const double LAI /*[]*/); // [m sÂ¯1]
 
 // Boundary conductance of the sunlit canopy fraction due to free convection
-  double gbf_sun (const double gbf_j /*[m s¯1]*/, const double LAI_sun /*[]*/);
+  double gbf_sun (const double gbf_j /*[m sÂ¯1]*/, const double LAI_sun /*[]*/);
   
 // Boundary conductance of the shadow canopy fraction due to free convection
-  double gbf_shadow (const double gbf_j /*[m s¯1]*/, 
+  double gbf_shadow (const double gbf_j /*[m sÂ¯1]*/, 
                      const double LAI_shadow /*[m^2 m^-2]*/);
   
   // Boundary conductance of the sunlit and shadow canopy fraction 
-  double gb_fraction (const double gbu_j /*[m s¯1]*/, 
-                      const double gbf_j /*[m s¯1]*/); // [m s¯19
+  double gb_fraction (const double gbu_j /*[m sÂ¯1]*/, 
+                      const double gbf_j /*[m sÂ¯1]*/); // [m sÂ¯19
   
   // Total conductance (leaf boundary + atmospheric) of the sunlit and shadow 
 // canopy fraction 
-  double gc_fraction (const double gb_j /*[m s¯1]*/, 
-                        const double ra /* aerodynamic resistance [s m¯1]*/); //[m s¯1]
+  double gc_fraction (const double gb_j /*[m sÂ¯1]*/, 
+                        const double ra /* aerodynamic resistance [s mÂ¯1]*/); //[m sÂ¯1]
 
 //----------------------------------------------------
 // Atmospheric aerodynamic resistance

@@ -1,6 +1,6 @@
 // pet_FAO_PM_hourly.C -- FAO ETc using Penman-Monteith with hourly data
 // 
-// Copyright 1996-2001, 2003 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001, 2003 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2003 KVL.
 // Copyright 2018 KU.
 //

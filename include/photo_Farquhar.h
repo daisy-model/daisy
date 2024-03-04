@@ -1,6 +1,6 @@
 // photo_Farquhar.h -- Leaf photosynthesis based on Farquhar et al., 1980 and Ball et al. 1987.
 // 
-// Copyright 1996-2001,2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001,2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001,2005-2006 KVL.
 // Copyright 2006,2007 Birgitte Gjettermann.
 //

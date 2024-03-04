@@ -1,0 +1,10 @@
+DESCRIPTION
+
+Daisy is a mechanistic simulation of agricultural fields developed by the Agrohydrology group at the University of Copenhagen.
+
+Daisy keeps track of water, nitrogen, carbon, and pesticides in the bioactive zone near the soil surface (roughly top of canopy to the bottom of the (historic) root zone).
+
+Optimize crop yields.
+Minimize nutrient losses.
+Avoid pesticide pollution.
+And much more!

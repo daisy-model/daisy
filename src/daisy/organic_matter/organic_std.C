@@ -1,6 +1,6 @@
 // organic_std.C -- The default model for soil organic matter.
 // 
-// Copyright 1996-2002 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2002 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2002 KVL.
 // Copyright 2006 Per Abrahamsen and KVL.
 //
@@ -121,8 +121,8 @@ struct OrganicStandard : public OrganicMatter
   std::unique_ptr<ClayOM> clayom;
   const std::vector<boost::shared_ptr<const PLF>/**/> smb_tillage_factor;
   const std::vector<boost::shared_ptr<const PLF>/**/> som_tillage_factor;
-  const double min_AM_C;	// Minimal amount of C in an AM. [g/m²]
-  const double min_AM_N;	// Minimal amount of N in an AM. [g/m²]
+  const double min_AM_C;	// Minimal amount of C in an AM. [g/mÂ²]
+  const double min_AM_N;	// Minimal amount of N in an AM. [g/mÂ²]
   Bioincorporation bioincorporation;
   class Initialization
   {
@@ -256,8 +256,8 @@ struct OrganicStandard : public OrganicMatter
   const std::vector<DOM*>& fetch_dom () const;
   void output (Log&) const;
   double top_DM () const;           // [kg DM/m^2]
-  double CO2 (size_t i) const;	// [g C/cm³]
-  double CO2_fast (size_t i) const;	// [g C/cm³]
+  double CO2 (size_t i) const;	// [g C/cmÂ³]
+  double CO2_fast (size_t i) const;	// [g C/cmÂ³]
   void mix (const Geometry&, const Soil&, const SoilWater&,
 	    double from, double to, double penetration);
   void swap (const Geometry&, const Soil&, const SoilWater&, 
@@ -310,7 +310,7 @@ struct OrganicStandard : public OrganicMatter
   }
 
   // Communication with external model.
-  double get_smb_c_at (size_t i) const; // [g C/cm³]
+  double get_smb_c_at (size_t i) const; // [g C/cmÂ³]
   void add_to_buffer (const Geometry& geo,
 		      const double from /* [cm] */,
 		      const double to /* [cm] */,
@@ -1464,7 +1464,7 @@ OrganicStandard::restore_SOM ()
 }
 
 double 
-OrganicStandard::get_smb_c_at (size_t i) const // [g C/cm³]
+OrganicStandard::get_smb_c_at (size_t i) const // [g C/cmÂ³]
 {
   double total = 0.0;
   for (size_t j = 0; j < smb.size (); j++)
@@ -2616,7 +2616,7 @@ Using initial C per N for remaining entries");
       for (size_t i = 0; i < layers.size (); i++)
 	{
 	  double end = layers[i]->number ("end");
-	  double weight = layers[i]->number ("weight"); // kg C/m²
+	  double weight = layers[i]->number ("weight"); // kg C/mÂ²
 	  daisy_assert (weight > 0);
 	  daisy_assert (end < last);
 	  if (end < soil_end)
@@ -2627,7 +2627,7 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
 	      end = soil_end;
 	      i = layers.size ();
 	    }
-	  const double C = weight * 1000.0 / (100.0 * 100.0); // g C / cm²
+	  const double C = weight * 1000.0 / (100.0 * 100.0); // g C / cmÂ²
 	  geo.add_surface (total_C, last, end, C);
 	  last = end;
 	}
@@ -3255,7 +3255,7 @@ If no value is given, tillage will have no influence.");
     //  We require 5 kg C / Ha in order to keep an AM pool.
     frame.declare ("min_AM_N", "g N/m^2", Check::non_negative (), Attribute::Const, 
                    "Minimal amount of nitrogen in AOM ensuring it is not removed.");
-    // We require ½ kg N / Ha in order to keep an AM pool.
+    // We require Â½ kg N / Ha in order to keep an AM pool.
     frame.set ("min_AM_N", 0.05);
     frame.declare_submodule ("init", Attribute::Const, "\
 Parameters for initialization of the SOM and SMB pools.\n\

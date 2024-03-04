@@ -1,4 +1,3 @@
-include(GNUInstallDirs)
 install(FILES
   all.dai
   beet-old.dai
@@ -32,7 +31,6 @@ install(FILES
   log-old.dai
   log-std.dai
   maize.dai
-  Makefile
   markvand.dai
   mini.dai
   onion.dai
@@ -62,4 +60,4 @@ install(FILES
   wrape-old.dai
   wwheat.dai
   wwheat-old.dai
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/daisy/lib)
+  DESTINATION ${DAISY_LIB_DESTINATION} COMPONENT lib)

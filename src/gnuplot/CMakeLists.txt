@@ -1,4 +1,4 @@
-target_sources(daisy PUBLIC 
+target_sources(${DAISY_CORE_NAME} PRIVATE
   gnuplot.C
   gnuplot_base.C
   gnuplot_multi.C

@@ -27,7 +27,7 @@
 #include "librarian.h"
 #include "frame.h"
 
-static const double Mw = 14.0; //The molecular weight for N [g mol�1]
+static const double Mw = 14.0; //The molecular weight for N [g molÂ¯1]
 
 struct rubiscoNdistDPF : public RubiscoNdist
 {
@@ -43,8 +43,8 @@ private:
   void rubiscoN_distribution (const Units&, 
                               const std::vector <double>& PAR_height, 
 			      const double LAI, const double DS,
-			      std::vector <double>& rubiscoNdist/*[mol/m�]*/,  
-			      const double cropN /*[g/m�area]*/, Treelog&);
+			      std::vector <double>& rubiscoNdist/*[mol/mÂ²]*/,  
+			      const double cropN /*[g/mÂ²area]*/, Treelog&);
   void output (Log&) const
   { }
 
@@ -72,8 +72,8 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
   daisy_assert(divisor > 0.0);
   daisy_assert (std::isnormal(divisor));
 
-  double cropN0 = kn * cropN / divisor; // [g/m� leaf]
-  cropN0 = cropN0 / Mw;  // [mol/m� leaf]
+  double cropN0 = kn * cropN / divisor; // [g/mÂ² leaf]
+  cropN0 = cropN0 / Mw;  // [mol/mÂ² leaf]
   daisy_assert (cropN0 >= 0.0);
 
   // Fill photosynthetically active N (cummulative) for each canopy layer in vector
@@ -81,7 +81,7 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
 
   const double dLAI = (LAI /(No + 0.0));
   for (int i = 0; i < No; i++)
-     rubiscoNdist[i] = f_photo * cropN0 * (exp(-kn * dLAI *(i+0.5))); //[mol/m� leaf]
+     rubiscoNdist[i] = f_photo * cropN0 * (exp(-kn * dLAI *(i+0.5))); //[mol/mÂ² leaf]
 
 
 }

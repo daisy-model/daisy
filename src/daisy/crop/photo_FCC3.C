@@ -1,6 +1,6 @@
 // photo_FCC3.C -- Leaf photosynthesis for C3 crops based on Farquhar et al., 1980 and Ball et al. 1987.
 // 
-// Copyright 1996-2001,2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001,2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001,2005-2006 KVL.
 // Copyright 2006,2007 Birgitte Gjettermann.
 //
@@ -122,17 +122,17 @@ void
 PhotoFCC3::CxModel (const double CO2_atm, 
                     const double O2_atm, const double Ptot, 
                     double& pn, double& ci, 
-                    const double PAR /*[mol/m²leaf/s]*/, 
-                    const double gsw /*[mol/m²leaf/s]*/, 
-                    const double gbw /*[mol/m²leaf/s]*/, 
+                    const double PAR /*[mol/mÂ²leaf/s]*/, 
+                    const double gsw /*[mol/mÂ²leaf/s]*/, 
+                    const double gbw /*[mol/mÂ²leaf/s]*/, 
                     const double T, 
-                    const double vmax25 /*[mol/m² leaf/s]*/, 
-                    const double rd /*[mol/m² leaf/s]*/, Treelog& msg) const  
+                    const double vmax25 /*[mol/mÂ² leaf/s]*/, 
+                    const double rd /*[mol/mÂ² leaf/s]*/, Treelog& msg) const  
 {
   // Updating temperature dependent parameters:
-  const double Vm = V_m(vmax25, T); //[mol/m² leaf/s]
+  const double Vm = V_m(vmax25, T); //[mol/mÂ² leaf/s]
   daisy_assert (Vm >=0.0);
-  const double Jm = J_m(vmax25, T); //[mol/m² leaf/s]
+  const double Jm = J_m(vmax25, T); //[mol/mÂ² leaf/s]
   daisy_assert (Jm >=0.0);
   const double Ko = Arrhenius(Ko25, Ea_ko, T); //[Pa]
   daisy_assert (Ko > 0.0);
@@ -141,15 +141,15 @@ PhotoFCC3::CxModel (const double CO2_atm,
   const double Kcl = Kc *(1.+ O2_atm/Ko); //[Pa]
   daisy_assert (gbw > 0.0);
   daisy_assert (gsw > 0.0);
-  const double rbw = 1./gbw; // leaf boundary resistance to water vapor, [m²leaf*s/mol]
-  const double rsw = 1./gsw; // stomatal resistance to water [m²leaf*s/mol]
+  const double rbw = 1./gbw; // leaf boundary resistance to water vapor, [mÂ²leaf*s/mol]
+  const double rsw = 1./gsw; // stomatal resistance to water [mÂ²leaf*s/mol]
 
   //Total conductance of CO2
-  const double gtc = 1./(1.4*rbw+1.6*rsw);   //[mol/m² leaf/s]
+  const double gtc = 1./(1.4*rbw+1.6*rsw);   //[mol/mÂ² leaf/s]
   
-  const double Ile = PAR * alfa; // PAR effectively absorbed by PSII [mol/m² leaf/s]
+  const double Ile = PAR * alfa; // PAR effectively absorbed by PSII [mol/mÂ² leaf/s]
   const double J 
-    = first_root_of_square_equation(theta, -(Ile+Jm), Ile*Jm); // [mol/m² leaf/s]
+    = first_root_of_square_equation(theta, -(Ile+Jm), Ile*Jm); // [mol/mÂ² leaf/s]
 
   // We now have two equations with two unknowns.
   //   p = find_p (ci)
@@ -166,47 +166,47 @@ PhotoFCC3::CxModel (const double CO2_atm,
     double find_wc (const double ci) // Eq 2
     {// Gross CO2 uptake limited by Rubisco
       daisy_assert ((ci + Kcl) > 0.0); 
-      const double wc = Vm * ( ci - Gamma)/( ci + Kcl);//Rubisco limited,[mol/m²leaf/s]
+      const double wc = Vm * ( ci - Gamma)/( ci + Kcl);//Rubisco limited,[mol/mÂ²leaf/s]
      return wc;
     }
     double find_we (const double ci) // Eq 4
     { // Gross CO2 uptake limited by RuBP
       daisy_assert ((ci + 2.0 * Gamma) > 0.0);
-      const double we		//[mol/m² leaf/s]
+      const double we		//[mol/mÂ² leaf/s]
 	= J * (ci - Gamma)/(4.0*(ci + 2. * Gamma));
       return we; 
     }
-    double find_p (const double ci) //[mol/m² leaf/s]
+    double find_p (const double ci) //[mol/mÂ² leaf/s]
     {
        // Gross CO2 uptake limited by Rubisco and RuBP.
       daisy_assert (Gamma >= 0.0);
       daisy_assert (ci >= 0.0);
-      const double we = find_we(ci); //[mol/m² leaf/s]
-      const double wc = find_wc(ci); //[mol/m² leaf/s]
+      const double we = find_we(ci); //[mol/mÂ² leaf/s]
+      const double wc = find_wc(ci); //[mol/mÂ² leaf/s]
       daisy_assert(((wc+we)*(we+wc)-(4.*beta*we*wc)) >= 0.0);
       daisy_assert ((beta)> 0.0);
       const double p 
-	= first_root_of_square_equation(beta, -(wc+we), we*wc);//[mol/m² leaf/s]
+	= first_root_of_square_equation(beta, -(wc+we), we*wc);//[mol/mÂ² leaf/s]
       return p;
     }
 
-    double find_p_derived (const double ci) // [mol/m² leaf/s]
+    double find_p_derived (const double ci) // [mol/mÂ² leaf/s]
     { 
-      const double we = find_we(ci); //[mol/m² leaf/s]
-      const double wc = find_wc(ci); //[mol/m² leaf/s]
+      const double we = find_we(ci); //[mol/mÂ² leaf/s]
+      const double wc = find_wc(ci); //[mol/mÂ² leaf/s]
       // The derivative of p with regard to ci; p'(ci).
       double dp;
       if (wc < we) 
-        dp = Vm * (Kcl+Gamma)/((ci+Kcl)*(ci+Kcl));//[mol/m² leaf/s/Pa]
+        dp = Vm * (Kcl+Gamma)/((ci+Kcl)*(ci+Kcl));//[mol/mÂ² leaf/s/Pa]
       else 
-        dp = 3.0 * J *(Gamma/((ci+2. * Gamma)*(ci+2.* Gamma))); //[mol/m² leaf/s/Pa]
+        dp = 3.0 * J *(Gamma/((ci+2. * Gamma)*(ci+2.* Gamma))); //[mol/mÂ² leaf/s/Pa]
       return dp;
     }
     
     double find_ci (const double p) // [Pa]
     { 
       // Net CO2 uptake
-      const double pn = p - rd; // [mol/m² leaf/s] 
+      const double pn = p - rd; // [mol/mÂ² leaf/s] 
       return CO2_atm - (pn/gtc) * Ptot; 
     }
     double find_ci_derived ()
@@ -285,7 +285,7 @@ double
 PhotoFCC3::respiration_rate (const double Vm_25, const double Tl) const 
 {
   // leaf respiration
-  const double rd_25 = 0.0089 * Vm_25;// [mol/m² leaf/s]
+  const double rd_25 = 0.0089 * Vm_25;// [mol/mÂ² leaf/s]
   const double rd = Arrhenius(rd_25, Ea_rd, Tl); 
   return rd;
 }

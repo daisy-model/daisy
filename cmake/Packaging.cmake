@@ -1,0 +1,11 @@
+set(CPACK_PACKAGE_VENDOR "UCPH")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING.txt")
+set(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_CURRENT_SOURCE_DIR}/assets/package-welcome.txt")
+#set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/daisy_farve_uden_tekst.png")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/assets/package-description.txt")
+
+set(CPACK_SOURCE_IGNORE_FILES
+  /.git*
+  /cmake
+  /.*build.*
+)

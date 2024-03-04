@@ -1,5 +1,5 @@
 add_subdirectory(root)
-target_sources(daisy PUBLIC
+target_sources(${DAISY_CORE_NAME} PRIVATE
   canopy_simple.C
   canopy_std.C
   crop.C

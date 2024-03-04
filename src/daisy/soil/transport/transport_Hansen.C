@@ -1,6 +1,6 @@
 // transport_Hansen.C --- Using convection-dispersion.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2008 Per Abrahamsen and KVL.
 //
@@ -94,7 +94,7 @@ TransportHansen::flow (const Geometry& geo_base,
   for (size_t c = 0; c < size; c++)
     M_prev[c] = C[c] * Theta_begin[c];
 
-  // Dispersion coefficient [cm²/s]
+  // Dispersion coefficient [cmÂ²/s]
   std::vector<double> D (size + 1);
 
   for (unsigned int j = 1; j < size; j++)
@@ -102,7 +102,7 @@ TransportHansen::flow (const Geometry& geo_base,
       // Dispersion length [cm]
       const double lambda = soil.dispersivity (j);
 
-      // Water flux [cm³ /cm² / h]
+      // Water flux [cmÂ³ /cmÂ² / h]
       const double q = q_primary[j];
       
       // Theta middled in time and space.
@@ -122,7 +122,7 @@ TransportHansen::flow (const Geometry& geo_base,
     // Dispersion length [cm]
     const double lambda = soil.dispersivity (size-1);
 
-    // Water flux [cm³ /cm² / h]
+    // Water flux [cmÂ³ /cmÂ² / h]
     const double q = q_primary[size];
       
     // Theta middled in time and space.
