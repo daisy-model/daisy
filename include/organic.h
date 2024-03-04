@@ -1,6 +1,6 @@
 // organic.h
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2006 Per Abrahamsen and KVL.
 //
@@ -84,7 +84,7 @@ public:
 			       const double dt) = 0;
 
   // Communication with external model.
-  virtual double get_smb_c_at (size_t i) const = 0; // [g C/cm³]
+  virtual double get_smb_c_at (size_t i) const = 0; // [g C/cmÂ³]
   virtual void add_to_buffer (const Geometry& geo,
 			      const double from /* [cm] */,
 			      const double to /* [cm] */,

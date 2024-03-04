@@ -1,6 +1,6 @@
 // filepos.h --- Position in a file.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2009 Per Abrahamsen and KU.
 //

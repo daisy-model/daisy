@@ -1,6 +1,6 @@
 // root_system.h -- Root development and uptake.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.
@@ -86,18 +86,18 @@ public:
   double dynamic_root_death_DM () const // [g DM/h]
   { return rootdens->dynamic_root_death_DM (); }
 private:
-  std::vector<double> H2OExtraction; // Extraction of H2O in soil [cm³/cm³/h]
-  std::vector<double> NH4Extraction; // Extraction of NH4-N in soil [gN/cm³/h]
-  std::vector<double> NO3Extraction; // Extraction of NH4-N in soil [gN/cm³/h]
-  std::vector<double> ABAExtraction; // Extraction of ABA in soil [g ABA/cm³/h]
+  std::vector<double> H2OExtraction; // Extraction of H2O in soil [cmÂ³/cmÂ³/h]
+  std::vector<double> NH4Extraction; // Extraction of NH4-N in soil [gN/cmÂ³/h]
+  std::vector<double> NO3Extraction; // Extraction of NH4-N in soil [gN/cmÂ³/h]
+  std::vector<double> ABAExtraction; // Extraction of ABA in soil [g ABA/cmÂ³/h]
 public:
   double ABAConc;		// ABA concentration in uptake [g/cm^3]
 private:
   double h_x;			// Root extraction at surface
 public:
-  double partial_soil_temperature; // Accumaleted soil temperature [°C]
+  double partial_soil_temperature; // Accumaleted soil temperature [Â°C]
   double partial_day;           // Accuumalted time [h]
-  double soil_temperature;	// Soil temperature previous day [°C]
+  double soil_temperature;	// Soil temperature previous day [Â°C]
 
   // Log.
 public:

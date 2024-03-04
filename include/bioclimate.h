@@ -1,6 +1,6 @@
 // bioclimate.h
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.
@@ -66,7 +66,7 @@ public:
   virtual double canopy_leak () const = 0;               // [mm/h]
   virtual double litter_leak_rate (double dt) const = 0; // [h^-1]
   virtual double litter_wash_off_rate (double dt) const = 0; // [h^-1]
-  virtual const IM& deposit () const = 0; // [g [stuff] /cm²/h]
+  virtual const IM& deposit () const = 0; // [g [stuff] /cmÂ²/h]
 
   // Canopy.
 public:
