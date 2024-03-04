@@ -49,4 +49,4 @@ install(FILES
   test-post.dai
   test-prd.dai
   test-spawn.dai
-  DESTINATION ${DAISY_SAMPLE_DESTINATION})
+  DESTINATION ${DAISY_SAMPLE_DESTINATION} COMPONENT sample)

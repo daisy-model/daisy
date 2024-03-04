@@ -61,4 +61,4 @@ install(FILES
   wrape-old.dai
   wwheat.dai
   wwheat-old.dai
-  DESTINATION ${DAISY_LIB_DESTINATION})
+  DESTINATION ${DAISY_LIB_DESTINATION} COMPONENT lib)
