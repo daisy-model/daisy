@@ -1,6 +1,6 @@
 // path.C -- Handle Unix and WinDOS style paths.
 //
-// Copyright 1996-2007 KVL, Per Abrahamsen and Søren Hansen
+// Copyright 1996-2007 KVL, Per Abrahamsen and SÃ¸ren Hansen
 //
 // This file is part of Daisy.
 // 
@@ -118,7 +118,7 @@ Path::get_daisy_home ()
 #else // !MS WINDOWS
 #ifdef __APPLE__
 	  Assertion::debug ("OSX conventional home.");
-	  daisy_home =  "/Library/Daisy";
+	  daisy_home =  "/Applications/Daisy";
 #else
 	  Assertion::debug ("Using standard Unix home.");
 	  daisy_home =  "/opt/daisy";
