@@ -28,6 +28,4 @@ install(FILES
 
 set(DAISY_SAMPLE_DESTINATION "sample")
 set(DAISY_LIB_DESTINATION "lib")
-	"$<IF:$<STREQUAL:${OS},mingw>,lib,${CMAKE_INSTALL_DATADIR}/daisy/lib>"
-)
 set(DAISY_CORE_NAME core)
