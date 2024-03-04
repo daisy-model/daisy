@@ -1,4 +1,3 @@
-include(GNUInstallDirs)
 install(FILES
   afforestation.dai
   batch.dai

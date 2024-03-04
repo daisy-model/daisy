@@ -1,4 +1,3 @@
-include(GNUInstallDirs)
 install(FILES
   all.dai
   beet-old.dai
