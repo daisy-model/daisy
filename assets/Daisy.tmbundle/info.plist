@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>contactEmailRot13</key>
+	<string>cn@cyra.xh.qx</string>
+	<key>contactName</key>
+	<string>Per Abrahamsen</string>
+	<key>description</key>
+	<string>Run Daisy from within TextMate.</string>
+	<key>name</key>
+	<string>Daisy</string>
+	<key>uuid</key>
+	<string>066D1180-B2D7-480D-89E5-C24EE5A62B0B</string>
+</dict>
+</plist>
