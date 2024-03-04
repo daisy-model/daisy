@@ -1,6 +1,6 @@
 // wse.C -- Water Stress Effect on yield.
 // 
-// Copyright 2004 Per Abrahamsen, Søren Hansen and KVL.
+// Copyright 2004 Per Abrahamsen, SÃ¸ren Hansen and KVL.
 //
 // This file is part of Daisy.
 // 

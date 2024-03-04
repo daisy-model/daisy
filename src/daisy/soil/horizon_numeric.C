@@ -1,6 +1,6 @@
 // horizon_numeric.C --- A horizon with numeric texture classification.
 // 
-// Copyright 1996-2001, 2003, 2004 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001, 2003, 2004 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2003, 2004 KVL.
 //
 // This file is part of Daisy.

@@ -1,6 +1,6 @@
 // photo_FCC4.C -- C4 leaf photosynthesis and stomata model (Collatz et al., 1992)
 // 
-// Copyright 1996-2001,2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001,2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001,2005-2006 KVL.
 // Copyright 2006,2007 Birgitte Gjettermann.
 //
@@ -103,21 +103,21 @@ PhotoFCC4::Qt (const double k, const double Tl, const double Qtk) const
 void 
 PhotoFCC4::CxModel (const double CO2_atm, const double,
                     const double Ptot, double& pn, double& ci/*[Pa]*/, 
-		    const double PAR /*[mol/m²leaf/s/fraction]*/, 
-		    const double gsw /*[mol/m²/s]*/, 
-		    const double gbw /*[mol/m²/s]*/, 
+		    const double PAR /*[mol/mÂ²leaf/s/fraction]*/, 
+		    const double gsw /*[mol/mÂ²/s]*/, 
+		    const double gbw /*[mol/mÂ²/s]*/, 
                     const double T, 
-		    const double vmax25 /*[mol/m² leaf/s/fraction]*/, 
-		    const double rd /*[mol/m² leaf/s]*/, Treelog& msg) const  
+		    const double vmax25 /*[mol/mÂ² leaf/s/fraction]*/, 
+		    const double rd /*[mol/mÂ² leaf/s]*/, Treelog& msg) const  
 {
   // Updating temperature dependent parameters:
-  const double Vm1 = V_m(vmax25, T); //[mol/m²leaf/s/fraction]
+  const double Vm1 = V_m(vmax25, T); //[mol/mÂ²leaf/s/fraction]
   const double Vm = Qt(Vm1, T, Q10vm);  
   daisy_assert (Vm >=0.0);
-  const double kjc = Qt(kj, T, Q10k); //[mol/Pa/m²leaf/s/fraction]
+  const double kjc = Qt(kj, T, Q10k); //[mol/Pa/mÂ²leaf/s/fraction]
 
   daisy_assert (gsw > 0.0);
-  double rsw = 1./gsw; // stomatal resistance to water [m²leaf*s/mol]
+  double rsw = 1./gsw; // stomatal resistance to water [mÂ²leaf*s/mol]
   
   //Newton Raphsons solution to 'net'photosynthesis and stomatal conductance.
   const int maxiter = 150;
@@ -141,16 +141,16 @@ PhotoFCC4::CxModel (const double CO2_atm, const double,
 	  break;
 	}
       // Gross CO2 uptake limited by Rubisco
-      const double wc = kjc * ci / Ptot; //[mol/m² leaf/s]
-      const double we = alpha * paab * PAR; //[mol/m²leaf/s/fraction]
-      const double a = first_root_of_square_equation(theta, -(Vm+we), we*Vm); //[mol/m² leaf/s/fraction]
-      const double p = first_root_of_square_equation(beta, -(a+wc), a*wc);    //[mol/m² leaf/s/fraction]
+      const double wc = kjc * ci / Ptot; //[mol/mÂ² leaf/s]
+      const double we = alpha * paab * PAR; //[mol/mÂ²leaf/s/fraction]
+      const double a = first_root_of_square_equation(theta, -(Vm+we), we*Vm); //[mol/mÂ² leaf/s/fraction]
+      const double p = first_root_of_square_equation(beta, -(a+wc), a*wc);    //[mol/mÂ² leaf/s/fraction]
 
       // Net CO2 uptake
-      pn = p - rd; // [mol/m² leaf/s] 
+      pn = p - rd; // [mol/mÂ² leaf/s] 
       
       //Total resistance to CO2
-      const double gtc = 1./(1.6*rsw);   //[mol/m² leaf/s]
+      const double gtc = 1./(1.6*rsw);   //[mol/mÂ² leaf/s]
       newci = ((gtc * CO2_atm /Ptot)-pn)/gtc*Ptot;//[Pa]
 
       const double dp = (kjc*(p-a))/((2. * beta * p) -a -wc);
@@ -171,7 +171,7 @@ PhotoFCC4::CxModel (const double CO2_atm, const double,
 double
 PhotoFCC4::respiration_rate (const double Vm_25, const double Tl) const 
 {
-  const double rd_25 = 0.015 * Vm_25;// [mol/m²leaf/s/fraction]
+  const double rd_25 = 0.015 * Vm_25;// [mol/mÂ²leaf/s/fraction]
   const double rdz = Qt(rd_25, Tl, Q10rd); 
   const double rd = rdz/(1. + exp(1.3*(Tl-55.)));
   return rd;

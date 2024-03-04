@@ -1,6 +1,6 @@
 // surface_source.C -- Upper boundary from source.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2022 UCPH
 //

@@ -63,7 +63,7 @@ double
 StomataCon_SHA12::stomata_con (const double ABA,  // [g/cm^3]
                                const double h_x,  // [MPa]
                                const double hs /*[]*/, 
-                               const double pz /*[mol/m²leaf/s]*/,
+                               const double pz /*[mol/mÂ²leaf/s]*/,
                                const double Ptot /*[Pa]*/,
                                const double cs /*[Pa]*/,
                                const double, const double, Treelog&)
@@ -147,7 +147,7 @@ double
 StomataCon_SHA14::stomata_con (const double ABA,  // [g/cm^3]
                                const double h_x,  // [MPa]
                                const double hs /*[]*/, 
-                               const double pz /*[mol/m²leaf/s]*/,
+                               const double pz /*[mol/mÂ²leaf/s]*/,
                                const double Ptot /*[Pa]*/, 
                                const double cs /*[Pa]*/,
                                const double,
@@ -230,7 +230,7 @@ double
 StomataCon_MNA::stomata_con (const double ABA,  // [g/cm^3]
                              const double h_x,  // [MPa]
                              const double hs /*[]*/, 
-                             const double pz /*[mol/m²leaf/s]*/,
+                             const double pz /*[mol/mÂ²leaf/s]*/,
                              const double Ptot /*[Pa]*/, 
                              const double cs /*[Pa]*/,
                              const double, 

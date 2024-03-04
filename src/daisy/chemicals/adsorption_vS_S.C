@@ -1,6 +1,6 @@
 // adsorption_vS_S.C
 // 
-// Copyright 1996-2001 Per Abrahamsen and S�ren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.
@@ -36,9 +36,9 @@ public:
 
   // Chemical soil constants.
   double K_planar () const
-    { return 6.3e-5; }		// [g/cm�]
+    { return 6.3e-5; }		// [g/cmÂ³]
   double K_edge () const
-    { return 1.372e-5; }	// [g/cm�]
+    { return 1.372e-5; }	// [g/cmÂ³]
   double v_planar (const Soil& soil, int i, double sf) const
     { 
       // Maximum specific absorbtion [g / g clay]

@@ -1,6 +1,6 @@
 // astronomy.C --- Astronomic utility functions.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2010 KU
 //
 // This file is part of Daisy.

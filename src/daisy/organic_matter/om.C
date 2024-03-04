@@ -1,6 +1,6 @@
 // om.C -- A single unspecified organic matter pool.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2002 KVL.
 //
 // This file is part of Daisy.

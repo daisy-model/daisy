@@ -1,6 +1,6 @@
 // horizon.C --- Common code for all horizon models.
 // 
-// Copyright 1996-2004 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2004 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2004 KVL.
 //
 // This file is part of Daisy.
@@ -164,7 +164,7 @@ Horizon::Implementation::initialize (Hydraulic& hydraulic,
 	= texture.fraction_of_minerals_smaller_than (20.0 /*[um]*/) - clay;
       const double sand = 1.0 - clay - silt;
       
-      // Data adopted from Møberg et al. 1988 (Tinglev & Roskilde Soil)
+      // Data adopted from MÃ¸berg et al. 1988 (Tinglev & Roskilde Soil)
       quartz =  clay * 0.15 + silt * 0.6 + sand * 0.7;
 
       std::ostringstream tmp;

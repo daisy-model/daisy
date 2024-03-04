@@ -29,7 +29,7 @@
 #include "scope_exchange.h"
 #include "frame.h"
 
-// static const double Mw = 14.0; //The molecular weight for N [g mol�1]
+// static const double Mw = 14.0; //The molecular weight for N [g molÂ¯1]
 static const symbol LAI_symbol = symbol("LAI");
 static const symbol distance_from_top_symbol = symbol("distance_from_top"); // [cm]
 static const symbol relative_LAI_symbol = symbol("relative_LAI");
@@ -107,8 +107,8 @@ rubiscoNdist_forced
 /**/ ::rubiscoN_distribution (const Units& units,
                               const std::vector <double>& PAR_height, 
                               const double LAI, const double DS,
-                              std::vector <double>& rubiscoNdist/*[mol/m�]*/,  
-                              const double cropN /*[g/m�area]*/, 
+                              std::vector <double>& rubiscoNdist/*[mol/mÂ²]*/,  
+                              const double cropN /*[g/mÂ²area]*/, 
                               Treelog& msg)
 {
   daisy_assert (std::isfinite (cropN));
@@ -128,7 +128,7 @@ rubiscoNdist_forced
       const double LAI_i = LAI * (i + 0.5)/(No + 0.0);
       rubiscoNdist[i] = function(units,
                                  distance_from_top_i, LAI_i, relative_LAI,
-				 relative_distance_from_top, DS, msg); //[mol/m� leaf]
+				 relative_distance_from_top, DS, msg); //[mol/mÂ² leaf]
     }
 }
 

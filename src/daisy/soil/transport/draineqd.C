@@ -1,6 +1,6 @@
 // draineqd.C --- Find the equivalent drain depth for Hooghoudt model.
 // 
-// Copyright 1996-2001, 2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001, 2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2005 KVL.
 //
 // This file is part of Daisy.

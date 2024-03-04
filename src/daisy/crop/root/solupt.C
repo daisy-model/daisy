@@ -375,7 +375,7 @@ SoluptFixed::value (const Geometry& geo, const Soil& soil,
     }
   solute.add_to_root_sink (uptake);
 
-  // gN/cm³/h -> gN/m²/h
+  // gN/cmÂ³/h -> gN/mÂ²/h
   return geo.total_surface (uptake) * 1.0e4;
 }
 

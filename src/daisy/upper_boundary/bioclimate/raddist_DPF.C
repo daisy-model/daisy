@@ -159,7 +159,7 @@ void RaddistDPF::tick (std::vector <double>& fraction_sun_LAI,
   IRd0 = diffuse_radiation;
 
   // Extinction coefficient for black leaves in direct-beam irradiance 
-  daisy_assert (std::isnormal (sin_beta)); //sin_beta er solhøjden
+  daisy_assert (std::isnormal (sin_beta)); //sin_beta er solhÃ¸jden
   double kb =  0.50 / sin_beta;
   daisy_assert (kb > 0.0);
 

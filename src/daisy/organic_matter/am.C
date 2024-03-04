@@ -1,6 +1,6 @@
 // am.C -- Added Matter, i.e. fertilizer and residuals.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2002, 2006 Per Abrahamsen and KVL.
 //
 // This file is part of Daisy.
@@ -787,7 +787,7 @@ AM::get_NO3 (const Metalib& metalib, const FrameModel& al)
 	  // Organic fertilizer.
 	  const double weight = al.number ("weight") 
 	    * al.number ("dry_matter_fraction") 
-	    * 0.01;			// T w.w. / ha --> g / cm²
+	    * 0.01;			// T w.w. / ha --> g / cmÂ²
 	  const double N = weight * al.number ("total_N_fraction");
 	  return N * al.number ("NO3_fraction");
 	}
@@ -815,7 +815,7 @@ AM::get_NH4 (const Metalib& metalib, const FrameModel& al)
 	  // Organic fertilizer.
 	  const double weight = al.number ("weight") 
 	    * al.number ("dry_matter_fraction") 
-	    * 0.01;			// T w.w. / ha --> g / cm²
+	    * 0.01;			// T w.w. / ha --> g / cmÂ²
 	  const double N = weight * al.number ("total_N_fraction");
 	  return N * al.number ("NH4_fraction") * (1.0 - volatilization);
 	}
@@ -1106,7 +1106,7 @@ struct AMOrganic : public AM
     // Get initialization parameters.
     const double weight = frame ().number ("weight") 
       * frame ().number ("dry_matter_fraction") 
-      * 0.01;			// T / ha --> g / cm²
+      * 0.01;			// T / ha --> g / cmÂ²
 
     const double C = weight * frame ().number ("total_C_fraction");
     const double N = weight * frame ().number ("total_N_fraction")
@@ -1180,8 +1180,8 @@ struct AMInitial : public AM
     for (size_t i = 0; i < layers.size (); i++)
       {
         const double end = layers[i]->number ("end");
-        const double weight = layers[i]->number ("weight"); // Kg C/m²
-        const double C = weight * 1000.0 / (100.0 * 100.0); // g C / cm²
+        const double weight = layers[i]->number ("weight"); // Kg C/mÂ²
+        const double C = weight * 1000.0 / (100.0 * 100.0); // g C / cmÂ²
         int missing_number = -1;
         double missing_fraction = 1.0;
         for (size_t j = 0; j < oms.size (); j++)
@@ -1289,9 +1289,9 @@ struct AMRoot : public AM
     const double total_C_fraction = frame ().number ("total_C_fraction");
     const double total_N_fraction = frame ().number ("total_N_fraction");
     const double C = weight * 1000.0*1000.0 / (100.0*100.0*100.0*100.0)
-      * total_C_fraction; // g C / cm²;
+      * total_C_fraction; // g C / cmÂ²;
     const double N = weight * 1000.0*1000.0 / (100.0*100.0*100.0*100.0)
-      * total_N_fraction; // g C / cm²;
+      * total_N_fraction; // g C / cmÂ²;
     const double k = M_LN2 / frame ().number ("dist");
     const double depth = frame ().number ("depth", max_rooting_depth);
     daisy_assert (depth < 0.0);

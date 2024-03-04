@@ -1,6 +1,6 @@
 // path.C -- Handle Unix and WinDOS style paths.
 //
-// Copyright 1996-2007 KVL, Per Abrahamsen and Søren Hansen
+// Copyright 1996-2007 KVL, Per Abrahamsen and SÃ¸ren Hansen
 //
 // This file is part of Daisy.
 // 

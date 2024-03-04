@@ -1,6 +1,6 @@
 // photo_Farquhar.C -- Leaf photosynthesis based on Farquhar et al., 1980 and Ball et al. 1987.
 // 
-// Copyright 1996-2001,2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001,2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001,2005-2006 KVL.
 // Copyright 2006 Birgitte Gjettermann.
 //
@@ -55,14 +55,14 @@ PhotoFarquhar::~PhotoFarquhar ()
 { }
 
 void
-PhotoFarquhar::crop_Vmax_total (const std::vector<double>& rubisco_Ndist /* [mol/m²leaf] */,  
+PhotoFarquhar::crop_Vmax_total (const std::vector<double>& rubisco_Ndist /* [mol/mÂ²leaf] */,  
 				std::vector<double>& cropVm) const
 {
   const size_t No = cropVm.size ();
   daisy_assert (rubisco_Ndist.size () == No);
   // Fill photosynthetic capacity Vm for each canopy layer in vector
   for (size_t i = 0; i < No; i++)
-     cropVm[i] = Xn * rubisco_Ndist[i]; //[mol/m² leaf/s]
+     cropVm[i] = Xn * rubisco_Ndist[i]; //[mol/mÂ² leaf/s]
 }
 
 
@@ -187,8 +187,8 @@ PhotoFarquhar::assimilate (const Units& units,
 
   rubiscoNdist->rubiscoN_distribution (units,
                                        PAR_height, prevLA, DS,
-                                       rubisco_Ndist/*[mol/m²leaf]*/, 
-				       cropN /*[g/m²area]*/, msg);
+                                       rubisco_Ndist/*[mol/mÂ²leaf]*/, 
+				       cropN /*[g/mÂ²area]*/, msg);
   crop_Vmax_total (rubisco_Ndist, crop_Vm_total);  
 
 
@@ -236,7 +236,7 @@ PhotoFarquhar::assimilate (const Units& units,
       if (LA * fraction [i] > 0)
 	{  
 	  // PAR in mol/m2/s = PAR in W/m2 * 0.0000046
-	  const double dPAR = (PAR[i] - PAR[i+1])/dCAI * 0.0000046; //W/m2->mol/m²leaf/s
+	  const double dPAR = (PAR[i] - PAR[i+1])/dCAI * 0.0000046; //W/m2->mol/mÂ²leaf/s
 
           if (dPAR < 0)
             {
@@ -252,10 +252,10 @@ PhotoFarquhar::assimilate (const Units& units,
             }
 
 	  // log variable
-	  PAR_ += dPAR * dCAI * 3600.0; //mol/m²area/h/fraction
+	  PAR_ += dPAR * dCAI * 3600.0; //mol/mÂ²area/h/fraction
 
 	  // Photosynthetic rubisco capacity 
-	  const double vmax25 = crop_Vm_total[i]*fraction[i];//[mol/m²leaf/s/fracti.]
+	  const double vmax25 = crop_Vm_total[i]*fraction[i];//[mol/mÂ²leaf/s/fracti.]
 	  daisy_assert (vmax25 >= 0.0);
 
 	  // leaf respiration
@@ -268,7 +268,7 @@ PhotoFarquhar::assimilate (const Units& units,
           double& hs = hs_vector[i];
           hs = 0.5;              // first guess of hs []
           double& cs = cs_vector[i];
-          //first gues for stomatal cond,[mol/s/m²leaf]
+          //first gues for stomatal cond,[mol/s/mÂ²leaf]
 	  double gsw = Stomatacon->minimum () * 2.0;
 	  // double gsw = 2 * b; // old value
 	  const int maxiter = 150;
@@ -284,8 +284,8 @@ PhotoFarquhar::assimilate (const Units& units,
 
 	      //Calculating ci and "net"photosynthesis
 	      CxModel(CO2_atm, O2_atm, Ptot, 
-                      pn, ci, dPAR /*[mol/m²leaf/s]*/, 
-                      gsw, gbw, Tl, vmax25, rd, msg);//[mol/m²leaf/s/fraction]
+                      pn, ci, dPAR /*[mol/mÂ²leaf/s]*/, 
+                      gsw, gbw, Tl, vmax25, rd, msg);//[mol/mÂ²leaf/s/fraction]
 
               // Vapour pressure at leaf surface. [Pa]
               const double es = (gsw * estar + gbw * ec) / (gsw + gbw);
@@ -313,11 +313,11 @@ PhotoFarquhar::assimilate (const Units& units,
               gsw = Stomatacon->stomata_con (ABA /*g/cm^3*/,
                                              h_x /* MPa */, 
                                              hs_use /*[]*/,
-                                             pn /*[mol/m²leaf/s]*/, 
+                                             pn /*[mol/mÂ²leaf/s]*/, 
                                              Ptot /*[Pa]*/, 
                                              cs /*[Pa]*/, Gamma /*[Pa]*/, 
                                              Ds/*[Pa]*/,
-                                             msg); //[mol/m²leaf/s] 
+                                             msg); //[mol/mÂ²leaf/s] 
 
 	      iter++;
 	      if(iter > maxiter)
@@ -335,10 +335,10 @@ PhotoFarquhar::assimilate (const Units& units,
                  || std::fabs (lastgs-gs)> 0.01);
 
 	  // Leaf brutto photosynthesis [gCO2/m2/h] 
-	  /*const*/ double pn_ = (pn+rd) * molWeightCO2 * 3600.0;//mol CO2/m²leaf/s->g CO2/m²leaf/h
-	  const double rd_ = (rd) * molWeightCO2 * 3600.0;   //mol CO2/m²/s->g CO2/m²/h
-	  const double Vm_ = V_m(vmax25, Tl); //[mol/m² leaf/s/fraction]
-	  const double Jm_ = J_m(vmax25, Tl); //[mol/m² leaf/s/fraction]
+	  /*const*/ double pn_ = (pn+rd) * molWeightCO2 * 3600.0;//mol CO2/mÂ²leaf/s->g CO2/mÂ²leaf/h
+	  const double rd_ = (rd) * molWeightCO2 * 3600.0;   //mol CO2/mÂ²/s->g CO2/mÂ²/h
+	  const double Vm_ = V_m(vmax25, Tl); //[mol/mÂ² leaf/s/fraction]
+	  const double Jm_ = J_m(vmax25, Tl); //[mol/mÂ² leaf/s/fraction]
 
 	  if (pn_ < 0.0)
             {
@@ -353,26 +353,26 @@ PhotoFarquhar::assimilate (const Units& units,
               msg.error (tmp.str ());
               pn_ = 0.0;
             }
-	  Ass_ += LA * pn_; // [g/m²area/h] 
-	  Res += LA * rd_;  // [g/m²area/h] 
+	  Ass_ += LA * pn_; // [g/mÂ²area/h] 
+	  Res += LA * rd_;  // [g/mÂ²area/h] 
 	  daisy_assert (Ass_ >= 0.0);
 
 	  //log variables:
-	  Ass_vector[i]+= pn_* (molWeightCH2O / molWeightCO2) * LA;//[g CH2O/m²area/h]
-	  Nleaf_vector[i]+= rubisco_Ndist[i] * LA * fraction[i]; //[mol N/m²area]OK
-	  gs_vector[i]+= gsw /* * LA * fraction[i] */;     //[mol/m² area/s]
+	  Ass_vector[i]+= pn_* (molWeightCH2O / molWeightCO2) * LA;//[g CH2O/mÂ²area/h]
+	  Nleaf_vector[i]+= rubisco_Ndist[i] * LA * fraction[i]; //[mol N/mÂ²area]OK
+	  gs_vector[i]+= gsw /* * LA * fraction[i] */;     //[mol/mÂ² area/s]
 	  ci_vector[i]+= ci /* * fraction[i] */;  //[Pa] OK
-	  Vm_vector[i]+= Vm_ * 1000.0 * LA * fraction[i]; //[mmol/m² area/s]OK
-	  Jm_vector[i]+= Jm_ * 1000.0 * LA * fraction[i]; //[mmol/m² area/s]OK
+	  Vm_vector[i]+= Vm_ * 1000.0 * LA * fraction[i]; //[mmol/mÂ² area/s]OK
+	  Jm_vector[i]+= Jm_ * 1000.0 * LA * fraction[i]; //[mmol/mÂ² area/s]OK
 	  LAI_vector[i] += LA * fraction[i];//OK
 	  
 	  ci_middel += ci * fraction[i]/(No + 0.0);// [Pa]   OK
 	  gs += LA * gsw * fraction[i]; 
 	  Ass += LA * pn_ * (molWeightCH2O / molWeightCO2);//[g CH2O/m2 area/h] OK
 	  LAI += LA * fraction[i];//OK
-	  Vmax += 1000.0 * LA * fraction[i] * Vm_;   //[mmol/m² area/s]
-	  jm += 1000.0 * LA * fraction[i] * Jm_;     //[mmol/m² area/s]
-	  leafPhotN += rubisco_Ndist[i] * LA *fraction[i]; //[mol N/m²area]; 
+	  Vmax += 1000.0 * LA * fraction[i] * Vm_;   //[mmol/mÂ² area/s]
+	  jm += 1000.0 * LA * fraction[i] * Jm_;     //[mmol/mÂ² area/s]
+	  leafPhotN += rubisco_Ndist[i] * LA *fraction[i]; //[mol N/mÂ²area]; 
 	  fraction_total += fraction[i]/(No + 0.0);
 	}
     }

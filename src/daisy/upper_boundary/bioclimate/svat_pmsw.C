@@ -1,6 +1,6 @@
 // svat_PMSW.C --- Advanced SVAT model using hourly weatherdata.
 // 
-// Copyright 1996-2002 Peter van der Keur, Per Abrahamsen and Søren Hansen.
+// Copyright 1996-2002 Peter van der Keur, Per Abrahamsen and SÃ¸ren Hansen.
 // Copyright 2000-2002 KVL.
 //
 // This file is part of Daisy.

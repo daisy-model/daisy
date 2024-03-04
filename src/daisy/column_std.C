@@ -1,6 +1,6 @@
 // column_std.C -- Full Daisy simulation with organic matter and nitrogen.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2006 KVL and Per Abrahamsen
 //

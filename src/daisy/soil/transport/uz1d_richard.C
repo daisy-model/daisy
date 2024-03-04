@@ -1,6 +1,6 @@
 // uz1d_richard.C --- Using Richard's Equation to calculate 1D water flow.
 // 
-// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001 KVL.
 // Copyright 2006 Per Abrahamsen and KVL.
 //

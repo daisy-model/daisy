@@ -1,6 +1,6 @@
 // phenology_std.C -- Default crop phenology model.
 // 
-// Copyright 2003 Per Abrahamsen and Søren Hansen
+// Copyright 2003 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2003 KVL.
 //
 // This file is part of Daisy.

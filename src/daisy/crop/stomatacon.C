@@ -184,7 +184,7 @@ double
 StomataCon_BB::stomata_con (const double ABA,  // [g/cm^3]
                             const double h_x,  // [MPa]
                             const double hs /*[]*/, 
-                            const double pz /*[mol/m²leaf/s]*/,
+                            const double pz /*[mol/mÂ²leaf/s]*/,
                             const double Ptot /*[Pa]*/,
                             const double cs /*[Pa]*/,
                             const double, 
@@ -241,7 +241,7 @@ double
 StomataCon_Leuning::stomata_con (const double ABA,  // [g/cm^3]
                                  const double h_x,  // [MPa]
                                  const double,
-                                 const double pz /*[mol/m²leaf/s]*/,
+                                 const double pz /*[mol/mÂ²leaf/s]*/,
                                  const double Ptot /*[Pa]*/,
                                  const double cs /*[Pa]*/,
                                  const double Gamma /*[Pa]*/, 

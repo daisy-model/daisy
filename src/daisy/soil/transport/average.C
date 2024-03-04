@@ -1,6 +1,6 @@
 // average.C --- Find the average of two numbers.
 // 
-// Copyright 1996-2001, 2005 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2001, 2005 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2005 KVL.
 //
 // This file is part of Daisy.

@@ -1,6 +1,6 @@
 // svat_ssoc.C -- SVAT model Sun Shade Open Canopy.
 // 
-// Copyright 2008 Per Abrahamsen, Birgitte Gjettermann and Søren Hansen
+// Copyright 2008 Per Abrahamsen, Birgitte Gjettermann and SÃ¸ren Hansen
 // Copyright 2008 KU.
 //
 // This file is part of Daisy.

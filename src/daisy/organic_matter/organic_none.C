@@ -55,9 +55,9 @@ struct OrganicNone : public OrganicMatter
   { }
   double top_DM () const
   { return 0.0; }
-  double CO2 (size_t) const	// [g C/cm³]
+  double CO2 (size_t) const	// [g C/cmÂ³]
   { return 0.0; }
-  double CO2_fast (size_t) const	// [g C/cm³]
+  double CO2_fast (size_t) const	// [g C/cmÂ³]
   { return 0.0; }
   void mix (const Geometry&, const Soil&, const SoilWater&,
 	    double, double, double)
@@ -87,7 +87,7 @@ struct OrganicNone : public OrganicMatter
   { }
 
   // Communication with external model.
-  double get_smb_c_at (size_t) const // [g C/cm³]
+  double get_smb_c_at (size_t) const // [g C/cmÂ³]
   { return 0.0; }
 
   // Create and Destroy.

@@ -1,6 +1,6 @@
 // rootdens_AP.C -- Anders Pedersen variant of Gerwitz and Page.
 // 
-// Copyright 1996-2001, 2004 Per Abrahamsen and S�ren Hansen
+// Copyright 1996-2001, 2004 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2001, 2004 KVL.
 //
 // This file is part of Daisy.

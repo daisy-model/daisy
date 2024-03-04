@@ -1,6 +1,6 @@
 // soil.C
 // 
-// Copyright 1996-2004 Per Abrahamsen and Søren Hansen
+// Copyright 1996-2004 Per Abrahamsen and SÃ¸ren Hansen
 // Copyright 2000-2004 KVL.
 //
 // This file is part of Daisy.
