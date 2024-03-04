@@ -29,15 +29,16 @@ Using apt
 
 To build with gcc using release options
 
-    cmake ../../ --preset gcc-release
+    cmake ../../ --preset linux-gcc-native
     cmake --build . -j <number-of-concurrent-jobs>
 
-To build a portable statically linked binary
+#### Build for distribution
+To build a portable binary for distribution
 
-    cmake ../../ --preset gcc-release-portable
+    cmake ../../ --preset linux-gcc-portable
     cmake --build . -j <number-of-concurrent-jobs>
 
-#### Installers
+
 To build .deb package
 
     cpack -G DEB
@@ -51,26 +52,38 @@ For the generic linux installer it is necesary to set the environment variable `
     export DAISYHOME=/home/user-name/daisy
 
 TODO: Need to figure out static linking vs specifying depends in the package. The deb package and similar should probably be dynamically linked with depends, and the generic installer should probably be statically linked.
-    
+
 ### MacOS
 Install dependencies
 
     brew install cmake boost suite-sparse 
-    
+
 Download the source code and setup a build dir
 
     git clone git@github.com:daisy-model/daisy.git
     mkdir -p daisy/build/release
     cd daisy/build/release
-    
+
 Build it
 
-    cmake ../../ --preset clang-release
+    cmake ../../ --preset macos-clang-native
+    cmake --build . -j <number-of-concurrent-jobs>
+
+
+#### Build for distribution
+Build a portable binary
+
+    cmake ../../ --preset macos-clang-portable
     cmake --build . -j <number-of-concurrent-jobs>
 
 Test it
 
-    ctest
+	ctest
+
+Make an installer
+
+    cpack
+
 
 ### Windows
 Install [MSYS2](https://www.msys2.org/).
@@ -93,15 +106,28 @@ Build it
 
     cmake ../../ --preset mingw-gcc-release
     cmake --build .
-    
+
 Test it
 
     ctest
 
-Make an installer
+#### Build for distribution
+Build a portable binary
+
+    cmake ../../ --preset mingw-gcc-release
+    cmake --build .
+
+Test it
+
+	ctest
+
+Install dependencies
 
     pacman -S mingw-w64-ucrt-x86_64-nsis
-    cpack -G NSIS
+
+Make an installer
+
+	cpack
 
 
 ## Testing

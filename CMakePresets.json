@@ -47,7 +47,7 @@
                 "COMPILER_OPTIONS_NATIVE" : "-march=native;-mtune=native",
                 "COMPILER_OPTIONS_COVERAGE" : "-O1;--coverage",
                 "LINKER_OPTIONS_COVERAGE" : "--coverage",
-                "LINKER_OPTIONS_PORTABLE" : "-static"
+                "LINKER_OPTIONS_PORTABLE" : ""
             }
         },
         {
@@ -105,7 +105,7 @@
             "inherits" : [ "gcc", "linux", "debug" ]
         },
         {
-            "name" : "linux-gcc-release",
+            "name" : "linux-gcc-native",
             "inherits" : [ "gcc", "linux", "release" ]
         },
         {
@@ -118,18 +118,26 @@
             "inherits" : [ "clang", "linux", "debug" ]
         },
         {
-            "name" : "linux-clang-release",
+            "name" : "linux-clang-native",
             "inherits" : [ "clang", "linux", "release" ]
         },
 
         {
-            "name" : "mingw-gcc-release",
+            "name" : "mingw-gcc-native",
             "inherits" : [ "gcc", "mingw", "release" ]
+        },
+	{
+            "name" : "mingw-gcc-portable",
+            "inherits" : [ "gcc", "mingw", "release", "portable" ]
         },
 
         {
-            "name" : "macos-clang-release",
+            "name" : "macos-clang-native",
             "inherits" : [ "clang", "macos", "release" ]
+        },
+	{
+            "name" : "macos-clang-portable",
+            "inherits" : [ "clang", "macos", "release", "portable" ]
         }
     ]
 }
