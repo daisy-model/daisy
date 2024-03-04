@@ -114,7 +114,7 @@ Test it
 #### Build for distribution
 Build a portable binary
 
-    cmake ../../ --preset mingw-gcc-release
+    cmake ../../ --preset mingw-gcc-portable
     cmake --build .
 
 Test it

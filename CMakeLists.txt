@@ -73,7 +73,7 @@ include(cmake/Packaging.cmake)
 set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 
 if (${OS} STREQUAL "mingw")
-  include(cmake/MingGWPackaging.cmake)
+  include(cmake/MinGWPackaging.cmake)
 elseif (${OS} STREQUAL "linux")
   include(cmake/DebianPackaging.cmake)
 elseif (${OS} STREQUAL "macos")
