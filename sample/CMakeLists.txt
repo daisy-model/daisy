@@ -33,11 +33,13 @@ install(FILES
   pl-management.dai
   pl-sample.dai
   pl-soil.dai
+  README
   rootdata.ddf
   rootmatch.dai
   safir-common.dai
   safir-site.dai
   safir-weather.dwf
+  sample.dai
   sample-heat.dai
   sk-bratislava.dwf
   sk-management.dai
@@ -45,7 +47,14 @@ install(FILES
   sk-soil.dai
   test-aba.dai
   test-colloids.dai
+  test-cp.dai
+  test.dai
+  test-GP2D.dai
+  test-minimize.dai
+  test-organic.dai
   test-post.dai
   test-prd.dai
+  test-refman.dai
+  test-scn.dai
   test-spawn.dai
   DESTINATION ${DAISY_SAMPLE_DESTINATION} COMPONENT sample)
