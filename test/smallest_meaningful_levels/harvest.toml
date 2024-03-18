@@ -1,0 +1,16 @@
+stem_DM = "1 kg/ha"
+dead_DM = "1 kg/ha"
+leaf_DM = "1 kg/ha"
+sorg_DM = "1 kg/ha"
+stem_N = "12 g/ha"
+dead_N = "10 g/ha"
+leaf_N = "10 g/ha"
+sorg_N = "40 g/ha"
+stem_C = "10 g/ha"
+dead_C = "10 g/ha"
+leaf_C = "10 g/ha"
+sorg_C = "10 g/ha"
+WStress = "0.1 day" # water_stress_days
+NStress = "0.1 day" # nitrogen_stress_days
+WP_ET = "10 g/m^3" # water_productivity
+HI = "1 dimensionless" # harvest_index
