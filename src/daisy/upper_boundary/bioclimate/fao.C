@@ -102,9 +102,14 @@ FAO::PsychrometricConstant (double AtmPressure, double Temp) // [Pa/K]
 double
 FAO::AirDensity (double AtmPressure, double Temp) // [kg/m3]
 {
+#ifdef FAO_AIR_DENSITY_USE_CLEAN_BUT_WRONG
+  // See https://github.com/daisy-model/daisy/commit/e26fb2a65be8765064c092018d45fa7de62379cc#r138460824
+  return Resistance::rho_a (Temp, AtmPressure);
+#else
   // Unit problem, gives approximately same density as water.
   const double Tvirtuel = 1.01 * (Temp + 273);
   return (3.486 * AtmPressure * 1e-3 /* [Pa->kPa] */ / Tvirtuel);
+#endif
 }
 
 double
