@@ -69,7 +69,7 @@ Type::cite () const
 
 bool
 Type::is_text () const
-{ return false; } // FIXME: Why is this always false?
+{ return false; } // Default implementation in base class
 
 symbol 
 Type::dimension () const // FIXME: Why is it defined if never reached?
