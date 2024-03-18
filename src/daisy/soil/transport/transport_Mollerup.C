@@ -1287,7 +1287,25 @@ TransportMollerup::flow (const Geometry& geo_base,
               A (c, c) += R *(1.0 / ddt) * QTheta_mat_np1 (c, c); // dtheta/ddt
               b_mat (c, c) += R * (1.0 / ddt) * QTheta_mat_n (c, c);
             }
+#ifdef MOLLERUP_USE_ORIGINAL_SLOW
+          // See https://github.com/daisy-model/daisy/commit/e26fb2a65be8765064c092018d45fa7de62379cc#r138460571
+          // This is the original, slow formulation-
+          A = R *(1.0 / ddt) * QTheta_mat_np1       // dtheta/ddt
+            - gamma * diff_xx_zz_avg                // xx_zz diffusion
+            - gamma * diff_xz_zx_avg                // xz_zx diffusion
+            + gamma * advec                         // advec
+            - gamma * B_mat                         // impl Neumann BC
+            - gamma * diffm_xx_zz_mat               // Dirichlet BC
+            + gamma * advecm_mat;                   // Dirichlet BC
 
+          b_mat = R * (1.0 / ddt) * QTheta_mat_n
+            + (1 - gamma) * diff_xx_zz_avg
+            + (1 - gamma) * diff_xz_zx_avg
+            - (1 - gamma) * advec
+            + (1 - gamma) * B_mat
+            + (1 - gamma) * diffm_xx_zz_mat
+            - (1 - gamma) * advecm_mat;
+#endif
           b = prod (b_mat, C_n)
             + B_vec                                 // expl Neumann BC
             - B_dir_vec                             // Dirichlet BC as Neumann
