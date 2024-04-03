@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        cmake_preset: [gcc-release, clang-release]
     steps:
     - uses: actions/checkout@v3
 
@@ -32,11 +31,19 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Configure CMake
+    - name: Configure CMake ubuntu
+      if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -S ${{ github.workspace }}
-        --preset ${{ matrix.cmake_preset }}
+        --preset linux-gcc-portable
+
+    - name: Configure CMake macos
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -S ${{ github.workspace }}
+        --preset macos-clang-portable
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
