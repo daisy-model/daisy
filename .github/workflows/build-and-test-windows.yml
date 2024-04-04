@@ -35,31 +35,32 @@ jobs:
             mingw-w64-${{matrix-env}}-suitesparse
             mingw-w64-${{matrix-env}}-boost
       - uses: actions/checkout@v4
-        - name: Set up Python ${{ matrix.python-version }}
-          uses: actions/setup-python@v3
-          with:
-            python-version: ${{ matrix.python-version }}        
+        
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}        
       
-        - name: Install python dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install pandas pint
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas pint
 
-        - name: Set reusable strings
-          id: strings
-          shell: bash
-          run: |
-            echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
       
-        - name: Configure CMake
-          run: >
-            cmake -B ${{ steps.strings.outputs.build-output-dir }}
-            -S ${{ github.workspace }}
-            --preset mingw-gcc-portable
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -S ${{ github.workspace }}
+          --preset mingw-gcc-portable
 
-        - name: Build
-          run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
 
-        - name: Test
-          working-directory: ${{ steps.strings.outputs.build-output-dir }}
-          run: ctest --output-on-failure
+      - name: Test
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        run: ctest --output-on-failure
