@@ -36,7 +36,12 @@ jobs:
             mingw-w64-${{matrix.env}}-python
             
       - uses: actions/checkout@v4
-              
+
+      - name: Check things
+        run: |
+          pwd
+          ls
+        
       - name: Set reusable strings
         id: strings
         shell: bash
@@ -45,12 +50,11 @@ jobs:
       
       - name: Configure CMake
         run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -S ${{ github.workspace }}
+          cmake -B build 
           --preset mingw-gcc-portable
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+        run: cmake --build build
 
       - name: Install python dependencies
         run: |
@@ -58,5 +62,5 @@ jobs:
           pip install pandas pint
         
       - name: Test
-        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        working-directory: build 
         run: ctest --output-on-failure
