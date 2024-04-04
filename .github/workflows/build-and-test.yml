@@ -20,17 +20,27 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}        
+      
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tomllib pint
+      
     - name: Install macOS dependencies
       if: ${{ startsWith(matrix.os, 'macos') }}
       run: brew install cmake boost suite-sparse
 
     - name: Check macOS lib paths
       if: ${{ startsWith(matrix.os, 'macos') }}
-      shell: bash
       run: |
         env
         brew --prefix boost
         brew --prefix suite-sparse
+        ls $(brew --prefix suite-sparse)
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
@@ -57,17 +67,14 @@ jobs:
         --preset macos-clang-portable
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-        
-    - name: Install python dependencies
+    - name: Check compiled MacOS lib paths
+      if: ${{ startsWith(matrix.os, 'macos') }}
       run: |
-        python -m pip install --upgrade pip
-        pip install tomllib pint
+        pwd
+        ls
+        otool -L daisy
       
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
