@@ -71,6 +71,7 @@ jobs:
 
     - name: Check compiled MacOS lib paths
       if: ${{ startsWith(matrix.os, 'macos') }}
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
         pwd
         ls
