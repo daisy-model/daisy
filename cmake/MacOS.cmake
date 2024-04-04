@@ -29,19 +29,19 @@ install(DIRECTORY
 # handle symlinks. Then install all the files we just copied.
 # We put them in bin/lib, then we dont need to update the rpath of the shared library files
 # because they look in @loader_path/../lib, which becomes lib/
-set(_dylib_target_dir "${CMAKE_CURRENT_BINARY_DIR}/bin/lib")
-file(INSTALL
-  "$ENV{HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
-  "$ENV{HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
-  "$ENV{HOMEBREW_PREFIX}/lib/libboost_filesystem-mt.dylib"
-  "$ENV{HOMEBREW_PREFIX}/lib/libboost_atomic-mt.dylib"
-  DESTINATION ${_dylib_target_dir}
-  FOLLOW_SYMLINK_CHAIN
-)
-install(DIRECTORY ${_dylib_target_dir}
-  DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
-  COMPONENT runtime
-)
+# set(_dylib_target_dir "${CMAKE_CURRENT_BINARY_DIR}/bin/lib")
+# file(INSTALL
+#   "$ENV{HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
+#   "$ENV{HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
+#   "$ENV{HOMEBREW_PREFIX}/lib/libboost_filesystem-mt.dylib"
+#   "$ENV{HOMEBREW_PREFIX}/lib/libboost_atomic-mt.dylib"
+#   DESTINATION ${_dylib_target_dir}
+#   FOLLOW_SYMLINK_CHAIN
+# )
+# install(DIRECTORY ${_dylib_target_dir}
+#   DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
+#   COMPONENT runtime
+# )
 
 # Update daisy binary so it knows to look in @executable_path for dylibs
 # First update the rpath. We only do it for the installed binary
@@ -52,22 +52,22 @@ set_target_properties(daisy
 
 # Then update the id of dylibs
 # This is brittle. Would be nice to get the dir path dynamically.
-set(_dylibs_rel_path
-  "suite-sparse/lib/libcxsparse.4.dylib"
-  "suite-sparse/lib/libsuitesparseconfig.7.dylib"
-  "boost/lib/libboost_filesystem-mt.dylib"
-  "boost/lib/libboost_atomic-mt.dylib"
-)
-foreach(_dylib_rel_path ${_dylibs_rel_path})
-  set(_old_lib_id "$ENV{HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")
-  cmake_path(GET _old_lib_id FILENAME _dylib)
-  set(_new_lib_id "@rpath/lib/${_dylib}")
+# set(_dylibs_rel_path
+#   "suite-sparse/lib/libcxsparse.4.dylib"
+#   "suite-sparse/lib/libsuitesparseconfig.7.dylib"
+#   "boost/lib/libboost_filesystem-mt.dylib"
+#   "boost/lib/libboost_atomic-mt.dylib"
+# )
+# foreach(_dylib_rel_path ${_dylibs_rel_path})
+#   set(_old_lib_id "$ENV{HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")
+#   cmake_path(GET _old_lib_id FILENAME _dylib)
+#   set(_new_lib_id "@rpath/lib/${_dylib}")
 
-  message("-change ${_old_lib_id} ${_new_lib_id}")
-  add_custom_command(TARGET daisy
-    POST_BUILD
-    COMMAND "install_name_tool"
-    ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
-    "${DAISY_BIN_NAME}"
-  )
-endforeach()
+#   message("-change ${_old_lib_id} ${_new_lib_id}")
+#   add_custom_command(TARGET daisy
+#     POST_BUILD
+#     COMMAND "install_name_tool"
+#     ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
+#     "${DAISY_BIN_NAME}"
+#   )
+# endforeach()
