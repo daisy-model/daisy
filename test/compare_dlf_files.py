@@ -135,6 +135,7 @@ def load_smallest_meaningful_level(name):
             sml = tomllib.load(infile)
         for k, v in sml.items():
             sml[k] = ureg(v)
+        print(f"INFO: Found SML definition for '{name}'", flush=True)
         return sml
     except (KeyError, UndefinedUnitError) as e:
         warnings.warn(f'Could not load SML definition for {name}: {e}')
@@ -173,13 +174,15 @@ def _compare_bodies(b1, b2, units, sml_names, precision, sml_warn_level):
                 sml_map = load_smallest_meaningful_level(sml_name)
                 if len(sml_map) > 0:
                     break
+            if len(sml_map) == 0:
+                warnings.warn(f'No SML definitions loaded. Tried {sml_names}')
             for col in diff.columns.levels[0]:
                 delta = (diff[col]['self'] - diff[col]['other']).abs().max()
                 try:
                     sml = sml_map[col]
                     delta_u = (delta * dlf_unit_to_pint_unit(units[col])).to(sml)
                     if delta_u > sml:
-                        bad_diff.append(col, b1[col], b2[col])
+                        bad_diff.append((col, b1[col], b2[col]))
                         print(f'ERROR: {delta_u} > {sml} for {col}')
                         print(diff[col])
                     elif delta_u > sml_warn_level * sml:
@@ -187,21 +190,21 @@ def _compare_bodies(b1, b2, units, sml_names, precision, sml_warn_level):
                 except KeyError:
                     # We dont have an SML
                     if delta > precision:
-                        bad_diff.append(col, b1[col], b2[col])
+                        bad_diff.append((col, b1[col], b2[col]))
                         print(f'ERROR: {delta} > {precision} for {col}')
                         print(diff[col])
                 except UndefinedUnitError:
                     error = f'ERROR: Unknown unit {units[col]} for {col}'
                     print(error)
-                    bad_diff.append(error, '', '')
+                    bad_diff.append((error, '', ''))
                 except AttributeError:
                     error = f'ERROR: Unit conversion error {units[col]} for {col}'
                     print(error)
-                    bad_diff.append(error, '', '')
+                    bad_diff.append((error, '', ''))
                 except DimensionalityError:
                     error = f'ERROR: Unit mismatch {units[col]} !~ {sml_map[col]} for {col}'
                     print(error)
-                    bad_diff.append(error, '', '')
+                    bad_diff.append((error, '', ''))
     except ValueError as e:
-        bad_diff.append(e, '', '')
+        bad_diff.append((e, '', ''))
     return bad_diff

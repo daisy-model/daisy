@@ -63,4 +63,7 @@ jobs:
         
       - name: Test
         working-directory: build 
-        run: ctest --output-on-failure
+        run: |
+          ctest --output-on-failure
+          grep WARNING Testing/Temporary/LastTest.log
+          grep INFO Testing/Temporary/LastTest.log
