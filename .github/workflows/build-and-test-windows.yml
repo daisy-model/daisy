@@ -29,11 +29,11 @@ jobs:
           update: true
           install: >-
             git
-            mingw-w64-${{matrix-env}}-cmake
-            mingw-w64-${{matrix-env}}-gcc
-            mingw-w64-${{matrix-env}}-ninja
-            mingw-w64-${{matrix-env}}-suitesparse
-            mingw-w64-${{matrix-env}}-boost
+            mingw-w64-${{matrix.env}}-cmake
+            mingw-w64-${{matrix.env}}-gcc
+            mingw-w64-${{matrix.env}}-ninja
+            mingw-w64-${{matrix.env}}-suitesparse
+            mingw-w64-${{matrix.env}}-boost
       - uses: actions/checkout@v4
         
       - name: Set up Python ${{ matrix.python-version }}
