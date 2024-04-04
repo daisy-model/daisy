@@ -37,10 +37,12 @@ jobs:
     - name: Check macOS lib paths
       if: ${{ startsWith(matrix.os, 'macos') }}
       run: |
-        env
         brew --prefix boost
+        ls $(brew --prefix boost)/lib
         brew --prefix suite-sparse
-        ls $(brew --prefix suite-sparse)
+        ls $(brew --prefix suite-sparse)/lib
+        ls /usr/local/lib
+        env
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
