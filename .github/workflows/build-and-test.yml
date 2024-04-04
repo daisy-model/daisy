@@ -15,7 +15,7 @@ jobs:
       # Consider changing this to true when your workflow is stable.
       fail-fast: false
       matrix:
-        os: [macos-latest] #ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: ["3.11"]
     steps:
     - uses: actions/checkout@v3
@@ -33,16 +33,6 @@ jobs:
     - name: Install macOS dependencies
       if: ${{ startsWith(matrix.os, 'macos') }}
       run: brew install cmake boost suite-sparse
-
-    - name: Check macOS lib paths
-      if: ${{ startsWith(matrix.os, 'macos') }}
-      run: |
-        brew --prefix boost
-        ls $(brew --prefix boost)/lib
-        brew --prefix suite-sparse
-        ls $(brew --prefix suite-sparse)/lib
-        ls /usr/local/lib
-        env
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
@@ -71,14 +61,6 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
 
-    - name: Check compiled MacOS lib paths
-      if: ${{ startsWith(matrix.os, 'macos') }}
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: |
-        pwd
-        ls
-        otool -L daisy
-      
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --output-on-failure
