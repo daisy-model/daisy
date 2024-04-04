@@ -22,6 +22,12 @@ jobs:
     - name: Install macOS dependencies
       if: ${{ startsWith(matrix.os, 'macos') }}
       run: brew install cmake boost suite-sparse
+
+    - name: Check macOS lib paths
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      shell: bash
+      run: |
+        env
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
@@ -52,4 +58,4 @@ jobs:
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest
+      run: ctest --output-on-failure
