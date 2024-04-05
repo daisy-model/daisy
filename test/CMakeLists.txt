@@ -1,8 +1,7 @@
 function(dai_test_case name dai_file)
   add_test(NAME ${name}
     COMMAND
-    python3
-    ${CMAKE_SOURCE_DIR}/test/test_daisy.py
+    test_daisy
     ${CMAKE_BINARY_DIR}/daisy
     ${CMAKE_SOURCE_DIR}/test/dai_test_files/${dai_file}
     ${CMAKE_SOURCE_DIR}/test/baseline/${CMAKE_BUILD_TYPE}$<$<BOOL:${MAKE_PORTABLE}>:Portable>/${name}
