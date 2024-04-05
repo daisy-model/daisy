@@ -131,6 +131,11 @@ Make an installer
 
 
 ## Testing
+### Install test dependencies
+We use a set of python tools to check Daisy output against a baseline. These are available from [daispy-test](https://github.com/daisy-model/daisypy-test) and can be installed with
+
+    pip install daisypy-test@git+ssh://git@github.com/daisy-model/daisypy-test.git
+
 Test scenarios are in [test/dai_test_files](test/dai_test_files).
 When adding a test you need to add it as a `dai_test_case` in [test/CMakeLists.txt](test/CMakeLists.txt).
 
