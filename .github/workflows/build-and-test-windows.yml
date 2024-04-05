@@ -38,7 +38,7 @@ jobs:
             mingw-w64-${{matrix.env}}-python-pandas
 
       - name: Install python dependencies
-        run: pip install pint daisypy-test@git+ssh://git@github.com/daisy-model/daisypy-test.git
+        run: pip install pint daisypy-test@git+https://github.com/daisy-model/daisypy-test
             
       - uses: actions/checkout@v4
 
