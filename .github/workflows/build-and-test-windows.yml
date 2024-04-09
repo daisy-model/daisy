@@ -41,22 +41,10 @@ jobs:
         run: pip install pint daisypy-test@git+https://github.com/daisy-model/daisypy-test
             
       - uses: actions/checkout@v4
-
-      - name: Check things
-        run: |
-          pwd
-          ls
-        
-      - name: Set reusable strings
-        id: strings
-        shell: bash
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
       
       - name: Configure CMake
         run: >
-          cmake -B build 
-          --preset mingw-gcc-portable
+          cmake -B build --preset mingw-gcc-portable
 
       - name: Build
         run: cmake --build build
@@ -65,5 +53,14 @@ jobs:
         working-directory: build 
         run: |
           ctest --output-on-failure
-          grep WARNING Testing/Temporary/LastTest.log
           grep INFO Testing/Temporary/LastTest.log
+          grep WARNING Testing/Temporary/LastTest.log
+          grep ERROR Testing/Temporary/LastTest.log
+
+      - name: Upload files from from failed tests
+        if: ${{ failure() }}
+        working-directory: ${{ github.workspace }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-from-failed-tests-win
+          path: test/system-tests/errors

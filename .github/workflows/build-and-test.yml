@@ -63,5 +63,14 @@ jobs:
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: |
         ctest --output-on-failure
-        grep WARNING Testing/Temporary/LastTest.log
         grep INFO Testing/Temporary/LastTest.log
+        grep WARNING Testing/Temporary/LastTest.log
+        grep ERROR Testing/Temporary/LastTest.log
+
+    - name: Upload files from from failed tests
+      if: ${{ failure() }}
+      working-directory: ${{ github.workspace }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: output-from-failed-tests
+        path: test/system-tests/errors
