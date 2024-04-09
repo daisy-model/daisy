@@ -150,7 +150,7 @@ There is a coverage preset defined for gcc.
     git clone git@github.com:daisy-model/daisy.git
     mkdir -p daisy/build/coverage 
     cd daisy/build/coverage
-    cmake ../.. --preset gcc-coverage
+    cmake ../.. --preset linux-gcc-coverage
     make -j 8
     ctest
 
