@@ -1,3 +1,48 @@
+2024-03-20  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* Version 6.47 released.
+
+2024-03-20  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* adsorption_vS_S.C (vS_S_old): Renamed from "vS_S".
+	(vS_S): Made S_planar, S_edge, K_planar, K_edge parameters.
+	V_planar, V_edge: unit should per volume space, not per volume soil.
+	(vS_S_Hansen): Old parameters.
+	(vS_S_Styczen): New parameters.
+
+2024-03-18  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* Version 6.46 released.
+
+2024-03-18  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* parser_file.C (erase): New top level keyword.
+
+	* clayom.C (load_frame): New function.
+	* clayom_biomod.C ("cite"): Set value.
+
+2024-02-27  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* reaction_shoot.C (load_frame): Added second citation.
+
+2024-01-22  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* Version 6.45 released.
+
+2024-01-22  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* secondary.C (use_secondary): Now supported by the 'pressure'
+	model.
+
+2024-01-19  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* lib/log.dai ("Groundwater"): Fix 'h_aquifer' path.
+
+2023-12-07  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* hydraulic_B_C_inverse.C (Theta_wp): Use 20 um instead of 50 um
+	as silt limit.
+
 2023-11-21  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* Version 6.44 released.
