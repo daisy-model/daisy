@@ -67,14 +67,15 @@ jobs:
         grep WARNING Testing/Temporary/LastTest.log
         grep ERROR Testing/Temporary/LastTest.log
 
-    - name: Upload files from from failed tests
-      if: ${{ failure() }}
-      if: ${{ startsWith(matrix.os, 'macos') }}
+    - name: Upload files from from failed tests macos
+      if: ${{ startsWith(matrix.os, 'macos') }} && ${{ failure() }}
       uses: actions/upload-artifact@v4
       with:
         name: output-from-failed-tests-macos
         path: test/system-tests/errors
-      if: ${{ startsWith(matrix.os, 'ubuntu) }}
+
+    - name: Upload files from from failed tests ubuntu
+      if: ${{ startsWith(matrix.os, 'ubuntu') }} && ${{ failure() }}
       uses: actions/upload-artifact@v4
       with:
         name: output-from-failed-tests-ubuntu
