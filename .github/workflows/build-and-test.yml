@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}        
       
@@ -69,7 +69,13 @@ jobs:
 
     - name: Upload files from from failed tests
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      uses: actions/upload-artifact@v4
       with:
-        name: output-from-failed-tests
+        name: output-from-failed-tests-macos
+        path: test/system-tests/errors
+      if: ${{ startsWith(matrix.os, 'ubuntu) }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: output-from-failed-tests-ubuntu
         path: test/system-tests/errors

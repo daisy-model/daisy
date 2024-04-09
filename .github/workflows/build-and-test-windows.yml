@@ -57,7 +57,7 @@ jobs:
 
       - name: Upload files from from failed tests
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: output-from-failed-tests-win
           path: test/system-tests/errors
