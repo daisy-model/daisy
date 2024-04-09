@@ -4,8 +4,8 @@ function(dai_test_case name dai_file)
     test_daisy
     ${CMAKE_BINARY_DIR}/daisy
     ${CMAKE_SOURCE_DIR}/test/system-tests/tests/${dai_file}
-    ${CMAKE_SOURCE_DIR}/test/system-tests/baseline/${CMAKE_BUILD_TYPE}$<$<BOOL:${MAKE_PORTABLE}>:Portable>/${name}
-    ${CMAKE_SOURCE_DIR}/test/system-tests/errors/${CMAKE_BUILD_TYPE}$<$<BOOL:${MAKE_PORTABLE}>:Portable>/${name}
+    ${CMAKE_SOURCE_DIR}/test/system-tests/baseline/${name}
+    ${CMAKE_SOURCE_DIR}/test/system-tests/errors/${name}
   )
   set_property(TEST systems_test.${name} PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
 endfunction()
