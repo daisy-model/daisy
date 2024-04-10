@@ -51,13 +51,11 @@ jobs:
         working-directory: build 
         run: |
           ctest --output-on-failure
-          grep INFO Testing/Temporary/LastTest.log
-          grep WARNING Testing/Temporary/LastTest.log
-          grep ERROR Testing/Temporary/LastTest.log
 
-      - name: Upload files from from failed tests
-        if: ${{ failure() }}
+      - name: Upload test logs
+        working-directory: build
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: output-from-failed-tests-win
-          path: test/system-tests/errors
+          name: test-output-win
+          path: Testing
