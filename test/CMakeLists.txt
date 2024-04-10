@@ -1,2 +1,3 @@
-add_subdirectory(system-tests)
-#add_subdirectory(unit-tests)
+#add_subdirectory(cxx-unit-tests)
+add_subdirectory(dai-unit-tests)
+add_subdirectory(dai-system-tests)
