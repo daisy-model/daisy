@@ -1,0 +1,618 @@
+;; Including external library-files
+(path "." &old)
+;#############################################################################################################################################################
+
+; ALL SOILS WITH MaxRootingDepth 175 [cm] has been changed to 230 [cm] (29. oct. 2018)
+
+;SOILTYPE_ID:
+
+; NAME CONSTRUCTION: "JB""A-horizon"-"B-horizon"-("B2-horizon")-"C-horizon"
+; JB1 og 4 deep drainage and no ploughpan
+; JB6 tile drainage and ploughpan
+
+; JB1-1-1med
+; JB1-1-1low
+; JB1-1-1high
+
+; JB4-4-4med
+; JB4-4-4low
+; JB4-4-4high
+
+; JB6-6-7-7-7Lmed
+; JB6-6-7-7-7Llow
+; JB6-6-7-7-7Lhigh
+
+;#############################################################################################################################################################
+; COLUMN WITH deBruin pet function:
+
+; denne skal ikke bruges - PET gives i vejrfil SBO 20/3-2019
+(defcolumn deBruin default
+(Bioclimate default (pet deBruin87)))
+
+;#############################################################################################################################################################
+; ADDITIONAL HORIZONS; In this file, most of the horizons are parameterised so the texture adds up to 100 %.
+
+(defhorizon Ap_JB1_med_OM USDA3; Slightly changed from the Daisy handbook; texture+ OM=100
+;	(normalize true)
+	(clay 3.95 [%])
+	(silt 6.37 [%])
+	;;(fine_sand 20.42)
+	;;(coarse_sand 66.72)
+        (sand 87.14 [%])
+	(humus 2.53 [%])
+	(C_per_N 14.2)
+	(dry_bulk_density 1.45)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0624)
+	(n 1.446)
+	(K_sat 5.15)
+	(Theta_sat 0.3951)
+	(Theta_res 0.0)
+	(l -0.977))) 
+
+(defhorizon Ap_JB1_low_OM Ap_JB1_med_OM
+        (normalize true)
+        (humus 1.46 [%])
+	(dry_bulk_density 1.56)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0658)
+	(n 1.48)
+	(K_sat 4.99)
+	(Theta_sat 0.3703)
+	(Theta_res 0.0)
+	(l -0.71))
+)	
+(defhorizon Ap_JB1_high_OM Ap_JB1_med_OM
+        (normalize true)
+        (humus 4.2 [%])
+	(dry_bulk_density 1.32)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0562)
+	(n 1.39)
+	(K_sat 5.50)
+	(Theta_sat 0.4321)
+	(Theta_res 0.0)
+	(l -1.08))
+)
+
+(defhorizon Ap_JB4_med_OM USDA3 
+	(normalize true)
+	(clay 8.09 [%])
+	(silt 22.08 [%])
+	;;(fine_sand 37.4 [%])
+	;; (coarse_sand 32.5 [%])
+        (sand 69.8 [%])
+	(humus 2.6 [%])
+	(C_per_N 11.6)
+	(dry_bulk_density 1.41)
+  (hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0476)
+	(n 1.302)
+	(K_sat 2.44)
+	(Theta_sat 0.4202)
+	(Theta_res 0.0)
+	(l -1.52))
+  (anisotropy 10)
+)
+
+(defhorizon Ap_JB4_low_OM Ap_JB4_med_OM
+        (normalize true)
+        (humus 1.65 [%])
+	(dry_bulk_density 1.52)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0467)
+	(n 1.319)
+	(K_sat 2.08)
+	(Theta_sat 0.3873)
+	(Theta_res 0.0)
+	(l -1.38))
+)
+
+(defhorizon Ap_JB4_high_OM Ap_JB4_med_OM
+        (normalize true)
+        (humus 4.43 [%])
+	(dry_bulk_density 1.26)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0459)
+	(n 1.261)
+	(K_sat 2.73)
+	(Theta_sat 0.4645)
+	(Theta_res 0.0)
+	(l -1.57))
+)
+
+(defhorizon Ap_JB6_med_OM USDA3 
+	(clay 12.72 [%])
+	(silt 25.58 [%])
+	;; (fine_sand 34.5)
+	;; (coarse_sand 27.2)
+        (sand 61.7 [%])
+	(humus 2.5 [%])
+	(C_per_N 11.0)
+	(dry_bulk_density 1.53)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0437)
+	(n 1.242)
+	(K_sat 1.44)
+	(Theta_sat 0.3867)
+	(Theta_res 0.0)
+	(l -2.41))
+     (anisotropy 10)
+)
+
+(defhorizon Ap_JB6_low_OM Ap_JB6_med_OM
+	(humus 1.38 [%])
+	(dry_bulk_density 1.63)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0406)
+	(n 1.247)
+	(K_sat 1.30)
+	(Theta_sat 0.3575)
+	(Theta_res 0.0)
+	(l -2.28))
+)
+
+(defhorizon Ap_JB6_high_OM Ap_JB6_med_OM 
+	(humus 4.06 [%])
+	(dry_bulk_density 1.37)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0468)
+	(n 1.225)
+	(K_sat 1.78)
+	(Theta_sat 0.4340)
+	(Theta_res 0.0)
+	(l -2.30))
+)
+
+;######################################################################
+
+;B-horizons –
+
+(defhorizon B_JB1_ USDA3 ;(normalize true) Slightly corrected compared to Daisy Handbook
+	(clay 3.85 [%])
+	(silt 3.49 [%])
+	;; (fine_sand 18.73)
+	;; (coarse_sand 73.14)
+        (sand 91.87 [%])
+	(humus 0.79 [%])
+	(C_per_N 12.2)
+	(dry_bulk_density 1.50)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0817)
+	(n 1.583)
+	(K_sat 3.78)
+	(Theta_sat 0.3769)
+	(Theta_res 0.0)
+	(l -0.261))) ;
+
+
+(defhorizon B_JB4_ USDA3 ;(normalize true) Slightly corrected compared to Daisy Handbook
+	(clay 7.11 [%])
+	(silt 19.38 [%])
+	;; (fine_sand 39.69)
+	;; (coarse_sand 33.03)
+        (sand 72.72 [%])
+	(humus 0.79 [%])
+	(C_per_N 12.2)
+	(dry_bulk_density 1.51)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.058)
+	(n 1.349)
+	(K_sat 1.74)
+	(Theta_sat 0.3954)
+	(Theta_res 0.0)
+	(l -0.689))) ;
+
+
+(defhorizon B_JB6_ USDA3 ;(normalize true) Slightly corrected compared to Daisy Handbook
+	(clay 12.58 [%])
+	(silt 21.78 [%])
+	;; (fine_sand 36.68)
+	;; (coarse_sand 28.46)
+        (sand 65.14 [%])
+	(humus 0.50 [%])
+	(C_per_N 8.1)
+	(dry_bulk_density 1.64)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.054)
+	(n 1.249)
+	(K_sat 0.958)
+	(Theta_sat 0.3604)
+	(Theta_res 0.0)
+	(l -1.556))) ;
+
+
+(defhorizon B_JB7_ USDA3 ;(normalize true) Slightly corrected compared to Daisy Handbook
+	(clay 19.98 [%])
+	(silt 22.04 [%])
+	;; (fine_sand 31.14)
+	;; (coarse_sand 26.44)
+        (sand 57.58 [%])
+	(humus 0.40 [%])
+	(C_per_N 7.5)
+	(dry_bulk_density 1.68)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0528)
+	(n 1.169)
+	(K_sat 0.61)
+	(Theta_sat 0.3526)
+	(Theta_res 0.0)
+	(l -2.798))) ;
+
+
+;######################################################################
+;B-horizons with ploughpan
+
+(defhorizon B_JB4_Pp B_JB4_
+	(dry_bulk_density 1.78)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0403)
+	(n 1.280)
+	(K_sat 0.69)
+	(Theta_sat 0.3140)
+	(Theta_res 0.0)
+	(l -0.90))
+)
+
+(defhorizon B_JB6_Pp B_JB6_
+	(dry_bulk_density 1.78)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0410)
+	(n 1.210)
+	(K_sat 0.58)
+	(Theta_sat 0.3178)
+	(Theta_res 0.0)
+	(l -1.80))
+)
+
+(defhorizon B_JB7_Pp B_JB7_
+	(dry_bulk_density 1.78)
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0429)
+	(n 1.146)
+	(K_sat 0.42)
+	(Theta_sat 0.3217)
+	(Theta_res 0.0)
+	(l -3.09))
+)
+
+
+
+;#######################################################################
+
+; C-horizons with limestone 
+
+(defhorizon C_JB1 USDA3 (normalize true)
+	(clay 2.9 [%])
+	(silt 2.0 [%])
+	;; (fine_sand 17.3)
+	;; (coarse_sand 77.6)
+        (sand 94.9 [%])
+	(humus 0.2 [%])
+	(dry_bulk_density 1.56)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.085)
+	(n 1.721)
+	(K_sat 4.046)
+	(Theta_sat 0.355)
+	(Theta_res 0.0)
+	(l 1.180))) ;
+
+(defhorizon C_JB4 USDA3 (normalize true)
+	(clay 8.0 [%])
+	(silt 18.6 [%])
+	;; (fine_sand 43.7)
+	;; (coarse_sand 29.4)
+        (sand 73.1 [%])
+	(humus 0.3 [%])
+	(dry_bulk_density 1.65)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.056)
+	(n 1.325)
+	(K_sat 1.0773)
+	(Theta_sat 0.354)
+	(Theta_res 0.0)
+	(l -0.191))) ;
+	
+
+(defhorizon C_JB7 USDA3 (normalize true)
+	(clay 19.8 [%])
+	(silt 23.8 [%])
+	;; (fine_sand 31.6)
+	;; (coarse_sand 24.6)
+        (sand 56.2 [%])
+	(humus 0.21 [%])
+	(dry_bulk_density 1.73)
+	(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.047)
+	(n 1.16)
+	(K_sat 0.4588)
+	(Theta_sat 0.3385)
+	(Theta_res 0.0)
+	(l -2.255))) ;
+	
+(defhorizon C_JB7_lime_M USDA3; Based on Maja Holbaks measurements at Tokkerup (MSc)
+	(clay 18 [%])
+	(silt 24 [%])
+        (sand 58 [%])
+	(humus 0.77 [%])
+	(C_per_N 7.5)
+	(dry_bulk_density 1.87); we measure bulk densities up to 2.17 g/cm3
+(hydraulic M_vG	; van Genuchten/Mualem functions
+	(alpha 0.0193)
+	(n 1.128)
+	(K_sat 0.30)
+	(Theta_sat 0.2962)
+	(Theta_res 0.0)
+	(l -3.239))
+)
+
+
+
+
+;########################################################################
+
+;Columns. Column concept builds on pesticide simulation in Bayer project. 
+;However, we do not make a 3 cm surface layer with half hydraulic conductivity ;of Ap-horizon. 
+;We have an Ap-horizon, lower 10 cm has an anitrosopy factor of ;10. If Ploughpan, it is 8 cm layer below A-horizon, defined as a B-horizon with ;lower Bulk density. 
+;T hen follows B and C-horizons as required.
+
+;########################################################################
+; JB1 TOPSOIL
+
+; JB1med
+; JB1low
+; JB1high
+;########################################################################
+
+; JB1-1-1-1_med
+(defcolumn "JB1med" default
+     (Soil (MaxRootingDepth 60 [cm])   
+           (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB1_med_OM") 
+                     (  -80 [cm] "B_JB1_")   
+                     ( -250 [cm] "C_JB1"))) 
+     (Groundwater deep)
+     (Chemistry multi 
+      (combine (N 
+         (reaction nitrification
+    	   (denitrification 
+     	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0)) 	   	)))))	
+    (OrganicMatter original (init 
+       (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+     
+; JB1-1-1-1_low
+(defcolumn "JB1low" default
+     (Soil (MaxRootingDepth 60 [cm])   
+          (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB1_low_OM") 
+                     (  -80 [cm] "B_JB1_")   
+                     ( -250 [cm] "C_JB1"))) 
+     (Groundwater deep)
+     (Chemistry multi 
+      (combine (N   (reaction nitrification	   (denitrification 	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))      	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+     
+; JB1-1-1-1_high
+(defcolumn "JB1high" default
+     (Soil (MaxRootingDepth 60 [cm])   
+        (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB1_high_OM")
+                     (  -80 [cm] "B_JB1_")   
+                     ( -250 [cm] "C_JB1"))) 
+     (Groundwater deep)
+     (Chemistry multi 
+      (combine (N          (reaction nitrification   	   (denitrification (water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))    	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+;#############################################################################################################################################################
+; JB4 TOPSOILS
+
+; JB4-4-4-med
+; JB4-4-4-low
+; JB4-4-4-high
+;#############################################################################################################################################################
+
+; JB4-4-4-med
+(defcolumn "JB4med" default 
+     (Soil (MaxRootingDepth 75 [cm])       
+        (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (-30 [cm] "Ap_JB4_med_OM");
+                     (-80 [cm] "B_JB4_")    
+                     ( -300 [cm] "C_JB4")))
+       (Movement vertical      (Geometry  (zplus 
+              -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+     (Groundwater deep)
+     (Chemistry multi    (combine (N 
+         (reaction nitrification
+    	   (denitrification   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))    	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+
+; JB4-4-4-low
+(defcolumn "JB4low" default 
+     (Soil (MaxRootingDepth 75 [cm])       
+         (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (-30 [cm] "Ap_JB4_low_OM");
+                     (-80 [cm] "B_JB4_")   
+                     (-300 [cm] "C_JB4")))
+       (Movement vertical   (Geometry  (zplus 
+              -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+     (Groundwater deep)
+     (Chemistry multi 
+      (combine (N  (reaction nitrification
+    	   (denitrification   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))    	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+
+; JB4-4-4-high
+(defcolumn "JB4high" default 
+     (Soil (MaxRootingDepth 75 [cm])       
+       (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (-30 [cm] "Ap_JB4_high_OM");
+                     (-80 [cm] "B_JB4_")   
+                     (-300 [cm] "C_JB4")))
+       (Movement vertical   (Geometry  (zplus 
+              -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+     (Groundwater deep)
+     (Chemistry multi 
+      (combine (N  (reaction nitrification
+    	   (denitrification   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))    	   	)))))	
+   (OrganicMatter original (init 
+      (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+
+;#############################################################################################################################################################
+; JB6 TOPSOILS + ploughpan and drain
+
+; JB6-6-7-7L_med
+; JB6-6-7-7L_low
+; JB6-6-7-7L_high
+;#############################################################################################################################################################
+
+; JB6-6-7-7-7L_med
+(defcolumn "JB6med" default
+     (Soil (MaxRootingDepth 230 [cm])          
+         (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB6_med_OM")  
+                     (  -36 [cm] "B_JB6_Pp")
+                     (  -60 [cm] "B_JB6_")   
+                     (  -80 [cm] "B_JB7_")
+                     ( -130 [cm] "C_JB7")
+                     ( -300 [cm] "C_JB7_lime_M")))  
+     (Movement vertical
+         (Geometry       (zplus 
+            -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+    (Drain lateral
+         	(L 18[m])      	(x 4.5 [m])    	(pipe_position -1.2[m]))
+     (Groundwater aquitard ; 
+     	(K_aquitard 2.45E-3[cm/h])
+     	(Z_aquitard 2.0[m])
+     	(h_aquifer 2.0[m]))
+     
+     (Chemistry multi 
+      (combine (N          (reaction nitrification   	   (denitrification 
+     	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))     	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+
+; JB6-6-7-7-7L_low
+(defcolumn "JB6low" default
+     (Soil (MaxRootingDepth 230 [cm])          
+       (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB6_low_OM")  
+                     (  -36 [cm] "B_JB6_Pp")
+                     (  -60 [cm] "B_JB6_")   
+                     (  -80 [cm] "B_JB7_")
+		     ( -130 [cm] "C_JB7")
+		     ( -300 [cm] "C_JB7_lime_M")))  
+	  (Movement vertical
+	      (Geometry       (zplus 
+		 -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+	 (Drain lateral
+		(L 18[m])	(x 4.5 [m]) 	(pipe_position -1.2[m]))
+	  (Groundwater aquitard 
+		(K_aquitard 2.45E-3[cm/h])
+		(Z_aquitard 2.0[m])
+		(h_aquifer 2.0[m]))
+     (Chemistry multi 
+      (combine (N          (reaction nitrification   	   (denitrification 
+     	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))     	   	)))))	
+  (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y]) 	)) )
+
+; JB6-6-7-7-7L_high
+(defcolumn "JB6high" default
+     (Soil (MaxRootingDepth 230 [cm])          
+     (border -20[cm]
+		   -25[cm]
+		   -50[cm]
+		    -75[cm]
+           	-100 [cm]
+                   -150 [cm]
+                   -300 [cm])
+           (horizons (  -30 [cm] "Ap_JB6_high_OM")  
+                     (  -36 [cm] "B_JB6_Pp")
+                     (  -60 [cm] "B_JB6_")   
+                     (  -80 [cm] "B_JB7_")
+                     ( -130 [cm] "C_JB7")
+		     ( -300 [cm] "C_JB7_lime_M")))  
+	  (Movement vertical
+	      (Geometry       (zplus 
+		 -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm])))
+	 (Drain lateral
+		(L 18[m])	(x 4.5 [m]) 	(pipe_position -1.2[m]))
+	  (Groundwater aquitard 
+		(K_aquitard 2.45E-3[cm/h])
+		(Z_aquitard 2.0[m])
+		(h_aquifer 2.0[m]))
+     
+     (Chemistry multi 
+      (combine (N          (reaction nitrification   	   (denitrification 
+     	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))     	   	)))))	
+     (OrganicMatter original (init 
+     (input 4000 [kg C/ha/y])
+     (root 1000 [kg C/ha/y])
+     	)) )
+
+;(defaction "irrigate_30" activity
+;(wait (and (after_mm_dd 5 1)
+;(before_mm_dd 9 1)(not (soil_water_pressure_above (height -30.0 [cm])
+;(potential -400 [cm]))))) ; måske -400 cm, masked -600
+;(irrigate_overhead 30 [mm/h])	(wait_days 5))

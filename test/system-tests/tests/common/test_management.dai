@@ -1,0 +1,200 @@
+; management for spring barley, silage maize and winter wheat monocultures at JB1, JB4 and JB6 soils 
+; Management for individual crops and crop rotations are defined 
+
+
+(defaction "irrigate_30" activity
+(wait (and (after_mm_dd 5 1)
+(before_mm_dd 9 1)(not (soil_water_pressure_above (height -30.0 [cm])
+(potential -400 [cm]))))) ; måske -400 cm, masked -600
+(irrigate_overhead 30 [mm/h])	(wait_days 5))
+
+;##For JB1med
+
+    (defaction "sbarley1" activity 
+    (wait_mm_dd 04 01)    (plowing)
+    (wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 13)    (fertilize         ("NPK01")   (equivalent_weight 160.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction "sbarley0" activity
+	(wait_mm_dd 04 01)    (plowing)     
+	(wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 03)    (sow "Ryegrass")
+    (wait_mm_dd 04 13)    (fertilize      ("NPK01")      (equivalent_weight 160.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+;	sbarley rotation
+	(defaction sbarley_monoJBone activity
+				"sbarley1"
+				"sbarley1"
+				"sbarley1"
+				"sbarley1"
+				"sbarley1"
+				"sbarley0")
+				
+(defaction sbarley_monoJB1 activity
+    (while "sbarley_monoJBone" (repeat "irrigate_30")	))
+
+
+;##For JB4med
+
+    (defaction "sbarley2" activity 
+    (wait_mm_dd 04 01)    (plowing)
+    (wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 13)    (fertilize         ("NPK01")   (equivalent_weight 137.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction "sbarley3" activity
+	(wait_mm_dd 04 01)    (plowing)     
+	(wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 03)    (sow "Ryegrass")
+    (wait_mm_dd 04 13)    (fertilize      ("NPK01")      (equivalent_weight 137.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+;	sbarley rotation
+	(defaction sbarley_monoJB4 activity
+				"sbarley2"
+				"sbarley2"
+				"sbarley2"
+				"sbarley2"
+				"sbarley2"
+				"sbarley3")
+				
+;;##For JB6med
+
+    (defaction "sbarley4" activity 
+    (wait_mm_dd 04 01)    (plowing)
+    (wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 13)    (fertilize         ("NPK01")   (equivalent_weight 145.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction "sbarley5" activity
+	(wait_mm_dd 04 01)    (plowing)     
+	(wait_mm_dd 04 02)    (sow "SB")
+    (wait_mm_dd 04 03)    (sow "Ryegrass")
+    (wait_mm_dd 04 13)    (fertilize      ("NPK01")      (equivalent_weight 145.0 [kg N/ha]))
+    (wait_mm_dd 08 10)    (harvest "SB"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+;	sbarley rotation
+	(defaction sbarley_monoJB6 activity
+				"sbarley4"
+				"sbarley4"
+				"sbarley4"
+				"sbarley4"
+				"sbarley4"
+				"sbarley5")
+
+
+;; Silage maize JB1
+
+	(defaction "SMaize" activity
+    (wait_mm_dd 05 01)    (plowing)
+    (wait_mm_dd 05 05)    (sow "SilomajsFoulum")
+    (wait_mm_dd 05 05)    (fertilize      ("NPK01")      (equivalent_weight 94.0 [kg N/ha]))
+    (wait_mm_dd 06 10)    (fertilize      ("NPK01")      (equivalent_weight 94.0 [kg N/ha]))
+    (wait_mm_dd 09 25)    (harvest "SilomajsFoulum"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction smaize_monoJBone activity
+	 "SMaize"
+	 "SMaize"
+	 "SMaize"
+	 "SMaize"
+	 "SMaize"
+	 "SMaize")
+
+(defaction smaize_monoJB1 activity
+    (while "smaize_monoJBone" (repeat "irrigate_30")	))
+
+;; Silage maize JB4
+
+	(defaction "SMaize1" activity
+    (wait_mm_dd 05 01)    (plowing)
+    (wait_mm_dd 05 05)    (sow "SilomajsFoulum")
+    (wait_mm_dd 05 05)    (fertilize      ("NPK01")      (equivalent_weight 79.0 [kg N/ha]))
+    (wait_mm_dd 06 10)    (fertilize      ("NPK01")      (equivalent_weight 79.0 [kg N/ha]))
+    (wait_mm_dd 09 25)    (harvest "SilomajsFoulum"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction smaize_monoJB4 activity
+	 "SMaize1"
+	 "SMaize1"
+	 "SMaize1"
+	 "SMaize1"
+	 "SMaize1"
+	 "SMaize1")
+	 
+
+;; Silage maize JB6
+
+	(defaction "SMaize2" activity
+    (wait_mm_dd 05 01)    (plowing)
+    (wait_mm_dd 05 05)    (sow "SilomajsFoulum")
+    (wait_mm_dd 05 05)    (fertilize      ("NPK01")      (equivalent_weight 81.0 [kg N/ha]))
+    (wait_mm_dd 06 10)    (fertilize      ("NPK01")      (equivalent_weight 81.0 [kg N/ha]))
+    (wait_mm_dd 09 25)    (harvest "SilomajsFoulum"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	(defaction smaize_monoJB6 activity
+	 "SMaize2"
+	 "SMaize2"
+	 "SMaize2"
+	 "SMaize2"
+	 "SMaize2"
+	 "SMaize2")
+	 
+;winter what JB1	 
+	(defaction "Wintwheat" activity
+    (wait_mm_dd 09 19)    (plowing)
+    (wait_mm_dd 09 20)    (sow "Winter Wheat JG")
+    (wait_mm_dd 03 01)    (fertilize      ("NPK01")      (equivalent_weight 103.0 [kg N/ha]))
+    (wait_mm_dd 04 01)    (fertilize      ("NPK01")      (equivalent_weight 103.0 [kg N/ha]))
+    (wait_mm_dd 08 20)    (harvest "Winter Wheat JG"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	
+   (defaction wwheat_monoJBone activity
+	"Wintwheat"
+	"Wintwheat"
+	"Wintwheat"
+	"Wintwheat"
+	"Wintwheat"
+	"Wintwheat")
+	
+	(defaction wwheat_monoJB1 activity
+    (while "wwheat_monoJBone" (repeat "irrigate_30")	))
+	
+;winter what JB4	 
+	(defaction "Wintwheat1" activity
+    (wait_mm_dd 09 19)    (plowing)
+    (wait_mm_dd 09 20)    (sow "Winter Wheat JG")
+    (wait_mm_dd 03 01)    (fertilize      ("NPK01")      (equivalent_weight 92.0 [kg N/ha]))
+    (wait_mm_dd 04 01)    (fertilize      ("NPK01")      (equivalent_weight 93.0 [kg N/ha]))
+    (wait_mm_dd 08 20)    (harvest "Winter Wheat JG"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	   (defaction wwheat_monoJB4 activity
+	"Wintwheat1"
+	"Wintwheat1"
+	"Wintwheat1"
+	"Wintwheat1"
+	"Wintwheat1"
+	"Wintwheat1")
+	
+;winter what JB6	 
+	(defaction "Wintwheat2" activity
+    (wait_mm_dd 09 19)    (plowing)
+    (wait_mm_dd 09 20)    (sow "Winter Wheat JG")
+    (wait_mm_dd 03 01)    (fertilize      ("NPK01")      (equivalent_weight 106.0 [kg N/ha]))
+    (wait_mm_dd 04 01)    (fertilize      ("NPK01")      (equivalent_weight 106.0 [kg N/ha]))
+    (wait_mm_dd 08 20)    (harvest "Winter Wheat JG"      (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+	
+	
+ (defaction wwheat_monoJB6 activity
+	"Wintwheat2"
+	"Wintwheat2"
+	"Wintwheat2"
+	"Wintwheat2"
+	"Wintwheat2"
+	"Wintwheat2")
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;""""""""""""""""""

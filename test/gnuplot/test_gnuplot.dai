@@ -1,8 +1,0 @@
-(defgnuplot test time
-    (source (column (file "harvest.dlf") (tag "leaf_DM"))
-            (column (file "harvest.dlf") (tag "sorg_DM"))))
-
-  (defprogram "Andeby Graphs" gnuplot
-    (graph test))
-
-  (run "Andeby Graphs" )
