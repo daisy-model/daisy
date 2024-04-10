@@ -1,0 +1,19 @@
+;;; test-CO2-mul.dai -- Multiplication test.
+;;
+;; 1 [g CO2-C/cm^3/h] * 1 [cm] = 1 [g CO2-C/cm^2/h]
+
+(defunit [g CO2-C/cm^3/h] SIfactor
+  (mass 1) (length -3) (time -1)
+  (factor 0.2778))
+
+(defunit [g CO2-C/cm^2/h] SIfactor
+  (mass 1) (length -2) (time -1)
+  (factor 0.002778))
+
+(declare val Number [g CO2-C/cm^2/h] "Value")
+
+(val (* 1 [g CO2-C/cm^3/h] 1 [cm]))
+
+(run (write (what "${val}")))
+
+;;; test-CO2-mul.dai ends here.

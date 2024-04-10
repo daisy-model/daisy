@@ -8,3 +8,5 @@ function(dai_unit_test name)
   )
   set_property(TEST dai_unit_test.${name} PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
 endfunction()
+
+dai_unit_test(CO2-mul)
