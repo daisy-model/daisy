@@ -65,17 +65,15 @@ jobs:
         ctest --output-on-failure
 
     - name: Upload test log macos
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: ${{ startsWith(matrix.os, 'macos') && !cancelled() }}
       uses: actions/upload-artifact@v4
       with:
         name: test-output-macos
-        path: Testing
+        path: build/Testing
 
     - name: Upload test log ubuntu
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
       if: ${{ startsWith(matrix.os, 'ubuntu') && !cancelled() }}
       uses: actions/upload-artifact@v4
       with:
         name: test-output-ubuntu
-        path: Testing
+        path: build/Testing
