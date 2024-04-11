@@ -1,6 +1,6 @@
-if (${OS} STREQUAL "linux")
+if (${BUILD_CXX_TESTS})
+  find_package(GTest REQUIRED)
   include(GoogleTest)
-
   add_library(ut_core SHARED
     ${CMAKE_SOURCE_DIR}/src/util/assertion.C
     ${CMAKE_SOURCE_DIR}/src/util/filepos.C
@@ -42,25 +42,19 @@ if (${OS} STREQUAL "linux")
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
   target_compile_options(ut_core PRIVATE ${COMPILE_OPTIONS})
   target_link_options(ut_core PRIVATE ${LINKER_OPTIONS})
-  target_link_libraries(ut_core PUBLIC
-    cxsparse
-    Boost::filesystem
-  )
 
   function(cxx_unit_test name)
-    add_executable(${name} tests/${name}.C ${ARGN})
+    add_executable(${name} ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/tests/${name}.C ${ARGN})
     target_include_directories(${name} PUBLIC ${CMAKE_SOURCE_DIR}/include)
     target_compile_options(${name} PRIVATE ${COMPILE_OPTIONS})
     target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
     target_link_libraries(${name} PUBLIC
       ut_core
-      gtest
-      gtest_main
+      GTest::gtest
+      GTest::gtest_main
     )
     gtest_discover_tests(${name} TEST_PREFIX cxx_unit_test.)
   endfunction()
-
-
 
   cxx_unit_test(ut_units)
   cxx_unit_test(ut_scope_exchange
