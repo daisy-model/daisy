@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Fri Apr 12 12:04:13 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzmodel-lr-2.dai
+SIM: westDK-JB6med-SMaize scenarie
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	2.72599	-0	0	-0	00.00	0	-0	-0	100.37	0	0	0	12.6853	43002.5	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	0	189.415	-0	0	-0	00.00	0	-0	-0	8673.09	0	0	0	22.4221	53121.5	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	0	2905.43	-0	0	-0	00.00	0	-0	-0	7626.8	0	0	0	23.1368	59802.2	0	0
+2000	4	1	0	0	1777.09	0	0	0	0	0	0	0	6602.73	-0	0	-0	00.00	0	-0	-0	8844.34	0	0	0	60.2351	63783.8	0	0
+2000	5	1	0	0	1037.55	0	0	0	0	0	0	0	2609.2	-0	0	-0	00.00	0	-0	-0	12289.7	0	0	0	63.9079	74498.2	0	0
+2000	6	1	0	81000	1417.09	0	0	0	0	0	0	0	2198.41	-0	0	-0	00.00	0	-0	-0	15419.3	0	0.966656	0	41.1818	170158	0	0
+2000	7	1	0	81000	1249.05	0	0	0	0	0	0	0	3111.99	-0	0	-0	00.00	0	14955.3	-0	12472	0	12.5931	0	51.3883	246790	0	0
+2000	8	1	0	0	1096.09	0	0	0	0	0	0	0	1712.21	-0	0	-0	00.00	0	97899.5	-0	11872.3	0	78.6765	0	64.3052	160067	0	0
+2000	9	1	0	0	1082.59	0	0	0	0	0	0	0	1216.9	-0	0	-0	00.00	0	43247.3	-0	11559.5	0	93.8998	0	58.8669	128235	0	0
+2000	10	1	0	0	1141.05	116.346	0	0	0	0	0	0	733.827	-0	0	-0	00.00	0	14821.2	-0	8692.89	0	0	6.12347	39.2046	122505	0	0
+2000	11	1	0	0	2423.59	0	0	0	0	0	0	0	2407.85	-0	0	-0	00.00	0	-0	-0	6660.48	0	0	6.12347	22.3319	129199	0	0
+2000	12	1	0	0	2570.55	0	0	0	0	0	0	0	13591.4	-0	0	-0	00.00	0	-0	-0	5540.51	0	0	6.12347	23.6323	123717	0	0
