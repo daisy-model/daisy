@@ -1,0 +1,995 @@
+Has DAISYHOME environment variable
+Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable'
+Daisy crop/soil simulation version 7.0.0. (Mar  4 2024)
+Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
+Changing directory to 'tmp' success
+Interpreting '.' in path as /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-matrix-solute-convection.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-matrix-solute-convection.dai'
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/dk-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'tillage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'fertilizer.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/fertilizer.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fertilizer.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'crop.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/crop.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/crop.dai' success!
+** Parsing file: 'crop.dai'
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'maize.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/maize.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/maize.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'pea.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/pea.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/pea.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'potato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/potato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/potato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'rye.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/rye.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/rye.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'sbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'sugarbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/sugarbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sugarbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'fodderbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/fodderbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fodderbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'srape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/srape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/srape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'swheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/swheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/swheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/wbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wrape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/wrape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wrape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wwheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/wwheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wwheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'grass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/grass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/grass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'ryegrass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/ryegrass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/ryegrass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wclover.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/wclover.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wclover.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'beetroot.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/beetroot.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/beetroot.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'broccoli.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/broccoli.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/broccoli.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'brusselssprouts.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/brusselssprouts.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/brusselssprouts.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'celeriac.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/celeriac.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/celeriac.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'earlypotato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/earlypotato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlypotato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'whitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/whitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/whitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'earlywhitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/earlywhitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlywhitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'onion.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/onion.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'onion_plantingofsets.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/onion_plantingofsets.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion_plantingofsets.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/dk-management.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-management.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'log-std.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/log-std.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'test_dk-maize_skb.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_dk-maize_skb.dai' (cwd) success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'test_Springbarley_MES_ny.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_Springbarley_MES_ny.dai' (cwd) success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'test_columns.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_columns.dai' (cwd) success!
+** Parsing file: 'test_columns.dai'
+Path set to:
+0: '.'
+1: '.'
+2: '/home/silas/Projects/daisy-model/daisy/lib'
+3: '/home/silas/Projects/daisy-model/daisy/sample'
+done
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'test_management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_management.dai' (cwd) success!
+Command line: daisy -d tmp -D /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-matrix-solute-convection.dai
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
+* test_West.dwf: initializing at 1999-12-31T00:00:00
+** source_initialize
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'test_West.dwf'
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_West.dwf' (cwd) success!
+* column: matrix_solute/convection initialize
+** Soil
+*** Horizons
+**** horizon: Ap_JB6_med_OM initialize_base
+(CEC 14.9416 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.611742 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.3867	1.44	0
+-1	0	0.385175	0.413063	0.0018713
+-10	1	0.364334	0.0870831	0.00232274
+-100	2	0.26291	0.00297015	0.000548415
+-1000	3	0.154741	4.13692e-05	3.71069e-05
+-15848.9	4.2	0.0794241	2.18035e-07	1.21238e-06
+**** horizon: B_JB6_Pp initialize_base
+(CEC 9.1009 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.614804 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.3178	0.58	0
+-1	0	0.316658	0.140465	0.00136542
+-10	1	0.302061	0.0285146	0.00160946
+-100	2	0.229566	0.000846614	0.000408081
+-1000	3	0.145422	8.807e-06	3.0201e-05
+-15848.9	4.2	0.0815529	3.15096e-08	1.08016e-06
+**** horizon: B_JB6_ initialize_base
+(CEC 9.1009 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.614804 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.3604	0.958	0
+-1	0	0.358553	0.260131	0.00227154
+-10	1	0.334065	0.0452693	0.00263323
+-100	2	0.23146	0.000977417	0.000513812
+-1000	3	0.133299	8.34996e-06	3.29654e-05
+-15848.9	4.2	0.0670811	2.46362e-08	1.05367e-06
+**** horizon: B_JB7_ initialize_base
+(CEC 12.7419 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.573839 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.3526	0.61	0
+-1	0	0.350992	0.0961385	0.00184592
+-10	1	0.333368	0.0163314	0.00181167
+-100	2	0.261076	0.000517703	0.000386029
+-1000	3	0.180116	7.75215e-06	3.01475e-05
+-15848.9	4.2	0.113066	4.51061e-08	1.20518e-06
+**** horizon: C_JB7 initialize_base
+(CEC 12.074 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.573823 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.3385	0.4588	0
+-1	0	0.337176	0.0701473	0.00151103
+-10	1	0.322627	0.0123388	0.00151786
+-100	2	0.258713	0.000369958	0.000354979
+-1000	3	0.182532	4.58e-06	2.88733e-05
+-15848.9	4.2	0.117488	2.05952e-08	1.18553e-06
+**** horizon: C_JB7_lime_M initialize_base
+(CEC 12.723 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.583832 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.2962	0.3	0
+-1	0	0.295811	0.0475961	0.000435818
+-10	1	0.291357	0.0130564	0.000504259
+-100	2	0.260517	0.000850132	0.000225875
+-1000	3	0.201983	1.61567e-05	2.49682e-05
+-15848.9	4.2	0.14235	1.02209e-07	1.14785e-06
+** bioclimate: default initialize
+Pet choosen: weather
+Difrad choosen: DPF
+** tertiary: old initialize
+Adding macropores to -150 cm
+** movement: vertical initialize_derived
+Bottom heat delay = -1.00985
+** OrganicStandard
+lay	humus	humus	input	input	AOM	SMB1	SMB2	SOM1	SOM2	SOM3	dSMB1	dSMB1	dSMB2	dSMB2	dSOM1	dSOM1	dSOM2	dSOM2	dSOM3	dSOM3
+	kg C/ha/cm	%	kg C/ha/cm/y	%	%	%	%	%	%	%	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1
+0	2245.28	2.5	131.632	5.86264	2.0672	1.34307	0.547045	64.1546	31.8881	0	0	0	0	0	-7.34726	-0.00510068	0	0	-0	-nan
+1	2245.28	2.5	131.632	5.86264	1.96735	1.34393	0.547047	64.253	31.8887	-3.86305e-15	0	0	0	0	-7.36903	-0.00510796	0	0	-0	0
+2	2245.28	2.5	131.632	5.86264	1.87232	1.34476	0.547049	64.3466	31.8893	-3.86305e-15	0	0	0	0	-7.38975	-0.00511487	0	0	-0	0
+3	2245.28	2.5	131.632	5.86264	1.78187	1.34554	0.547052	64.4357	31.8898	3.86305e-15	0	0	0	0	-7.40946	-0.00512142	0	0	-0	-0
+4	2245.27	2.5	131.632	5.86264	1.6958	1.34629	0.547054	64.5205	31.8903	0	0	0	0	0	-7.42823	-0.00512764	0	0	-0	-nan
+5	2245.28	2.5	131.632	5.86264	1.61388	1.347	0.547056	64.6012	31.8908	0	0	0	0	0	-7.44609	-0.00513355	0	0	-0	-nan
+6	2245.28	2.5	131.632	5.86264	1.53593	1.34768	0.547058	64.6781	31.8913	0	0	0	0	0	-7.46308	-0.00513915	0	0	-0	-nan
+7	2245.27	2.5	131.632	5.86264	1.46173	1.34833	0.54706	64.7512	31.8917	3.86305e-15	0	0	0	0	-7.47926	-0.00514448	0	0	-0	-0
+8	2245.28	2.5	131.632	5.86264	1.39112	1.34894	0.547061	64.8207	31.8921	-3.86305e-15	0	0	0	0	-7.49465	-0.00514953	0	0	-0	0
+9	2245.28	2.5	131.632	5.86264	1.32393	1.34952	0.547063	64.8869	31.8925	3.86305e-15	0	0	0	0	-7.5093	-0.00515433	0	0	-0	-0
+10	2245.28	2.5	131.632	5.86264	1.22917	1.35035	0.547065	64.9803	31.8931	0	0	0	0	0	-7.52996	-0.00516109	0	0	-0	-nan
+11	2245.28	2.5	131.632	5.86264	1.11329	1.35135	0.547068	65.0945	31.8938	-3.86305e-15	0	0	0	0	-7.55522	-0.00516932	0	0	-0	0
+12	2245.27	2.5	131.632	5.86264	1.00833	1.35226	0.547071	65.1979	31.8944	0	0	0	0	0	-7.5781	-0.00517675	0	0	-0	-nan
+13	2245.27	2.5	131.632	5.86264	0.913267	1.35309	0.547073	65.2916	31.895	0	0	0	0	0	-7.59883	-0.00518346	0	0	-0	-nan
+14	2245.28	2.5	131.632	5.86264	0.827168	1.35384	0.547075	65.3764	31.8955	0	0	0	0	0	-7.6176	-0.00518953	0	0	-0	-nan
+15	2245.28	2.5	131.632	5.86264	0.712996	1.35483	0.547078	65.4889	31.8962	0	0	0	0	0	-7.64249	-0.00519754	0	0	-0	-nan
+16	2245.28	2.5	131.632	5.86264	0.584896	1.35594	0.547081	65.6151	31.897	0	0	0	0	0	-7.67042	-0.0052065	0	0	-0	-nan
+17	2245.28	2.5	131.632	5.86264	0.479811	1.35685	0.547084	65.7186	31.8976	0	0	0	0	0	-7.69333	-0.00521382	0	0	-0	-nan
+18	2245.27	2.5	131.632	5.86264	0.393606	1.3576	0.547086	65.8036	31.8981	0	0	0	0	0	-7.71212	-0.00521981	0	0	-0	-nan
+19	2245.27	2.5	131.632	5.86264	0.322889	1.35822	0.547088	65.8733	31.8986	0	0	0	0	0	-7.72754	-0.00522471	0	0	-0	-nan
+20	2245.28	2.5	131.632	5.86264	0.264877	1.35872	0.547089	65.9304	31.8989	0	0	0	0	0	-7.74018	-0.00522873	0	0	-0	-nan
+21	2245.28	2.5	131.632	5.86264	0.206792	1.35923	0.547091	65.9876	31.8993	0	0	0	0	0	-7.75285	-0.00523274	0	0	-0	-nan
+22	2245.28	2.5	131.632	5.86264	0.169639	1.35955	0.547092	66.0242	31.8995	0	0	0	0	0	-7.76095	-0.0052353	0	0	-0	-nan
+23	2245.28	2.5	131.632	5.86264	0.146224	1.35975	0.547092	66.0473	31.8996	0	0	0	0	0	-7.76605	-0.00523692	0	0	-0	-nan
+24	2245.28	2.5	131.632	5.86264	0.119953	1.35998	0.547093	66.0732	31.8998	0	0	0	0	0	-7.77178	-0.00523872	0	0	-0	-nan
+25	522.43	0.5	4.60288	0.881052	0.422905	0.1586	0.0820861	4.67322	4.78449	89.8787	0	0	0	0	0	0	0	0	-0	-0
+26	522.43	0.5	3.77591	0.722758	0.346924	0.130105	0.0673381	3.83361	3.92489	91.6971	0	0	0	0	0	0	0	0	-0	-0
+27	522.43	0.5	3.09751	0.592904	0.284594	0.10673	0.0552399	3.14485	3.21972	93.1889	0	0	0	0	0	0	0	0	-0	-0
+28	481.34	0.5	2.30144	0.478132	0.229503	0.0860694	0.0445467	2.53608	2.59646	94.5073	0	0	0	0	0	0	0	0	-0	-0
+29	481.34	0.5	1.47394	0.306217	0.146984	0.0551226	0.0285297	1.62421	1.66289	96.4823	0	0	0	0	0	0	0	0	-0	-0
+30	481.34	0.5	0.898378	0.186641	0.0895877	0.0335976	0.017389	0.98997	1.01354	97.8559	0	0	0	0	0	0	0	0	-0	-0
+31	481.34	0.5	0.547568	0.113759	0.0546043	0.020478	0.0105987	0.603393	0.61776	98.6932	0	0	0	0	0	0	0	0	-0	-0
+32	481.34	0.5	0.333746	0.0693369	0.0332817	0.0124815	0.00646	0.367772	0.376529	99.2035	0	0	0	0	0	0	0	0	-0	-0
+33	394.464	0.4	0.203421	0.0515689	0.024753	0.0115713	0.00480458	0.340954	0.349072	99.2688	0	0	0	0	0	0	0	0	-0	-0
+34	394.464	0.4	0.123986	0.0314316	0.0150872	0.00705278	0.00292842	0.207814	0.212762	99.5544	0	0	0	0	0	0	0	0	-0	-0
+35	394.464	0.4	0.0755704	0.0191578	0.00919572	0.00429872	0.00178489	0.126664	0.12968	99.7284	0	0	0	0	0	0	0	0	-0	-0
+36	394.464	0.4	0.0460607	0.0116768	0.00560486	0.0026201	0.00108791	0.0772025	0.0790406	99.8344	0	0	0	0	0	0	0	0	-0	-0
+37	213.257	0.21	0.0280743	0.0131645	0.00631898	0.00293613	0.00122652	0.0865145	0.0885743	99.8144	0	0	0	0	0	0	0	0	-0	-0
+38	213.257	0.21	0.0171115	0.00802388	0.00385146	0.00178959	0.000747571	0.0527312	0.0539867	99.8869	0	0	0	0	0	0	0	0	-0	-0
+39	213.257	0.21	0.0104296	0.00489061	0.00234749	0.00109077	0.000455649	0.03214	0.0329052	99.9311	0	0	0	0	0	0	0	0	-0	-0
+40	213.257	0.21	0.00635689	0.00298086	0.00143081	0.00066483	0.000277721	0.0195896	0.020056	99.958	0	0	0	0	0	0	0	0	-0	-0
+41	213.257	0.21	0.00302491	0.00141843	0.000680848	0.000316358	0.000132153	0.00932164	0.00954359	99.98	0	0	0	0	0	0	0	0	-0	-0
+42	213.257	0.21	0.00112375	0.000526946	0.000252934	0.000117527	4.90947e-05	0.00346298	0.00354543	99.9926	0	0	0	0	0	0	0	0	-0	-0
+43	213.257	0.21	0.000417472	0.00019576	9.39647e-05	4.36609e-05	1.82386e-05	0.00128649	0.00131712	99.9972	0	0	0	0	0	0	0	0	-0	-0
+44	845.221	0.77	0.00015509	1.83491e-05	8.80755e-06	3.84584e-06	1.70955e-06	0.00011332	0.000116018	99.9998	0	0	0	0	0	0	0	0	-0	-0
+45	845.221	0.77	5.76158e-05	6.81665e-06	3.27199e-06	1.42873e-06	6.35095e-07	4.20981e-05	4.31004e-05	99.9999	0	0	0	0	0	0	0	0	-0	-0
+46	845.221	0.77	2.14042e-05	2.53238e-06	1.21554e-06	5.3077e-07	2.35937e-07	1.56394e-05	1.60118e-05	100	0	0	0	0	0	0	0	0	-0	-0
+47	845.221	0.77	7.95162e-06	9.40774e-07	4.51571e-07	1.9718e-07	8.76503e-08	5.81001e-06	5.94834e-06	100	0	0	0	0	0	0	0	0	-0	-0
+48	845.221	0.77	2.95402e-06	3.49496e-07	1.67758e-07	7.32521e-08	3.25619e-08	2.15841e-06	2.2098e-06	100	0	0	0	0	0	0	0	0	-0	-0
+49	845.221	0.77	1.09741e-06	1.29837e-07	6.23219e-08	2.72131e-08	1.20967e-08	8.01846e-07	8.20938e-07	100	0	0	0	0	0	0	0	0	-0	-0
+50	845.221	0.77	4.07687e-07	4.82344e-08	2.31525e-08	1.01096e-08	4.49391e-09	2.97885e-07	3.04977e-07	100	0	0	0	0	0	0	0	0	-0	-0
+51	845.221	0.77	1.51455e-07	1.7919e-08	8.60112e-09	3.75571e-09	1.66948e-09	1.10664e-07	1.13299e-07	100	0	0	0	0	0	0	0	0	-0	-0
+52	845.221	0.77	5.62654e-08	6.65688e-09	3.1953e-09	1.39524e-09	6.2021e-10	4.11114e-08	4.20903e-08	100	0	0	0	0	0	0	0	0	-0	-0
+53	845.221	0.77	2.09025e-08	2.47302e-09	1.18705e-09	5.1833e-10	2.30407e-10	1.52728e-08	1.56365e-08	100	0	0	0	0	0	0	0	0	-0	-0
+54	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+55	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+56	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+57	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+58	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+59	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+60	845.221	0.77	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+*** Total soil summary
+Expected humus change: -229.515 [kg C/ha/y], -1.07253e-07 [y^-1].
+Expected background mineralization: 20.865 [kg N/ha/y].
+*** Top soil summary
+	SOM1	SOM2	SOM3	SMB1	SMB2	AOM1	AOM2	total
+kg C/ha	44136.6	21484.9	1.30104e-13	912.804	368.503	364.405	91.1011	67358.2
+kg N/ha	3982.28	1938.57	1.18139e-14	136.239	55.0004	4.04894	7.3387	6123.48
+
+Depth	30	cm
+T	8.4	dg C
+h	-100	cm
+clay	12.402	%
+Specified input	4000	kg C/ha/y
+Specified background mineralization	not specified	kg N/ha/y
+Zone input	3948.97	kg C/ha/y
+Zone background mineralization	0	kg C/ha/y
+Zone humus change	0	kg C/ha/y
+Time	Fri Apr 12 09:54:36 2024
+
+Program started Fri Apr 12 09:54:35 2024, 1 second ago.
+* Running
+** 1999-12-31T00:00:00
+Begin simulation
+** 1999-12-31T01:00:00
+Start logging
+** 2000-02-19T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+** 2000-05-05T08:00:00
+Sowing SilomajsFoulum
+*** matrix_solute/convection
+**** sow
+***** SilomajsFoulum
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+**** crop: SilomajsFoulum initialize
+init 2d
+init 1d
+Fertilizing 81 kg NPK01-N/ha
+** 2000-05-19T00:00:00
+*** crop: SilomajsFoulum tick
+Emerging
+** 2000-06-01T08:00:00
+*** crop: SilomajsFoulum tick
+Luxury nitrogen uptake initiated
+** 2000-06-10T08:00:00
+Fertilizing 81 kg NPK01-N/ha
+** 2000-08-18T00:00:00
+*** crop: SilomajsFoulum tick
+Flowering
+** 2000-08-20T13:00:00
+*** chemistry: multi tick_soil
+**** Chemistry: N: tick soil
+***** Chemical: NO3: transport
+****** solute[0]: convection
+M[11] = -4.1881e-09 @ -6.5, C = -2.20984e-08, A = 0, M_new = -4.1881e-09, M_old = 7.19709e-08, dt 1, S = -7.55857e-08, S_extra = -7.8657e-08, C_avg_ = 3.79073e-07, C_secondary_3.79073e-07, C_primary_ = 3.79073e-07, M_secondary_ = 0, M_primary_ = 7.19709e-08, M_total_ = 7.19709e-08, M_error = 0, M_tertiary = 0, S_secondary_ = -7.8657e-08, S_primary_ = 3.07136e-09, S_exchange = 0, S_indirect_drain = 0, S_soil_drain = -0, S_p_drain = 0, S_B2M = 0, S_M2B = -0, S_external = 0, S_permanent = 0, S_root = -7.8657e-08, S_decompose = 0, S_decompose_primary = 0, S_decompose_secondary = 0, S_transform = 3.07136e-09, decompose_factor = 1, tillage = 0, lag = 0, sink_dt = 0, sink_cell = -1, Theta_old 0.18986, Theta_new 0.18952, root 0, drain 0, B2M 0, M2B 0, forward_total 0, forward_sink 0, sum 0, v1 0.0305705, v2 0
+-6: q = 0.00426686, J = 6.37362e-10
+-7: q = 0.00392671, J = 6.40095e-11
+Solute problem: Negative concentration
+****** solute[0]: convection
+M[11] = -4.1881e-09 @ -6.5, C = -2.20984e-08, A = 0, M_new = -4.1881e-09, M_old = 7.19709e-08, dt 1, S = -7.55857e-08, S_extra = -7.8657e-08, C_avg_ = 3.79073e-07, C_secondary_3.79073e-07, C_primary_ = 3.79073e-07, M_secondary_ = 0, M_primary_ = 7.19709e-08, M_total_ = 7.19709e-08, M_error = 0, M_tertiary = 0, S_secondary_ = -7.8657e-08, S_primary_ = 3.07136e-09, S_exchange = 0, S_indirect_drain = 0, S_soil_drain = -0, S_p_drain = 0, S_B2M = 0, S_M2B = -0, S_external = 0, S_permanent = 0, S_root = -7.8657e-08, S_decompose = 0, S_decompose_primary = 0, S_decompose_secondary = 0, S_transform = 3.07136e-09, decompose_factor = 1, tillage = 0, lag = 0, sink_dt = 0, sink_cell = -1, Theta_old 0.18986, Theta_new 0.18952, root 0, drain 0, B2M 0, M2B 0, forward_total 0, forward_sink 0, sum 0, v1 0.0305705, v2 0
+-6: q = 0.00426686, J = 6.37362e-10
+-7: q = 0.00392671, J = 6.40095e-11
+** 2000-08-25T08:00:00
+*** chemistry: multi tick_soil
+**** Chemistry: N: tick soil
+***** Chemical: NO3: transport
+****** solute[0]: convection
+M[9] = -6.96067e-09 @ -4.75, C = -4.01304e-08, A = 0, M_new = -6.96067e-09, M_old = 3.49087e-08, dt 1, S = -4.18455e-08, S_extra = -4.42074e-08, C_avg_ = 2.01393e-07, C_secondary_2.01393e-07, C_primary_ = 2.01393e-07, M_secondary_ = 0, M_primary_ = 3.49087e-08, M_total_ = 3.49087e-08, M_error = 0, M_tertiary = 0, S_secondary_ = -4.42074e-08, S_primary_ = 2.36191e-09, S_exchange = 0, S_indirect_drain = 0, S_soil_drain = -0, S_p_drain = 0, S_B2M = 0, S_M2B = -0, S_external = 0, S_permanent = 0, S_root = -4.42074e-08, S_decompose = 0, S_decompose_primary = 0, S_decompose_secondary = 0, S_transform = 2.36191e-09, decompose_factor = 1, tillage = 0, lag = 0, sink_dt = 0, sink_cell = -1, Theta_old 0.173337, Theta_new 0.173452, root 0, drain 0, B2M 0, M2B 0, forward_total 0, forward_sink 0, sum 0, v1 0.00230443, v2 0
+-4.5: q = 0.000253876, J = 1.55325e-11
+-5: q = 0.000311395, J = 3.59235e-12
+Solute problem: Negative concentration
+****** solute[0]: convection
+M[9] = -6.96067e-09 @ -4.75, C = -4.01304e-08, A = 0, M_new = -6.96067e-09, M_old = 3.49087e-08, dt 1, S = -4.18455e-08, S_extra = -4.42074e-08, C_avg_ = 2.01393e-07, C_secondary_2.01393e-07, C_primary_ = 2.01393e-07, M_secondary_ = 0, M_primary_ = 3.49087e-08, M_total_ = 3.49087e-08, M_error = 0, M_tertiary = 0, S_secondary_ = -4.42074e-08, S_primary_ = 2.36191e-09, S_exchange = 0, S_indirect_drain = 0, S_soil_drain = -0, S_p_drain = 0, S_B2M = 0, S_M2B = -0, S_external = 0, S_permanent = 0, S_root = -4.42074e-08, S_decompose = 0, S_decompose_primary = 0, S_decompose_secondary = 0, S_transform = 2.36191e-09, decompose_factor = 1, tillage = 0, lag = 0, sink_dt = 0, sink_cell = -1, Theta_old 0.173337, Theta_new 0.173452, root 0, drain 0, B2M 0, M2B 0, forward_total 0, forward_sink 0, sum 0, v1 0.00230443, v2 0
+-4.5: q = 0.000253876, J = 1.55325e-11
+-5: q = 0.000311395, J = 3.59235e-12
+** 2000-08-26T12:00:00
+*** chemistry: multi tick_soil
+**** Chemistry: N: tick soil
+***** Chemical: NO3: transport
+****** solute[0]: convection
+/home/silas/Projects/daisy-model/daisy/src/daisy/soil/transport/movement_solute.C:437: last message from this line
+M[9] = -1.96961e-09 @ -4.75, C = -1.17319e-08, A = 0, M_new = -1.96961e-09, M_old = 1.5157e-08, dt 1, S = -1.71033e-08, S_extra = -1.95961e-08, C_avg_ = 9.02471e-08, C_secondary_9.02471e-08, C_primary_ = 9.02471e-08, M_secondary_ = 0, M_primary_ = 1.5157e-08, M_total_ = 1.5157e-08, M_error = 0, M_tertiary = 0, S_secondary_ = -1.95961e-08, S_primary_ = 2.49281e-09, S_exchange = 0, S_indirect_drain = 0, S_soil_drain = -0, S_p_drain = 0, S_B2M = 0, S_M2B = -0, S_external = 0, S_permanent = 0, S_root = -1.95961e-08, S_decompose = 0, S_decompose_primary = 0, S_decompose_secondary = 0, S_transform = 2.49281e-09, decompose_factor = 1, tillage = 0, lag = 0, sink_dt = 0, sink_cell = -1, Theta_old 0.16795, Theta_new 0.167884, root 0, drain 0, B2M 0, M2B 0, forward_total 0, forward_sink 0, sum 0, v1 0.00478532, v2 0
+-4.5: q = 0.000584616, J = 1.83841e-11
+-5: q = 0.000551534, J = 6.72775e-12
+Solute problem: Negative concentration
+** 2000-08-27T15:00:00
+*** chemistry: multi tick_soil
+**** Chemistry: N: tick soil
+***** Chemical: NO3: transport
+****** solute[0]: convection
+Solute problem: Negative concentration
+** 2000-09-05T21:00:00
+*** chemistry: multi tick_soil
+**** Chemistry: N: tick soil
+***** Chemical: NO3: transport
+****** solute[0]: convection
+/home/silas/Projects/daisy-model/daisy/src/daisy/soil/transport/movement_solute.C:807: last message from this line
+Solute problem: Negative concentration
+** 2000-09-25T08:00:00
+Harvesting SilomajsFoulum, removing 4.34998 + 6.8494 Mg DM/ha
+** 2000-12-30T23:00:00
+*** bioclimate: default tick
+**** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+End simulation
+* Summary
+** log: Field water summarize
+LOGFILE: field_water.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+*** summary: Field water balance summarize
+Water balance for the complete system.
+
+                  Precipitation = 959.5 [mm]
+                     Irrigation =   0.0 [mm]
+                                  -----
+                    Total input = 959.5 [mm]
+
+      Actual evapotranspiration = 408.4 [mm]
+             Matrix percolation = 155.3 [mm]
+            Biopore percolation =   0.0 [mm]
+              Matrix drain flow = 232.7 [mm]
+             Biopore drain flow =   0.0 [mm]
+                         Runoff =   0.0 [mm]
+                                  -----
+                   Total output = 796.4 [mm]
+
+     Soil matrix water increase = 161.9 [mm]
+         Biopore water increase =   0.0 [mm]
+         Surface water increase =   0.0 [mm]
+                                  -----
+      Total increase in content = 161.9 [mm]
+
+                                  -----
+Balance (= In - Out - Increase) =   1.2 [mm]
+                                  =====
+** log: Field nitrogen summarize
+LOGFILE: field_nitrogen.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+*** summary: Field nitrogen balance summarize
+Nitrogen balance for the complete system.
+
+         Min-Surface-Fertilizer = 162.000 [kg N/ha]
+            Min-Soil-Fertilizer =   0.000 [kg N/ha]
+                 Org-Fertilizer =   0.000 [kg N/ha]
+                     Deposition =  17.429 [kg N/ha]
+                        Fixated =   0.000 [kg N/ha]
+                           Seed =   2.000 [kg N/ha]
+                                  -------
+                    Total input = 181.429 [kg N/ha]
+
+              N2O-Nitrification =   4.358 [kg N/ha]
+                Denitrification =  15.920 [kg N/ha]
+                Matrix-Leaching =   7.858 [kg N/ha]
+               Biopore-Leaching =   0.000 [kg N/ha]
+                     Soil-Drain =  17.436 [kg N/ha]
+                  Biopore-Drain =   0.000 [kg N/ha]
+                   Surface-Loss =   0.116 [kg N/ha]
+                        Harvest = 159.160 [kg N/ha]
+                                  -------
+                   Total output = 204.848 [kg N/ha]
+
+           Min-Surface increase =   0.016 [kg N/ha]
+              Min-Soil increase =  57.906 [kg N/ha]
+          Min-Biopores increase =   0.000 [kg N/ha]
+           Org-Surface increase =   0.000 [kg N/ha]
+              Org-Soil increase = -81.368 [kg N/ha]
+                  Crop increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content = -23.446 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.026 [kg N/ha]
+                                  =======
+*** summary: Field mineral nitrogen balance summarize
+Mineral balance for the complete system.
+
+         Min-Surface-Fertilizer = 162.000 [kg N/ha]
+            Min-Soil-Fertilizer =   0.000 [kg N/ha]
+                     Deposition =  17.429 [kg N/ha]
+                 Mineralization = 146.169 [kg N/ha]
+                                  -------
+                    Total input = 325.597 [kg N/ha]
+
+                 Immobilization =   0.000 [kg N/ha]
+                Matrix-Leaching =   7.858 [kg N/ha]
+               Biopore-Leaching =   0.000 [kg N/ha]
+                     Soil-Drain =  17.436 [kg N/ha]
+                  Biopore-Drain =   0.000 [kg N/ha]
+                   Surface-Loss =   0.116 [kg N/ha]
+                    Crop-Uptake = 221.858 [kg N/ha]
+              N2O-Nitrification =   4.358 [kg N/ha]
+                Denitrification =  15.920 [kg N/ha]
+                                  -------
+                   Total output = 267.546 [kg N/ha]
+
+           Min-Surface increase =   0.016 [kg N/ha]
+              Min-Soil increase =  57.906 [kg N/ha]
+          Min-Biopores increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =  57.922 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.129 [kg N/ha]
+                                  =======
+*** summary: Field organic nitrogen balance summarize
+Organic nitrogen balance for the complete system.
+
+              Residuals-Surface =  18.049 [kg N/ha]
+                 Residuals-Soil =  46.650 [kg N/ha]
+                 Org-Fertilizer =   0.000 [kg N/ha]
+                 Immobilization =   0.000 [kg N/ha]
+                                  -------
+                    Total input =  64.698 [kg N/ha]
+
+                 Mineralization = 146.169 [kg N/ha]
+                                  -------
+                   Total output = 146.169 [kg N/ha]
+
+           Org-Surface increase =   0.000 [kg N/ha]
+              Org-Soil increase = -81.368 [kg N/ha]
+                                  -------
+      Total increase in content = -81.368 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =  -0.103 [kg N/ha]
+                                  =======
+*** summary: Field crop nitrogen balance summarize
+Crop nitrogen balance for the complete system.
+
+                           Seed =   2.000 [kg N/ha]
+                        Fixated =   0.000 [kg N/ha]
+                    Crop-Uptake = 221.858 [kg N/ha]
+                                  -------
+                    Total input = 223.858 [kg N/ha]
+
+                        Harvest = 159.160 [kg N/ha]
+              Residuals-Surface =  18.049 [kg N/ha]
+                 Residuals-Soil =  46.650 [kg N/ha]
+                                  -------
+                   Total output = 223.858 [kg N/ha]
+
+                  Crop increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =   0.000 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+                                  =======
+** log: Field chemical summarize
+LOGFILE: field_N.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+CHEMICAL: N
+*** summary: balance summarize
+                          Spray = 162000.000 [g/ha]
+                        Deposit =  17428.540 [g/ha]
+                       External =      0.000 [g/ha]
+               Litter Transform =      0.000 [g/ha]
+              Surface Transform =      0.000 [g/ha]
+                 Soil Transform = 125891.028 [g/ha]
+                                  ----------
+                    Total input = 305319.568 [g/ha]
+
+                        Harvest =    116.075 [g/ha]
+                      Dissipate =      0.000 [g/ha]
+               Litter Decompose =      0.000 [g/ha]
+              Surface Decompose =      0.000 [g/ha]
+                         Runoff =      0.000 [g/ha]
+                 Soil Decompose =      0.000 [g/ha]
+                    Leak matrix =   7858.137 [g/ha]
+                  Leak biopores =      0.000 [g/ha]
+                     Soil drain =  17436.156 [g/ha]
+                  Biopore drain =      0.000 [g/ha]
+                         Uptake = 221858.347 [g/ha]
+                                  ----------
+                   Total output = 247268.714 [g/ha]
+
+                  Snow increase =      0.000 [g/ha]
+                Canopy increase =      0.000 [g/ha]
+                Litter increase =      6.109 [g/ha]
+               Surface increase =      9.807 [g/ha]
+                  Soil increase =  57905.810 [g/ha]
+              Biopores increase =      0.000 [g/ha]
+                                  ----------
+      Total increase in content =  57921.726 [g/ha]
+
+                                  ----------
+Balance (= In - Out - Increase) =    129.128 [g/ha]
+                                  ==========
+** log: Soil water summarize
+LOGFILE: soil_water.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+*** summary: Soil water balance summarize
+Balance for all water in the soil.
+
+            Matrix infiltration = 609.5 [mm]
+           Biopore infiltration =  16.1 [mm]
+             Subsoil irrigation =   0.0 [mm]
+                        Tillage =  -0.0 [mm]
+                                  -----
+                    Total input = 625.6 [mm]
+
+             Matrix percolation = 155.3 [mm]
+            Biopore percolation =   0.0 [mm]
+       Matrix direct drain flow = 232.7 [mm]
+             Biopore drain flow =   0.0 [mm]
+                Root extraction =  74.4 [mm]
+                       Freezing =   0.0 [mm]
+                                  -----
+                   Total output = 462.5 [mm]
+
+          Matrix water increase = 161.9 [mm]
+         Biopore water increase =   0.0 [mm]
+                                  -----
+      Total increase in content = 161.9 [mm]
+
+                                  -----
+Balance (= In - Out - Increase) =   1.2 [mm]
+                                  =====
+*** summary: Biopore water balance summarize
+Water balance for the biopore domain alone.
+
+           Biopore infiltration =  16.1 [mm]
+             Matrix to biopores = 228.3 [mm]
+     Matrix indirect drain flow =   0.0 [mm]
+                                  -----
+                    Total input = 244.4 [mm]
+
+            Biopore percolation =   0.0 [mm]
+             Biopores to matrix = 244.4 [mm]
+             Biopore drain flow =   0.0 [mm]
+                                  -----
+                   Total output = 244.4 [mm]
+
+         Biopore water increase =   0.0 [mm]
+                                  -----
+      Total increase in content =   0.0 [mm]
+
+                                  -----
+Balance (= In - Out - Increase) =   0.0 [mm]
+                                  =====
+*** summary: Matrix water balance summarize
+Balance for the matrix domain in the soil.
+
+            Matrix infiltration = 609.5 [mm]
+             Biopores to matrix = 244.4 [mm]
+             Subsoil irrigation =   0.0 [mm]
+                        Tillage =  -0.0 [mm]
+                                  -----
+                    Total input = 853.9 [mm]
+
+             Matrix percolation = 155.3 [mm]
+             Matrix to biopores = 228.3 [mm]
+       Matrix direct drain flow = 232.7 [mm]
+     Matrix indirect drain flow =   0.0 [mm]
+                Root extraction =  74.4 [mm]
+                       Freezing =   0.0 [mm]
+                                  -----
+                   Total output = 690.8 [mm]
+
+          Matrix water increase = 161.9 [mm]
+                                  -----
+      Total increase in content = 161.9 [mm]
+
+                                  -----
+Balance (= In - Out - Increase) =   1.2 [mm]
+                                  =====
+** log: Soil nitrogen summarize
+LOGFILE: soil_nitrogen.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+*** summary: Soil NO3- balance summarize
+NO3- balance for a soil interval.
+
+                  NO3-Matrix-In =  82.755 [kg N/ha]
+                 NO3-Biopore-In =   0.100 [kg N/ha]
+                     NO3-Incorp =   0.000 [kg N/ha]
+                    NO3-Tillage =   0.010 [kg N/ha]
+              NO3-Nitrification = 213.540 [kg N/ha]
+                                  -------
+                    Total input = 296.405 [kg N/ha]
+
+                NO3-Leak-Matrix =   7.852 [kg N/ha]
+               NO3-Leak-Biopore =   0.000 [kg N/ha]
+                 NO3-Soil-Drain =  17.364 [kg N/ha]
+              NO3-Biopore-Drain =   0.000 [kg N/ha]
+                     NO3-Uptake = 200.504 [kg N/ha]
+                Denitrification =  15.920 [kg N/ha]
+             NO3-Immobilization =   0.000 [kg N/ha]
+                                  -------
+                   Total output = 241.640 [kg N/ha]
+
+              NO3-Soil increase =  54.640 [kg N/ha]
+          NO3-Biopores increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =  54.640 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.124 [kg N/ha]
+                                  =======
+*** summary: Soil NH4+ balance summarize
+NH4+ balance for a soil interval.
+
+                  NH4-Matrix-In =  96.223 [kg N/ha]
+                 NH4-Biopore-In =   0.140 [kg N/ha]
+                     NH4-Incorp =   0.000 [kg N/ha]
+                    NH4-Tillage =   0.057 [kg N/ha]
+             NH4-Mineralization = 146.169 [kg N/ha]
+                                  -------
+                    Total input = 242.589 [kg N/ha]
+
+                NH4-Leak-Matrix =   0.006 [kg N/ha]
+               NH4-Leak-Biopore =   0.000 [kg N/ha]
+                 NH4-Soil-Drain =   0.072 [kg N/ha]
+              NH4-Biopore-Drain =   0.000 [kg N/ha]
+                     NH4-Uptake =  21.354 [kg N/ha]
+              NH4-Nitrification = 217.898 [kg N/ha]
+                                  -------
+                   Total output = 239.331 [kg N/ha]
+
+              NH4-Soil increase =   3.265 [kg N/ha]
+          NH4-Biopores increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =   3.265 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =  -0.007 [kg N/ha]
+                                  =======
+*** summary: Soil mineral-N balance summarize
+Mineral N balance for a soil interval.
+
+                  NO3-Matrix-In =  82.755 [kg N/ha]
+                  NH4-Matrix-In =  96.223 [kg N/ha]
+                 NO3-Biopore-In =   0.100 [kg N/ha]
+                 NH4-Biopore-In =   0.140 [kg N/ha]
+                     NO3-Incorp =   0.000 [kg N/ha]
+                     NH4-Incorp =   0.000 [kg N/ha]
+                    NO3-Tillage =   0.010 [kg N/ha]
+                    NH4-Tillage =   0.057 [kg N/ha]
+             NH4-Mineralization = 146.169 [kg N/ha]
+                                  -------
+                    Total input = 325.453 [kg N/ha]
+
+                NO3-Leak-Matrix =   7.852 [kg N/ha]
+                NH4-Leak-Matrix =   0.006 [kg N/ha]
+               NO3-Leak-Biopore =   0.000 [kg N/ha]
+               NH4-Leak-Biopore =   0.000 [kg N/ha]
+                 NO3-Soil-Drain =  17.364 [kg N/ha]
+                 NH4-Soil-Drain =   0.072 [kg N/ha]
+              NO3-Biopore-Drain =   0.000 [kg N/ha]
+              NH4-Biopore-Drain =   0.000 [kg N/ha]
+                     NO3-Uptake = 200.504 [kg N/ha]
+                     NH4-Uptake =  21.354 [kg N/ha]
+                Denitrification =  15.920 [kg N/ha]
+              N2O-Nitrification =   4.358 [kg N/ha]
+             NO3-Immobilization =   0.000 [kg N/ha]
+                                  -------
+                   Total output = 267.430 [kg N/ha]
+
+              NO3-Soil increase =  54.640 [kg N/ha]
+              NH4-Soil increase =   3.265 [kg N/ha]
+          NO3-Biopores increase =   0.000 [kg N/ha]
+          NH4-Biopores increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =  57.906 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.117 [kg N/ha]
+                                  =======
+*** summary: Soil organic-N balance summarize
+Organic nitrogen balance for a soil interval.
+
+                    Residuals-N =  46.650 [kg N/ha]
+                  Tillage-Org_N =   0.000 [kg N/ha]
+             NO3-Immobilization =   0.000 [kg N/ha]
+               Bioincorporation =  18.049 [kg N/ha]
+                                  -------
+                    Total input =  64.698 [kg N/ha]
+
+             NH4-Mineralization = 146.169 [kg N/ha]
+                                  -------
+                   Total output = 146.169 [kg N/ha]
+
+                   AOM increase =   3.208 [kg N/ha]
+                   SOM increase = -58.345 [kg N/ha]
+                   SMB increase = -26.231 [kg N/ha]
+                Buffer increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content = -81.368 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =  -0.103 [kg N/ha]
+                                  =======
+*** summary: Soil N balance summarize
+Nitrogen balance for a soil interval.
+
+                  NO3-Matrix-In =  82.755 [kg N/ha]
+                  NH4-Matrix-In =  96.223 [kg N/ha]
+                 NO3-Biopore-In =   0.100 [kg N/ha]
+                 NH4-Biopore-In =   0.140 [kg N/ha]
+                     NO3-Incorp =   0.000 [kg N/ha]
+                     NH4-Incorp =   0.000 [kg N/ha]
+                    NO3-Tillage =   0.010 [kg N/ha]
+                    NH4-Tillage =   0.057 [kg N/ha]
+                    Residuals-N =  46.650 [kg N/ha]
+                  Tillage-Org_N =   0.000 [kg N/ha]
+               Bioincorporation =  18.049 [kg N/ha]
+                                  -------
+                    Total input = 243.983 [kg N/ha]
+
+                NO3-Leak-Matrix =   7.852 [kg N/ha]
+                NH4-Leak-Matrix =   0.006 [kg N/ha]
+               NO3-Leak-Biopore =   0.000 [kg N/ha]
+               NH4-Leak-Biopore =   0.000 [kg N/ha]
+                 NO3-Soil-Drain =  17.364 [kg N/ha]
+                 NH4-Soil-Drain =   0.072 [kg N/ha]
+              NO3-Biopore-Drain =   0.000 [kg N/ha]
+              NH4-Biopore-Drain =   0.000 [kg N/ha]
+                     NO3-Uptake = 200.504 [kg N/ha]
+                     NH4-Uptake =  21.354 [kg N/ha]
+                Denitrification =  15.920 [kg N/ha]
+              N2O-Nitrification =   4.358 [kg N/ha]
+                                  -------
+                   Total output = 267.430 [kg N/ha]
+
+              NO3-Soil increase =  54.640 [kg N/ha]
+              NH4-Soil increase =   3.265 [kg N/ha]
+          NO3-Biopores increase =   0.000 [kg N/ha]
+          NH4-Biopores increase =   0.000 [kg N/ha]
+                   AOM increase =   3.208 [kg N/ha]
+                   SOM increase = -58.345 [kg N/ha]
+                   SMB increase = -26.231 [kg N/ha]
+                Buffer increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content = -23.462 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.014 [kg N/ha]
+                                  =======
+** log: Soil chemical summarize
+LOGFILE: soil_N.dlf
+VOLUME: box none
+TIME: 1999-12-31T01:00:00 to 2000-12-31T00:00:00
+CHEMICAL: N
+*** summary: Soil chemical balance summarize
+                      In-Matrix = 178978.077 [g/ha]
+                    In-Biopores =    239.607 [g/ha]
+                       External =      0.000 [g/ha]
+                      Transform = 125891.028 [g/ha]
+                        Tillage =     66.811 [g/ha]
+                                  ----------
+                    Total input = 305175.523 [g/ha]
+
+                      Decompose =      0.000 [g/ha]
+                    Leak-Matrix =   7858.137 [g/ha]
+                  Leak-Biopores =      0.000 [g/ha]
+                     Drain-Soil =  17436.156 [g/ha]
+                 Drain-Biopores =      0.000 [g/ha]
+                         Uptake = 221858.347 [g/ha]
+                                  ----------
+                   Total output = 247152.639 [g/ha]
+
+               Content increase =  57905.810 [g/ha]
+              Biopores increase =      0.000 [g/ha]
+                                  ----------
+      Total increase in content =  57905.810 [g/ha]
+
+                                  ----------
+Balance (= In - Out - Increase) =    117.074 [g/ha]
+                                  ==========
+*** summary: Matrix chemical balance summarize
+                      In-Matrix = 178978.077 [g/ha]
+             Biopores to matrix =  32043.772 [g/ha]
+                       External =      0.000 [g/ha]
+                      Transform = 125891.028 [g/ha]
+                        Tillage =     66.811 [g/ha]
+                                  ----------
+                    Total input = 336979.687 [g/ha]
+
+                    Leak-Matrix =   7858.137 [g/ha]
+             Matrix to biopores =  31804.165 [g/ha]
+        Drain-Biopores-Indirect =      0.000 [g/ha]
+                      Decompose =      0.000 [g/ha]
+                     Drain-Soil =  17436.156 [g/ha]
+                         Uptake = 221858.347 [g/ha]
+                                  ----------
+                   Total output = 278956.804 [g/ha]
+
+               Content increase =  57905.810 [g/ha]
+                                  ----------
+      Total increase in content =  57905.810 [g/ha]
+
+                                  ----------
+Balance (= In - Out - Increase) =    117.074 [g/ha]
+                                  ==========
+*** summary: Biopore chemical balance summarize
+                    In-Biopores =   239.607 [g/ha]
+             Matrix to biopores = 31804.165 [g/ha]
+        Drain-Biopores-Indirect =     0.000 [g/ha]
+                                  ---------
+                    Total input = 32043.772 [g/ha]
+
+                  Leak-Biopores =     0.000 [g/ha]
+             Biopores to matrix = 32043.772 [g/ha]
+                 Drain-Biopores =     0.000 [g/ha]
+                                  ---------
+                   Total output = 32043.772 [g/ha]
+
+              Biopores increase =     0.000 [g/ha]
+                                  ---------
+      Total increase in content =     0.000 [g/ha]
+
+                                  ---------
+Balance (= In - Out - Increase) =     0.000 [g/ha]
+                                  =========
+* column: matrix_solute/convection summarize
+** movement: vertical summarize
+*** matrix_solute[0]: vertical
+Matrix solute transport model 0 failed 5 times out of 17573, or 0.0284527% (warning)
+See 'daisy.log' for details.
+Program finished after 3 seconds.
+/home/silas/Projects/daisy-model/daisy/src/daisy/soil/transport/movement_solute.C:437: 10 total messages from this line (warning)
+/home/silas/Projects/daisy-model/daisy/src/daisy/soil/transport/movement_solute.C:807: 5 total messages from this line (warning)

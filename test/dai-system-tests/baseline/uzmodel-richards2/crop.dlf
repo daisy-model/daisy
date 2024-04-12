@@ -1,0 +1,21 @@
+dlf-0.0 -- Crop (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: crop.dlf
+RUN: Fri Apr 12 11:44:42 2024
+
+COLUMN: *
+CROP: *
+INTERVAL: box none
+
+LOG: Crop development and production.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzmodel-richards2.dai
+SIM: westDK-JB6med-SMaize scenarie
+
+--------------------
+year	month	mday	hour	DS	Height	LAI	Depth	WLeaf	WDead	WStem	WSOrg	WRoot	Fixated	NLeaf	NDead	NStem	NSOrg	NRoot	water_stress	nitrogen_stress	Phenology
+				DS	cm	m^2/m^2	cm	Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha			
+2000	1	1	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00
+2000	2	1	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00
+2000	3	1	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00

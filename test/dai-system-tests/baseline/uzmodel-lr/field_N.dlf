@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Fri Apr 12 11:36:14 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzmodel-lr.dai
+SIM: westDK-JB6med-SMaize scenarie
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	0.0783383	-0	0	-0	00.00	0	-0	-0	100.363	0	0	0	12.6853	43853.2	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	0	46.9086	-0	0	-0	00.00	0	-0	-0	8672.85	0	0	0	22.4155	54114.5	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	0	741.804	-0	0	998.145	00.00	0	-0	-0	7411.15	0	0	0	23.1817	61745	0	0
+2000	4	1	0	0	1777.09	0	0	0	0	0	0	0	989.816	-0	0	3909.45	00.00	0	-0	-0	5328.59	0	0	0	60.2264	63914.4	0	0
+2000	5	1	0	0	1037.55	0	0	0	0	0	0	0	996.426	-0	0	1467.21	00.00	0	-0	-0	12132.9	0	0	0	64.2556	74617.2	0	0
+2000	6	1	0	81000	1417.09	0	0	0	0	0	0	0	994.678	-0	0	1545.18	00.00	0	-0	-0	16414.6	0	1.07455	0	40.5062	170932	0	0
+2000	7	1	0	81000	1249.05	0	0	0	0	0	0	0	1010.28	-0	0	3645.28	00.00	0	16870.6	-0	12199.1	0	14.0781	0	50.7718	243830	0	0
+2000	8	1	0	0	1096.09	0	0	0	0	0	0	0	942.964	-0	0	2037.74	00.00	0	103694	-0	12309.5	0	82.9181	0	64.5456	150478	0	0
+2000	9	1	0	0	1082.59	0	0	0	0	0	0	0	797.801	-0	0	299.659	00.00	0	107652	-0	12926.9	0	93.7198	0	59.5433	55732.2	0	0
+2000	10	1	0	0	1141.05	116.074	0	0	0	0	0	0	792.205	-0	0	159.047	00.00	0	398.662	-0	14768.3	0	0	6.10918	38.6117	70284.1	0	0
+2000	11	1	0	0	2423.59	0	0	0	0	0	0	0	862.902	-0	0	467.49	00.00	0	-0	-0	15198.1	0	0	6.10918	22.2158	86591.8	0	0
+2000	12	1	0	0	2570.55	0	0	0	0	0	0	0	1093.23	-0	0	5614.94	00.00	0	-0	-0	2589.06	0	0	6.10918	23.5175	85042	0	0
