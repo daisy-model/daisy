@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Fri Apr 12 14:34:29 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzrect-vh.dai
+SIM: Test 2d transport using v+h module
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	-1.06171e-05	-0	0	-0	00.00	0	-0	-0	96.0071	0	0	0	12.8067	29449.5	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	0	1.29463	-0	0	-0	00.00	0	-0	-0	8484.33	0	0	0	22.2388	39568.2	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	0	541.712	-0	0	2600	00.00	0	-0	-0	6533.28	0	0	0	22.9219	44919.1	0	0
+2000	4	1	0	0	1777.09	0	0	0	0	0	0	0	782.926	-0	0	4479.35	00.00	0	-0	-0	7533.7	0	0	0	60.0671	48930.5	0	0
+2000	5	1	0	0	1037.55	0	0	0	0	0	0	0	546.992	-0	0	1059.41	00.00	0	-0	-0	13036.9	0	0	0	63.8093	61394.8	0	0
+2000	6	1	0	81000	1417.09	0	0	0	0	0	0	0	481.735	-0	0	648.938	00.00	0	-0	-0	17668.8	0	1.07451	0	40.0552	160373	0	0
+2000	7	1	0	81000	1249.05	0	0	0	0	0	0	0	465.312	-0	0	633.339	00.00	0	16324.7	-0	12596.5	0	14.0456	0	51.6442	237770	0	0
+2000	8	1	0	0	1096.09	0	0	0	0	0	0	0	415.055	-0	0	349.832	00.00	0	103496	-0	13411.7	0	82.7638	0	57.1702	147943	0	0
+2000	9	1	0	0	1082.59	0	0	0	0	0	0	0	350.821	-0	0	44.7885	00.00	0	108527	-0	15645.2	0	93.6957	0	62.479	55731.4	0	0
+2000	10	1	0	0	1141.05	116.076	0	0	0	0	0	0	268.934	-0	0	-0	00.00	0	265.521	-0	17550.7	0	0	6.10926	39.6527	73883	0	0
+2000	11	1	0	0	2423.59	0	0	0	0	0	0	0	206.911	-0	0	-0	00.00	0	-0	-0	14476.9	0	0	6.10926	22.2074	90594.1	0	0
+2000	12	1	0	0	2570.55	0	0	0	0	0	0	0	793.967	-0	0	16903.1	00.00	0	-0	-0	1467.39	0	0	6.10926	22.6079	76934.6	0	0

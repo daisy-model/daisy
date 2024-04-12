@@ -10,5 +10,5 @@ mkdir -p ${out_dir}
 params=("-r" "${src_dir}" "${build_dir}" "--html-details" "${out_file}" "--sort-percentage" "--exclude" "(.+/)ut_.+\.C$")
 params+=("-f" "(.+/)?${dir}/.+\.C$")
 
-echo "Summarizing test coverage"
+echo "Summarizing test coverage for ${dir}"
 gcovr ${params[*]} && echo "Coverage report in file://$(realpath ${out_file})"

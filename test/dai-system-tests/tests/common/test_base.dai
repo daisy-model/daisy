@@ -1,0 +1,27 @@
+(input file "dk-soil.dai")
+(input file "tillage.dai")
+(input file "fertilizer.dai")
+(input file "crop.dai")
+(input file "dk-management.dai")
+(input file "log-std.dai")
+
+(input file "test_dk-maize_skb.dai")
+(input file "test_Springbarley_MES_ny.dai")
+(input file "test_management.dai")
+
+(defweather westDK table (file "test_West.dwf"))
+
+(defprogram Base Daisy
+  "Base program for all tests."
+  (time 1999 12 31)
+  (stop 2000 12 31)
+  (activate_output (after 1999 12 31))
+  (weather westDK)
+  (manager (repeat "smaize_monoJB6"))
+  (output ("Crop" (when monthly) (print_initial false))
+          ("Field water" (when monthly) (print_initial false))
+          ("Field nitrogen" (when monthly) (print_initial false))
+          ("Field chemical" (chemical N) (when monthly) (print_initial false))
+          ("Soil water" (when monthly) (print_initial false))
+          ("Soil nitrogen" (when monthly) (print_initial false))
+          ("Soil chemical" (chemical N) (when monthly) (print_initial false))))

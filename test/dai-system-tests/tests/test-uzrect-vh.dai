@@ -1,0 +1,13 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn "transport/v+h" JB6med
+  (Movement std2d
+            (matrix_water "v+h")
+            (matrix_solute Mollerup)))
+
+(defprogram test Base "Test 2d transport using v+h module"
+            (column "transport/v+h"))
+
+(run test)
