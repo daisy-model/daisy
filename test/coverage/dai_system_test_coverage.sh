@@ -2,7 +2,7 @@
 src_dir=../..
 build_dir=.
 out_dir=${src_dir}/test/coverage/dai-system-tests
-out_file=${out_dir}/coverage.html
+out_file=${out_dir}/coverage_`date +%s`.html
 mkdir -p ${out_dir}
 params=("-r" "${src_dir}" "${build_dir}" "--html" "${out_file}" "--sort-percentage" "--exclude" "(.+/)ut_.+\.C$")
 
