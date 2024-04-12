@@ -3,10 +3,11 @@
 (input file "test_base.dai")
 
 (defcolumn test-column JB6med
-  (Movement std1d
-            (matrix_solute none)))
+  (Movement std2d
+            (matrix_water Mollerup)
+            (matrix_solute Mollerup)))
 
-(defprogram test Base "Test 1d transport using none module"
+(defprogram test Base "Test 2d transport using Mollerup module"
             (column test-column))
 
 (run test)
