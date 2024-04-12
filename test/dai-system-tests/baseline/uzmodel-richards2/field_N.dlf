@@ -1,0 +1,21 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Fri Apr 12 11:44:42 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzmodel-richards2.dai
+SIM: westDK-JB6med-SMaize scenarie
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	-1.17271e-05	-0	0	-0	00.00	0	-0	-0	100.344	0	0	0	12.8045	43853.2	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	0	6.11531	-0	0	-0	00.00	0	-0	-0	8385.08	0	0	0	22.2377	53867.8	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	0	538.822	-0	0	1006.89	00.00	0	-0	-0	6853.31	0	0	0	22.9515	61134.7	0	0

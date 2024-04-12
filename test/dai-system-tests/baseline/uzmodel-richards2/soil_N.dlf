@@ -1,0 +1,21 @@
+dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_N.dlf
+RUN: Fri Apr 12 11:44:42 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the soil.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzmodel-richards2.dai
+SIM: westDK-JB6med-SMaize scenarie
+
+--------------------
+year	month	mday	hour	In-Matrix	In-Biopores	Leak-Matrix	Leak-Biopores	Biopores to matrix	Matrix to biopores	Tillage	Drain-Soil	Drain-Biopores	Drain-Biopores-Indirect	External	Uptake	Decompose	Transform	Content	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	16.7296	0	-1.17271e-05	-0	0	0	0	-0	0	0	0	-0	-0	100.344	43853.2	0	0
+2000	2	1	0	1635.65	0	6.11531	-0	0	0	0	-0	0	0	0	-0	-0	8385.08	53867.8	0	0
+2000	3	1	0	1959.3	0	538.822	-0	1720.08	1720.08	0	1006.89	0	0	0	-0	-0	6853.31	61134.7	0	0
