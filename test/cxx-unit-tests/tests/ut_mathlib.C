@@ -1,5 +1,3 @@
-// ut_units.C -- units unit tests 
-
 #include "mathlib.h"
 #include <gtest/gtest.h>
 
