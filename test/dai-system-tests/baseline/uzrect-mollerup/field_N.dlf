@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Fri Apr 12 14:33:45 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzrect-mollerup.dai
+SIM: Test 2d transport using Mollerup module
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	9.97144e-08	-0	0	-0	00.00	0	-0	-0	96.0071	0	0	0	12.8067	29449.5	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	0	1.29797	-0	0	-0	00.00	0	-0	-0	8484.33	0	0	0	22.2388	39568.2	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	0	542.377	-0	0	2599.51	00.00	0	-0	-0	6533.47	0	0	0	22.9219	44919.1	0	0
+2000	4	1	0	0	1777.09	0	0	0	0	0	0	0	783.969	-0	0	4483.95	00.00	0	-0	-0	7532.85	0	0	0	60.0672	48924	0	0
+2000	5	1	0	0	1037.55	0	0	0	0	0	0	0	547.248	-0	0	1059.12	00.00	0	-0	-0	13037.1	0	0	0	63.8093	61388.5	0	0
+2000	6	1	0	81000	1417.09	0	0	0	0	0	0	0	481.925	-0	0	648.894	00.00	0	-0	-0	17669	0	1.07451	0	40.0552	160366	0	0
+2000	7	1	0	81000	1249.05	0	0	0	0	0	0	0	465.458	-0	0	633.018	00.00	0	16324.6	-0	12596.6	0	14.0456	0	51.6442	237765	0	0
+2000	8	1	0	0	1096.09	0	0	0	0	0	0	0	415.177	-0	0	349.693	00.00	0	103496	-0	13411.8	0	82.7638	0	57.1693	147937	0	0
+2000	9	1	0	0	1082.59	0	0	0	0	0	0	0	350.852	-0	0	44.7274	00.00	0	108502	-0	15646.5	0	93.6957	0	62.4793	55752.3	0	0
+2000	10	1	0	0	1141.05	116.076	0	0	0	0	0	0	268.916	-0	0	-0	00.00	0	221.081	-0	17532.4	0	0	6.10926	39.6524	73930.1	0	0
+2000	11	1	0	0	2423.59	0	0	0	0	0	0	0	206.802	-0	0	-0	00.00	0	-0	-0	14480.5	0	0	6.10926	22.2231	90644.8	0	0
+2000	12	1	0	0	2570.55	0	0	0	0	0	0	0	794.769	-0	0	16938.5	00.00	0	-0	-0	1476.9	0	0	6.10926	22.608	76958.7	0	0

@@ -1,39 +1,12 @@
-(input file "dk-soil.dai")
-(input file "tillage.dai")
-(input file "fertilizer.dai")
-(input file "crop.dai")
-(input file "dk-management.dai")
-(input file "log-std.dai")
-
-(input file "test_dk-maize_skb.dai")
-(input file "test_Springbarley_MES_ny.dai")
 (input file "test_columns.dai")
-(input file "test_management.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
 
-(defcolumn "uzmodel/lr" JB6med
-  (Movement vertical
-            (Geometry
-             (zplus 
-	      -0.5 -1 -1.5 -2 -2.5 -3 -3.5 -4 -4.5 -5 -6 -7 -8 -9 -10 -12 -14 -16 -18 -20 -22 -25 -26 -28 -30 -32 -34 -36 -40 -45 -50 -55 -60 -65 -70 -75 -80 -85 -90 -95 -100 -110 -120 -130 -140 -150 -160 -170 -180 -190 -200 -210 -220 -230 -240 -250 -260 -270 -280 -290 -300[cm]))
+(defcolumn test-column JB6med
+  (Movement std1d
             (matrix_water lr)))
 
-(defprogram Base Daisy
-  "This is the stuff all scenrios have in common."
-  (time 1999 12 31)
-  (stop 2000 12 31)
-  (activate_output (after 1999 12 31))
-  (output ("Crop" (when monthly) (print_initial false))
-          ("Field water" (when monthly) (print_initial false))
-          ("Field nitrogen" (when monthly) (print_initial false))
-          ("Field chemical" (chemical N) (when monthly) (print_initial false))
-          ("Soil water" (when monthly) (print_initial false))
-          ("Soil nitrogen" (when monthly) (print_initial false))
-          ("Soil chemical" (chemical N) (when monthly) (print_initial false))
-          ))
+(defprogram test Base "Test 1d uzmodel lr"
+            (column test-column))
 
-(defweather westDK table (file "test_West.dwf"))
-
-(defprogram westDK-JB6med-SMaize Base "westDK-JB6med-SMaize scenarie"
-  (weather westDK) (column uzmodel/lr) (manager (repeat "smaize_monoJB6")))
-  
-(run westDK-JB6med-SMaize)
+(run test)
