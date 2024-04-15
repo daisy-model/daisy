@@ -1,0 +1,29 @@
+dlf-0.0 -- Soil nitrogen (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_nitrogen.dlf
+RUN: Mon Apr 15 09:58:43 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Nitrogen input, output, transformation and content for the soil.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-heatrect-top.dai
+SIM: Test heat transport in 2d grid using top model
+
+--------------------
+year	month	mday	hour	NO3-Matrix-In	NO3-Biopore-In	NO3-Leak-Matrix	NO3-Leak-Biopore	NO3-to-Biopores	NO3-from-Biopores	NO3-Soil-Drain	NO3-Indirect-Drain	NO3-Biopore-Drain	NO3-Incorp	NO3-Tillage	NO3-Uptake	NO3-Soil	NO3-Biopores	NO3-Error	NH4-Matrix-In	NH4-Biopore-In	NH4-Leak-Matrix	NH4-Leak-Biopore	NH4-to-Biopores	NH4-from-Biopores	NH4-Soil-Drain	NH4-Indirect-Drain	NH4-Biopore-Drain	NH4-Incorp	NH4-Tillage	NH4-Uptake	NH4-Soil	NH4-Biopores	NH4-Error	Denitrification	NH4-Nitrification	NO3-Nitrification	N2O-Nitrification	NH4-Mineralization	NO3-Immobilization	Residuals-N	Tillage-Org_N	Bioincorporation	AOM	SOM	SMB	Buffer
+				kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha
+2000	1	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	26.4239	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	2.91791	0	0	0	0	0	0	0.00540035	-0	0	0	0	11.9958	16703.1	193.326	0
+2000	2	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	30.5534	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	7.73526	0	0	0.152046	4.36898	4.2816	0.0873796	9.18633	-0	0	0	0	8.829	16702.4	188.075	0
+2000	3	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	36.6506	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	9.218	0	0	0.143956	6.36849	6.24112	0.12737	7.85123	-0	0	0	0	6.92093	16701.5	183.026	0
+2000	4	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	45.0035	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	9.9074	0	0	0.142901	8.66916	8.49578	0.173383	9.35856	-0	0	0	0	5.33724	16700	176.687	0
+2000	5	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	62.7893	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	6.84966	0	0	0.628136	18.7897	18.4139	0.375795	15.732	-0	0	0	0	3.76856	16696.4	166.151	0
+2000	6	1	0	0	0	-0	-0	0	0	-0	-0	0	0	2.50743	0.258325	89.1679	0	0	0	0	-0	-0	0	0	-0	-0	0	0	3.94536	0.000627625	4.8841	0	0	1.18642	25.8326	25.3159	0.516652	19.9223	-0	0	-7.5873e-14	0	2.75613	16688.8	154.823	0
+2000	7	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	17.1335	87.3011	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	0.0577623	3.84801	0	0	1.03735	16.6368	16.3041	0.332737	15.6585	-0	0.908289	0	0.00898638	2.93278	16680.1	148.678	0
+2000	8	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	84.5251	15.2996	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	3.22053	2.12524	0	0	1.04695	13.8475	13.5706	0.276951	15.3453	-0	1.61123	0	0.181726	3.15456	16669.5	145.452	0
+2000	9	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	7.05183	14.9035	0	-9.79385e-06	0	0	-0	-0	0	0	-0	-0	0	0	0	8.12153	1.218	0	0	0.438022	7.23855	7.09378	0.144771	14.4528	-0	4.74225	0	6.75105	9.64531	16658.5	147.035	0
+2000	10	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	3.4366	14.8607	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	5.52763	0.463705	0	0	0.444963	3.97313	3.89367	0.0794626	8.74647	0.0549667	18.0657	0	4.94228	23.9903	16649.8	155.696	0
+2000	11	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	17.5053	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	2.19345	0	0	1.00227	3.93646	3.85773	0.0787291	5.6662	0.210806	0	0	0.821401	16.1687	16643.9	164.732	0
+2000	12	1	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	21.8313	0	0	0	0	-0	-0	0	0	-0	-0	0	0	0	-0	2.95324	0	0	0.405853	4.9246	4.82611	0.098492	5.68438	0.0942848	0	0	0	13.8604	16640.7	164.698	0

@@ -1,0 +1,13 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Movement std2d
+            (matrix_water const)
+            (heat top)))
+
+(defprogram test Base "Test heat transport in 2d grid using top model"
+            (column test-column))
+
+(run test)
