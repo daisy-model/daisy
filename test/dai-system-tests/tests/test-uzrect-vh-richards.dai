@@ -4,11 +4,10 @@
 
 (defcolumn test-column JB6med
   (Movement std2d
-            (matrix_water Mollerup)
-            (matrix_solute Mollerup)
-            (heat Mollerup)))
+            (matrix_water ("v+h" (horizontal richards)))
+            (matrix_solute Mollerup)))
 
-(defprogram test Base "Test 2d transport using Mollerup module"
+(defprogram test Base "Test 2d transport using v+h module with Richards for horizontal"
             (column test-column))
 
 (run test)
