@@ -1,0 +1,35 @@
+dlf-0.0 -- Soil water (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_water.dlf
+RUN: Mon Apr 15 15:26:44 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Information about water input, output and content for the soil.
+LOG: 
+LOG: The intended use of this log is small scale water management, for
+LOG: example irrigation optimization.  Above ground water is
+LOG: considered external to the system.  The balances provided by the
+LOG: log will work on any subset of the soil that matches the
+LOG: discretization.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-tertiary-biopores.dai
+SIM: Test biopores in 1d
+
+--------------------
+year	month	mday	hour	Matrix infiltration	Matrix percolation	Biopore infiltration	Biopore percolation	Subsoil irrigation	Matrix direct drain flow	Matrix indirect drain flow	Biopore drain flow	Root extraction	Freezing	Tillage	Matrix to biopores	Biopores to matrix	Matrix water	Biopore water
+				mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm
+2000	1	1	0	1.22165	-2.34354e-07	0	-0	-0	0	0	0	0	-0	0	0	0	789.208	0
+2000	2	1	0	86.6186	0.122208	0	-0	-0	0	0	0	0	-0	0	0	0	875.704	0
+2000	3	1	0	105.577	11.2386	0	1.5355e-16	-0	18.5636	0	0	0	-0	0	51.0856	50.678	951.071	0.407599
+2000	4	1	0	82.5179	23.1316	0.0580545	1.27325e-16	-0	82.8884	0	0	0	-0	0	10.0456	10.1961	927.72	0.315157
+2000	5	1	0	16.717	18.3108	0	-7.27241e-17	-0	13.8194	0	0	0	-0	0	6.71803	6.80667	912.395	0.226512
+2000	6	1	0	13.5004	17.0999	0	4.28092e-17	-0	5.80406	0	0	0.0651672	-0	3.33067e-15	0.580618	0.74107	903.087	0.0660602
+2000	7	1	0	7.67817	15.9233	0	-7.68788e-18	-0	3.59106	0	0	1.68081	-0	0	0.381011	0.339474	889.528	0.107597
+2000	8	1	0	1.35062	15.5809	0	-2.74697e-17	-0	0.552141	0	0	20.1116	-0	0	0.0276675	0.0759689	854.682	0.0592956
+2000	9	1	0	5.18825	13.425	0	3.87729e-18	-0	0	0	0	38.4385	-0	0	0	0.0266054	808.034	0.0326902
+2000	10	1	0	28.6602	10.2641	0	3.4956e-18	-0	0	0	0	14.1457	-0	0	0	0.0257478	812.31	0.00694238
+2000	11	1	0	128.799	8.27018	0	2.46528e-16	-0	0	0	0	0	-0	0	25.5661	25.1488	932.422	0.424237
+2000	12	1	0	147.844	22.5484	0.0555045	-3.78656e-17	-0	106.872	0	0	0	-0	0	32.965	32.9778	950.859	0.466915

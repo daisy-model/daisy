@@ -25,4 +25,5 @@ dai_system_test(uzmodel-richards2)
 dai_system_test(heatrect-top)
 dai_system_test(heatrect-none)
 dai_system_test(heatrect-linear)
-
+dai_system_test(tertiary-biopores)
+dai_system_test(drain-lateral)

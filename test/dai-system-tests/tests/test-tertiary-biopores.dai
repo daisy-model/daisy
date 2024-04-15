@@ -1,0 +1,18 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_biopores.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Movement std1d
+            (Tertiary (biopores
+                       (classes "matrix_0-30cm"
+                                "matrix_0-60cm"
+                                "matrix_0-120cm"
+                                "matrix_30-120cm"
+                                "matrix_75-200cm")))))
+
+(defprogram test Base "Test biopores in 1d"
+            (column test-column))
+
+(run test)
