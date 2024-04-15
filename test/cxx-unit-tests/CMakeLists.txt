@@ -1,6 +1,7 @@
 if (${BUILD_CXX_TESTS})
   find_package(GTest REQUIRED)
   include(GoogleTest)
+
   add_library(ut_core SHARED
     ${CMAKE_SOURCE_DIR}/src/util/assertion.C
     ${CMAKE_SOURCE_DIR}/src/util/filepos.C
@@ -50,6 +51,19 @@ if (${BUILD_CXX_TESTS})
     target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
     target_link_libraries(${name} PUBLIC
       ut_core
+      GTest::gtest
+      GTest::gtest_main
+    )
+    gtest_discover_tests(${name} TEST_PREFIX cxx_unit_test.)
+  endfunction()
+
+  function(cxx_unit_test_mock name)
+    add_executable(${name} ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/tests/${name}.C ${ARGN})
+    target_include_directories(${name} PUBLIC ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/mock/include)
+    target_compile_options(${name} PRIVATE ${COMPILE_OPTIONS})
+    target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
+    target_link_libraries(${name} PUBLIC
+      cxsparse
       GTest::gtest
       GTest::gtest_main
     )
