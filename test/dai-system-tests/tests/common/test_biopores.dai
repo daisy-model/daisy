@@ -1,0 +1,34 @@
+(defbiopore common matrix
+  (K_wall_relative 1 [%])
+  (allow_upward_flow false))
+
+(defbiopore "matrix_0-30cm"
+   (common (height_start 0 [cm])
+           (height_end -25 [cm])
+           (density 100 [m^-2])
+           (diameter 2 [mm])))
+           
+(defbiopore "matrix_0-60cm"
+   (common (height_start 0 [cm])
+           (height_end -60 [cm])
+           (diameter 4 [mm])
+           (density 23 [m^-2])))
+           
+(defbiopore "matrix_0-120cm"
+   (common (height_start 0 [cm])
+           (height_end -120 [cm])
+           (diameter 4 [mm])
+           (density 23 [m^-2])))       
+           
+(defbiopore "matrix_30-120cm"
+   (common (height_start -30 [cm])
+           (height_end -120 [cm])
+           (diameter 4 [mm])
+           (density 7 [m^-2]))) 
+
+
+(defbiopore "matrix_75-200cm"
+   (common (height_start -75 [cm])
+           (height_end -200 [cm])
+           (diameter 4 [mm])
+           (density 7 [m^-2]))) 
