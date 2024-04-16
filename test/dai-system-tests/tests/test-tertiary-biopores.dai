@@ -10,7 +10,7 @@
                                 "matrix_0-60cm"
                                 "matrix_0-120cm"
                                 "matrix_30-120cm"
-                                "matrix_75-200cm")))))
+                                "biopore_drain_75-200cm")))))
 
 (defprogram test Base "Test biopores in 1d"
             (column test-column))
