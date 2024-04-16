@@ -1,0 +1,11 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Groundwater (fixed -175 [cm])))
+
+(defprogram test Base "Test groundwater constant flux"
+            (column test-column))
+
+(run test)

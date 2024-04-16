@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Tue Apr 16 09:08:55 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-groundwater-flux.dai
+SIM: Test groundwater constant flux
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	28.7836	0	0	0	0	0	0	0	-57541.1	-0	0	2556.24	00.00	0	-0	-0	67.2541	0	0	0	28.4582	100443	0	0
+2000	2	1	0	0	1645.09	0	0	0	0	0	0	1509.51	-1.86136e+06	-0	0	1.33754e+06	00.00	0	-0	-0	1081.87	0	0	0	164.032	625350	0	0
+2000	3	1	0	0	1960.02	0	0	0	0	0	0	2059.45	-1.74133e+06	-0	0	1.72074e+06	00.00	0	-0	-0	1050.31	0	0	0	64.5992	646982	0	0
+2000	4	1	0	0	1777.09	0	0	0	0	0	0	1833.21	-1.86146e+06	-0	0	1.86285e+06	00.00	0	-0	-0	1283.8	0	0	0	8.4764	646876	0	0
+2000	5	1	0	0	1037.55	0	0	0	0	0	0	1036.78	-1.80145e+06	-0	0	1.80328e+06	00.00	0	-0	-0	1349.61	0	0	0	9.24609	646396	0	0
+2000	6	1	0	81000	1417.09	0	0	0	0	0	0	82373	-1.86154e+06	-0	0	1.86609e+06	00.00	0	-0	-0	1720.51	0	0	0	44.5144	643576	0	0
+2000	7	1	0	81000	1249.05	0	0	0	0	0	0	82279.5	-1.80155e+06	-0	0	1.81041e+06	00.00	0	-0	-0	2384.25	0	0	0	14.1115	637096	0	0
+2000	8	1	0	0	1096.09	0	0	0	0	0	0	1092.66	-1.86167e+06	-0	0	1.86946e+06	00.00	0	-0	-0	3008.77	0	0	0	17.5408	632308	0	0
+2000	9	1	0	0	1082.59	0	0	0	0	0	0	1042.52	-1.86174e+06	-0	0	1.86831e+06	00.00	0	-0	-0	3329.26	0	0.489545	0	57.1207	629068	0	0
+2000	10	1	0	0	1141.05	1.03975	0	0	0	0	0	1178.36	-1.80177e+06	-0	0	1.81012e+06	00.00	0	-0	-0	3367.42	0	0.349545	0.0547238	18.858	624088	0	0
+2000	11	1	0	0	2423.59	0	0	0	0	0	0	2067.1	-1.86191e+06	-0	0	1.8694e+06	00.00	0	-0	-0	3455.7	0	0.209102	0.0547238	375.484	620061	0	0
+2000	12	1	0	0	2570.55	0	0	0	0	0	0	2891.46	-1.80193e+06	-0	0	1.81404e+06	00.00	0	-0	-0	3322.21	0	0.314869	0.0547238	54.4707	611277	0	0
