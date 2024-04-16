@@ -1,0 +1,24 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+
+;; First get test_base, then define test crop, then get test_base_2 where test-ctop is used
+(input file "test_base.dai")
+
+(defcrop test-crop SilomajsFoulum
+  (LeafPhot FC_C3
+            (TempEff (0 1) (100 1))
+            (Stomatacon MNA ; TOOD: Find meaningful parameters
+                        (alpha 1) 
+                        (m 10)
+                        (b 0.01)
+                        (lambda -1)
+                        )))
+
+(input file "test_base_2.dai")
+
+(defcolumn test-column JB6med)
+
+(defprogram test test-base "Test stomatacon MNA"
+            (column test-column))
+
+(run test)
