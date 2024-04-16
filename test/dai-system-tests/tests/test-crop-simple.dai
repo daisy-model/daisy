@@ -1,0 +1,18 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+
+;; First get test_base, then define test crop, then get test_base_2 where test-ctop is used
+(input file "test_base.dai")
+
+(defcrop test-crop simple
+  (potential_N 30)
+  (LAIvsDay (0 0) (365 1)))
+  
+(input file "test_base_2.dai")
+
+(defcolumn test-column JB6med)
+
+(defprogram test test-base "Test crop simple"
+            (column test-column))
+
+(run test)
