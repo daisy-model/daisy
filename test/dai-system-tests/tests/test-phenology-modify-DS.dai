@@ -1,0 +1,19 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+
+;; First get test_base, then define phenology-maize crop, then get test_phenology where
+;; phenology-maize is used.
+(input file "test_base.dai")
+
+(defcrop test-crop SilomajsFoulum
+  (Devel original
+         (modify_DS * x 1.001 [])))
+
+(input file "test_base_2.dai")
+
+(defcolumn test-column JB6med)
+
+(defprogram test test-base "Test phenology modify_DS"
+            (column test-column))
+
+(run test)
