@@ -32,3 +32,10 @@
            (height_end -200 [cm])
            (diameter 4 [mm])
            (density 7 [m^-2]))) 
+
+(defbiopore "biopore_drain_75-200cm"
+    (drain (pipe_position -175 [cm])
+           (height_start -75 [cm])
+           (height_end -200 [cm])
+           (diameter 4 [mm])
+           (density 7 [m^-2])))
