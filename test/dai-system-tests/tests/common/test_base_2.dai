@@ -1,0 +1,17 @@
+(defaction test-activity-year activity
+    (wait_mm_dd 05 01)    (plowing)
+    (wait_mm_dd 05 05)    (sow test-crop)
+    (wait_mm_dd 05 05)    (fertilize      ("NPK01")      (equivalent_weight 81.0 [kg N/ha]))
+    (wait_mm_dd 06 10)    (fertilize      ("NPK01")      (equivalent_weight 81.0 [kg N/ha]))
+    (wait_mm_dd 09 25)    (harvest test-crop  (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm])))
+
+(defaction test-activity activity
+           test-activity-year
+           test-activity-year
+           test-activity-year
+           test-activity-year
+           test-activity-year
+           test-activity-year)
+
+(defprogram test-base Base "Base test program using some previously defined test-crop."
+  (manager (repeat test-activity)))
