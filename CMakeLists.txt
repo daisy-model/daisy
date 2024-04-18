@@ -14,6 +14,7 @@ add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+option(BUILD_DOC "Set to ON to build documentation" OFF)
 option(BUILD_CXX_TESTS "Set to ON to build C++ tests" OFF)
 option(USE_PROFILE "Set to ON to build for profiling" OFF)
 option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
@@ -82,3 +83,6 @@ elseif (${OS} STREQUAL "macos")
 endif()
 
 include(CPack)
+
+# Documentation
+include(cmake/Doc.cmake)
