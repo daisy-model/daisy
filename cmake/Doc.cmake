@@ -101,6 +101,8 @@ if(${BUILD_DOC})
     doc/exercises.pdf
   )
 
+  # The docs target first builds reference.pdf, tutorial.pdf and exercises.pdf; then it deletes all
+  # the files used/generated during build.
   add_custom_target(docs
     COMMAND rm -r doc/gnufig
     COMMAND find doc/ -type f -regex .+\.[^pdf] | xargs rm
