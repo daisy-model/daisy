@@ -1,0 +1,13 @@
+(input file "test_columns.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Surface source_flux
+           (source column
+                   (file "data/surface-flux.ddf")
+                   (tag "flux"))
+           (interpolate false)))
+(defprogram test Base "Test Surface source flux without interpolation"
+            (column test-column))
+
+(run test)

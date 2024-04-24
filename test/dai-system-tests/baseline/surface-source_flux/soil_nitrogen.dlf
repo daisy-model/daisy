@@ -1,0 +1,29 @@
+dlf-0.0 -- Soil nitrogen (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_nitrogen.dlf
+RUN: Wed Apr 24 10:10:18 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Nitrogen input, output, transformation and content for the soil.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-surface-source_flux.dai
+SIM: Test Surface source flux
+
+--------------------
+year	month	mday	hour	NO3-Matrix-In	NO3-Biopore-In	NO3-Leak-Matrix	NO3-Leak-Biopore	NO3-to-Biopores	NO3-from-Biopores	NO3-Soil-Drain	NO3-Indirect-Drain	NO3-Biopore-Drain	NO3-Incorp	NO3-Tillage	NO3-Uptake	NO3-Soil	NO3-Biopores	NO3-Error	NH4-Matrix-In	NH4-Biopore-In	NH4-Leak-Matrix	NH4-Leak-Biopore	NH4-to-Biopores	NH4-from-Biopores	NH4-Soil-Drain	NH4-Indirect-Drain	NH4-Biopore-Drain	NH4-Incorp	NH4-Tillage	NH4-Uptake	NH4-Soil	NH4-Biopores	NH4-Error	Denitrification	NH4-Nitrification	NO3-Nitrification	N2O-Nitrification	NH4-Mineralization	NO3-Immobilization	Residuals-N	Tillage-Org_N	Bioincorporation	AOM	SOM	SMB	Buffer
+				kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha
+2000	1	1	0	0	0	-1.39292e-08	-0	0	0	-0	-0	0	0	0	-0	39.4324	0	0	0	0	-1.11353e-11	-0	0	0	-0	-0	0	0	0	-0	4.3055	0	0	7.46158e-07	0.0315698	0.0309384	0.000631396	0.00296889	-0	0	0	0	11.9974	28910.9	193.332	0
+2000	2	1	0	0	0	-1.12519e-06	-0	0	0	-0	-0	0	0	0	-0	39.4324	0	0	0	0	-9.00325e-10	-0	0	0	-0	-0	0	0	0	-0	4.3055	0	0	0	0	0	0	0	-0	0	0	0	11.9974	28910.9	193.332	0
+2000	3	1	0	0	0	-1.0145e-06	-0	0	0	-0	-0	0	0	0	-0	39.4324	0	0	0	0	-8.11758e-10	-0	0	0	-0	-0	0	0	0	-0	4.3055	0	0	0	0	0	0	0	-0	0	0	0	11.9974	28910.9	193.332	0
+2000	4	1	0	0	0	-1.06269e-06	-0	0	0	-0	-0	0	0	0	-0	39.4324	0	0	0	0	-8.50312e-10	-0	0	0	-0	-0	0	0	0	-0	4.3055	0	0	0	0	0	0	0	-0	0	0	0	11.9974	28910.9	193.332	0
+2000	5	1	0	0	0	-1.03124e-06	-0	0	0	-0	-0	0	0	0	-0	39.4324	0	0	0	0	-8.25145e-10	-0	0	0	-0	-0	0	0	0	-0	4.3055	0	0	0	0	0	0	0	-0	0	0	0	11.9974	28910.9	193.332	0
+2000	6	1	0	0	0	-1.09441e-06	-0	0	0	-0	-0	0	0	2.50743	-0	41.9399	0	0	0	0	-8.75695e-10	-0	0	0	-0	-0	0	0	3.94536	-0	8.25087	0	0	0	0	0	0	0	-0	0	3.57787e-13	0	11.9974	28910.9	193.332	0
+2000	7	1	0	0	0	-1.1056e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-8.84645e-10	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0.0136768	0	0.00575787	12.0169	28910.9	193.332	0
+2000	8	1	0	0	0	-1.19542e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-9.56513e-10	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0.0794814	0	0.0212731	12.1176	28910.9	193.332	0
+2000	9	1	0	0	0	-1.24179e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-9.93615e-10	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0.481537	0	0.039483	12.6386	28910.9	193.332	0
+2000	10	1	0	0	0	-1.22672e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-9.81558e-10	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0.376585	0	0.0905436	13.1058	28910.9	193.332	0
+2000	11	1	0	0	0	-1.26499e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-1.01218e-09	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0	0	7.40926e-26	13.1058	28910.9	193.332	0
+2000	12	1	0	0	0	-1.19517e-06	-0	0	0	-0	-0	0	0	0	-0	41.9399	0	0	0	0	-9.5631e-10	-0	0	0	-0	-0	0	0	0	-0	8.25087	0	0	0	0	0	0	0	-0	0	0	0	13.1058	28910.9	193.332	0
