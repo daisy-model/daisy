@@ -1,0 +1,22 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Litter residue
+          (water_capacity 3.8 [L/kg])
+          (specific_AI 3.7 [m^2/kg DM])
+          (extinction_coefficent 0.8)))
+
+(deflog Litter column
+  "Log litter"
+  (where "litter.dlf")
+  (entries (number (path column * Litter mass))))
+
+(defprogram test Base "Test litter mulch with exp retention curve"
+            (column test-column)
+            (output original
+                    (Litter (when monthly) (print_initial false))))
+
+
+(run test)
