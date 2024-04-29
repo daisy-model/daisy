@@ -1,0 +1,14 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Litter permanent
+          (albedo 0.9)
+          (vapor_flux_factor 0.0)
+          (interception_capacity 5)))
+
+(defprogram test Base "Test litter permanent"
+            (column test-column))
+
+(run test)
