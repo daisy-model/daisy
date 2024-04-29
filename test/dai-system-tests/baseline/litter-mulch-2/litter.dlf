@@ -1,0 +1,29 @@
+dlf-0.0 -- Litter (defined in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-mulch-2.dai').
+
+VERSION: 7.0.0
+LOGFILE: litter.dlf
+RUN: Mon Apr 29 15:02:08 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Log litter
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-mulch-2.dai
+SIM: Test litter mulch with exp retention curve
+
+--------------------
+year	month	mday	hour	mass
+				
+2000	1	1	0	00.00
+2000	2	1	0	00.00
+2000	3	1	0	00.00
+2000	4	1	0	00.00
+2000	5	1	0	00.00
+2000	6	1	0	00.00
+2000	7	1	0	00.00
+2000	8	1	0	00.00
+2000	9	1	0	00.00
+2000	10	1	0	00.00
+2000	11	1	0	00.00
+2000	12	1	0	00.00
