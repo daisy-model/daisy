@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Tue Apr 30 13:57:49 2024
+RUN: Tue Apr 30 14:20:24 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -22,7 +22,7 @@ LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-pet-Hargreaves.dai
-SIM: Test gfh const
+SIM: Test pet Hargreaves
 
 --------------------
 year	month	mday	hour	Precipitation	Irrigation	Potential evapotranspiration	Actual evapotranspiration	Matrix percolation	Biopore percolation	Matrix drain flow	Biopore drain flow	Runoff	Biopore water	Soil matrix water	Surface water

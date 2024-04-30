@@ -2,7 +2,7 @@ dlf-0.0 -- Field nitrogen (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_nitrogen.dlf
-RUN: Tue Apr 30 13:57:49 2024
+RUN: Tue Apr 30 14:20:24 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -24,7 +24,7 @@ LOG: For the balances of this log to work, you must include the entire
 LOG: root zone
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-pet-Hargreaves.dai
-SIM: Test gfh const
+SIM: Test pet Hargreaves
 
 --------------------
 year	month	mday	hour	Min-Surface-Fertilizer	Min-Soil-Fertilizer	Deposition	Matrix-Leaching	Biopore-Leaching	Soil-Drain	Biopore-Drain	Surface-Loss	Min-Surface	Min-Soil	Min-Biopores	Error	Mineralization	Immobilization	Crop-Uptake	Volatilization	N2O-Nitrification	Denitrification	Fixated	Org-Fertilizer	Seed	Harvest	Residuals-Surface	Residuals-Soil	Org-Surface	Org-Soil	Crop
