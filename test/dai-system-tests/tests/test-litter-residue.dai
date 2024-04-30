@@ -13,7 +13,7 @@
   (where "litter.dlf")
   (entries (number (path column * Litter mass))))
 
-(defprogram test Base "Test litter mulch with exp retention curve"
+(defprogram test Base "Test litter residue"
             (column test-column)
             (output original
                     (Litter (when monthly) (print_initial false))))
