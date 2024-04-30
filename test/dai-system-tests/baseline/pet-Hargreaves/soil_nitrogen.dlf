@@ -2,7 +2,7 @@ dlf-0.0 -- Soil nitrogen (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_nitrogen.dlf
-RUN: Tue Apr 30 13:57:49 2024
+RUN: Tue Apr 30 14:20:24 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -10,7 +10,7 @@ INTERVAL: box none
 LOG: Nitrogen input, output, transformation and content for the soil.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-pet-Hargreaves.dai
-SIM: Test gfh const
+SIM: Test pet Hargreaves
 
 --------------------
 year	month	mday	hour	NO3-Matrix-In	NO3-Biopore-In	NO3-Leak-Matrix	NO3-Leak-Biopore	NO3-to-Biopores	NO3-from-Biopores	NO3-Soil-Drain	NO3-Indirect-Drain	NO3-Biopore-Drain	NO3-Incorp	NO3-Tillage	NO3-Uptake	NO3-Soil	NO3-Biopores	NO3-Error	NH4-Matrix-In	NH4-Biopore-In	NH4-Leak-Matrix	NH4-Leak-Biopore	NH4-to-Biopores	NH4-from-Biopores	NH4-Soil-Drain	NH4-Indirect-Drain	NH4-Biopore-Drain	NH4-Incorp	NH4-Tillage	NH4-Uptake	NH4-Soil	NH4-Biopores	NH4-Error	Denitrification	NH4-Nitrification	NO3-Nitrification	N2O-Nitrification	NH4-Mineralization	NO3-Immobilization	Residuals-N	Tillage-Org_N	Bioincorporation	AOM	SOM	SMB	Buffer
