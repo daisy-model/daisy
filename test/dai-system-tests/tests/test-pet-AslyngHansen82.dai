@@ -1,0 +1,11 @@
+(input file "test_columns.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Bioclimate FAO56_hourly
+              (pet AslyngHansen82)))
+(defprogram test Base "Test pet AslyngHansen82"
+            (column test-column)
+            (weather default "dk-taastrup-hourly.dwf"))
+
+(run test)

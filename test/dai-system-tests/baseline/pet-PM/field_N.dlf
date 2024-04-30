@@ -1,0 +1,30 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_N.dlf
+RUN: Tue Apr 30 14:04:45 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-pet-PM.dai
+SIM: Test pet PM
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	0	11.6586	0	0	0	0	0	0	0	-3.13159e-05	-0	0	-0	00.00	0	-0	-0	113.691	0	0	0	7.76007	43851.4	0	0
+2000	2	1	0	0	838.088	0	0	0	0	0	0	0	5.90207	-0	0	-0	00.00	0	-0	-0	8061.83	0	0	0	50.8543	52702.4	0	0
+2000	3	1	0	0	931.018	0	0	0	0	0	0	0	26.0237	-0	0	-0	00.00	0	-0	-0	8048.08	0	0	0	50.666	61655.6	0	0
+2000	4	1	0	0	1405.09	0	0	0	0	0	0	0	67.4772	-0	0	-0	00.00	0	-0	-0	7394.78	0	0	0	69.7293	70368.9	0	0
+2000	5	1	0	0	853.053	0	0	0	0	0	0	0	662.845	-0	0	-0	00.00	0	-0	-0	13371.3	0	0	0	93.4181	83906.8	0	0
+2000	6	1	0	81000	850.088	0	0	0	0	0	0	0	733.281	-0	0	-0	00.00	0	-0	-0	19089.3	0	0.585443	0	61.9119	184144	0	0
+2000	7	1	0	81000	1207.05	0	0	0	0	0	0	0	579.15	-0	0	-0	00.00	0	7930.61	-0	14436.1	0	1.28437	0	26.0786	272312	0	0
+2000	8	1	0	0	1024.09	0	0	0	0	0	0	0	539.951	-0	0	-0	00.00	0	51434.6	-0	13960.9	0	33.5458	0	81.3041	235235	0	0
+2000	9	1	0	0	1093.09	0	0	0	0	0	0	0	533.762	-0	0	-0	00.00	0	94809.9	-0	14924.8	0	111.864	0	50.8239	155862	0	0
+2000	10	1	0	0	1645.05	111.518	0	0	0	0	0	0	550.187	-0	0	-0	00.00	0	9200.23	-0	12064.4	0	0	5.86939	56.242	159810	0	0
+2000	11	1	0	0	1219.09	0	0	0	0	0	0	0	467.918	-0	0	-0	00.00	0	-0	-0	11743.9	0	0	5.86939	37.9062	172323	0	0
+2000	12	1	0	0	1210.05	0	0	0	0	0	0	0	378.106	-0	0	-0	00.00	0	-0	-0	6666.77	0	0	5.86939	37.5966	179822	0	0
