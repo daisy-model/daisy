@@ -1,0 +1,30 @@
+dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_N.dlf
+RUN: Tue Apr 30 13:32:42 2024
+
+COLUMN: *
+CHEMICAL: N
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the soil.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-cloudiness-Kjaersgaard.dai
+SIM: Test cloudiness Kjaersgaard
+
+--------------------
+year	month	mday	hour	In-Matrix	In-Biopores	Leak-Matrix	Leak-Biopores	Biopores to matrix	Matrix to biopores	Tillage	Drain-Soil	Drain-Biopores	Drain-Biopores-Indirect	External	Uptake	Decompose	Transform	Content	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+2000	1	1	0	4.2778	0	-2.96441e-05	-0	0	0	0	-0	0	0	0	-0	-0	113.69	43851.4	0	0
+2000	2	1	0	800.588	0	5.88984	-0	0	0	0	-0	0	0	0	-0	-0	8040.79	52686.9	0	0
+2000	3	1	0	927.595	0	26.0325	-0	0	0	0	-0	0	0	0	-0	-0	7997.33	61585.8	0	0
+2000	4	1	0	1386.53	0	184.983	-0	249.981	249.981	0	-0	0	0	0	-0	-0	7359.42	70146.8	0	0
+2000	5	1	0	827.41	0	802.111	-0	350.875	350.875	0	160.303	0	0	0	-0	-0	13290	83301.8	0	0
+2000	6	1	0	81795.4	0	785.112	-0	9.42648	9.42648	95.8951	57.8972	0	0	0	-0	-0	19258.6	183609	0	0
+2000	7	1	0	82233	0	611.965	-0	1324.48	1324.48	0	-0	0	0	0	7947.02	-0	15213.5	272496	0	0
+2000	8	1	0	938.917	0	530.136	-0	5513.12	5513.12	0	-0	0	0	0	51409.6	-0	14237.4	235733	0	0
+2000	9	1	0	1042.79	0	479.445	-0	6471.33	6471.33	0	-0	0	0	0	94603.3	-0	14919.7	156613	0	0
+2000	10	1	0	1634.16	0	508.433	-0	10631.4	10631.4	0	-0	0	0	0	9252.16	-0	11964.7	160451	0	0
+2000	11	1	0	1238.44	0	456.624	-0	543.975	543.975	0	-0	0	0	0	-0	-0	11307.7	172540	0	0
+2000	12	1	0	1208.69	0	387.843	-0	104.605	104.605	0	-0	0	0	0	-0	-0	6443.25	179804	0	0
