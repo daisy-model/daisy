@@ -1,0 +1,35 @@
+dlf-0.0 -- Soil water (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: soil_water.dlf
+RUN: Tue Apr 30 13:32:42 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Information about water input, output and content for the soil.
+LOG: 
+LOG: The intended use of this log is small scale water management, for
+LOG: example irrigation optimization.  Above ground water is
+LOG: considered external to the system.  The balances provided by the
+LOG: log will work on any subset of the soil that matches the
+LOG: discretization.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-cloudiness-Kjaersgaard.dai
+SIM: Test cloudiness Kjaersgaard
+
+--------------------
+year	month	mday	hour	Matrix infiltration	Matrix percolation	Biopore infiltration	Biopore percolation	Subsoil irrigation	Matrix direct drain flow	Matrix indirect drain flow	Biopore drain flow	Root extraction	Freezing	Tillage	Matrix to biopores	Biopores to matrix	Matrix water	Biopore water
+				mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm
+2000	1	1	0	0.181381	-5.92409e-07	0	-0	-0	0	0	0	0	-0	0	0	0	788.109	0
+2000	2	1	0	30.5377	0.117703	0	-0	-0	0	0	0	0	-0	0	0	0	818.529	0
+2000	3	1	0	34.7019	0.520234	0	-0	-0	0	0	0	0	-0	0	0	0	852.711	0
+2000	4	1	0	54.8151	3.69667	0	-0	-0	0	0	0	0	-0	0	5.56217	5.56217	903.829	0
+2000	5	1	0	-1.82907	16.0256	0	-0	-0	2.97465	0	0	0	-0	0	3.96566	3.96566	883	0
+2000	6	1	0	-17.918	15.6626	0	-0	-0	1.07169	0	0	0.162825	-0	1.94289e-15	0.165583	0.165583	848.185	0
+2000	7	1	0	8.18126	12.1698	0	-0	-0	0	0	0	1.89457	-0	0	0.554687	0.554687	842.301	0
+2000	8	1	0	2.56709	10.4997	0	-0	-0	0	0	0	9.89272	-0	0	3.48629	3.48629	824.476	0
+2000	9	1	0	19.2732	9.45346	0	-0	-0	0	0	0	44.0775	-0	0	3.99102	3.99102	790.218	0
+2000	10	1	0	71.1602	9.97804	0	-0	-0	0	0	0	32.6404	-0	0	16.4937	16.4937	818.76	0
+2000	11	1	0	48.874	8.91947	0	-0	-0	0	0	0	0	-0	0	1.68731	1.68731	858.715	0
+2000	12	1	0	55.8818	7.54312	0	-0	-0	0	0	0	0	-0	0	0.843532	0.843532	907.053	0
