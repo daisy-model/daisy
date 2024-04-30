@@ -13,7 +13,13 @@ endfunction()
 
 dai_system_test(ref)
 
+dai_system_test(bioclimate-FAO56_daily)
+dai_system_test(bioclimate-FAO56_hourly)
 dai_system_test(bioclimate-SSOC) # Default: default
+dai_system_test(cloudiness-ASCE)
+dai_system_test(cloudiness-const)
+dai_system_test(cloudiness-Kjaersgaard)
+dai_system_test(cloudiness-Taastrup)
 dai_system_test(crop-simple)
 dai_system_test(drain-lateral)
 dai_system_test(groundwater-deep)

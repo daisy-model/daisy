@@ -1,0 +1,41 @@
+dlf-0.0 -- Field water (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_water.dlf
+RUN: Tue Apr 30 13:43:48 2024
+
+COLUMN: *
+INTERVAL: box none
+
+LOG: Information about water input, output and content for the system.
+LOG: 
+LOG: The intended use of this log is large scale water balance, for
+LOG: example reservoir management. It provide information about how
+LOG: much water is in the field (down to a specified depth), where it
+LOG: is located in the field (surface, soil matrix or in biopores), as
+LOG: well as the sources, sinks and amounts of water entering or
+LOG: leaving the system.  It does not provide information about
+LOG: internal translocation of water between surface, soil matrix and
+LOG: biopores, use see the 'Soil water' log instead for that.
+LOG: 
+LOG: For the balances of this log to work, you must include the entire
+LOG: root zone, as well as the biopore zone.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-cloudiness-const.dai
+SIM: Test cloudiness const
+
+--------------------
+year	month	mday	hour	Precipitation	Irrigation	Potential evapotranspiration	Actual evapotranspiration	Matrix percolation	Biopore percolation	Matrix drain flow	Biopore drain flow	Runoff	Biopore water	Soil matrix water	Surface water
+				mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm
+2000	1	1	0	0.2	0	0.0183862	0.0183862	-5.89742e-07	-0	0	0	0	0	788.109	0
+2000	2	1	0	37.2	0	7.19416	7.19416	0.117682	-0	0	0	0	0	817.997	0
+2000	3	1	0	44.6	0	10.6832	10.6832	0.520214	-0	0	0	0	0	851.394	0
+2000	4	1	0	75	0	21.6876	21.6876	3.26453	-0	0	0	0	0	901.442	0
+2000	5	1	0	38.8	0	43.649	43.649	15.6428	-0	1.62944	0	0	0	879.321	0
+2000	6	1	0	38	0	69.8117	56.7965	15.5375	-0	0.651646	0	0	0	844.335	0
+2000	7	1	0	62.4	0	59.829	58.7102	12.1394	-0	0	0	0	0	835.809	0.0760881
+2000	8	1	0	49.6	0	60.4864	60.4864	10.3765	-0	0	0	0	0	814.622	0
+2000	9	1	0	54.2	0	84.6545	84.6545	9.1445	-0	0	0	0	0	775.023	0
+2000	10	1	0	91.6	0	56.9992	56.9992	9.02899	-0	0	0	0	0	800.595	0
+2000	11	1	0	62.6	0	14.8288	14.8288	7.93807	-0	0	0	0	0	840.428	0
+2000	12	1	0	62.6	0	7.1323	7.1323	6.38606	-0	0	0	0	0	889.51	0
