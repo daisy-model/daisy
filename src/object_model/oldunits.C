@@ -374,7 +374,7 @@ Oldunits::multiply (const symbol one, const symbol two)
         { "g/cm^3/h", "cm", "g/cm^2/h" },
         { "g C/cm^3/h", "cm", "g C/cm^2/h" },
         { "g N/cm^3/h", "cm", "g N/cm^2/h" }, 
-        { "g CO_2-C/cm^3/h", "cm", "g CO_2-C/cm^2/h"},
+        { "g CO2-C/cm^3/h", "cm", "g CO2-C/cm^2/h"},
         // select_flow.C
         { "cm/h", "cm^2", "cm^3/h" },
         { "g/cm^2/h", "cm^2", "g/h" },   
@@ -388,7 +388,7 @@ Oldunits::multiply (const symbol one, const symbol two)
         { "g/cm^3/h", "cm^3", "g/h" },
         { "g C/cm^3/h", "cm^3", "g C/h" },
         { "g N/cm^3/h", "cm^3", "g N/h" }, 
-        { "g CO_2-C/cm^3/h", "cm^3", "g CO_2-C/h"},
+        { "g CO2-C/cm^3/h", "cm^3", "g CO2-C/h"},
         // im.C
         { "g/cm^2/mm", "mm/h", "g/cm^2/h"},
         { "g/cm^2/mm", "mm", "g/cm^2"},
@@ -573,7 +573,7 @@ Oldunits::standard_conversions ()
   add ("kg DM/ha", "Mg DM/ha", 0.001);
   add ("g/m^2", "Mg DM/ha", 1.0e-2); // harvest DM.
   add ("g/m^2/h", "Mg DM/ha/h", 1.0e-2); // harvest DM.
-  add ("g CO_2-C/cm^2/h", "g CO2/m^2/h", 1.7272e4); // OM CO2
+  add ("g CO2-C/cm^2/h", "g CO2/m^2/h", 1.7272e4); // OM CO2
   add ("t/ha", "Mg DM/ha", 1.0); // harvest.dlf
   add ("erg/cm^3/dg C/h", "W/m/K", 2.7778e-9); // SoilHeat.
   add ("erg/cm^3/dg C", "kJ/m^3/K", 1e-4); // SoilHeat.

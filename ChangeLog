@@ -1,3 +1,9 @@
+2024-05-01  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* test/dai-unit-tests/CMakeLists.txt: Change 'dai_file' to 'name'
+	* src/object_model/oldunits.C (Oldunits::standard_conversions):
+	Change "CO_2" to "CO2".
+
 2024-03-20  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* Version 6.47 released.
