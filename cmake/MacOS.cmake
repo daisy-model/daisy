@@ -55,6 +55,7 @@ install(DIRECTORY ${_dylib_target_dir}
 set_target_properties(daisy
   PROPERTIES
   INSTALL_RPATH "@executable_path"
+  BUILD_RPATH "${BUILD_RPATH};@executable_path/bin"
 )
 
 # Then update the id of dylibs

@@ -20,7 +20,7 @@
             "hidden" : true,
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
-		"EXTRA_SYSTEM_INCLUDE_DIRECTORIES" : "/usr/local/lib",
+		"EXTRA_SYSTEM_INCLUDE_DIRECTORIES" : "/usr/local/lib;/opt/homebrew/lib",
                 "OS_OPTIONS" : "-D__unix",
                 "OS" : "macos"
             }
