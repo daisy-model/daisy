@@ -1,0 +1,6 @@
+dai_system_test(litter-maize daisy/upper_boundary/litter)
+dai_system_test(litter-millet daisy/upper_boundary/litter)
+dai_system_test(litter-mulch daisy/upper_boundary/litter)
+dai_system_test(litter-mulch-2 daisy/upper_boundary/litter)
+dai_system_test(litter-permanent daisy/upper_boundary/litter)
+dai_system_test(litter-residue daisy/upper_boundary/litter)
