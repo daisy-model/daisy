@@ -1,0 +1,5 @@
+add_subdirectory(bioclimate)
+add_subdirectory(litter)
+add_subdirectory(surface)
+add_subdirectory(vegetation)
+add_subdirectory(weather)

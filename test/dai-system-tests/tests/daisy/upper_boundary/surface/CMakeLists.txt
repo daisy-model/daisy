@@ -1,0 +1,5 @@
+dai_system_test(surface-const_flux daisy/upper_boundary/surface)
+dai_system_test(surface-const_pressure daisy/upper_boundary/surface)
+dai_system_test(surface-none daisy/upper_boundary/surface)
+dai_system_test(surface-source_flux daisy/upper_boundary/surface)
+dai_system_test(surface-source_flux-2 daisy/upper_boundary/surface)
