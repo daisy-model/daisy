@@ -1,74 +1,15 @@
-function(dai_system_test name)
-  add_test(NAME dai_system_test.${name}
+function(dai_system_test name dir)
+  add_test(NAME dai_system_test.${dir}.${name}
     COMMAND
     test_daisy
     ${CMAKE_BINARY_DIR}/daisy
-    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/tests/test-${name}.dai
-    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/baseline/${name}
-    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/errors/${name}
+    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/tests/${dir}/test-${name}.dai
+    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/baseline/${dir}/${name}
+    ${CMAKE_SOURCE_DIR}/test/dai-system-tests/errors/${dir}/${name}
     --path ${CMAKE_SOURCE_DIR}/test/dai-system-tests/tests/common
   )
-  set_property(TEST dai_system_test.${name} PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
+  set_property(TEST dai_system_test.${dir}.${name}
+    PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
 endfunction()
 
-dai_system_test(ref)
-
-dai_system_test(bioclimate-FAO56_daily)
-dai_system_test(bioclimate-FAO56_hourly)
-dai_system_test(bioclimate-SSOC) # Default: default
-dai_system_test(cloudiness-ASCE)
-dai_system_test(cloudiness-const)
-dai_system_test(cloudiness-Kjaersgaard)
-dai_system_test(cloudiness-Taastrup)
-dai_system_test(crop-simple)
-dai_system_test(drain-lateral)
-dai_system_test(ghf-const)
-dai_system_test(groundwater-deep)
-dai_system_test(groundwater-fixed)
-dai_system_test(groundwater-flux)
-dai_system_test(groundwater-lysimeter)
-dai_system_test(heatrect-linear)
-dai_system_test(heatrect-none)
-dai_system_test(heatrect-top)
-dai_system_test(litter-maize)
-dai_system_test(litter-millet)
-dai_system_test(litter-mulch)
-dai_system_test(litter-mulch-2)
-dai_system_test(litter-permanent)
-dai_system_test(litter-residue)
-dai_system_test(net_radiation-brutsaert)
-dai_system_test(net_radiation-idso_jackson)
-dai_system_test(net_radiation-prata)
-dai_system_test(net_radiation-satterlund)
-dai_system_test(net_radiation-swinbank)
-dai_system_test(pet-AslyngHansen82)
-dai_system_test(pet-deBruin87)
-dai_system_test(pet-Hargreaves)
-dai_system_test(pet-Makkink57)
-dai_system_test(pet-PM)
-dai_system_test(phenology-modify-DS)
-dai_system_test(photosynthesis-FC_C3)
-dai_system_test(photosynthesis-FC_C4)
-dai_system_test(stomatacon-MNA)
-dai_system_test(stomatacon-SHA12)
-dai_system_test(stomatacon-SHA14)
-dai_system_test(surface-const_flux)
-dai_system_test(surface-const_pressure)
-dai_system_test(surface-none)
-dai_system_test(surface-source_flux)
-dai_system_test(surface-source_flux-2)
-dai_system_test(svat-PMSW)
-dai_system_test(svat-SSOC)
-dai_system_test(tertiary-biopores)
-dai_system_test(tertiary-biopores-2)
-dai_system_test(transport-convection)
-dai_system_test(transport-none)
-dai_system_test(uzmodel-lr)
-dai_system_test(uzmodel-lr-2)
-dai_system_test(uzmodel-none)
-dai_system_test(uzmodel-richards2)
-dai_system_test(uzrect-const)
-dai_system_test(uzrect-mollerup)
-dai_system_test(uzrect-vh)
-dai_system_test(uzrect-vh-richards)
-dai_system_test(vernalization-default)
+add_subdirectory(tests)
