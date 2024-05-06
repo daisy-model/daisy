@@ -51,11 +51,15 @@ install(DIRECTORY ${_dylib_target_dir}
 )
 
 # Update daisy binary so it knows to look in @executable_path for dylibs
-# First update the rpath. We only do it for the installed binary
+# First update the rpath.
+# For the installed binary we use @executable_path directly because it is installed to
+#  <prefix/bin
+# which contain lib/ with shared libraries.
+# For the build binary we use @executable_path/bin because the binary is not moved to the bin dir
 set_target_properties(daisy
   PROPERTIES
   INSTALL_RPATH "@executable_path"
-  BUILD_RPATH "${BUILD_RPATH};@executable_path/bin"
+  BUILD_RPATH "@executable_path/bin"
 )
 
 # Then update the id of dylibs
