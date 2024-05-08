@@ -1,0 +1,7 @@
+(defgnuplot test-gnuplot time
+    (source (column (file "data/ref-crop-output.dlf") (tag "NLeaf"))))
+
+(defprogram test gnuplot
+  (graph test-gnuplot))
+
+(run test)
