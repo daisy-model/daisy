@@ -10,3 +10,4 @@ function(dai_unit_test name)
 endfunction()
 
 dai_unit_test(CO2-mul)
+dai_unit_test(document)
