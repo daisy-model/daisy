@@ -1,0 +1,3 @@
+(input file "test_columns.dai")
+(run (hydraulic Ap_JB1_med_OM
+                (top_soil true)))

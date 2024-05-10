@@ -1,0 +1,4 @@
+(run batch
+     (run (wse full)
+          (wse none)
+          (wse (partial (y_half 0.3)))))
