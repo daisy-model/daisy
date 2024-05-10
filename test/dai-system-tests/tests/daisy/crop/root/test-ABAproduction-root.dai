@@ -1,0 +1,19 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+
+;; First get test_base, then define test crop, then get test_base_2 where test-crop is used
+(input file "test_base.dai")
+
+(defcrop test-crop simple
+  (potential_N 30)
+  (LAIvsDay (0 0) (365 1))
+  (Root (ABAprod root (expr (/(/ 100 [g] h) 1[h])))))
+  
+(input file "test_base_2.dai")
+
+(defcolumn test-column JB6med)
+
+(defprogram test test-base "Test ABAprod root"
+            (column test-column))
+
+(run test)
