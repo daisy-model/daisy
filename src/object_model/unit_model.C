@@ -346,9 +346,9 @@ Connvert to SI base units by multiplying with a factor.")
          "Per millimeter.");
 
     add ("m^-2", 1.0, -2, 0, 0, 0, 0, 0, 0,
-         "Per aquare meter.");
+         "Per square meter.");
     add ("cm^-2", 1.0 / p_c_2, -2, 0, 0, 0, 0, 0, 0,
-         "Per aquare centimeter.");
+         "Per square centimeter.");
     add ("cm R/cm^3", p_c / p_c_3, -2, 0, 0, 0, 0, 0, 0,
          "Root length per cubic centimeter.");
     
