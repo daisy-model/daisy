@@ -1,0 +1,1 @@
+(run write (what "Test write"))
