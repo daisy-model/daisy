@@ -2,6 +2,20 @@ if (${BUILD_CXX_TESTS})
   find_package(GTest REQUIRED)
   include(GoogleTest)
 
+  function(cxx_unit_test_V2 name)
+    add_executable(${name} ${name}.C ${ARGN})
+    target_include_directories(${name} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_compile_options(${name} PRIVATE ${COMPILE_OPTIONS})
+    target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
+    target_link_libraries(${name} PUBLIC
+      GTest::gtest
+      GTest::gtest_main
+    )
+    gtest_discover_tests(${name} TEST_PREFIX cxx_unit_test.)
+  endfunction()
+
+  add_subdirectory(tests)
+
   add_library(ut_core SHARED
     ${CMAKE_SOURCE_DIR}/src/util/assertion.C
     ${CMAKE_SOURCE_DIR}/src/util/filepos.C
