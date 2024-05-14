@@ -40,6 +40,8 @@ class PLF
   Implementation& impl;
 public:
   // Use.
+  // [Forall x < plf.x(0)](plf(x) = plf.y(0))
+  // [Forall x > plf.x(plf.size() - 1)](plf(x) = plf.y(plf.size() - 1))
   double operator ()(double x) const;
   PLF inverse () const;
   PLF inverse_safe () const;
@@ -47,8 +49,8 @@ public:
   double last_interesting () const;
   double min () const;
   double max () const;
-  double max_at () const;
-  double integrate (double from, double to) const;
+  double max_at () const; // plf(plt.max_at()) == plf.max()
+  double integrate (double from, double to) const; // Area under curve connecting x=from and x=to
   PLF integrate_stupidly () const;
   PLF integrate_stupidly_2 (const double C = 0.0) const;
   void offset (double offset);	// Add 'offset' to all y values.
@@ -74,7 +76,7 @@ public:
   static const PLF& always_1 (); // A PLF that is always 1.
   static const PLF& always_0 (); // A PLF that is always 0.
   void clear ();
-  void add (double, double);
+  void add (double, double); // Add a point to the plf
   void operator += (const PLF&);
   void operator = (const PLF&);
   PLF (const PLF&);
