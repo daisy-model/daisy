@@ -20,8 +20,9 @@
 
 #define BUILD_DLL
 
-#include "solver.h"
+#include "solver_ublas.h"
 #include "assertion.h"
+#include "block_model.h"
 #include "librarian.h"
 #include "frame.h"
 
@@ -29,23 +30,26 @@
 #include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
-struct SolverUBLAS : public Solver
-{ 
-  void solve (Matrix& A, const Vector& b, Vector& x) const // Solve Ax=b
-  {
-    namespace ublas = boost::numeric::ublas;
 
-    const size_t size = b.size ();
-    ublas::permutation_matrix<double> piv (size);
-    const bool singular = ublas::lu_factorize(A, piv);
-    daisy_assert (!singular);
-    x = b; 			// x should contain b as a start.
-    ublas::lu_substitute (A, piv, x);
-  }
-  SolverUBLAS (const BlockModel& al)
-    : Solver (al)
-  { }
-};
+void SolverUBLAS::solve (Matrix& A, const Vector& b, Vector& x) const // Solve Ax=b
+{
+  namespace ublas = boost::numeric::ublas;
+
+  const size_t size = b.size ();
+  ublas::permutation_matrix<double> piv (size);
+  const bool singular = ublas::lu_factorize(A, piv);
+  daisy_assert (!singular);
+  x = b; 			// x should contain b as a start.
+  ublas::lu_substitute (A, piv, x);
+}
+
+SolverUBLAS::SolverUBLAS (symbol type_name)
+  : Solver(type_name)
+{ }
+
+SolverUBLAS:: SolverUBLAS (const BlockModel& al)
+  : Solver (al.type_name ())
+{ }
 
 static struct SolverUBLASSyntax : public DeclareModel
 {

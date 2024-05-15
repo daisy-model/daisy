@@ -1,11 +1,10 @@
-#include "block_model.h"
-#include "../../../src/util/solver_ublas.C"
-
 #include <gtest/gtest.h>
 
+#include "solver_ublas.h"
+
 TEST(SolverUBLASTest, solve) {
-  BlockModel block_model;
-  SolverUBLAS solver = SolverUBLAS(block_model);
+  symbol type_name = "solver_ublas";
+  SolverUBLAS solver = SolverUBLAS (type_name);
 
   SolverUBLAS::Matrix A(2);
   SolverUBLAS::Vector b(2);

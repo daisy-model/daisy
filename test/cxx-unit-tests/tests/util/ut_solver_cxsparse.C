@@ -1,11 +1,10 @@
-#include "block_model.h"
-#include "../../../src/util/solver_cxsparse.C"
-
 #include <gtest/gtest.h>
 
+#include "solver_cxsparse.h"
+
 TEST(SolverCXSParseTest, solve) {
-  BlockModel block_model;
-  SolverCXSparse solver = SolverCXSparse(block_model);
+  symbol type_name = "cxsparse";
+  SolverCXSparse solver = SolverCXSparse (type_name);
 
   SolverCXSparse::Matrix A(2);
   SolverCXSparse::Vector b(2);

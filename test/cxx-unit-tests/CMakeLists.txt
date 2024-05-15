@@ -70,6 +70,7 @@ if (${BUILD_CXX_TESTS})
     target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
     target_link_libraries(${name} PUBLIC
       ut_core
+      cxsparse
       GTest::gtest
       GTest::gtest_main
     )

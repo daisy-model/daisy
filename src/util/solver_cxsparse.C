@@ -20,42 +20,48 @@
 
 #define BUILD_DLL
 
-#include "solver.h"
-#include "librarian.h"
-#include "ublas_cxsparse.h"
+#include "block_model.h"
 #include "frame.h"
+#include "librarian.h"
+
+#include "solver_cxsparse.h"
+#include "ublas_cxsparse.h" // Must be included after solver_cxsparse.h due to extern "C"
+
 
 #define MEMCHECK(foo) if (!(foo)) throw "CXSparse: Bad matrix: " #foo ;
 
-struct SolverCXSparse : public Solver
-{ 
-  void solve (Matrix& A, const Vector& b, Vector& x) const // Solve Ax=b
-  {
-    // declare variable (T=double, size_type=unsigned int)
-    CS::cxsparse_type_traits<double, size_t>::lu_type     cs_lu;
+void SolverCXSparse::solve (Matrix& A, const Vector& b, Vector& x) const // Solve Ax=b
+{
+  // declare variable (T=double, size_type=unsigned int)
+  CS::cxsparse_type_traits<double, size_t>::lu_type     cs_lu;
 
-    // decompose
-    cs_lu = CS::cs_ul_decompose (A, 1.0);
+  // decompose
+  cs_lu = CS::cs_ul_decompose (A, 1.0);
 
-    // check
-    MEMCHECK (cs_lu.first);
-    MEMCHECK (cs_lu.first->q);
-    MEMCHECK (cs_lu.second)
+  // check
+  MEMCHECK (cs_lu.first);
+  MEMCHECK (cs_lu.first->q);
+  MEMCHECK (cs_lu.second)
     MEMCHECK (cs_lu.second->U);
-    MEMCHECK (cs_lu.second->L);
-    MEMCHECK (cs_lu.second->pinv);
+  MEMCHECK (cs_lu.second->L);
+  MEMCHECK (cs_lu.second->pinv);
 
-    // solve
-    x = b;
-    CS::cs_ul_solve (cs_lu, x);
+  // solve
+  x = b;
+  CS::cs_ul_solve (cs_lu, x);
 
-    // free
-    CS::cs_lu_free (cs_lu);
-  }
-  SolverCXSparse (const BlockModel& al)
-    : Solver (al)
-  { }
-};
+  // free
+  CS::cs_lu_free (cs_lu);
+}
+
+SolverCXSparse::SolverCXSparse(symbol type_name)
+  : Solver (type_name)
+{ }
+
+SolverCXSparse::SolverCXSparse (const BlockModel& al)
+  : SolverCXSparse (al.type_name ())
+{ }
+
 
 static struct SolverCXSparseSyntax : public DeclareModel
 {

@@ -65,6 +65,7 @@ public:
 private:
   Solver ();			// Disable
 public:
+  Solver (symbol type_name);
   Solver (const BlockModel& al);
   ~Solver ();
 };

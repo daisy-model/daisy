@@ -6,5 +6,12 @@ cxx_unit_test(ut_iterative
   ${CMAKE_SOURCE_DIR}/src/util/iterative.C
 )
 cxx_unit_test(ut_mathlib)
-#cxx_unit_test_mock(ut_solver_ublas)
-#cxx_unit_test_mock(ut_solver_cxsparse)
+cxx_unit_test(ut_solver_ublas
+  ${CMAKE_SOURCE_DIR}/src/util/solver_ublas.C
+  ${CMAKE_SOURCE_DIR}/src/util/solver.C
+)
+
+cxx_unit_test(ut_solver_cxsparse
+  ${CMAKE_SOURCE_DIR}/src/util/solver_cxsparse.C
+  ${CMAKE_SOURCE_DIR}/src/util/solver.C
+)
