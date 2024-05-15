@@ -88,6 +88,7 @@ public:
   bool check_x_border (const double value, Treelog& err) const;
   bool check_y_border (const double value, Treelog& err) const;
   static void load_syntax (Frame&);
+  Geometry1D ();
   Geometry1D (const Block&);
   void initialize_zplus (bool volatile_bottom,
 			 const std::vector<double>& fixed,
