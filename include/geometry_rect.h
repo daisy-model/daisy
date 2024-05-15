@@ -142,6 +142,7 @@ public:
                          const double, const double, Treelog&)
   { }
   static void load_syntax (Frame&);
+  GeometryRect (const std::vector<double> &zplus, const std::vector<double> &xplus);
   GeometryRect (const Block&);
   ~GeometryRect ();
 };
