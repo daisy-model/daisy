@@ -51,4 +51,36 @@ public:
   ~Retention ();
 };
 
+struct RetentionPASTIS : public Retention
+{
+  double Theta_res;
+  double h_min;
+  double Theta_sat;
+  
+  double h (const double Theta) const; // []->[cm]
+  void initialize (const double Theta_res_, const double h_res_,
+		   const double Theta_sat_, Treelog&);
+  
+  RetentionPASTIS ();
+  RetentionPASTIS (const BlockModel&);
+  ~RetentionPASTIS ();
+};
+
+struct RetentionExponential : public Retention
+{
+  double k; 			// [cm^-1]
+  double Theta_res;		// []
+  double h_min;			// [cm]
+  double Theta_sat;		// []
+  
+  double h (const double Theta) const; // []->[cm]
+  double Theta (const double h); // [cm]->[]
+  void initialize (const double Theta_res_, const double h_res_,
+		   const double Theta_sat_, Treelog&);
+
+  RetentionExponential (double k, double Theta_res, double h_min, double Theta_sat);
+  RetentionExponential (const BlockModel& al);
+  ~RetentionExponential ();
+};
+
 #endif // RETENTION_H

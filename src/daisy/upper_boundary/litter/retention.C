@@ -62,36 +62,36 @@ Specify a retention or a halftime.")
 
 // The 'PASTIS' model.
 
-struct RetentionPASTIS : public Retention
+double RetentionPASTIS::h (const double Theta) const // []->[cm]
 {
-  double Theta_res;
-  double h_min;
-  double Theta_sat;
-  
-  double h (const double Theta) const // []->[cm]
-  {
-    if (Theta < Theta_res)
-      return h_min;
-    if (Theta > Theta_sat)
-      return 0.0;
+  if (Theta < Theta_res)
+    return h_min;
+  if (Theta > Theta_sat)
+    return 0.0;
 
-    return -std::pow (-h_min,
-		      1.0-((Theta - Theta_res)
-			   / (2.0 * Theta_sat / 3.0 - Theta_res)));
-  }
+  return -std::pow (-h_min,
+                    1.0-((Theta - Theta_res)
+                         / (2.0 * Theta_sat / 3.0 - Theta_res)));
+}
 
-  void initialize (const double Theta_res_, const double h_res_,
-		   const double Theta_sat_, Treelog&)
-  {
-    Theta_res = Theta_res_;
-    h_min = h_res_;
-    Theta_sat = Theta_sat_;
-  }
-  RetentionPASTIS (const BlockModel&)
-  { }
-  ~RetentionPASTIS ()
-  { }
-};
+void RetentionPASTIS::initialize (const double Theta_res_, const double h_res_,
+                                  const double Theta_sat_, Treelog&)
+{
+  Theta_res = Theta_res_;
+  h_min = h_res_;
+  Theta_sat = Theta_sat_;
+}
+
+RetentionPASTIS::RetentionPASTIS ()
+{ }
+
+RetentionPASTIS::RetentionPASTIS (const BlockModel&)
+  : RetentionPASTIS()
+{ }
+
+RetentionPASTIS::~RetentionPASTIS ()
+{ }
+
 
 static struct RetentionPASTISSyntax : DeclareModel
 {
@@ -108,57 +108,55 @@ h (Theta) = -(-h_min)^(1-((Theta - Theta_res) / (2/3 Theta_sat - Theta_res)))")
 
 // The 'Exponential' model.
 
-struct RetentionExponential : public Retention
+double RetentionExponential::h (const double Theta) const // []->[cm]
 {
-  double k; 			// [cm^-1]
-  double Theta_res;		// []
-  double h_min;			// [cm]
-  double Theta_sat;		// []
-  
-  double h (const double Theta) const // []->[cm]
-  {
     
-    if (Theta <= Theta_res)
-      return h_min;
-    if (Theta >= Theta_sat)
-      return 0.0;
+  if (Theta <= Theta_res)
+    return h_min;
+  if (Theta >= Theta_sat)
+    return 0.0;
 
-    return std::log ((Theta - Theta_res) / (Theta_sat - Theta_res)) / k;
-  }
+  return std::log ((Theta - Theta_res) / (Theta_sat - Theta_res)) / k;
+}
 
-  double Theta (const double h) // [cm]->[]
-  { return std::exp (k * h) * (Theta_sat - Theta_res) + Theta_res;  }
+double RetentionExponential::Theta (const double h) // [cm]->[]
+{ return std::exp (k * h) * (Theta_sat - Theta_res) + Theta_res;  }
   
-  void initialize (const double Theta_res_, const double h_res_,
-		   const double Theta_sat_, Treelog& msg)
-  {
-    if (Theta_res < 0.0)
-      Theta_res = Theta_res_;
-    if (h_min > 0.0)
-      h_min = h_res_;
-    if (Theta_sat < 0.0)
-      Theta_sat = Theta_sat_;
+void RetentionExponential::initialize (const double Theta_res_, const double h_res_,
+                                       const double Theta_sat_, Treelog& msg)
+{
+  if (Theta_res < 0.0)
+    Theta_res = Theta_res_;
+  if (h_min > 0.0)
+    h_min = h_res_;
+  if (Theta_sat < 0.0)
+    Theta_sat = Theta_sat_;
 
-    std::ostringstream tmp;
-    tmp << "pF\th\tTheta";
-    for (double pF = -1.0; pF < 10.5; pF += 1.0)
-      {
-	const double h1 = pF2h (pF);
-	const double Theta1 = Theta (h1);
-	const double h2 = h (Theta1);
-	tmp << "\n" << pF << "\t" << h2 << "\t" << Theta1;
-      }
-    msg.debug (tmp.str ());
-  }
-  RetentionExponential (const BlockModel& al)
-    : k (al.number ("k")),
-      Theta_res (al.number ("Theta_res", -1.0)),
-      h_min (al.number ("h_min", 1.0)),
-      Theta_sat (al.number ("Theta_sat", -1.0))
-  { }
-  ~RetentionExponential ()
-  { }
-};
+  std::ostringstream tmp;
+  tmp << "pF\th\tTheta";
+  for (double pF = -1.0; pF < 10.5; pF += 1.0)
+    {
+      const double h1 = pF2h (pF);
+      const double Theta1 = Theta (h1);
+      const double h2 = h (Theta1);
+      tmp << "\n" << pF << "\t" << h2 << "\t" << Theta1;
+    }
+  msg.debug (tmp.str ());
+}
+  
+RetentionExponential::RetentionExponential (double k, double Theta_res, double h_min, double Theta_sat)
+  : k (k), Theta_res (Theta_res), h_min (h_min), Theta_sat (Theta_sat)
+{ }
+  
+RetentionExponential::RetentionExponential (const BlockModel& al)
+  : RetentionExponential(al.number ("k"),
+                         al.number ("Theta_res", -1.0),
+                         al.number ("h_min", 1.0),
+                         al.number ("Theta_sat", -1.0))
+{ }
+  
+RetentionExponential::~RetentionExponential ()
+{ }
 
 static struct RetentionExponentialSyntax : DeclareModel
 {
