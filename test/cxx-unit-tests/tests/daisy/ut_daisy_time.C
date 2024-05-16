@@ -34,7 +34,7 @@ TEST_F(TimeTest, NowTest) {
 TEST_F(TimeTest, TickTest) {
   int microsecond = now.microsecond();
   now.tick_microsecond(10);
-  EXPECT_EQ(now.microsecond(), (microsecond + 10) % 1000);
+  EXPECT_EQ(now.microsecond(), (microsecond + 10) % 1000000);
 
   int second = now.second();
   now.tick_second(10);
@@ -62,6 +62,49 @@ TEST_F(TimeTest, TickTest) {
   now.tick_year(10);
   EXPECT_EQ(now.year(), year + 10);
 }
+
+TEST_F(TimeTest, TickOverflowTest) {
+  Time time{2022, 1, 1, 0, 0, 0, 0};
+  time.tick_microsecond(1e6 + 1e6 - 1);
+  EXPECT_EQ(time.microsecond(), 1e6 - 1);
+  EXPECT_EQ(time.second(), 1);
+
+  time.tick_second(60+58);
+  EXPECT_EQ(time.second(), 59);
+  EXPECT_EQ(time.minute(), 1);
+
+  time.tick_minute(60+58);
+  EXPECT_EQ(time.minute(), 59);
+  EXPECT_EQ(time.hour(), 1);
+
+  time.tick_hour(24+22);
+  EXPECT_EQ(time.hour(), 23);
+  EXPECT_EQ(time.yday(), 2);
+
+  time.tick_day(365+363);
+  EXPECT_EQ(time.yday(), 365);
+  EXPECT_EQ(time.year(), 2023);
+
+  time.tick_microsecond(1);
+  EXPECT_EQ(time.microsecond(), 0);
+  EXPECT_EQ(time.second(), 0);
+  EXPECT_EQ(time.minute(), 0);
+  EXPECT_EQ(time.hour(), 0);
+  EXPECT_EQ(time.yday(), 1);
+  EXPECT_EQ(time.year(), 2024);
+}
+
+TEST_F(TimeTest, TickNegativeTest) {
+  Time time{2024, 1, 1, 0, 0, 0, 0};
+  time.tick_microsecond(-1);
+  EXPECT_EQ(time.microsecond(), 999999);
+  EXPECT_EQ(time.second(), 59);
+  EXPECT_EQ(time.minute(), 59);
+  EXPECT_EQ(time.hour(), 23);
+  EXPECT_EQ(time.yday(), 365);
+  EXPECT_EQ(time.year(), 2023);
+}
+
 
 TEST_F(TimeTest, LeapTest) {
   for (int year = 1800; year < 2200; ++year) {
