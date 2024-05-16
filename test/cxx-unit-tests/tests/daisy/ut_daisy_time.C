@@ -95,14 +95,19 @@ TEST_F(TimeTest, TickOverflowTest) {
 }
 
 TEST_F(TimeTest, TickNegativeTest) {
-  Time time{2024, 1, 1, 0, 0, 0, 0};
-  time.tick_microsecond(-1);
-  EXPECT_EQ(time.microsecond(), 999999);
-  EXPECT_EQ(time.second(), 59);
-  EXPECT_EQ(time.minute(), 59);
-  EXPECT_EQ(time.hour(), 23);
-  EXPECT_EQ(time.yday(), 365);
-  EXPECT_EQ(time.year(), 2023);
+  Time time0{2024, 1, 1, 0, 0, 0, 0};
+  time0.tick_microsecond(-1);
+  EXPECT_EQ(time0.microsecond(), 999999);
+  EXPECT_EQ(time0.second(), 59);
+  EXPECT_EQ(time0.minute(), 59);
+  EXPECT_EQ(time0.hour(), 23);
+  EXPECT_EQ(time0.yday(), 365);
+  EXPECT_EQ(time0.year(), 2023);
+  
+  Time time1{2021, 1, 10, 0, 0, 0, 0};
+  time1.tick_day(-10);
+  EXPECT_EQ(time1.yday(), 366);
+  EXPECT_EQ(time1.year(), 2020);
 }
 
 
@@ -195,11 +200,15 @@ TEST_F(TimeTest, MDay2YDayTest) {
 }
 
 TEST_F(TimeTest, ValidTest) {
+  EXPECT_FALSE(Time::valid(0, 1, 1));
   EXPECT_FALSE(Time::valid(2024, 0, 1));
   EXPECT_FALSE(Time::valid(2024, 1, 0));
   EXPECT_TRUE(Time::valid(2024, 1, 1));
+  
+  EXPECT_FALSE(Time::valid(2024, 1, 1, 24));
+  EXPECT_FALSE(Time::valid(2024, 1, 1, 23, 60));
+  EXPECT_FALSE(Time::valid(2024, 1, 1, 23, 59, 1000000));
 }
-
 
 TEST_F(TimeTest, MonthNameTest) {
   EXPECT_EQ(Time::month_name(1), symbol{"January"});
@@ -250,4 +259,140 @@ TEST_F(TimeTest, WDayNumberTest) {
   EXPECT_EQ(Time::wday_number(symbol{"Friday"}), 5);
   EXPECT_EQ(Time::wday_number(symbol{"Saturday"}), 6);
   EXPECT_EQ(Time::wday_number(symbol{"Sunday"}), 7);
+}
+
+TEST_F(TimeTest, PrintTest) {
+  Time nulltime = Time::null();
+  EXPECT_EQ(nulltime.print(), "Time::null");
+  
+  Time time{1999,6,15,4,23,30,9999};
+  EXPECT_EQ(time.print(), "1999-06-15T04:23:30.009999");
+}
+
+
+TEST_F(TimeTest, YearFractionTest) {
+  Time time{2023,1,1,0};
+  EXPECT_DOUBLE_EQ(time.year_fraction(), 1.0/365.0);
+  time.tick_day(99);
+  EXPECT_DOUBLE_EQ(time.year_fraction(), 100.0/365.0);
+  time.tick_year(1);
+  EXPECT_DOUBLE_EQ(time.year_fraction(), 100.0/366.0);
+  time.tick_day(266);
+  EXPECT_DOUBLE_EQ(time.year_fraction(), 1.0);
+}
+
+TEST_F(TimeTest, DayFractionTest) {
+  Time time{2023,1,1,0};
+  EXPECT_DOUBLE_EQ(time.day_fraction(), 0);
+  time.tick_hour(12);
+  EXPECT_DOUBLE_EQ(time.day_fraction(), 0.5);
+  time.tick_hour(6);
+  time.tick_minute(30);
+  EXPECT_DOUBLE_EQ(time.day_fraction(), 18.5/24);
+}
+
+TEST_F(TimeTest, ComponentValueTest) {
+  // 2023-01-02 is a Monday in week 1.
+  Time time{2023,1,2,3,4,5,6};
+  EXPECT_EQ(time.component_value(Time::Year), 2023);
+  EXPECT_EQ(time.component_value(Time::Month), 1);
+  EXPECT_EQ(time.component_value(Time::Week), 1);
+  EXPECT_EQ(time.component_value(Time::Yday), 2);
+  EXPECT_EQ(time.component_value(Time::Mday), 2);
+  EXPECT_EQ(time.component_value(Time::Wday), 1);
+  EXPECT_EQ(time.component_value(Time::Hour), 3);
+  EXPECT_EQ(time.component_value(Time::Minute), 4);
+  EXPECT_EQ(time.component_value(Time::Second), 5);
+  EXPECT_EQ(time.component_value(Time::Microsecond), 6);
+}
+
+TEST_F(TimeTest, FindTimeComponentsTest) {
+  std::vector<symbol> names{"year", "month", "week", "yday", "mday", "wday", "hour", "minute",
+                            "second", "microsecond"};
+  std::vector<Time::component_t> expected{
+    Time::Year, Time::Month, Time::Week, Time::Yday, Time::Mday, Time::Wday, Time::Hour,
+    Time::Minute, Time::Second, Time::Microsecond};
+
+  std::vector<Time::component_t> actual = Time::find_time_components(names);
+  ASSERT_EQ(actual.size(), expected.size());
+  for (std::size_t i = 0; i < actual.size(); ++i) {
+    ASSERT_EQ(actual[i], expected[i]);
+  }
+}
+
+TEST_F(TimeTest, OperatorEqual) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_TRUE(now == now);
+  ASSERT_TRUE(now2 == now2);
+  ASSERT_FALSE(now2 == now);
+}
+
+TEST_F(TimeTest, OperatorNotEqual) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_FALSE(now != now);
+  ASSERT_FALSE(now2 != now2);
+  ASSERT_TRUE(now2 != now);
+}
+
+TEST_F(TimeTest, OperatorGreater) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_FALSE(now > now);
+  ASSERT_FALSE(now > now2);
+  ASSERT_TRUE(now2 > now);
+}
+
+TEST_F(TimeTest, OperatorGreaterEqual) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_TRUE(now >= now);
+  ASSERT_FALSE(now >= now2);
+  ASSERT_TRUE(now2 >= now);
+}
+
+TEST_F(TimeTest, OperatorLess) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_FALSE(now < now);
+  ASSERT_TRUE(now < now2);
+  ASSERT_FALSE(now2 < now);
+}
+
+TEST_F(TimeTest, OperatorLessEqual) {
+  Time now2 = Time::now();
+  now2.tick_minute(1);
+  ASSERT_TRUE(now <= now);
+  ASSERT_TRUE(now <= now2);
+  ASSERT_FALSE(now2 <= now);
+}
+
+TEST_F(TimeTest, BetweenTest) {
+  Time time0{now.year() - 1, 1, 1, 0};
+  Time time1{now.year() + 1, 1, 1, 0};
+  ASSERT_TRUE(now.between(time0, time1));
+  ASSERT_FALSE(time0.between(now, time1));
+  ASSERT_FALSE(time1.between(time0, now));
+}
+
+TEST_F(TimeTest, WholeDaysBetweenTest) {
+  Time time0{2024, 2, 28,  0};
+  Time time1{2024, 3,  1, 10, 30};
+  Time time2{2026, 4,  1, 10};
+  ASSERT_EQ(Time::whole_days_between(time0, time1), 2);
+  ASSERT_EQ(Time::whole_days_between(time0, time2), 366+365+31+1);
+}
+
+
+TEST_F(TimeTest, WholeHoursBetweenTest) {
+  Time time0{2024, 2, 28, 0};
+  Time time1{2024, 3,  1, 0};
+  ASSERT_EQ(Time::whole_hours_between(time0, time1), 48);
+}
+
+TEST_F(TimeTest, FractionHoursBetweenTest) {
+  Time time0{2024, 2, 28, 0};
+  Time time1{2024, 3,  1, 0, 30};
+  ASSERT_EQ(Time::fraction_hours_between(time0, time1), 48.5);
 }
