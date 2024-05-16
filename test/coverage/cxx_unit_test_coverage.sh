@@ -2,9 +2,10 @@
 src_dir=../..
 build_dir=.
 out_dir=${src_dir}/test/coverage/cxx-unit-tests
-out_file=${out_dir}/coverage_`date +%s`.html
-mkdir -p ${out_dir}
-params=("-j `nproc` -r" "${src_dir}" "${build_dir}" "--html" "${out_file}" "--sort-percentage")
+out_file=${out_dir}/coverage.html
+mkdir -p ${out_dir}/old
+mv ${out_dir}/coverage* ${out_dir}/old
+params=("-j `nproc` -r" "${src_dir}" "${build_dir}" "--html" "--html-details" "${out_file}" "--sort-percentage")
 in_dir=${src_dir}/test/cxx-unit-tests/tests
 test_files=(`find ${in_dir} -name "ut_*.C" -type f`)
 for file in "${test_files[@]}"; do
