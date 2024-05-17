@@ -1,0 +1,13 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Groundwater aquitard
+               (pressure_table (table
+                                (file "data/depth-table.ddf")))))
+
+(defprogram test Base "Test Depth table"
+            (column test-column))
+
+(run test)

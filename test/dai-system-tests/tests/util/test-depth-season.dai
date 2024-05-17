@@ -1,0 +1,16 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+
+(defcolumn test-column JB6med
+  (Groundwater aquitard
+               (pressure_table (season ((  1 -100)
+                                        ( 91 -200)
+                                        (182 -300)
+                                        (274 -200)
+                                        (365 -100))))))
+
+(defprogram test Base "Test Depth season"
+            (column test-column))
+
+(run test)
