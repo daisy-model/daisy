@@ -29,6 +29,10 @@
 
 const char *const Function::component = "function";
 
+void
+Function::plot_xy (std::vector<double>& x, std::vector<double>& y) const
+{ }
+
 Function::Function (const BlockModel&)
 { }
 
@@ -50,6 +54,28 @@ static struct FunctionInit : public DeclareComponent
 Pure function of one parameter.")
   { }
 } Function_init;
+
+// The 'plotable' base model.
+
+void
+FunctionPlotable::plot_xy (std::vector<double>& x, std::vector<double>& y) const
+{
+  const double min = x_min ();
+  const double max = x_max ();
+  const double step = (max - min) / 50.0;
+  for (double p = min; p <= max; p += step)
+    {
+      x.push_back (p);
+      y.push_back (this->value (p));
+    }
+}
+
+FunctionPlotable::FunctionPlotable (const BlockModel& al)
+  : Function (al)
+{ }
+
+FunctionPlotable::~FunctionPlotable ()
+{ }
 
 // The 'const' model.
 

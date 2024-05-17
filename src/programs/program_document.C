@@ -65,7 +65,7 @@ struct ProgramDocument : public Program
       
       // Plot it.
       out << "\
-set output 'gnufig/plf-" << count << ".tex'\n\
+set output 'gnufig/fig-" << count << ".tex'\n\
 set xrange [" << xmin - xrange * 0.15 << ":" << xmax + xrange * 0.15 << "]\n\
 set yrange [" << ymin - yrange * 0.1 << ":" << ymax + yrange * 0.1 << "]\n\
 set xlabel '$" << domain << "$'\n\
@@ -75,6 +75,33 @@ plot '-' with linespoints pt 2 lt 0 ps 2 pi -1 notitle\n";
       for (int i = 0; i < plf.size (); ++i)
 	out << plf.x (i) << " " << plf.y (i) << "\n";
       out << xmax + xrange * 0.25 << " " << plf.y (plf_size -1 ) << "\n";
+      out << "e\n";
+      return count++;
+    }
+    int plot_xy (const std::vector<double>& x, const std::vector<double>& y,
+		 const symbol domain, const symbol range)
+    {
+      daisy_assert (x.size () > 1);
+      daisy_assert (x.size () == y.size ());
+      
+      // Find and expand bounds.
+      double xmin = x.front ();
+      double xmax = x.back ();
+      double ymin = *std::min_element (y.begin (), y.end ());
+      double ymax = *std::max_element (y.begin (), y.end ());
+      const double xrange = xmax - xmin;
+      daisy_assert (xrange > 0.0);
+      
+      // Plot it.
+      out << "\
+set output 'gnufig/fig-" << count << ".tex'\n\
+set xrange [" << xmin << ":" << xmax << "]\n\
+set yrange [" << ymin << ":" << ymax << "]\n\
+set xlabel '$" << domain << "$'\n\
+set ylabel '$" << range << "$'\n\
+plot '-' with lines notitle\n";
+      for (int i = 0; i < x.size (); ++i)
+	out << x[i] << " " << y[i] << "\n";
       out << "e\n";
       return count++;
     }
@@ -475,7 +502,9 @@ ProgramDocument::print_entry_value (const symbol name,
 	      if (y_vals.size () > 1)
 		{
 		  print_default_value = true;
-		  plotter->plot_plf (plf, domain, range);
+		  const int count = plotter->plot_plf (plf, domain, range);
+		  format->raw ("LaTeX", "\n\n\
+\\input{gnufig/fig-" + std::to_string (count) + ".tex}\n");
 		}
 	    }
 	    break;
@@ -1280,7 +1309,7 @@ ProgramDocument::print_model (const symbol name, const Library& library,
 	    format->bold (range);
 	  format->bold ("] ");
 	  format->text ("build into Daisy.\n");
-	}
+  	}
     }
   else
     {
@@ -1314,6 +1343,28 @@ ProgramDocument::print_model (const symbol name, const Library& library,
 	  format->text (" build into ");
 	  format->special ("daisy");
 	  format->text (".\n");
+	}
+    }
+
+  if (library.name () == function_name)
+    {
+      const symbol domain = frame.name ("domain");
+      const symbol range = frame.name ("range");
+
+      std::shared_ptr<Function> fun
+	(Librarian::build_stock<Function> (metalib, msg,
+					   name, Function::component));
+      if (fun.get ())
+	{
+	  std::vector<double> x;
+	  std::vector<double> y;
+	  fun->plot_xy (x, y);
+	  if (x.size () > 1)
+	    {
+	      int count = plotter->plot_xy (x, y, domain, range);
+	      format->raw ("LaTeX", "\n\n\
+\\input{gnufig/fig-" + std::to_string (count) + ".tex}\n");
+	    }
 	}
     }
      

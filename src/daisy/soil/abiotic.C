@@ -202,7 +202,7 @@ this amount of SMB carbon. By default, it will not be scaled.");
 
 // The 'T_scale' base model.
 
-struct FunctionTScale : public Function
+struct FunctionTScale : public FunctionPlotable
 {
   mutable double scale;		// []
   const double ref;		// [dg C]
@@ -222,9 +222,15 @@ struct FunctionTScale : public Function
       return factor (T) * scale;
   }
 
+  // Plot.
+  double x_min () const
+  { return 0.0; }
+  double x_max () const
+  { return 50.0; }
+
   // Create.
   FunctionTScale (const BlockModel& al)
-    : Function (al),
+    : FunctionPlotable (al),
       scale (-42.42e42),
       ref (al.number ("ref"))
   { }

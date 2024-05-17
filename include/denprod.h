@@ -1,6 +1,6 @@
-// function.h -- Pure functions of one parameter.
+// denprod.h --- Find products of denitrification.
 // 
-// Copyright 2023 KU
+// Copyright 2018, 2024 KU.
 //
 // This file is part of Daisy.
 // 
@@ -19,46 +19,32 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-#ifndef FUNCTION_H
-#define FUNCTION_H
+#ifndef DENPROD_H
+#define DENPROD_H
 
 #include "model.h"
 #include "symbol.h"
-#include <vector>
 
 class BlockModel;
 
-class Function : public Model
+class Denprod : public Model
 {
   // Content.
 public:
   static const char *const component;
+  symbol library_id () const;
 
   // Simulation.
 public:
-  virtual double value (const double) const = 0;
-
-  // Utility
-public:
-  virtual void plot_xy (std::vector<double>& x, std::vector<double>& y) const;
+  virtual void split (const double N, const double wfps, const double NO3,
+		      const double CO2, const double T,
+		      double& N2O) const = 0;
 
   // Create and Destroy.
 protected:
-  Function (const BlockModel&);
+  Denprod ();
 public:
-  ~Function ();
+  ~Denprod ();
 };
 
-class FunctionPlotable : public Function
-{
-protected:
-  void plot_xy (std::vector<double>& x, std::vector<double>& y) const;
-  virtual double x_min () const = 0;
-  virtual double x_max () const = 0;
-  FunctionPlotable (const BlockModel&);
-  ~FunctionPlotable ();
-};
-
-#endif // FUNCTION_H
-
-// function.h ends here.
+#endif // DENPROD_H

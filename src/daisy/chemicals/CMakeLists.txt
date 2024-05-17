@@ -1,4 +1,6 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
+  denprod_Parton1996.C
+  denprod.C
   adsorption.C
   adsorption_freundlich.C
   adsorption_langmuir.C

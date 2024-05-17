@@ -40,6 +40,8 @@
 #include "frame.h"
 #include "treelog.h"
 
+// The 'denitrification' reaction model.
+
 struct ReactionDenit : public Reaction
 {
   // Parameters.
@@ -144,6 +146,12 @@ ReactionDenit::tick_soil (const Geometry& geo,
       converted_fast[i] = (M / dt > rate ? M / dt - rate : 0.0);
       potential[i] = pot;
       potential_fast[i] = pot_fast;
+
+#if 0
+      // cell, [g N/cm^3 S], [0-1], [g N/cm^3 S], [g C/cm^3 S], [dg C], [h]
+      denprod->split (i, M, Theta_fraction, NO3, (CO2_fast + CO2_slow) * dt, T,
+		      dt);
+#endif
     }
   soil_NO3.add_to_transform_sink (converted);
 }
