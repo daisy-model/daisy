@@ -48,6 +48,8 @@ static struct FunctionInit : public DeclareComponent
     frame.set ("domain", Attribute::Unknown ());
     frame.declare_string ("range", Attribute::Const, "Function range.");
     frame.set ("range", Attribute::Unknown ());
+    frame.declare_string ("formula", Attribute::OptionalConst, "\
+LaTeX formula for the function, for the reference manual.");
   }
   FunctionInit ()
     : DeclareComponent (Function::component, "\

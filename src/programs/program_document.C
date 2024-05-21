@@ -879,6 +879,7 @@ ProgramDocument::ignore_entries (const symbol name, std::set<symbol>& entries)
     {
       entries.erase ("domain");
       entries.erase ("range");
+      entries.erase ("formula");
     }
   entries.erase ("cite");
   entries.erase ("description");
@@ -1348,11 +1349,17 @@ ProgramDocument::print_model (const symbol name, const Library& library,
 
   if (library.name () == function_name)
     {
-      const symbol domain = frame.name ("domain");
-      const symbol range = frame.name ("range");
+      if (frame.check ("formula"))
+	{
+	  const symbol formula = frame.name ("formula");
+	  format->raw ("LaTeX", "\n$$ " + formula + " $$\n");
+	}
+
+      const symbol domain = pretty_unit (frame.name ("domain"));
+      const symbol range = pretty_unit (frame.name ("range"));
 
       std::shared_ptr<Function> fun
-	(Librarian::build_stock<Function> (metalib, msg,
+	(Librarian::build_stock<Function> (metalib, Treelog::null (),
 					   name, Function::component));
       if (fun.get ())
 	{

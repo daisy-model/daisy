@@ -34,7 +34,7 @@ class Geometry;
 struct FunctionP96WFPS : public FunctionPlotable
 {
   double value (const double wfps) const
-  { return 1.4 / (17.0 / std::pow (13.0, std::pow (13.0, 2.2 * wfps))); }
+  { return 1.4 / std::pow (13.0, 17.0 / std::pow (13.0, 2.2 * wfps)); }
 
   // Plot.
   double x_min () const
@@ -55,13 +55,14 @@ static struct FunctionP96WFPSSyntax : public DeclareModel
   FunctionP96WFPSSyntax ()
     : DeclareModel (Function::component, "P96WFPS", 
 		    "Water filed pore space effect on N2/N2O ratio.\n\
-Figure 5, top.")
+Figure 5, top. Note extra parentheses compared to source.")
   { }
   void load_frame (Frame& frame) const
   {
     frame.set ("domain", Attribute::Fraction ());
     frame.set ("range", Attribute::None ());
     frame.set_strings ("cite", "Parton1996");
+    frame.set ("formula", "\\frac{1.4}{13^{\\left(13^{\\left(\\frac{17}{2.2\\; \\mathrm{wfps}}\\right)}\\right)}}");
   }
 } FunctionP96WFPS_syntax;
 
@@ -70,7 +71,8 @@ Figure 5, top.")
 struct FunctionP96NO3 : public FunctionPlotable
 {
   double value (const double NO3) const
-  { return 1.0 - (0.5 + std::atan (M_PI * 0.01 * (NO3 - 190)) / M_PI)* 25.0; }
+  { return (1.0 - (0.5 + std::atan (M_PI * 0.01 * (NO3 - 190)) / M_PI))
+      * 25.0; }
   
   // Plot.
   double x_min () const
@@ -91,13 +93,14 @@ static struct FunctionP96NO3Syntax : public DeclareModel
   FunctionP96NO3Syntax ()
     : DeclareModel (Function::component, "P96NO3", 
 		    "NO3 effect on N2/N2O ratio.\n\
-Figure 5, middle.")
+Figure 5, middle.  Note extra parentheses compared to source.")
   { }
   void load_frame (Frame& frame) const
   {
     frame.set_strings ("cite", "Parton1996");
     frame.set ("domain", "ug N/g");
     frame.set ("range", Attribute::None ());
+    frame.set ("formula", "\\left(1 - \\left(0.5 + \\frac{1\\arctan{(\\pi\\;0.01\\; (\\textrm{NO3}-190))}}{\\pi}\\right)\\right) 25");
   }
 } FunctionP96NO3_syntax;
 
@@ -134,6 +137,7 @@ Figure 5, bottom.")
     frame.set_strings ("cite", "Parton1996");
     frame.set ("domain", "kg C/ha/d");
     frame.set ("range", Attribute::None ());
+    frame.set ("formula", "13+\\frac{30.78 \\arctan{(\\pi\\;0.07\\;(\\textrm{CO2}-13))}}{\\pi}");
   }
 } FunctionP96CO2_syntax;
 
