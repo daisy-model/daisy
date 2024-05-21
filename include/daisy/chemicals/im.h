@@ -23,8 +23,8 @@
 #ifndef IM_H
 #define IM_H
 
-#include "symbol.h"
-#include "attribute.h"
+#include "object_model/symbol.h"
+#include "object_model/attribute.h"
 #include <map>
 #include <boost/noncopyable.hpp>
 

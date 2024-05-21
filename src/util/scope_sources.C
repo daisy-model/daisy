@@ -21,10 +21,10 @@
 #define BUILD_DLL
 
 
-#include "scope_sources.h"
-#include "source.h"
-#include "treelog.h"
-#include "assertion.h"
+#include "util/scope_sources.h"
+#include "gnuplot/source.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
 #include <sstream>
 
 void 

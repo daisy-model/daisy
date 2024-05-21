@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "doe.h"
-#include "log.h"
-#include "geometry.h"
-#include "librarian.h"
-#include "frame_submodel.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "treelog.h"
-#include "assertion.h"
+#include "daisy/organic_matter/doe.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_submodel.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
 #include <string>
 
 void 

@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "output.h"
-#include "number.h"
-#include "block_model.h"
-#include "units.h"
-#include "check.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/output/output.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/block_model.h"
+#include "object_model/units.h"
+#include "object_model/check.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 class GroundwaterExtern : public Groundwater

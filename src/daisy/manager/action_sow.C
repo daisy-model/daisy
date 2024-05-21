@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "field.h"
-#include "crop.h"
-#include "librarian.h"
-#include "check.h"
-#include "treelog.h"
-#include "frame_model.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "daisy/field.h"
+#include "daisy/crop/crop.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_model.h"
 
 struct ActionSowBase : public Action
 {

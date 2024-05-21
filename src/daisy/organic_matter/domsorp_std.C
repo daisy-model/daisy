@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "domsorp.h"
-#include "block_model.h"
-#include "transform.h"
-#include "dom.h"
-#include "som.h"
-#include "soil.h"
-#include "log.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/organic_matter/domsorp.h"
+#include "object_model/block_model.h"
+#include "daisy/chemicals/transform.h"
+#include "daisy/organic_matter/dom.h"
+#include "daisy/organic_matter/som.h"
+#include "daisy/soil/soil.h"
+#include "daisy/output/log.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <memory>
 
 struct DomsorpStandard : public Domsorp

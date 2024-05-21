@@ -21,12 +21,12 @@
 
 #define BUILD_DLL
 
-#include "traverse_delete.h"
-#include "traverse.h"
-#include "metalib.h"
-#include "library.h"
-#include "frame_model.h"
-#include "assertion.h"
+#include "object_model/traverse_delete.h"
+#include "object_model/traverse.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "object_model/frame_model.h"
+#include "util/assertion.h"
 
 class TraverseDelete : public Traverse
 {

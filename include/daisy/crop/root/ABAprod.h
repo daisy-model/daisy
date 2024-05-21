@@ -21,7 +21,7 @@
 #ifndef ABAPROD_H
 #define ABAPROD_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <vector>
 
 class Treelog;

@@ -24,8 +24,8 @@
 #ifndef IMVEC_H
 #define IMVEC_H
 
-#include "symbol.h"
-#include "attribute.h"
+#include "object_model/symbol.h"
+#include "object_model/attribute.h"
 #include <map>
 #include <vector>
 #include <boost/noncopyable.hpp>

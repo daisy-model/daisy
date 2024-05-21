@@ -23,16 +23,16 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "lexer_table.h"
-#include "scope_table.h"
-#include "number.h"
-#include "boolean.h"
-#include "librarian.h"
-#include "memutils.h"
-#include "assertion.h"
-#include "vcheck.h"
-#include "mathlib.h"
+#include "programs/program.h"
+#include "util/lexer_table.h"
+#include "util/scope_table.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/parameter_types/boolean.h"
+#include "object_model/librarian.h"
+#include "util/memutils.h"
+#include "util/assertion.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // The 'listsum' Component.

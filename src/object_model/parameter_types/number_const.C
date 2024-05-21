@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "number.h"
-#include "block_model.h"
-#include "scope.h"
-#include "units.h"
-#include "unit.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "library.h"
-#include "treelog.h"
-#include "frame.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/block_model.h"
+#include "util/scope.h"
+#include "object_model/units.h"
+#include "object_model/unit.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/library.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct NumberConst : public Number

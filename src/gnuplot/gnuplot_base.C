@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "gnuplot_base.h"
-#include "vcheck.h"
-#include "block_model.h"
-#include "frame_submodel.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "gnuplot/gnuplot_base.h"
+#include "object_model/vcheck.h"
+#include "object_model/block_model.h"
+#include "object_model/frame_submodel.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 
 void 
 GnuplotBase::Size::load_syntax (Frame& frame)

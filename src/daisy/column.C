@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "column.h"
-#include "block_model.h"
-#include "log.h"
-#include "librarian.h"
-#include "frame.h"
-#include "submodeler.h"
-#include "check.h"
-#include "point.h"
+#include "daisy/column.h"
+#include "object_model/block_model.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "util/point.h"
 #include <map>
 
 const char *const Column::component = "column";

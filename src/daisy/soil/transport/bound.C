@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "bound.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "frame.h"
-#include "librarian.h"
-#include "log.h"
-#include "vcheck.h"
+#include "daisy/soil/transport/bound.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
+#include "daisy/output/log.h"
+#include "object_model/vcheck.h"
 #include <sstream>
 #include <map>
 

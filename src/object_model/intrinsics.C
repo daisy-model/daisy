@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "intrinsics.h"
-#include "assertion.h"
-#include "library.h"
-#include "memutils.h"
-#include "frame_submodel.h"
-#include "librarian.h"
+#include "object_model/intrinsics.h"
+#include "util/assertion.h"
+#include "object_model/library.h"
+#include "util/memutils.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/librarian.h"
 #include <sstream>
 
 std::map<symbol, Library*> 

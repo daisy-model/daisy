@@ -22,7 +22,7 @@
 #ifndef SCOPE_ID_H
 #define SCOPE_ID_H
 
-#include "scope.h"
+#include "util/scope.h"
 #include <string>
 
 class ScopeID : public WScope

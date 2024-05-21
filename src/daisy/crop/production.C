@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "production.h"
-#include "crpn.h"
-#include "partition.h"
-#include "organic.h"
-#include "geometry.h"
-#include "am.h"
-#include "log.h"
-#include "daisy_time.h"
-#include "plf.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "frame_submodel.h"
-#include "librarian.h"
+#include "daisy/crop/production.h"
+#include "daisy/crop/crpn.h"
+#include "daisy/crop/partition.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/organic_matter/am.h"
+#include "daisy/output/log.h"
+#include "daisy/daisy_time.h"
+#include "object_model/plf.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/librarian.h"
 #include <sstream>
 
 // Chemical constants affecting the crop.

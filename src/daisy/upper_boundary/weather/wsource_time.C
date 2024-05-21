@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "wsource_indirect.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "timestep.h"
-#include "block_model.h"
-#include "submodeler.h"
+#include "daisy/upper_boundary/weather/wsource_indirect.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "daisy/timestep.h"
+#include "object_model/block_model.h"
+#include "object_model/submodeler.h"
 
 struct WSourceTime : public WSourceIndirect
 {

@@ -19,9 +19,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "wsource_indirect.h"
-#include "librarian.h"
-#include "block_model.h"
+#include "daisy/upper_boundary/weather/wsource_indirect.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
 
 void
 WSourceIndirect::entries (std::set<symbol>& e) const

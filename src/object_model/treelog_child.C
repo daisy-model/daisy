@@ -21,7 +21,7 @@
 
 
 #define BUILD_DLL
-#include "treelog_child.h"
+#include "object_model/treelog_child.h"
 
 void
 TreelogChild::open (const std::string& msg)

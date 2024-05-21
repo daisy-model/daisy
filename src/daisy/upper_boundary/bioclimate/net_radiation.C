@@ -22,13 +22,13 @@
 
 #define BUILD_DLL
 
-#include "net_radiation.h"
-#include "log.h"
-#include "weather.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/upper_boundary/bioclimate/net_radiation.h"
+#include "daisy/output/log.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // The 'net_radiation' component.
 

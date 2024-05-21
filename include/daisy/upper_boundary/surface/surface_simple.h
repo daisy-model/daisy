@@ -23,7 +23,7 @@
 #ifndef SURFACE_SIMPLE_H
 #define SURFACE_SIMPLE_H
 
-#include "surface.h"
+#include "daisy/upper_boundary/surface/surface.h"
 
 struct SurfaceSimple : public Surface
 {

@@ -19,18 +19,18 @@
 
 
 #define BUILD_DLL
-#include "transport.h"
-#include "geometry_rect.h"
-#include "soil.h"
-#include "solver.h"
-#include "log.h"
-#include "frame.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "vcheck.h"
+#include "daisy/soil/transport/transport.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "daisy/soil/soil.h"
+#include "util/solver.h"
+#include "daisy/output/log.h"
+#include "object_model/frame.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "object_model/vcheck.h"
 #include <sstream>
 
 #include <boost/numeric/ublas/matrix.hpp>

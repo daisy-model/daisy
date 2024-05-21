@@ -22,16 +22,16 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "daisy.h"
-#include "field.h"
-#include "harvest.h"
-#include "librarian.h"
-#include "vegetation.h"
-#include "treelog.h"
-#include "frame.h"
-#include "crop.h"
-#include "mathlib.h"
+#include "daisy/manager/action.h"
+#include "daisy/daisy.h"
+#include "daisy/field.h"
+#include "daisy/output/harvest.h"
+#include "object_model/librarian.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "daisy/crop/crop.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // The 'emerge' action model.

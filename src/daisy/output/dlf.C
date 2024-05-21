@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "dlf.h"
-#include "volume.h"
-#include "assertion.h"
-#include "version.h"
-#include "daisy.h"
-#include "toplevel.h"
-#include "metalib.h"
-#include "frame_model.h"
-#include "vcheck.h"
+#include "daisy/output/dlf.h"
+#include "daisy/soil/transport/volume.h"
+#include "util/assertion.h"
+#include "object_model/version.h"
+#include "daisy/daisy.h"
+#include "object_model/toplevel.h"
+#include "object_model/metalib.h"
+#include "object_model/frame_model.h"
+#include "object_model/vcheck.h"
 #include <time.h>
 #include <ostream>
 

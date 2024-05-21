@@ -19,20 +19,20 @@
 
 #define BUILD_DLL
 
-#include "drain.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "surface.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "frame.h"
-#include "mathlib.h"
-#include "log.h"
-#include "check.h"
-#include "draineqd.h"
-#include "depth.h"
+#include "daisy/soil/transport/drain.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
+#include "daisy/output/log.h"
+#include "object_model/check.h"
+#include "daisy/soil/transport/draineqd.h"
+#include "util/depth.h"
 
 struct DrainLateral : public Drain
 {

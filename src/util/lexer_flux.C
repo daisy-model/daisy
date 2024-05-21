@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "lexer_flux.h"
-#include "geometry.h"
-#include "mathlib.h"
-#include "assertion.h"
+#include "util/lexer_flux.h"
+#include "daisy/soil/transport/geometry.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
 #include <sstream>
 
 int

@@ -1,4 +1,4 @@
-#include "groundwater_aquitard.h"
+#include "daisy/lower_boundary/groundwater_aquitard.h"
 
 GroundwaterAquitard::GroundwaterAquitard (const BlockModel& al)
     : Groundwater (al),

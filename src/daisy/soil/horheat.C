@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "horheat.h"
-#include "texture.h"
-#include "hydraulic.h"
-#include "frame_submodel.h"
-#include "check.h"
-#include "mathlib.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/soil/horheat.h"
+#include "daisy/soil/texture.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 #include <numeric>
 #include <sstream>
 

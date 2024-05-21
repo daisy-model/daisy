@@ -22,7 +22,7 @@
 #ifndef VCHECK_H
 #define VCHECK_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <vector>
 #include <set>

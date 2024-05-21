@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "raddist.h"
-#include "block_model.h"
-#include "vegetation.h"
-#include "weather.h"
-#include "mathlib.h"
-#include "check.h"
-#include "librarian.h"
-#include "log.h"
-#include "frame.h"
-#include "plf.h"
+#include "daisy/upper_boundary/bioclimate/raddist.h"
+#include "object_model/block_model.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "util/mathlib.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "daisy/output/log.h"
+#include "object_model/frame.h"
+#include "object_model/plf.h"
 #include <sstream>
 
 struct RaddistDPF : public Raddist

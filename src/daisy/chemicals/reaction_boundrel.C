@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "log.h"
-#include "geometry.h"
-#include "chemical.h"
-#include "chemistry.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/chemicals/reaction.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/chemicals/chemistry.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct ReactionBoundrel : public Reaction
 {

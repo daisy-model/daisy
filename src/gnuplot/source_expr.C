@@ -19,13 +19,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "source_file.h"
-#include "scope_table.h"
-#include "boolean.h"
-#include "number.h"
-#include "librarian.h"
-#include "frame.h"
-#include "units.h"
+#include "gnuplot/source_file.h"
+#include "util/scope_table.h"
+#include "object_model/parameter_types/boolean.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/units.h"
 
 struct SourceExpr : public SourceFile
 {

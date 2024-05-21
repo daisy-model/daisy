@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "ABAprod.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/crop/root/ABAprod.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const ABAProd::component = "ABAproduction";
 

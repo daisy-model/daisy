@@ -1,6 +1,6 @@
 // complex_functions.C -- weird math
 
-#include "complex_functions.h"
+#include "util/complex_functions.h"
 #include <iostream>
 using std::cout;
 using std::endl;

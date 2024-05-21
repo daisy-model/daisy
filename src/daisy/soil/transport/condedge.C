@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "condedge.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "soil.h"
-#include "geometry.h"
+#include "daisy/soil/transport/condedge.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/transport/geometry.h"
 
 // condedge component.
 

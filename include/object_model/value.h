@@ -22,7 +22,7 @@
 #ifndef VALUE_H
 #define VALUE_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>

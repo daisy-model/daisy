@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "value.h"
-#include "attribute.h"
-#include "assertion.h"
+#include "object_model/value.h"
+#include "object_model/attribute.h"
+#include "util/assertion.h"
 
 int
 Value::size () const

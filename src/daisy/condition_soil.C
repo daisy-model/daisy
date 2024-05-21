@@ -20,14 +20,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "condition.h"
-#include "block_model.h"
-#include "frame.h"
-#include "field.h"
-#include "daisy.h"
-#include "check.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/condition.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "daisy/field.h"
+#include "daisy/daisy.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 
 struct ConditionSoilTemperature : public Condition
 {

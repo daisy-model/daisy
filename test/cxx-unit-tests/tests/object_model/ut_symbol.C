@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 TEST(SymbolTest, IdenticalValuesHaveSameId) {
   int an_int = 10;

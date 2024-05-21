@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "rainergy.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "frame.h"
+#include "daisy/chemicals/rainergy.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
 
 // The 'rainergy' component.
 

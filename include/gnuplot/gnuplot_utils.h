@@ -21,7 +21,7 @@
 #ifndef GNUPLOT_UTILS_H
 #define GNUPLOT_UTILS_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 class Frame;
 

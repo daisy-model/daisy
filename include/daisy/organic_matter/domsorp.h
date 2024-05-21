@@ -22,7 +22,7 @@
 #ifndef DOMSORP_H
 #define DOMSORP_H
 
-#include "model_framed.h"
+#include "object_model/model_framed.h"
 #include <vector>
 
 class Log;

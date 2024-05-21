@@ -22,7 +22,7 @@
 #ifndef SMB_H
 #define SMB_H
 
-#include "om.h"
+#include "daisy/organic_matter/om.h"
 #include <vector>
 
 class Frame;

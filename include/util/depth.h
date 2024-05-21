@@ -22,12 +22,12 @@
 #ifndef DEPTH_H
 #define DEPTH_H
 
-#include "daisy_time.h"
-#include "lexer_table.h"
-#include "model.h"
-#include "number.h"
-#include "plf.h"
-#include "symbol.h"
+#include "daisy/daisy_time.h"
+#include "util/lexer_table.h"
+#include "object_model/model.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/plf.h"
+#include "object_model/symbol.h"
 
 class Treelog;
 class BlockModel;

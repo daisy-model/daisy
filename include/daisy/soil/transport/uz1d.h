@@ -21,11 +21,11 @@
 #ifndef UZ1D_H
 #define UZ1D_H
 
-#include "model.h"
-#include "geometry_rect.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
+#include "object_model/model.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
 #include <vector>
 
 class BlockModel;

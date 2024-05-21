@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "rubiscoN.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "check.h"
+#include "daisy/crop/root/rubiscoN.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
 
 // The 'rubiscoN' component.
 

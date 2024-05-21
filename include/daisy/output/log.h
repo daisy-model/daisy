@@ -23,10 +23,10 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "daisy_time.h"
-#include "border.h"
-#include "model_framed.h"
-#include "symbol.h"
+#include "daisy/daisy_time.h"
+#include "daisy/soil/transport/border.h"
+#include "object_model/model_framed.h"
+#include "object_model/symbol.h"
 #include <iosfwd>
 #include <memory>
 #include <vector>

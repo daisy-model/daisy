@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/chemicals/reaction.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Reaction::component = "reaction";
 

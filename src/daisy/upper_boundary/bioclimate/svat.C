@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "svat.h"
-#include "log.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/svat.h"
+#include "daisy/output/log.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const SVAT::component = "svat";
 

@@ -22,7 +22,7 @@
 #ifndef CANOPY_STD_H
 #define CANOPY_STD_H
 
-#include "canopy_simple.h"
+#include "daisy/crop/canopy_simple.h"
 #include <vector>
 
 class Frame;

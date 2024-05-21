@@ -22,17 +22,17 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "source.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "units.h"
-#include "assertion.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "mathlib.h"
-#include "units.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "gnuplot/source.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
+#include "object_model/units.h"
 #include <sstream>
 
 class GroundwaterSource : public Groundwater

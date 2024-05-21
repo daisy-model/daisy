@@ -19,19 +19,19 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "gnuplot_base.h"
-#include "block_model.h"
-#include "lexer_flux.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
-#include "daisy_time.h"
-#include "units.h"
-#include "submodeler.h"
-#include "check.h"
-#include "vcheck.h"
-#include "geometry.h"
+#include "gnuplot/gnuplot_base.h"
+#include "object_model/block_model.h"
+#include "util/lexer_flux.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/daisy_time.h"
+#include "object_model/units.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "daisy/soil/transport/geometry.h"
 #include <sstream>
 
 struct GnuplotVector : public GnuplotBase

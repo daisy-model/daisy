@@ -22,8 +22,8 @@
 #ifndef LEXER_TABLE_H
 #define LEXER_TABLE_H
 
-#include "block_model.h"
-#include "symbol.h"
+#include "object_model/block_model.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <vector>
 #include <boost/noncopyable.hpp>

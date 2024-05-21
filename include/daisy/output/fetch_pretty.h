@@ -23,7 +23,7 @@
 #ifndef FETCH_PRETTY_H
 #define FETCH_PRETTY_H
 
-#include "fetch.h"
+#include "daisy/output/fetch.h"
 
 class FetchPretty : public Fetch
 {

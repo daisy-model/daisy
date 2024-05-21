@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "om.h"
-#include "som.h"
-#include "smb.h"
-#include "dom.h"
-#include "frame.h"
-#include "check.h"
-#include "vcheck.h"
-#include "geometry.h"
-#include "log.h"
-#include "mathlib.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "block_model.h"
+#include "daisy/organic_matter/om.h"
+#include "daisy/organic_matter/som.h"
+#include "daisy/organic_matter/smb.h"
+#include "daisy/organic_matter/dom.h"
+#include "object_model/frame.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
 #include <sstream>
 #include <numeric>
 

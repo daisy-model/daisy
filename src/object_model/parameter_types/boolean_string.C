@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "boolean.h"
-#include "block_model.h"
-#include "frame.h"
-#include "librarian.h"
+#include "object_model/parameter_types/boolean.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
 #include <vector>
 
 struct BooleanStringEqual : public Boolean

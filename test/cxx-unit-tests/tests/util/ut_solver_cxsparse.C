@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "solver_cxsparse.h"
+#include "util/solver_cxsparse.h"
 
 TEST(SolverCXSParseTest, solve) {
   symbol type_name = "cxsparse";

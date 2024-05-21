@@ -21,9 +21,9 @@
 #ifndef DEPOSITION_H
 #define DEPOSITION_H
 
-#include "model_derived.h"
-#include "symbol.h"
-#include "im.h"
+#include "object_model/model_derived.h"
+#include "object_model/symbol.h"
+#include "daisy/chemicals/im.h"
 
 class Vegetation;
 class Weather;

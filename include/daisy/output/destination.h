@@ -22,7 +22,7 @@
 #ifndef DESTINATION_H
 #define DESTINATION_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <vector>
 
 // Destination

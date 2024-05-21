@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "clayom.h"
-#include "block_model.h"
-#include "check.h"
-#include "smb.h"
-#include "soil.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/organic_matter/clayom.h"
+#include "object_model/block_model.h"
+#include "object_model/check.h"
+#include "daisy/organic_matter/smb.h"
+#include "daisy/soil/soil.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 class ClayOMBiomod : public ClayOM

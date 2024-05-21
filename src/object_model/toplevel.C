@@ -20,22 +20,22 @@
 
 #define BUILD_DLL
 
-#include "toplevel.h"
-#include "metalib.h"
-#include "daisy.h"
-#include "ui.h"
-#include "library.h"
-#include "parser_file.h"
-#include "block_top.h"
-#include "program.h"
-#include "path.h"
-#include "version.h"
-#include "assertion.h"
-#include "treelog_text.h"
-#include "treelog_store.h"
-#include "librarian.h"
-#include "units.h"
-#include "frame_model.h"
+#include "object_model/toplevel.h"
+#include "object_model/metalib.h"
+#include "daisy/daisy.h"
+#include "ui/ui.h"
+#include "object_model/library.h"
+#include "object_model/parser_file.h"
+#include "object_model/block_top.h"
+#include "programs/program.h"
+#include "util/path.h"
+#include "object_model/version.h"
+#include "util/assertion.h"
+#include "object_model/treelog_text.h"
+#include "object_model/treelog_store.h"
+#include "object_model/librarian.h"
+#include "object_model/units.h"
+#include "object_model/frame_model.h"
 
 #include <sstream>
 #include <ctime>

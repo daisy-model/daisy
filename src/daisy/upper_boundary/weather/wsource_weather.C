@@ -20,23 +20,23 @@
 
 #define BUILD_DLL
 
-#include "weather.h"
+#include "daisy/upper_boundary/weather/weather.h"
 
-#include "wsource_weather.h"
-#include "chemical.h"
-#include "im.h"
-#include "units.h"
-#include "plf.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "astronomy.h"
-#include "fao.h"
-#include "log.h"
+#include "daisy/upper_boundary/weather/wsource_weather.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/chemicals/im.h"
+#include "object_model/units.h"
+#include "object_model/plf.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "daisy/upper_boundary/bioclimate/astronomy.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "daisy/output/log.h"
 #include <map>
 #include <deque>
 #include <sstream>

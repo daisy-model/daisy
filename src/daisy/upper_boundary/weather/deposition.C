@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "deposition.h"
-#include "log.h"
-#include "weather.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/weather/deposition.h"
+#include "daisy/output/log.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 // The 'deposition' component.
 

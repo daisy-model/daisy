@@ -19,15 +19,15 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "volume_box.h"
-#include "bound.h"
-#include "border.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "block_model.h"
-#include "log.h"
+#include "daisy/soil/transport/volume_box.h"
+#include "daisy/soil/transport/bound.h"
+#include "daisy/soil/transport/border.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "daisy/output/log.h"
 #include <sstream>
 
 const VolumeBox::bounds_t 

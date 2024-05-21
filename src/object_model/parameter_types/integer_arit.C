@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "integer.h"
-#include "vcheck.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "block_model.h"
+#include "object_model/parameter_types/integer.h"
+#include "object_model/vcheck.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 #include <sstream>
 #include <memory>
 

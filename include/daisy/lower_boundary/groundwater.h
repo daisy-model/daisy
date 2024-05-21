@@ -24,7 +24,7 @@
 #ifndef GROUNDWATER_H
 #define GROUNDWATER_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class Frame;
 class Time;

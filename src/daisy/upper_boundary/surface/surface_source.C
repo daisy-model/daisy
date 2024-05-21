@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "surface_simple.h"
-#include "source.h"
-#include "units.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/surface/surface_simple.h"
+#include "gnuplot/source.h"
+#include "object_model/units.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // The 'source_flux' model.

@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "pet.h"
-#include "weather.h"
-#include "log.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/upper_boundary/bioclimate/pet.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct PetWeather : public Pet
 {

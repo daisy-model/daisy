@@ -19,16 +19,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "rubiscoNdist.h"
-#include "mathlib.h"
-#include "block_model.h"
+#include "daisy/crop/root/rubiscoNdist.h"
+#include "util/mathlib.h"
+#include "object_model/block_model.h"
 #include <sstream>
-#include "check.h"
-#include "librarian.h"
-#include "number.h"
-#include "scope_exchange.h"
-#include "treelog.h"
-#include "frame.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/parameter_types/number.h"
+#include "util/scope_exchange.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 static const double Mw = 14.0; //The molecular weight for N [g molÂ¯1]
 static const symbol LAI_symbol ("LAI");

@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "summary.h"
-#include "block_model.h"
-#include "fetch_pretty.h"
-#include "select.h"
-#include "treelog.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/output/summary.h"
+#include "object_model/block_model.h"
+#include "daisy/output/fetch_pretty.h"
+#include "daisy/output/select.h"
+#include "object_model/treelog.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 #include <algorithm>
 #include <fstream>

@@ -23,7 +23,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include "model_framed.h"
+#include "object_model/model_framed.h"
 
 class Log;
 class Daisy;

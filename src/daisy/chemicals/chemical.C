@@ -22,11 +22,11 @@
 #define BUILD_DLL
 
 
-#include "chemical.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "vcheck.h"
-#include "assertion.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/vcheck.h"
+#include "util/assertion.h"
 #include <map>
 
 const char *const Chemical::component = "chemical";

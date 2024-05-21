@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "model_framed.h"
-#include "log.h"
-#include "frame_model.h"
-#include "assertion.h"
-#include "block_model.h"
+#include "object_model/model_framed.h"
+#include "daisy/output/log.h"
+#include "object_model/frame_model.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
 
 const FrameModel& 
 ModelFramed::frame () const

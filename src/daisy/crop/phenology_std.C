@@ -21,18 +21,18 @@
 
 #define BUILD_DLL
 
-#include "phenology.h"
-#include "block_model.h"
-#include "production.h"
-#include "vernalization.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "number.h"
-#include "scope_id.h"
-#include "scope_multi.h"
+#include "daisy/crop/phenology.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/production.h"
+#include "daisy/crop/vernalization.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/parameter_types/number.h"
+#include "util/scope_id.h"
+#include "util/scope_multi.h"
 #include <sstream>
 
 class PhenologyStandard : public Phenology

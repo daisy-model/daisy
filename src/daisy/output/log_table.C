@@ -22,19 +22,19 @@
 
 #define BUILD_DLL
 
-#include "log_select.h"
-#include "dlf.h"
-#include "symbol.h"
-#include "select.h"
-#include "geometry.h"
-#include "assertion.h"
-#include "daisy.h"
-#include "block_model.h"
-#include "frame_model.h"
-#include "treelog.h"
-#include "filepos.h"
-#include "librarian.h"
-#include "library.h"
+#include "daisy/output/log_select.h"
+#include "daisy/output/dlf.h"
+#include "object_model/symbol.h"
+#include "daisy/output/select.h"
+#include "daisy/soil/transport/geometry.h"
+#include "util/assertion.h"
+#include "daisy/daisy.h"
+#include "object_model/block_model.h"
+#include "object_model/frame_model.h"
+#include "object_model/treelog.h"
+#include "util/filepos.h"
+#include "object_model/librarian.h"
+#include "object_model/library.h"
 #include <sstream>
 #include <fstream>
 #include <vector>

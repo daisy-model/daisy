@@ -23,7 +23,7 @@
 #ifndef SOIL_H
 #define SOIL_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <set>
 #include <memory>

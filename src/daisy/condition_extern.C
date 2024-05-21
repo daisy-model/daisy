@@ -22,17 +22,17 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "daisy.h"
-#include "block_model.h"
-#include "boolean.h"
-#include "output.h"
-#include "scope_multi.h"
-#include "scopesel.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/condition.h"
+#include "daisy/daisy.h"
+#include "object_model/block_model.h"
+#include "object_model/parameter_types/boolean.h"
+#include "daisy/output/output.h"
+#include "util/scope_multi.h"
+#include "util/scopesel.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <memory>
 
 struct ConditionExtern : public Condition

@@ -22,8 +22,8 @@
 #ifndef SCOPE_MODEL_H
 #define SCOPE_MODEL_H
 
-#include "scope.h"
-#include "model.h"
+#include "util/scope.h"
+#include "object_model/model.h"
 #include <vector>
 
 class BlockModel;

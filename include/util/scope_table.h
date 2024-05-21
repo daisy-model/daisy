@@ -22,7 +22,7 @@
 #ifndef SCOPE_TABLE_H
 #define SCOPE_TABLE_H
 
-#include "scope.h"
+#include "util/scope.h"
 #include <string>
 #include <vector>
 

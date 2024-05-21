@@ -19,16 +19,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "source.h"
-#include "block_model.h"
-#include "gnuplot_utils.h"
-#include "units.h"
-#include "vcheck.h"
-#include "mathlib.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "gnuplot/source.h"
+#include "object_model/block_model.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/units.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <numeric>
 #include <sstream>
 

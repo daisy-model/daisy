@@ -23,12 +23,12 @@
 
 #define BUILD_DLL
 
-#include "log_alist.h"
-#include "library.h"
-#include "frame_submodel.h"
-#include "frame_model.h"
-#include "assertion.h"
-#include "metalib.h"
+#include "daisy/output/log_alist.h"
+#include "object_model/library.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/frame_model.h"
+#include "util/assertion.h"
+#include "object_model/metalib.h"
 #include <sstream>
 
 bool

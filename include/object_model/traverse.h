@@ -23,7 +23,7 @@
 #ifndef TRAVERSE_H
 #define TRAVERSE_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 class Library;
 class Frame;

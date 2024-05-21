@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "adsorption.h"
-#include "block_model.h"
-#include "soil.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "units.h"
-#include "metalib.h"
+#include "daisy/chemicals/adsorption.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/soil.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/units.h"
+#include "object_model/metalib.h"
 #include <sstream>
 
 static const double c_fraction_in_humus = 0.587;

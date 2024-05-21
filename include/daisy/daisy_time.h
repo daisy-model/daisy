@@ -23,8 +23,8 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include "attribute.h"
-#include "symbol.h"
+#include "object_model/attribute.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <vector>
 #include <memory>

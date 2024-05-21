@@ -23,8 +23,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "symbol.h"
-#include "filepos.h"
+#include "object_model/symbol.h"
+#include "util/filepos.h"
 #include <string>
 #include <memory>
 #include <iosfwd>

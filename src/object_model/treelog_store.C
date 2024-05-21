@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "treelog_store.h"
-#include "assertion.h"
-#include "treelog_text.h"
+#include "object_model/treelog_store.h"
+#include "util/assertion.h"
+#include "object_model/treelog_text.h"
 #include <vector>
 
 struct TreelogStore::Implementation

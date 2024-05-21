@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "tortuosity.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/soil/tortuosity.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Tortuosity::component = "tortuosity";
 

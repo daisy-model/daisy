@@ -20,18 +20,18 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "gnuplot.h"
-#include "lexer_table.h"
-#include "librarian.h"
-#include "submodeler.h"
-#include "vcheck.h"
-#include "memutils.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "path.h"
-#include "daisy_time.h"
-#include "units.h"
+#include "programs/program.h"
+#include "gnuplot/gnuplot.h"
+#include "util/lexer_table.h"
+#include "object_model/librarian.h"
+#include "object_model/submodeler.h"
+#include "object_model/vcheck.h"
+#include "util/memutils.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "util/path.h"
+#include "daisy/daisy_time.h"
+#include "object_model/units.h"
 
 #include <boost/numeric/ublas/matrix.hpp>
 namespace ublas = boost::numeric::ublas;

@@ -21,7 +21,7 @@
 #ifndef FRAME_SUBMODEL_H
 #define FRAME_SUBMODEL_H
 
-#include "frame.h"
+#include "object_model/frame.h"
 
 class FrameSubmodel : public Frame
 {

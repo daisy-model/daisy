@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "fao.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 #include <sstream>
 
 double 

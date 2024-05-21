@@ -20,19 +20,19 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "organic.h"
-#include "log.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
-#include "treelog.h"
+#include "daisy/chemicals/reaction.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/output/log.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/treelog.h"
 
 struct ReactionNitrification : public Reaction
 {

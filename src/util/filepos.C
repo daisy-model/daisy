@@ -22,8 +22,8 @@
 
 #define BUILD_DLL
 
-#include "filepos.h"
-#include "attribute.h"
+#include "util/filepos.h"
+#include "object_model/attribute.h"
 
 symbol
 Filepos::filename () const

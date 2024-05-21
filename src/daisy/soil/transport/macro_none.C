@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "macro.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/transport/macro.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct MacroNone : public Macro
 {

@@ -21,7 +21,7 @@
 #ifndef GNUPLOT_BASE_H
 #define GNUPLOT_BASE_H
 
-#include "gnuplot.h"
+#include "gnuplot/gnuplot.h"
 #include <vector>
 #include <map>
 

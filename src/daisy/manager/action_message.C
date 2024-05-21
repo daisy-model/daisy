@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "condition.h"
-#include "log.h"
-#include "daisy.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "field.h"
-#include "check.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/condition.h"
+#include "daisy/output/log.h"
+#include "daisy/daisy.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "daisy/field.h"
+#include "object_model/check.h"
 
 struct ActionAssert : public Action
 {

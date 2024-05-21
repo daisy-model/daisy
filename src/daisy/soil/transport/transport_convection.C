@@ -19,15 +19,15 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "transport.h"
-#include "geometry.h"
-#include "soil.h"
-#include "adsorption.h"
-#include "submodeler.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "log.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/transport.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/chemicals/adsorption.h"
+#include "object_model/submodeler.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 struct TransportConvection : public Transport

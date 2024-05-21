@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "wsource_table.h"
-#include "weatherdata.h"
-#include "units.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/weather/wsource_table.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
+#include "object_model/units.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 symbol 

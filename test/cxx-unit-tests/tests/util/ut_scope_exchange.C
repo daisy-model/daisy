@@ -1,6 +1,6 @@
 // ut_scope_exchange.C --- unit tests for ScopeExchange
 
-#include "scope_exchange.h"
+#include "util/scope_exchange.h"
 #include <gtest/gtest.h>
 
 TEST (ScopeExchange, All)

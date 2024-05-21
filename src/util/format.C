@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "format.h"
-#include "assertion.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "util/format.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 const char *const Format::component = "format";
 

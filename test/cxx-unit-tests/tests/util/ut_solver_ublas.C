@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "solver_ublas.h"
+#include "util/solver_ublas.h"
 
 TEST(SolverUBLASTest, solve) {
   symbol type_name = "solver_ublas";

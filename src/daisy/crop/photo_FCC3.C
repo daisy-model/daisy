@@ -21,19 +21,19 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "photo_Farquhar.h"
-#include "block_model.h"
-#include "rubiscoNdist.h"
-#include "bioclimate.h"
-#include "canopy_std.h"
-#include "phenology.h"
-#include "log.h"
-#include "plf.h"
-#include "frame.h"
-#include "mathlib.h"
+#include "daisy/crop/photo_Farquhar.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
+#include "daisy/crop/canopy_std.h"
+#include "daisy/crop/phenology.h"
+#include "daisy/output/log.h"
+#include "object_model/plf.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
 #include <sstream>
-#include "check.h"
-#include "librarian.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
 
 class PhotoFCC3 : public PhotoFarquhar
 {

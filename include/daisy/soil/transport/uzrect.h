@@ -21,8 +21,8 @@
 #ifndef UZRect_H
 #define UZRect_H
 
-#include "model_framed.h"
-#include "symbol.h"
+#include "object_model/model_framed.h"
+#include "object_model/symbol.h"
 #include <vector>
 
 class Geometry;

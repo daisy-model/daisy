@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-#include "lexer.h"
-#include "treelog.h"
+#include "util/lexer.h"
+#include "object_model/treelog.h"
 #include <sstream>
 #include <vector>
 

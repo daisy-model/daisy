@@ -24,8 +24,8 @@
 #ifndef CSTAGE_H
 #define CSTAGE_H
 
-#include "model_derived.h"
-#include "symbol.h"
+#include "object_model/model_derived.h"
+#include "object_model/symbol.h"
 
 class Treelog;
 class BlockModel;

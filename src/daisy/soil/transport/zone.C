@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "zone.h"
-#include "librarian.h"
+#include "daisy/soil/transport/zone.h"
+#include "object_model/librarian.h"
 
 const char *const 
 Zone::component = "zone";

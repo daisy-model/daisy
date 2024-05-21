@@ -19,14 +19,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "gnuplot_base.h"
-#include "block_model.h"
-#include "xysource.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "frame.h"
+#include "gnuplot/gnuplot_base.h"
+#include "object_model/block_model.h"
+#include "gnuplot/xysource.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct GnuplotXY : public GnuplotBase

@@ -23,8 +23,8 @@
 #ifndef CROP_H
 #define CROP_H
 
-#include "model_framed.h"
-#include "daisy_time.h"
+#include "object_model/model_framed.h"
+#include "daisy/daisy_time.h"
 #include <vector>
 
 class Log;

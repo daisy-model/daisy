@@ -22,10 +22,10 @@
 
 #define BUILD_DLL
 
-#include "type.h"
-#include "assertion.h"
-#include "check.h"
-#include "function.h"
+#include "object_model/type.h"
+#include "util/assertion.h"
+#include "object_model/check.h"
+#include "util/function.h"
 
 Attribute::category
 Type::category () const 

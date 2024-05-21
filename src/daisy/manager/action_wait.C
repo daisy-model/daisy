@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "condition.h"
-#include "log.h"
-#include "daisy.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "vcheck.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/condition.h"
+#include "daisy/output/log.h"
+#include "daisy/daisy.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/vcheck.h"
 #include <memory>
 #include <sstream>
 

@@ -24,8 +24,8 @@
 #ifndef LIBRARIAN_H
 #define LIBRARIAN_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <boost/shared_ptr.hpp>
 

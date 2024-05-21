@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "canopy_std.h"
-#include "log.h"
-#include "block_submodel.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/crop/canopy_std.h"
+#include "daisy/output/log.h"
+#include "object_model/block_submodel.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 double
 CanopyStandard::specific_LAI (const double DS)

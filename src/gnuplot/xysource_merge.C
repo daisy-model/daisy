@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "xysource.h"
-#include "block_model.h"
-#include "gnuplot_utils.h"
-#include "number.h"
-#include "scope_sources.h"
-#include "units.h"
-#include "vcheck.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "gnuplot/xysource.h"
+#include "object_model/block_model.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/parameter_types/number.h"
+#include "util/scope_sources.h"
+#include "object_model/units.h"
+#include "object_model/vcheck.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct XYSourceMerge : public XYSource

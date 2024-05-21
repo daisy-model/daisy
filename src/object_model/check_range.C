@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "check_range.h"
-#include "treelog.h"
+#include "object_model/check_range.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 bool

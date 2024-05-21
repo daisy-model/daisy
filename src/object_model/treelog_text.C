@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "treelog_text.h"
-#include "assertion.h"
+#include "object_model/treelog_text.h"
+#include "util/assertion.h"
 #include <deque>
 #include <iostream>
 #include <sstream>

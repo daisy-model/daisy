@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "mathlib.h"
-#include "plf.h"
-#include "librarian.h"
-#include "frame.h"
-#include "block_model.h"
-#include "lexer_table.h"
-#include "units.h"
-#include "check.h"
+#include "daisy/soil/hydraulic.h"
+#include "util/mathlib.h"
+#include "object_model/plf.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "util/lexer_table.h"
+#include "object_model/units.h"
+#include "object_model/check.h"
 #include <sstream>
 
 class HydraulicTable : public Hydraulic

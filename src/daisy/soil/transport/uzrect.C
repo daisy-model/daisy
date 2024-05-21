@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "uzrect.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/soil/transport/uzrect.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const UZRect::component = "uzrect";
 

@@ -23,7 +23,7 @@
 #ifndef GEOMETRY1D_H
 #define GEOMETRY1D_H
 
-#include "geometry_vert.h"
+#include "daisy/soil/transport/geometry_vert.h"
 #include <vector>
 #include <string>
 

@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "scope_xysources.h"
-#include "xysource.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "util/scope_xysources.h"
+#include "gnuplot/xysource.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 double

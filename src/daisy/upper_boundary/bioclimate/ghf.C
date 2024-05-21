@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "ghf.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "weather.h"
-#include "soil_heat.h"
+#include "daisy/upper_boundary/bioclimate/ghf.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/soil/soil_heat.h"
 
 // The 'ghf' component.
 

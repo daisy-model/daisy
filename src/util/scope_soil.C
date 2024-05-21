@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "scope_soil.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "chemical.h"
-#include "units.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "util/scope_soil.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
 #include <sstream>
 #include <iterator>
 

@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "resistance.h"
-#include "net_radiation.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/resistance.h"
+#include "daisy/upper_boundary/bioclimate/net_radiation.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 #include <sstream>
 
   // Unit convertsions.  [mol/m^2/s] <-> [m/s]

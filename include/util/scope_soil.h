@@ -22,7 +22,7 @@
 #ifndef SCOPE_SOIL_H
 #define SCOPE_SOIL_H
 
-#include "scope.h"
+#include "util/scope.h"
 #include <vector>
 
 class Geometry;

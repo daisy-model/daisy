@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "plf.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "object_model/plf.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <vector>
 #include <list>
 #include <stdexcept>

@@ -22,21 +22,21 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "library.h"
-#include "metalib.h"
-#include "block_model.h"
-#include "printer_file.h"
-#include "xref.h"
-#include "plf.h"
-#include "format.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame_submodel.h"
-#include "frame_model.h"
-#include "filepos.h"
-#include "function.h"
+#include "programs/program.h"
+#include "object_model/library.h"
+#include "object_model/metalib.h"
+#include "object_model/block_model.h"
+#include "object_model/printer_file.h"
+#include "object_model/xref.h"
+#include "object_model/plf.h"
+#include "util/format.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/frame_model.h"
+#include "util/filepos.h"
+#include "util/function.h"
 #include <sstream>
 #include <fstream>
 #include <memory>

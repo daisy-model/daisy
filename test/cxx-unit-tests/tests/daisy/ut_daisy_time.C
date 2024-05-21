@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "symbol.h"
-#include "daisy_time.h"
+#include "object_model/symbol.h"
+#include "daisy/daisy_time.h"
 
 class TimeTest : public ::testing::Test {
 protected:

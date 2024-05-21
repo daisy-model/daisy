@@ -19,22 +19,22 @@
 
 #define BUILD_DLL
 
-#include "biopore.h"
-#include "block_model.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "submodeler.h"
-#include "check.h"
-#include "geometry.h"
-#include "soil.h"
-#include "anystate.h"
-#include "chemical.h"
-#include "groundwater.h"
-#include "treelog.h"
-#include "frame.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "log.h"
+#include "daisy/soil/transport/biopore.h"
+#include "object_model/block_model.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "util/anystate.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "daisy/output/log.h"
 #include <sstream>
 
 // The 'drain' model.

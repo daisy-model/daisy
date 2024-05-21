@@ -20,21 +20,21 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "log.h"
-#include "plf.h"
-#include "vegetation.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "rate.h"
-#include "vcheck.h"
-#include "crop.h"
-#include "check.h"
+#include "daisy/chemicals/reaction.h"
+#include "daisy/output/log.h"
+#include "object_model/plf.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/rate.h"
+#include "object_model/vcheck.h"
+#include "daisy/crop/crop.h"
+#include "object_model/check.h"
 #include <sstream>
 
 // The 'shoot' reaction model.

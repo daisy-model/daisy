@@ -23,8 +23,8 @@
 #ifndef AM_H
 #define AM_H
 
-#include "model_framed.h"
-#include "im.h"
+#include "object_model/model_framed.h"
+#include "daisy/chemicals/im.h"
 #include <vector>
 #include <memory>
 #include <boost/shared_ptr.hpp>

@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-#include "mathlib.h"
-#include "assertion.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
 #include <sstream>
 
 // #if !defined (__unix)

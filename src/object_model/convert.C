@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "convert.h"
+#include "object_model/convert.h"
 
 // The 'Convert' Interface.
 

@@ -21,11 +21,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "condition.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "timestep.h"
+#include "daisy/condition.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/timestep.h"
 #include <ctime>
 
 // The 'period' condition.

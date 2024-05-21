@@ -21,17 +21,17 @@
 
 #define BUILD_DLL
 
-#include "snow.h"
-#include "frame_submodel.h"
-#include "log.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "movement.h"
-#include "librarian.h"
-#include "mathlib.h"
-#include "treelog.h"
+#include "daisy/upper_boundary/weather/snow.h"
+#include "object_model/frame_submodel.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/soil/transport/movement.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 struct Snow::Implementation

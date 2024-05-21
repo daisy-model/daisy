@@ -20,22 +20,22 @@
 
 #define BUILD_DLL
 
-#include "reaction_colgen.h"
-#include "mathlib.h"
+#include "daisy/chemicals/reaction_colgen.h"
+#include "util/mathlib.h"
 #include <sstream>
-#include "check.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "log.h"
-#include "geometry.h"
-#include "soil.h"
-#include "treelog.h"
-#include "frame.h"
-#include "plf.h"
-#include "vegetation.h"
-#include "bioclimate.h"
+#include "object_model/check.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/plf.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
 #include <memory>
 
 struct ReactionStyczen88 : public ReactionColgen

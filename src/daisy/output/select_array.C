@@ -23,15 +23,15 @@
 
 #define BUILD_DLL
 
-#include "select.h"
-#include "soil.h"
-#include "bdconv.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
-#include "column.h"
-#include "geometry.h"
+#include "daisy/output/select.h"
+#include "daisy/soil/soil.h"
+#include "daisy/output/bdconv.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/column.h"
+#include "daisy/soil/transport/geometry.h"
 #include <sstream>
 
 struct SelectArray : public Select

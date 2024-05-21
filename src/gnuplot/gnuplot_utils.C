@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "gnuplot_utils.h"
-#include "frame.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/frame.h"
 
 void 
 GnuplotUtil::load_style (Frame& frame,

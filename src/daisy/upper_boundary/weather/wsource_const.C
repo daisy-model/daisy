@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "wsource_base.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "daisy_time.h"
-#include "frame.h"
+#include "daisy/upper_boundary/weather/wsource_base.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "daisy/daisy_time.h"
+#include "object_model/frame.h"
 
 struct WSourceConst : public WSourceBase
 {

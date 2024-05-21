@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "number.h"
-#include "plf.h"
-#include "units.h"
-#include "memutils.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "submodeler.h"
-#include "treelog.h"
-#include "frame_submodel.h"
-#include "metalib.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/plf.h"
+#include "object_model/units.h"
+#include "util/memutils.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/submodeler.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/metalib.h"
 #include <sstream>
 #include <memory>
 

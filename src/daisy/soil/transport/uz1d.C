@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "uz1d.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/uz1d.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 
 void 
 SMM1D::reset (std::vector<double>& h, std::vector<double>& Theta) const

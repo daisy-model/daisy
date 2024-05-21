@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "draineqd.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/soil/transport/draineqd.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 // draineqd component.
 

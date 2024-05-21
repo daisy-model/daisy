@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "difrad.h"
-#include "block_model.h"
-#include "weather.h"
-#include "fao.h"
-#include "mathlib.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/upper_boundary/bioclimate/difrad.h"
+#include "object_model/block_model.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "util/mathlib.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct DifradDPF : public Difrad

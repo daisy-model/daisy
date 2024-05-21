@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "wse.h"
-#include "block_model.h"
-#include "program.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/crop/wse.h"
+#include "object_model/block_model.h"
+#include "programs/program.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 #include <memory>
 

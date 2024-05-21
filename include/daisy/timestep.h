@@ -21,8 +21,8 @@
 #ifndef TIMESTEP_H
 #define TIMESTEP_H
 
-#include "daisy_time.h"
-#include "vcheck.h"
+#include "daisy/daisy_time.h"
+#include "object_model/vcheck.h"
 #include <string>
 
 class Frame;

@@ -21,8 +21,8 @@
 #ifndef MOVEMENT_SOLUTE_H
 #define MOVEMENT_SOLUTE_H
 
-#include "movement.h"
-#include "memutils.h"
+#include "daisy/soil/transport/movement.h"
+#include "util/memutils.h"
 #include <map>
 
 class Transport;

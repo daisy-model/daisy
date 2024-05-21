@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "tortuosity.h"
-#include "hydraulic.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/tortuosity.h"
+#include "daisy/soil/hydraulic.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class TortuosityM_Q : public Tortuosity
 {

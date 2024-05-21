@@ -22,10 +22,10 @@
 
 #define BUILD_DLL
 
-#include "surface_simple.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "block_model.h"
+#include "daisy/upper_boundary/surface/surface_simple.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
 
 // The 'simple' base model.
 

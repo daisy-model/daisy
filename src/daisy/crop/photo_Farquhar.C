@@ -22,22 +22,22 @@
 
 #define BUILD_DLL
 
-#include "photo_Farquhar.h"
-#include "block_model.h"
-#include "rubiscoNdist.h"
-#include "resistance.h"
-#include "stomatacon.h"
-#include "bioclimate.h"
-#include "canopy_std.h"
-#include "phenology.h"
-#include "log.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
-#include "fao.h"
+#include "daisy/crop/photo_Farquhar.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/upper_boundary/bioclimate/resistance.h"
+#include "daisy/crop/stomatacon.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
+#include "daisy/crop/canopy_std.h"
+#include "daisy/crop/phenology.h"
+#include "daisy/output/log.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
 #include <sstream>
 
 PhotoFarquhar::PhotoFarquhar (const BlockModel& al)

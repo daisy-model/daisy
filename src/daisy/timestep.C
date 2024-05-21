@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "timestep.h"
-#include "frame_submodel.h"
-#include "block.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "librarian.h"
+#include "daisy/timestep.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/block.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/librarian.h"
 #include <sstream>
 #include <iomanip>
 

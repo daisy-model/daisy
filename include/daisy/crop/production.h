@@ -22,8 +22,8 @@
 #ifndef PRODUCTION_H
 #define PRODUCTION_H
 
-#include "symbol.h"
-#include "soil_water.h"
+#include "object_model/symbol.h"
+#include "daisy/soil/soil_water.h"
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>

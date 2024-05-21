@@ -22,8 +22,8 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 class BlockModel;
 

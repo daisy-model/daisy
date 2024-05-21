@@ -19,13 +19,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "zone.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "frame_submodel.h"
-#include "vcheck.h"
-#include "assertion.h"
-#include "point.h"
+#include "daisy/soil/transport/zone.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/vcheck.h"
+#include "util/assertion.h"
+#include "util/point.h"
 
 #include <boost/geometry/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>

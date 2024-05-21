@@ -1,6 +1,6 @@
 // hyp_2F1.C --- weird math
 
-#include "hyp_2F1.h"
+#include "util/hyp_2F1.h"
 #include <iostream>
 using std::cout;
 using std::endl;

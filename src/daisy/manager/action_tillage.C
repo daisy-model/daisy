@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "field.h"
-#include "check.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "daisy/field.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 struct ActionMix : public Action
 {

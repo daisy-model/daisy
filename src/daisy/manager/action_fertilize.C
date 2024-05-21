@@ -22,20 +22,20 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "field.h"
-#include "am.h"
-#include "im.h"
-#include "check.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "volume.h"
-#include "units.h"
-#include "treelog.h"
-#include "frame_model.h"
-#include "frame_submodel.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "daisy/field.h"
+#include "daisy/organic_matter/am.h"
+#include "daisy/chemicals/im.h"
+#include "object_model/check.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/units.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_model.h"
+#include "object_model/frame_submodel.h"
 #include <sstream>
 
 // Base class for fertilize actions.

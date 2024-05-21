@@ -21,20 +21,20 @@
 
 #define BUILD_DLL
 
-#include "field.h"
-#include "column.h"
-#include "log.h"
-#include "select.h"
-#include "treelog.h"
-#include "library.h"
-#include "block.h"
-#include "memutils.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame_model.h"
-#include "mathlib.h"
-#include "crop.h"
-#include "metalib.h"
+#include "daisy/field.h"
+#include "daisy/column.h"
+#include "daisy/output/log.h"
+#include "daisy/output/select.h"
+#include "object_model/treelog.h"
+#include "object_model/library.h"
+#include "object_model/block.h"
+#include "util/memutils.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
+#include "util/mathlib.h"
+#include "daisy/crop/crop.h"
+#include "object_model/metalib.h"
 
 struct Field::Implementation
 {

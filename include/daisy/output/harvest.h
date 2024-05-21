@@ -23,9 +23,9 @@
 #ifndef HARVEST_H
 #define HARVEST_H
 
-#include "daisy_time.h"
-#include "symbol.h"
-#include "block_model.h"
+#include "daisy/daisy_time.h"
+#include "object_model/symbol.h"
+#include "object_model/block_model.h"
 
 class Frame;
 class Log;

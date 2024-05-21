@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "abiotic.h"
-#include "mathlib.h"
-#include "assertion.h"
-#include "block_model.h"
-#include "plf.h"
-#include "check.h"
-#include "function.h"
-#include "units.h"
-#include "librarian.h"
+#include "daisy/soil/abiotic.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
+#include "object_model/plf.h"
+#include "object_model/check.h"
+#include "util/function.h"
+#include "object_model/units.h"
+#include "object_model/librarian.h"
 
 #include <sstream>
 

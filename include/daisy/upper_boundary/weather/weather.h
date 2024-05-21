@@ -24,7 +24,7 @@
 #ifndef WEATHER_H
 #define WEATHER_H
 
-#include "weatherdata.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
 
 class Time;
 class IM;

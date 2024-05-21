@@ -22,8 +22,8 @@
 #ifndef SCOPE_H
 #define SCOPE_H
 
-#include "attribute.h"
-#include "symbol.h"
+#include "object_model/attribute.h"
+#include "object_model/symbol.h"
 #include <set>
 #include <boost/noncopyable.hpp>
 

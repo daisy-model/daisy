@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "scope_id.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "util/scope_id.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 
 void 
 ScopeID::entries (std::set<symbol>& all) const

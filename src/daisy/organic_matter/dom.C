@@ -21,21 +21,21 @@
 #define BUILD_DLL
 
 
-#include "dom.h"
-#include "doe.h"
-#include "smb.h"
-#include "om.h"
-#include "geometry.h"
-#include "librarian.h"
-#include "block.h"
-#include "frame.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "log.h"
-#include "check.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/organic_matter/dom.h"
+#include "daisy/organic_matter/doe.h"
+#include "daisy/organic_matter/smb.h"
+#include "daisy/organic_matter/om.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/librarian.h"
+#include "object_model/block.h"
+#include "object_model/frame.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/output/log.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 
 void 
 DOM::output (Log& log) const

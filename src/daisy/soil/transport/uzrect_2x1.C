@@ -20,19 +20,19 @@
 
 #define BUILD_DLL
 
-#include "uzrect.h"
-#include "uzmodel.h"
-#include "uz1d.h"
-#include "soil_water.h"
-#include "groundwater.h"
-#include "surface.h"
-#include "frame.h"
-#include "mathlib.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "block_model.h"
+#include "daisy/soil/transport/uzrect.h"
+#include "daisy/soil/transport/uzmodel.h"
+#include "daisy/soil/transport/uz1d.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
 #include <sstream>
 
 class UZRect2x1 : public UZRect

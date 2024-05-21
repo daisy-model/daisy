@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "volume.h"
-#include "geometry.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "daisy/soil/transport/volume.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
 
 class Log;
 

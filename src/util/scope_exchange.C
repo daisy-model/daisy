@@ -19,11 +19,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "scope_exchange.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "util/scope_exchange.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // The Exchange item model.
 

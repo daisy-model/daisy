@@ -22,8 +22,8 @@
 #ifndef BDCONV_H
 #define BDCONV_H
 
-#include "convert.h"
-#include "symbol.h"
+#include "object_model/convert.h"
+#include "object_model/symbol.h"
 #include <memory>
 
 class Geometry;

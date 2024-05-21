@@ -23,8 +23,8 @@
 #ifndef HYDRAULIC_H
 #define HYDRAULIC_H
 
-#include "model_framed.h"
-#include "plf.h"
+#include "object_model/model_framed.h"
+#include "object_model/plf.h"
 #include <memory>
 
 class Log;

@@ -22,7 +22,7 @@
 #ifndef AOM_H
 #define AOM_H
 
-#include "om.h"
+#include "daisy/organic_matter/om.h"
 #include <vector>
 
 class Frame;

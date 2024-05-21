@@ -20,20 +20,20 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "vegetation.h"
-#include "crop.h"
-#include "organic.h"
-#include "geometry.h"
-#include "soil.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "harvest.h"
-#include "log.h"
-#include "librarian.h"
-#include "metalib.h"
-#include "treelog.h"
-#include "frame_submodel.h"
-#include "library.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/crop/crop.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "daisy/output/harvest.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/metalib.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/library.h"
 #include <sstream>
 #include <deque>
 

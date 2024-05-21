@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "svat.h"
-#include "bioclimate.h"
-#include "librarian.h"
-#include "frame.h"
-#include "weather.h"
+#include "daisy/upper_boundary/bioclimate/svat.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/upper_boundary/weather/weather.h"
 
 struct SVAT_none : public SVAT
 {

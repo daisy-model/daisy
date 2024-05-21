@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "wsource.h"
-#include "daisy_time.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "submodeler.h"
-#include "daisy_time.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "timestep.h"
+#include "programs/program.h"
+#include "daisy/upper_boundary/weather/wsource.h"
+#include "daisy/daisy_time.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/submodeler.h"
+#include "daisy/daisy_time.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "daisy/timestep.h"
 
 #include <fstream>
 #include <numeric>

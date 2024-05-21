@@ -21,13 +21,13 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "geometry.h"
-#include "log.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 const char *const Groundwater::component = "groundwater";
 

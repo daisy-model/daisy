@@ -21,8 +21,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "uz1d.h"
-#include "librarian.h"
+#include "daisy/soil/transport/uz1d.h"
+#include "object_model/librarian.h"
 #include <sstream>
 
 struct UZ1DNone : public UZ1D

@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "frame.h"
-#include "field.h"
-#include "log.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "object_model/frame.h"
+#include "daisy/field.h"
+#include "daisy/output/log.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 
 struct ActionWithColumn : public Action
 {

@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "lexer_data.h"
-#include "daisy_time.h"
-#include "mathlib.h"
-#include "path.h"
-#include "daisy.h"
-#include "treelog.h"
+#include "daisy/condition.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/lexer_data.h"
+#include "daisy/daisy_time.h"
+#include "util/mathlib.h"
+#include "util/path.h"
+#include "daisy/daisy.h"
+#include "object_model/treelog.h"
 #include <istream>
 
 struct ConditionBBCH : public Condition

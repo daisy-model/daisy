@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "number.h"
-#include "boolean.h"
-#include "scope_multi.h"
-#include "submodeler.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "frame.h"
-#include "block_model.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/parameter_types/boolean.h"
+#include "util/scope_multi.h"
+#include "object_model/submodeler.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 #include <sstream>
 #include <memory>
 #include <map>

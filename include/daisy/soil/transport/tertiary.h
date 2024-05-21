@@ -23,7 +23,7 @@
 #ifndef TERTIARY_H
 #define TERTIARY_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <map>
 
 class BlockModel;

@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "log_extern.h"
-#include "select.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "submodeler.h"
-#include "treelog.h"
-#include "frame_model.h"
-#include "daisy.h"
+#include "daisy/output/log_extern.h"
+#include "daisy/output/select.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/submodeler.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_model.h"
+#include "daisy/daisy.h"
 #include <sstream>
 
 void 

@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "vegetation.h"
-#include "log.h"
-#include "frame.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/output/log.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Vegetation::component = "vegetation";
 

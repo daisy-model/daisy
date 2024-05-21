@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "crpn.h"
-#include "production.h"
-#include "root_system.h"
-#include "block_submodel.h"
-#include "treelog.h"
-#include "log.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "check.h"
+#include "daisy/crop/crpn.h"
+#include "daisy/crop/production.h"
+#include "daisy/crop/root/root_system.h"
+#include "object_model/block_submodel.h"
+#include "object_model/treelog.h"
+#include "daisy/output/log.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
 #include <sstream>
 
 void

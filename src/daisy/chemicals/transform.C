@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "transform.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/chemicals/transform.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Transform::component = "transform";
 

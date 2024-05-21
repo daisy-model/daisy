@@ -22,7 +22,7 @@
 #ifndef CLOUDINESS_H
 #define CLOUDINESS_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class Log;
 class Weather;

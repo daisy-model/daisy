@@ -22,14 +22,14 @@
 
 #define BUILD_DLL
 
-#include "cstage.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "memutils.h"
-#include "submodeler.h"
-#include "check.h"
-#include "log.h"
+#include "daisy/crop/cstage.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "util/memutils.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "daisy/output/log.h"
 
 // The 'cstage' component.
 

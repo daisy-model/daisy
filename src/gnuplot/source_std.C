@@ -19,11 +19,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "source_file.h"
-#include "units.h"
-#include "lexer_table.h"
-#include "librarian.h"
-#include "frame.h"
+#include "gnuplot/source_file.h"
+#include "object_model/units.h"
+#include "util/lexer_table.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct SourceStandard : public SourceFile

@@ -21,21 +21,21 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "scope.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "chemical.h"
-#include "number.h"
-#include "units.h"
-#include "field.h"
-#include "im.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "volume.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/manager/action.h"
+#include "util/scope.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/units.h"
+#include "daisy/field.h"
+#include "daisy/chemicals/im.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 // #define NEW_IRRIGATE

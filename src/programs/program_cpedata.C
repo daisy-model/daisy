@@ -22,13 +22,13 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "lexer_table.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "mathlib.h"
+#include "programs/program.h"
+#include "util/lexer_table.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "util/mathlib.h"
 #include <sstream>
 #include <map>
 

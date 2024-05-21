@@ -21,7 +21,7 @@
 #ifndef WSOURCE_BASE_H
 #define WSOURCE_BASE_H
 
-#include "wsource_weather.h"
+#include "daisy/upper_boundary/weather/wsource_weather.h"
 
 class WSourceBase : public WSourceWeather
 {

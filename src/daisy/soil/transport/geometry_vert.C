@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "geometry_vert.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/geometry_vert.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 bool 

@@ -23,7 +23,7 @@
 #ifndef DRAIN_H
 #define DRAIN_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <map>
 
 class BlockModel;

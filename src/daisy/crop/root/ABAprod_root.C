@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "ABAprod.h"
-#include "number.h"
-#include "scope_id.h"
-#include "geometry.h"
-#include "soil_water.h"
-#include "units.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
-#include "treelog.h"
-#include "block_model.h"
+#include "daisy/crop/root/ABAprod.h"
+#include "object_model/parameter_types/number.h"
+#include "util/scope_id.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil_water.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
 
 struct ABAProdRoot : public ABAProd
 {

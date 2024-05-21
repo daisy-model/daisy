@@ -23,8 +23,8 @@
 #ifndef SOLUPT_H
 #define SOLUPT_H
 
-#include "model_derived.h"
-#include "symbol.h"
+#include "object_model/model_derived.h"
+#include "object_model/symbol.h"
 
 #include <vector>
 

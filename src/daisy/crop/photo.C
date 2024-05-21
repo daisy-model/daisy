@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "photo.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "check.h"
-#include "frame.h"
+#include "daisy/crop/photo.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/frame.h"
 
 const char *const Photo::component = "photosynthesis";
 

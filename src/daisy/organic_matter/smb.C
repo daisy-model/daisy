@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "smb.h"
-#include "dom.h"
-#include "librarian.h"
-#include "frame.h"
-#include "assertion.h"
-#include "check.h"
-#include "mathlib.h"
-#include "block_model.h"
+#include "daisy/organic_matter/smb.h"
+#include "daisy/organic_matter/dom.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/block_model.h"
 
 const char *const SMB::component = "SMB";
 

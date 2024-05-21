@@ -1,15 +1,15 @@
 #ifndef GROUNDWATER_FILE_H
 #define GROUNDWATER_FILE_H
 
-#include "groundwater.h"
-#include "block_model.h"
-#include "lexer_data.h"
-#include "assertion.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "librarian.h"
-#include "path.h"
-#include "frame.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "object_model/block_model.h"
+#include "util/lexer_data.h"
+#include "util/assertion.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "object_model/librarian.h"
+#include "util/path.h"
+#include "object_model/frame.h"
 #include <istream>
 
 class GroundwaterFile : public Groundwater

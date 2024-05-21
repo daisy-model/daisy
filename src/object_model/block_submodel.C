@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "block_submodel.h"
-#include "submodeler.h"
-#include "frame_submodel.h"
-#include "assertion.h"
+#include "object_model/block_submodel.h"
+#include "object_model/submodeler.h"
+#include "object_model/frame_submodel.h"
+#include "util/assertion.h"
 
 const FrameSubmodel& 
 BlockSubmodel::frame () const

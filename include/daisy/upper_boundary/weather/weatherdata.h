@@ -22,7 +22,7 @@
 #ifndef WEATHERDATA_H
 #define WEATHERDATA_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 class Frame;
 class Block;

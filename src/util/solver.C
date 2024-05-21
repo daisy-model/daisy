@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "solver.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "util/solver.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Solver::component = "solver";
 

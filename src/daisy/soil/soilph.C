@@ -20,21 +20,21 @@
 
 #define BUILD_DLL
 
-#include "soilph.h"
-#include "log.h"
-#include "block_model.h"
-#include "submodeler.h"
-#include "librarian.h"
-#include "check.h"
-#include "vcheck.h"
-#include "plf.h"
-#include "memutils.h"
-#include "assertion.h"
-#include "geometry.h"
+#include "daisy/soil/soilph.h"
+#include "daisy/output/log.h"
+#include "object_model/block_model.h"
+#include "object_model/submodeler.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "object_model/plf.h"
+#include "util/memutils.h"
+#include "util/assertion.h"
+#include "daisy/soil/transport/geometry.h"
 
 // The 'soilph' component.
 
-const char *const SoilpH::component = "soilph";
+const char *const SoilpH::component = "daisy/soil/soil.h";
 
 symbol
 SoilpH::library_id () const

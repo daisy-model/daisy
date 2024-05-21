@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "assertion.h"
-#include "treelog.h"
-#include "mathlib.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>

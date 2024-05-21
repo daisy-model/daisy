@@ -24,15 +24,15 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "block_model.h"
-#include "texture.h"
-#include "plf.h"
-#include "treelog.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/texture.h"
+#include "object_model/plf.h"
+#include "object_model/treelog.h"
 #include <sstream>
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class HydraulicHypres : public Hydraulic
 {

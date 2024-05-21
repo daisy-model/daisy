@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "astronomy.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/bioclimate/astronomy.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "util/mathlib.h"
 #include <algorithm>
 #include <sstream>
 

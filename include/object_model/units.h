@@ -21,8 +21,8 @@
 #ifndef UNITS_H
 #define UNITS_H
 
-#include "memutils.h"
-#include "symbol.h"
+#include "util/memutils.h"
+#include "object_model/symbol.h"
 #include <boost/noncopyable.hpp>
 
 class Metalib;

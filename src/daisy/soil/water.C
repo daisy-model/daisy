@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "water.h"
-#include "plf.h"
+#include "daisy/soil/water.h"
+#include "object_model/plf.h"
 
 double 
 Water::viscosity (const double T)

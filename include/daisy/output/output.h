@@ -22,9 +22,9 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 
-#include "condition.h"
-#include "memutils.h"
-#include "daisy_time.h"
+#include "daisy/condition.h"
+#include "util/memutils.h"
+#include "daisy/daisy_time.h"
 #include <vector>
 
 class Log;

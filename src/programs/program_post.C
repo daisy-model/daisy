@@ -19,17 +19,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "program.h"
-#include "dlf.h"
-#include "lexer_soil.h"
-#include "units.h"
-#include "daisy_time.h"
-#include "mathlib.h"
-#include "submodeler.h"
-#include "librarian.h"
-#include "check.h"
-#include "vcheck.h"
-#include "filepos.h"
+#include "programs/program.h"
+#include "daisy/output/dlf.h"
+#include "util/lexer_soil.h"
+#include "object_model/units.h"
+#include "daisy/daisy_time.h"
+#include "util/mathlib.h"
+#include "object_model/submodeler.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "util/filepos.h"
 #include <fstream>
 #include <sstream>
 #include <numeric>

@@ -22,8 +22,8 @@
 #ifndef LITTER_H
 #define LITTER_H
 
-#include "model_derived.h"
-#include "symbol.h"
+#include "object_model/model_derived.h"
+#include "object_model/symbol.h"
 
 class BlockModel;
 class Geometry;

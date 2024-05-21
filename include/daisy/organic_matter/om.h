@@ -23,8 +23,8 @@
 #ifndef OM_H
 #define OM_H
 
-#include "model_framed.h"
-#include "plf.h"
+#include "object_model/model_framed.h"
+#include "object_model/plf.h"
 #include <vector>
 
 class Frame;

@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "GP2D.h"
-#include "iterative.h"
-#include "lexer_table.h"
-#include "librarian.h"
-#include "check.h"
-#include "units.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "submodeler.h"
+#include "programs/program.h"
+#include "daisy/crop/root/GP2D.h"
+#include "util/iterative.h"
+#include "util/lexer_table.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/submodeler.h"
 #include <boost/math/distributions/fisher_f.hpp>
 
 #include <sstream>

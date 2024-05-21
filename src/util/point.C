@@ -22,10 +22,10 @@
 
 #define BUILD_DLL
 
-#include "point.h"
-#include "block.h"
-#include "frame.h"
-#include "check.h"
+#include "util/point.h"
+#include "object_model/block.h"
+#include "object_model/frame.h"
+#include "object_model/check.h"
 
 // The 'XYPoint' Submodel
 

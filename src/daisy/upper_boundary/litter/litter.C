@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "litter.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "check.h"
-#include "log.h"
+#include "daisy/upper_boundary/litter/litter.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "daisy/output/log.h"
 
 // The 'litter' component.
 

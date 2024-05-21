@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "pet.h"
-#include "fao.h"
-#include "weather.h"
-#include "soil.h"
-#include "surface.h"
-#include "soil_heat.h"
-#include "fao.h"
-#include "vegetation.h"
-#include "log.h"
-#include "librarian.h"
-#include "frame.h"
-#include "block_model.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/bioclimate/pet.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/soil/soil.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
 #include <sstream>
 #include <memory>
 

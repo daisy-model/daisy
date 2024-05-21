@@ -23,7 +23,7 @@
 #ifndef TRAVERSE_DELETE_H
 #define TRAVERSE_DELETE_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 class Metalib;
 

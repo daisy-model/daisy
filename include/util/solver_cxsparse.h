@@ -1,6 +1,6 @@
 #ifndef SOLVER_CXSPARSE_H
 #define SOLVER_CXSPARSE_H
-#include "solver.h"
+#include "util/solver.h"
 
 struct SolverCXSparse : public Solver
 { 

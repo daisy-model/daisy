@@ -22,8 +22,8 @@
 #ifndef SECONDARY_H
 #define SECONDARY_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 #include <memory>
 
 class BlockModel;

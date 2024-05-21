@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "select_value.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/output/select_value.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct SelectNumber : public SelectValue
 {

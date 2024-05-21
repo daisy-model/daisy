@@ -21,10 +21,10 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
-#include "model.h"
-#include "daisy_time.h"
-#include "source.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "daisy/daisy_time.h"
+#include "gnuplot/source.h"
+#include "object_model/symbol.h"
 
 #include <vector>
 

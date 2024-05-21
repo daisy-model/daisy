@@ -22,9 +22,9 @@
 #ifndef SCOPE_SOURCES_H
 #define SCOPE_SOURCES_H
 
-#include "scope.h"
-#include "daisy_time.h"
-#include "memutils.h"
+#include "util/scope.h"
+#include "daisy/daisy_time.h"
+#include "util/memutils.h"
 #include <vector>
 
 class Treelog;

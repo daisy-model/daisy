@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "border.h"
+#include "daisy/soil/transport/border.h"
 
 Border::~Border ()
 { }

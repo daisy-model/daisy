@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "path.h"
-#include "assertion.h"
-#include "w32reg.h"
-#include "version.h"
+#include "util/path.h"
+#include "util/assertion.h"
+#include "windows/w32reg.h"
+#include "object_model/version.h"
 
 // Get chdir.
 #if defined (__unix)

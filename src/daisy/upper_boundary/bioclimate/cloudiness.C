@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "cloudiness.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "weather.h"
-#include "log.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/bioclimate/cloudiness.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // The 'cloudiness' component.

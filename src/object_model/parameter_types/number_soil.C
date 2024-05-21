@@ -20,20 +20,20 @@
 
 #define BUILD_DLL
 
-#include "number.h"
-#include "metalib.h"
-#include "library.h"
-#include "block_model.h"
-#include "column.h"
-#include "horizon.h"
-#include "hydraulic.h"
-#include "daisy_time.h"
-#include "librarian.h"
-#include "scope.h"
-#include "units.h"
-#include "treelog.h"
-#include "frame_model.h"
-#include "secondary.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "object_model/block_model.h"
+#include "daisy/column.h"
+#include "daisy/soil/horizon.h"
+#include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_time.h"
+#include "object_model/librarian.h"
+#include "util/scope.h"
+#include "object_model/units.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_model.h"
+#include "daisy/soil/transport/secondary.h"
 #include <memory>
 
 struct NumberByDepth : public Number
@@ -461,7 +461,7 @@ static struct NumberTensionByThetaSyntax : public DeclareModel
   Model* make (const BlockModel& al) const
   { return new NumberTensionByTheta (al); }
   NumberTensionByThetaSyntax()
-    : DeclareModel (Number::component, "soil_h", 
+    : DeclareModel (Number::component, "daisy/soil/soil.h", 
                     "Find pressure (h) for a given water content (Theta).")
   { }
   void load_frame (Frame& frame) const

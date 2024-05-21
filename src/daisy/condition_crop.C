@@ -23,15 +23,15 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "block_model.h"
-#include "crop.h"
-#include "field.h"
-#include "daisy.h"
-#include "check_range.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/condition.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/crop.h"
+#include "daisy/field.h"
+#include "daisy/daisy.h"
+#include "object_model/check_range.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // The 'with' condition.
 

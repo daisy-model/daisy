@@ -24,7 +24,7 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 #ifdef __unix
 #define EXPORT /* Nothing */

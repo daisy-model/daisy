@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "destination.h"
+#include "daisy/output/destination.h"
 
 Destination::Destination ()
 { }

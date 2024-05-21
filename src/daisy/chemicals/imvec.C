@@ -22,14 +22,14 @@
 
 #define BUILD_DLL
 
-#include "imvec.h"
-#include "assertion.h"
-#include "log.h"
-#include "chemical.h"
-#include "check.h"
-#include "block_model.h"
-#include "units.h"
-#include "frame_submodel.h"
+#include "daisy/chemicals/imvec.h"
+#include "util/assertion.h"
+#include "daisy/output/log.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/check.h"
+#include "object_model/block_model.h"
+#include "object_model/units.h"
+#include "object_model/frame_submodel.h"
 #include <sstream>
 
 const std::vector<double>& 

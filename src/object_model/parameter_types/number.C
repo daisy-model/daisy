@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "number.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "units.h"
-#include "assertion.h"
-#include "treelog.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 const char *const Number::component = "number";

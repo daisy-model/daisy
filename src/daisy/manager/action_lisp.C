@@ -21,18 +21,18 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "daisy.h"
-#include "log.h"
-#include "memutils.h"
-#include "submodeler.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "block_model.h"
+#include "daisy/manager/action.h"
+#include "daisy/daisy.h"
+#include "daisy/output/log.h"
+#include "util/memutils.h"
+#include "object_model/submodeler.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 
 // We need to initialize the Condition library.
-#include "condition.h"
+#include "daisy/condition.h"
 
 struct ActionNil : public Action
 {

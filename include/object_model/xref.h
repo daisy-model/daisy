@@ -22,7 +22,7 @@
 #ifndef XREF_H
 #define XREF_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <map>
 #include <vector>
 #include <set>

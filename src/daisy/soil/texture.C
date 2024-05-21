@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "texture.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/soil/texture.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <numeric>
 
 // Weigth of mineral particles. [g/cm^3]

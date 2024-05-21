@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "uzmodel.h"
-#include "soil.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/transport/uzmodel.h"
+#include "daisy/soil/soil.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class UZNone : public UZmodel
 {

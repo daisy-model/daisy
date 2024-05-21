@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "reaction_colgen.h"
-#include "librarian.h"
-#include "frame.h"
-#include "log.h"
-#include "chemistry.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "soil.h"
-#include "surface.h"
+#include "daisy/chemicals/reaction_colgen.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/output/log.h"
+#include "daisy/chemicals/chemistry.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/upper_boundary/surface/surface.h"
 
 double
 ReactionColgen::find_surface_soil (const Geometry& geo, const Soil& soil, 

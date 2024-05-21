@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "block_model.h"
-#include "frame.h"
-#include "librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
 
-#include "solver_cxsparse.h"
-#include "ublas_cxsparse.h" // Must be included after solver_cxsparse.h due to extern "C"
+#include "util/solver_cxsparse.h"
+#include "util/ublas_cxsparse.h" // Must be included after solver_cxsparse.h due to extern "C"
 
 
 #define MEMCHECK(foo) if (!(foo)) throw "CXSparse: Bad matrix: " #foo ;

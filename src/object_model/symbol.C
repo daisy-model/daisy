@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "symbol.h"
-#include "assertion.h"
+#include "object_model/symbol.h"
+#include "util/assertion.h"
 #include <sstream>
 #include <unordered_map>
 #include <ostream>

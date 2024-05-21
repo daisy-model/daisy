@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "pet.h"
-#include "frame.h"
-#include "block_model.h"
-#include "log.h"
-#include "vegetation.h"
-#include "surface.h"
-#include "librarian.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/bioclimate/pet.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "daisy/output/log.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
 
 const char *const Pet::component = "pet";
 

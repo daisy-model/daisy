@@ -21,13 +21,13 @@
 
 #define BUILD_DLL
 
-#include "pet.h"
-#include "weather.h"
-#include "fao.h"
-#include "log.h"
-#include "librarian.h"
-#include "frame.h"
-#include "block_model.h"
+#include "daisy/upper_boundary/bioclimate/pet.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 
 // The 'makkink' model.
 

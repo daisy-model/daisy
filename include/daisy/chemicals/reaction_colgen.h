@@ -22,8 +22,8 @@
 #ifndef REACTION_COLGEN_H
 #define REACTION_COLGEN_H
 
-#include "reaction.h"
-#include "ponddamp.h"
+#include "daisy/chemicals/reaction.h"
+#include "daisy/chemicals/ponddamp.h"
 #include <memory>
 
 class ReactionColgen : public Reaction

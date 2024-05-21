@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "select_value.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "soil.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "column.h"
+#include "daisy/output/select_value.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "daisy/column.h"
 
 struct SelectContent : public SelectValue
 {

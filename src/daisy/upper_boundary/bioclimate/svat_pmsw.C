@@ -27,32 +27,32 @@
 
 #define BUILD_DLL
 
-# include "svat.h"
-#include "mathlib.h"
-#include "block_model.h"
-# include "weather.h"
-#include "geometry.h"
-# include "soil.h"
-# include "soil_water.h"
-# include "soil_heat.h"
-#include "bioclimate.h"
-# include "vegetation.h"
-# include "log.h"
-#include "fao.h"
+# include "daisy/upper_boundary/bioclimate/svat.h"
+#include "util/mathlib.h"
+#include "object_model/block_model.h"
+# include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/soil/transport/geometry.h"
+# include "daisy/soil/soil.h"
+# include "daisy/soil/soil_water.h"
+# include "daisy/soil/soil_heat.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
+# include "daisy/upper_boundary/vegetation/vegetation.h"
+# include "daisy/output/log.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
 #ifndef NRGAUSS
-#include "gaussj.h"
-#include "librarian.h"
+#include "util/gaussj.h"
+#include "object_model/librarian.h"
 #include <sstream>
 #endif
-# include "assertion.h"
+# include "util/assertion.h"
 
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 
 # define NRANSI // from xgaussj
 #define vector _my_vector
-# include "nrutil.h"  // from Num Rec
+# include "util/nrutil.h"  // from Num Rec
 #undef vector
-#include "frame.h"
+#include "object_model/frame.h"
 # define SWAP(a,b) {temp=(a);(a)=(b);(b)=temp;} // from gaussj function
 # define NP 20 // from xgaussj driver program
 # define MP 20 // from xgaussj driver program

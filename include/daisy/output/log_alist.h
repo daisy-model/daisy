@@ -22,7 +22,7 @@
 #ifndef LOG_ALIST_H
 #define LOG_ALIST_H
 
-#include "log.h"
+#include "daisy/output/log.h"
 #include <deque>
 #include <boost/shared_ptr.hpp>
 

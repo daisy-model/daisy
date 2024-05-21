@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "frame_model.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "librarian.h"
-#include "metalib.h"
-#include "library.h"
+#include "object_model/frame_model.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "object_model/librarian.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
 
 const FrameModel* 
 FrameModel::parent () const

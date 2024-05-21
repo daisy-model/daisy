@@ -22,7 +22,7 @@
 #ifndef GEOMETRY_VERT_H
 #define GEOMETRY_VERT_H
 
-#include "geometry.h"
+#include "daisy/soil/transport/geometry.h"
 #include <vector>
 
 class Block;

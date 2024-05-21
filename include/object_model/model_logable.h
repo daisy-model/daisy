@@ -22,8 +22,8 @@
 #ifndef MODEL_LOGABLE_H
 #define MODEL_LOGABLE_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 class Log;
 

@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "chemistry.h"
-#include "im.h"
-#include "chemical.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "vcheck.h"
-#include "units.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/im.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/vcheck.h"
+#include "object_model/units.h"
 
 const char *const Chemistry::component = "chemistry";
 

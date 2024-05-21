@@ -22,8 +22,8 @@
 #ifndef METALIB_H
 #define METALIB_H
 
-#include "symbol.h"
-#include "frame.h"
+#include "object_model/symbol.h"
+#include "object_model/frame.h"
 #include <memory>
 #include <vector>
 

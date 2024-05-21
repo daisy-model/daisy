@@ -23,9 +23,9 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "daisy.h"
-#include "librarian.h"
+#include "daisy/condition.h"
+#include "daisy/daisy.h"
+#include "object_model/librarian.h"
 
 struct ConditionRunning : public Condition
 {

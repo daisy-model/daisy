@@ -22,16 +22,16 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "geometry_rect.h"
-#include "rootdens.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "submodeler.h"
-#include "check.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "frame.h"
+#include "programs/program.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "daisy/crop/root/rootdens.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct ProgramGP2D : public Program

@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "seed.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/crop/seed.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Seed::component = "seed";
 

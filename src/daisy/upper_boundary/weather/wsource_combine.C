@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "wsource_weather.h"
-#include "weatherdata.h"
-#include "daisy_time.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "submodeler.h"
-#include "block_model.h"
-#include "vcheck.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/weather/wsource_weather.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
+#include "daisy/daisy_time.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/submodeler.h"
+#include "object_model/block_model.h"
+#include "object_model/vcheck.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <boost/noncopyable.hpp>
 #include <sstream>
 #include <iterator>

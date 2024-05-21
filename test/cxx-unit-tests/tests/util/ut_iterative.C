@@ -1,9 +1,9 @@
 // ut_iterative.C --- Unit tests for iterative methods.
 
 #define BUILD_DLL
-#include "iterative.h"
-#include "assertion.h"
-#include "treelog.h"
+#include "util/iterative.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
 #include <gtest/gtest.h>
 
 TEST (Iterative, NelderMead)

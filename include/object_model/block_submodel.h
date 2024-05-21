@@ -21,8 +21,8 @@
 #ifndef BLOCK_SUBMODEL_H
 #define BLOCK_SUBMODEL_H
 
-#include "block_nested.h"
-#include "frame_submodel.h"
+#include "object_model/block_nested.h"
+#include "object_model/frame_submodel.h"
 
 class BlockSubmodel : public BlockNested
 {

@@ -20,21 +20,21 @@
 
 #define BUILD_DLL
 
-#include "soil_heat.h"
-#include "block.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "movement.h"
-#include "weather.h"
-#include "frame_submodel.h"
-#include "log.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "vcheck.h"
-#include "mathlib.h"
-#include "check.h"
+#include "daisy/soil/soil_heat.h"
+#include "object_model/block.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/transport/movement.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "object_model/frame_submodel.h"
+#include "daisy/output/log.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
+#include "object_model/check.h"
 #include <sstream>
 
 static const double rho_water = 1.0; // [g/cm^3]

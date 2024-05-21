@@ -24,7 +24,7 @@
 #ifndef OLDUNITS_H
 #define OLDUNITS_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <boost/shared_ptr.hpp>
 
 static class Oldunits

@@ -21,7 +21,7 @@
 #ifndef VOLUME_BOX_H
 #define VOLUME_BOX_H
 
-#include "volume.h"
+#include "daisy/soil/transport/volume.h"
 
 class Bound;
 class Border;

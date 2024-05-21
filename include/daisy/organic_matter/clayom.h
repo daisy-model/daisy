@@ -22,8 +22,8 @@
 #ifndef CLAYOM_H
 #define CLAYOM_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 #include <vector>
 
 class SMB;

@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "difrad.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/difrad.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Difrad::component = "difrad";
 
