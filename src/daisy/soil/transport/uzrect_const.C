@@ -19,14 +19,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "uzrect.h"
-#include "geometry_rect.h"
-#include "soil_water.h"
-#include "block_model.h"
-#include "frame.h"
-#include "mathlib.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "daisy/soil/transport/uzrect.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "daisy/soil/soil_water.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
  
 
 struct UZRectConst : public UZRect

@@ -20,15 +20,15 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "gnuplot_base.h"
-#include "column.h"
-#include "soil.h"
-#include "horizon.h"
-#include "geometry_rect.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "block_model.h"
+#include "gnuplot/gnuplot_base.h"
+#include "daisy/column.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/horizon.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
 
 
 #include <vector>

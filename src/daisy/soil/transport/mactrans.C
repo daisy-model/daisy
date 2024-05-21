@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "mactrans.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/soil/transport/mactrans.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Mactrans::component = "mactrans";
 

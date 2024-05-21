@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "transport.h"
-#include "block_model.h"
-#include "geometry1d.h"
-#include "soil.h"
-#include "adsorption.h"
-#include "log.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/soil/transport/transport.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry1d.h"
+#include "daisy/soil/soil.h"
+#include "daisy/chemicals/adsorption.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 struct TransportHansen : public Transport

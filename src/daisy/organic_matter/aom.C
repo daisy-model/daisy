@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "aom.h"
-#include "librarian.h"
-#include "frame.h"
-#include "check.h"
-#include "assertion.h"
-#include "smb.h"
-#include "dom.h"
-#include "log.h"
-#include "geometry.h"
-#include "mathlib.h"
-#include "block_model.h"
+#include "daisy/organic_matter/aom.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/check.h"
+#include "util/assertion.h"
+#include "daisy/organic_matter/smb.h"
+#include "daisy/organic_matter/dom.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "util/mathlib.h"
+#include "object_model/block_model.h"
 
 const char *const AOM::component = "AOM";
 

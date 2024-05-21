@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "geometry1d.h"
-#include "volume.h"
-#include "block.h"
-#include "frame.h"
-#include "mathlib.h"
-#include "check.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "treelog.h"
+#include "daisy/soil/transport/geometry1d.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/block.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 std::string

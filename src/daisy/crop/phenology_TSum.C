@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "phenology.h"
-#include "block_model.h"
-#include "production.h"
-#include "vernalization.h"
-#include "plf.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/crop/phenology.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/production.h"
+#include "daisy/crop/vernalization.h"
+#include "object_model/plf.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 class PhenologyTSum : public Phenology
 {

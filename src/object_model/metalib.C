@@ -20,18 +20,18 @@
 
 #define BUILD_DLL
 
-#include "metalib.h"
-#include "intrinsics.h"
-#include "librarian.h"
-#include "library.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "path.h"
-#include "units.h"
-#include "unit_model.h"
-#include "frame_model.h"
+#include "object_model/metalib.h"
+#include "object_model/intrinsics.h"
+#include "object_model/librarian.h"
+#include "object_model/library.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "util/path.h"
+#include "object_model/units.h"
+#include "object_model/unit_model.h"
+#include "object_model/frame_model.h"
 #include <map>
 #include <sstream>
 

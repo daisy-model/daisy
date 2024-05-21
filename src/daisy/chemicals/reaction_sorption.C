@@ -21,21 +21,21 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "block_model.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "surface.h"
-#include "log.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "check.h"
-#include "frame.h"
+#include "daisy/chemicals/reaction.h"
+#include "object_model/block_model.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "daisy/output/log.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/check.h"
+#include "object_model/frame.h"
 #include <memory>
 #include <sstream>
 

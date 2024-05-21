@@ -22,9 +22,9 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "scope.h"
-#include "symbol.h"
-#include "attribute.h"
+#include "util/scope.h"
+#include "object_model/symbol.h"
+#include "object_model/attribute.h"
 #include <string>
 #include <vector>
 #include <set>

@@ -23,7 +23,7 @@
 #ifndef TREELOG_CHILD_H
 #define TREELOG_CHILD_H
 
-#include "treelog.h"
+#include "object_model/treelog.h"
 #include <boost/shared_ptr.hpp>
 
 class TreelogChild : public Treelog

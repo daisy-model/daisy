@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "timestep.h"
+#include "daisy/timestep.h"
 
 class TimestepTest : public ::testing::Test {
 protected:

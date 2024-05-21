@@ -22,7 +22,7 @@
 #ifndef TREELOG_STORE_H
 #define TREELOG_STORE_H
 
-#include "treelog.h"
+#include "object_model/treelog.h"
 #include <boost/shared_ptr.hpp>
 #include <memory>
 

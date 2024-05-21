@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "vcheck.h"
-#include "units.h"
-#include "metalib.h"
-#include "library.h"
-#include "daisy_time.h"
-#include "plf.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "frame_model.h"
-#include "treelog.h"
+#include "object_model/vcheck.h"
+#include "object_model/units.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "daisy/daisy_time.h"
+#include "object_model/plf.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_model.h"
+#include "object_model/treelog.h"
 #include <sstream>
 #include <algorithm>
 #include <numeric>

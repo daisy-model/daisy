@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "pet.h"
-#include "weather.h"
-#include "fao.h"
-#include "log.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
-#include "treelog.h"
+#include "daisy/upper_boundary/bioclimate/pet.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/upper_boundary/bioclimate/fao.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/treelog.h"
 
 struct PetHargreaves : public Pet
 {

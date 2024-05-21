@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "crop.h"
-#include "om.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "vcheck.h"
+#include "daisy/crop/crop.h"
+#include "daisy/organic_matter/om.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/vcheck.h"
 
 const double Crop::DSremove = -5001.0;
 

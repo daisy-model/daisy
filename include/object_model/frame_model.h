@@ -21,7 +21,7 @@
 #ifndef FRAME_MODEL_H
 #define FRAME_MODEL_H
 
-#include "frame.h"
+#include "object_model/frame.h"
 
 class Model;
 class Block;

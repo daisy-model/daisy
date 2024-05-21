@@ -1,11 +1,11 @@
 // ut_units.C -- units unit tests 
 
-#include "units.h"
-#include "unit.h"
-#include "metalib.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "object_model/units.h"
+#include "object_model/unit.h"
+#include "object_model/metalib.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 
 #include <gtest/gtest.h>
 

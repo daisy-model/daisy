@@ -23,12 +23,12 @@
 #ifndef SELECT_H
 #define SELECT_H
 
-#include "destination.h"
-#include "model.h"
-#include "symbol.h"
-#include "units.h"
-#include "volume.h"
-#include "attribute.h"
+#include "daisy/output/destination.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
+#include "object_model/units.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/attribute.h"
 #include <vector>
 #include <set>
 

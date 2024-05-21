@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "daisy_time.h"
-#include "timestep.h"
-#include "assertion.h"
-#include "log.h"
-#include "frame_submodel.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "block.h"
-#include "treelog.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "util/assertion.h"
+#include "daisy/output/log.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "object_model/block.h"
+#include "object_model/treelog.h"
 #include <sstream>
 #include <iomanip>
 #include <ctime>

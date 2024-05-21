@@ -19,15 +19,15 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "heatrect.h"
-#include "solver.h"
-#include "geometry_rect.h"
-#include "plf.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/soil/transport/heatrect.h"
+#include "util/solver.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "object_model/plf.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 #include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/matrix.hpp>

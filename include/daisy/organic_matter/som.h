@@ -22,7 +22,7 @@
 #ifndef SOM_H
 #define SOM_H
 
-#include "om.h"
+#include "daisy/organic_matter/om.h"
 
 class Frame;
 

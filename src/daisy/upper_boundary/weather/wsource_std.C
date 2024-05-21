@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "wsource_table.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "timestep.h"
-#include "block_model.h"
-#include "submodeler.h"
-#include "memutils.h"
+#include "daisy/upper_boundary/weather/wsource_table.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "daisy/timestep.h"
+#include "object_model/block_model.h"
+#include "object_model/submodeler.h"
+#include "util/memutils.h"
 #include <sstream>
 
 struct WSourceStandard : public WSourceTable

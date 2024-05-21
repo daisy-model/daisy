@@ -19,20 +19,20 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "movement_solute.h"
-#include "geometry.h"
-#include "soil_water.h"
-#include "transport.h"
-#include "chemical.h"
-#include "adsorption.h"
-#include "tertiary.h"
-#include "frame.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "log.h"
+#include "daisy/soil/transport/movement_solute.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/transport/transport.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/chemicals/adsorption.h"
+#include "daisy/soil/transport/tertiary.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "daisy/output/log.h"
 #include <sstream>
 
 void 

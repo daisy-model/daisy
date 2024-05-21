@@ -22,7 +22,7 @@
 #ifndef TREELOG_TEXT_H
 #define TREELOG_TEXT_H
 
-#include "treelog.h"
+#include "object_model/treelog.h"
 #include <memory>
 
 #ifdef __unix

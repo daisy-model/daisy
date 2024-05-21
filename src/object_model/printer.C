@@ -21,7 +21,7 @@
 
 #define BUILD_DLL
 
-#include "printer.h"
+#include "object_model/printer.h"
 
 Printer::~Printer ()
 { }

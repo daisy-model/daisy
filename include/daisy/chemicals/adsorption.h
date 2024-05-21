@@ -23,7 +23,7 @@
 #ifndef ADSORPTION_H
 #define ADSORPTION_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class Log;
 class Soil;

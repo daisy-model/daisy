@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "nitrification.h"
-#include "block_model.h"
-#include "frame.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "log.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/chemicals/nitrification.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/output/log.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 const char *const Nitrification::component = "nitrification";
 

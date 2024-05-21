@@ -23,7 +23,7 @@
 #ifndef LEXER_FLUX_H
 #define LEXER_FLUX_H
 
-#include "lexer_table.h"
+#include "util/lexer_table.h"
 #include <iosfwd>
 
 class LexerFlux : public LexerTable

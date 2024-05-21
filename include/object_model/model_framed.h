@@ -27,7 +27,7 @@
 #ifndef MODEL_FRAMED_H
 #define MODEL_FRAMED_H
 
-#include "model_logable.h"
+#include "object_model/model_logable.h"
 #include <memory>
 
 class FrameModel;

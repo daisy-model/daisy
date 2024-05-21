@@ -21,7 +21,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <boost/noncopyable.hpp>
 
 class Convert;

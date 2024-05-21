@@ -23,7 +23,7 @@
 #ifndef PARSER_FILE_H
 #define PARSER_FILE_H
 
-#include "parser.h"
+#include "object_model/parser.h"
 #include <string>
 #include <memory>
 

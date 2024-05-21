@@ -24,12 +24,12 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "texture.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/hydraulic.h"
+#include "daisy/soil/texture.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 class Hydraulic_Cosby : public Hydraulic

@@ -20,14 +20,14 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "librarian.h"
-#include "symbol.h"
-#include "assertion.h"
-#include "lexer_data.h"
-#include "mathlib.h"
+#include "programs/program.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "object_model/librarian.h"
+#include "object_model/symbol.h"
+#include "util/assertion.h"
+#include "util/lexer_data.h"
+#include "util/mathlib.h"
 
 #include <filesystem>
 #include <fstream>

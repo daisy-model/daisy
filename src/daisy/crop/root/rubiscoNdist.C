@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "rubiscoNdist.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/crop/root/rubiscoNdist.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 const char *const RubiscoNdist::component = "rubiscoNdist";
 

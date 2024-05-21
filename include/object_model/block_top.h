@@ -22,7 +22,7 @@
 #ifndef BLOCK_TOP_H
 #define BLOCK_TOP_H
 
-#include "block.h"
+#include "object_model/block.h"
 
 #ifdef __unix
 #define EXPORT /* Nothing */

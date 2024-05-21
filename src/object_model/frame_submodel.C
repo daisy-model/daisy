@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "frame_submodel.h"
-#include "assertion.h"
+#include "object_model/frame_submodel.h"
+#include "util/assertion.h"
 
 bool 
 FrameSubmodel::subset (const Metalib& metalib,

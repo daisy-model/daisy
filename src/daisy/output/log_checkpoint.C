@@ -21,20 +21,20 @@
 
 #define BUILD_DLL
 
-#include "log_alist.h"
-#include "metalib.h"
-#include "block_model.h"
-#include "condition.h"
-#include "daisy.h"
-#include "printer_file.h"
-#include "scope.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "library.h"
-#include "frame.h"
-#include "frame_model.h"
-#include "path.h"
+#include "daisy/output/log_alist.h"
+#include "object_model/metalib.h"
+#include "object_model/block_model.h"
+#include "daisy/condition.h"
+#include "daisy/daisy.h"
+#include "object_model/printer_file.h"
+#include "util/scope.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/library.h"
+#include "object_model/frame.h"
+#include "object_model/frame_model.h"
+#include "util/path.h"
 #include <sstream>
 #include <fstream>
 

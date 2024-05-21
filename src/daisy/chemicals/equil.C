@@ -21,10 +21,10 @@
 #define BUILD_DLL
 
 
-#include "equil.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/chemicals/equil.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 const char *const Equilibrium::component = "equilibrium";
 

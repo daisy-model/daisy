@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "block_top.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "path.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "frame.h"
-#include "metalib.h"
+#include "programs/program.h"
+#include "object_model/block_top.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/path.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/metalib.h"
 #include <vector>
 
 struct ProgramBatch : public Program

@@ -23,8 +23,8 @@
 #ifndef LOG_SELECT_H
 #define LOG_SELECT_H
 
-#include "log.h"
-#include "memutils.h"
+#include "daisy/output/log.h"
+#include "util/memutils.h"
 #include <vector>
 #include <memory>
 

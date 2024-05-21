@@ -21,7 +21,7 @@
 #ifndef RUN_H
 #define RUN_H
 
-#include "model.h"
+#include "object_model/model.h"
 
 #ifdef __unix
 #define EXPORT /* Nothing */

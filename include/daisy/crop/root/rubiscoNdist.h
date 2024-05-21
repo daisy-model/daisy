@@ -22,7 +22,7 @@
 #ifndef RUBISCONDIST_H
 #define RUBISCONDIST_H
 
-#include "model_logable.h"
+#include "object_model/model_logable.h"
 #include <vector>
 
 class Log;

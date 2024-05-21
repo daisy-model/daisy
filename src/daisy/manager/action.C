@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/manager/action.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Action::component = "action";
 

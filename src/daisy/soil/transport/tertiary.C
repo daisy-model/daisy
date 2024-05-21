@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "tertiary.h"
-#include "geometry.h"
-#include "soil_water.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/transport/tertiary.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil_water.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // The 'tertiary' component.
 

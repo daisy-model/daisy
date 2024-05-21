@@ -22,7 +22,7 @@
 #ifndef DOM_H
 #define DOM_H
 
-#include "plf.h"
+#include "object_model/plf.h"
 #include <memory>
 
 class Log;

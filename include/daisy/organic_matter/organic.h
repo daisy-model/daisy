@@ -24,7 +24,7 @@
 #ifndef ORGANIC_H
 #define ORGANIC_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <vector>
 
 class FrameModel;

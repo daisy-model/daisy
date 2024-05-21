@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "select_value.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "vcheck.h"
+#include "daisy/output/select_value.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/vcheck.h"
 #include <sstream>
 
 struct SelectIndex : public SelectValue

@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "scope_model.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "util/scope_model.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
 
 const char *const MScope::component = "scope";
 

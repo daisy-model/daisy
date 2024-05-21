@@ -1,6 +1,6 @@
 #ifndef SOLVER_UBLAS_H
 #define SOLVER_UBLAS_H
-#include "solver.h"
+#include "util/solver.h"
 
 struct SolverUBLAS : public Solver
 { 

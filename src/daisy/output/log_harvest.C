@@ -20,16 +20,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "log.h"
-#include "daisy.h"
-#include "harvest.h"
-#include "dlf.h"
-#include "version.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
-#include "format.h"
+#include "daisy/output/log.h"
+#include "daisy/daisy.h"
+#include "daisy/output/harvest.h"
+#include "daisy/output/dlf.h"
+#include "object_model/version.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "util/format.h"
 #include <sstream>
 #include <fstream>
 #include <time.h>

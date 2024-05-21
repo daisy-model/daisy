@@ -22,8 +22,8 @@
 #ifndef BOOLEAN_H
 #define BOOLEAN_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 class Scope;
 class Treelog;

@@ -23,8 +23,8 @@
 #ifndef SCOPE_XYSOURCES_H
 #define SCOPE_XYSOURCES_H
 
-#include "scope.h"
-#include "memutils.h"
+#include "util/scope.h"
+#include "util/memutils.h"
 #include <vector>
 
 class Treelog;

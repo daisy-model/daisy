@@ -21,8 +21,8 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 #include <boost/numeric/ublas/vector.hpp>
 // #include <boost/numeric/ublas/vector_of_vector.hpp>

@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "anystate.h"
-#include "assertion.h"
+#include "util/anystate.h"
+#include "util/assertion.h"
 
 Anystate::Content::Content ()
 { }

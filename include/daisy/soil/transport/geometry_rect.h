@@ -22,7 +22,7 @@
 #ifndef GEOMETRY_RECT_H
 #define GEOMETRY_RECT_H
 
-#include "geometry_vert.h"
+#include "daisy/soil/transport/geometry_vert.h"
 
 class Frame;
 class Block;

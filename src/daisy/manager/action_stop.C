@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "daisy.h"
-#include "librarian.h"
+#include "daisy/manager/action.h"
+#include "daisy/daisy.h"
+#include "object_model/librarian.h"
 
 struct ActionStop : public Action
 {

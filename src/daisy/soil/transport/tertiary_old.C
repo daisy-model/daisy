@@ -20,20 +20,20 @@
 
 #define BUILD_DLL
 
-#include "tertiary.h"
-#include "geometry1d.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "chemical.h"
-#include "macro.h"
-#include "mactrans.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "surface.h"
-#include "groundwater.h"
-#include "treelog.h"
-#include "frame.h"
-#include "assertion.h"
+#include "daisy/soil/transport/tertiary.h"
+#include "daisy/soil/transport/geometry1d.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/soil/transport/macro.h"
+#include "daisy/soil/transport/mactrans.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
 #include <sstream>
 
 struct TertiaryOld : public Tertiary

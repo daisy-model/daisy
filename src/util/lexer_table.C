@@ -20,19 +20,19 @@
 
 #define BUILD_DLL
 
-#include "lexer_table.h"
-#include "lexer_data.h"
-#include "frame.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "submodeler.h"
-#include "daisy_time.h"
-#include "vcheck.h"
-#include "units.h"
-#include "path.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog_text.h"
+#include "util/lexer_table.h"
+#include "util/lexer_data.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/submodeler.h"
+#include "daisy/daisy_time.h"
+#include "object_model/vcheck.h"
+#include "object_model/units.h"
+#include "util/path.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog_text.h"
 #include <boost/algorithm/string/trim.hpp>
 #include <sstream>
 #include <cstring>

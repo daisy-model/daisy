@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "solver.h"
-#include "librarian.h"
-#include "frame.h"
+#include "util/solver.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct SolverNone : public Solver
 { 

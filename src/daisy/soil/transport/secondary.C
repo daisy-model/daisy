@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "secondary.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "frame.h"
-#include "check.h"
-#include "water.h"
+#include "daisy/soil/transport/secondary.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
+#include "object_model/check.h"
+#include "daisy/soil/water.h"
 #include <cmath>
 #include <sstream>
 

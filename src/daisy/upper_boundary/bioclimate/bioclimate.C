@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "bioclimate.h"
-#include "weather.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/bioclimate.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 const char *const Bioclimate::component = "bioclimate";
 

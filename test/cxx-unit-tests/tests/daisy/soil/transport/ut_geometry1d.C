@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "treelog_store.h"
-#include "geometry1d.h"
+#include "object_model/treelog_store.h"
+#include "daisy/soil/transport/geometry1d.h"
 
 class Geometry1DTest : public ::testing::Test {
 protected:

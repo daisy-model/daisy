@@ -22,7 +22,7 @@
 #ifndef SCOPE_MULTI_H
 #define SCOPE_MULTI_H
 
-#include "scope.h"
+#include "util/scope.h"
 #include <vector>
 
 class ScopeMulti : public Scope

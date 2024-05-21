@@ -21,12 +21,12 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "block_model.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/block_model.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class HydraulicYolo : public Hydraulic
 {

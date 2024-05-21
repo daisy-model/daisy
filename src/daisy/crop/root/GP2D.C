@@ -23,11 +23,11 @@
 
 #define BUILD_DLL
 
-#include "GP2D.h"
-#include "treelog.h"
-#include "iterative.h"
-#include "mathlib.h"
-#include "assertion.h"
+#include "daisy/crop/root/GP2D.h"
+#include "object_model/treelog.h"
+#include "util/iterative.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
 #include <sstream>
 #include <algorithm>
 

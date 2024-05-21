@@ -21,14 +21,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "uz1d.h"
-#include "block_model.h"
-#include "frame.h"
-#include "average.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/uz1d.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "daisy/soil/transport/average.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 struct UZ1DRichard : public UZ1D

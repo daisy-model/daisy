@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "horizon.h"
-#include "block_model.h"
-#include "texture.h"
-#include "hydraulic.h"
-#include "check.h"
-#include "vcheck.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/soil/horizon.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/texture.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 #include <numeric>
 

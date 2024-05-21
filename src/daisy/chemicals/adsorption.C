@@ -22,11 +22,11 @@
 
 #define BUILD_DLL
 
-#include "adsorption.h"
-#include "soil.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "mathlib.h"
+#include "daisy/chemicals/adsorption.h"
+#include "daisy/soil/soil.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
 
 // "adsorption" component.
 

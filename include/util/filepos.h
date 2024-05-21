@@ -24,7 +24,7 @@
 #ifndef FILEPOS_H
 #define FILEPOS_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 
 // Filepos
 class Filepos 

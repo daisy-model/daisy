@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "units.h"
-#include "unit_model.h"
-#include "convert.h"
-#include "oldunits.h"
-#include "memutils.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "metalib.h"
-#include "library.h"
-#include "frame_model.h"
+#include "object_model/units.h"
+#include "object_model/unit_model.h"
+#include "object_model/convert.h"
+#include "object_model/oldunits.h"
+#include "util/memutils.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "object_model/frame_model.h"
 #include <sstream>
 
 // The 'Units' Interface.

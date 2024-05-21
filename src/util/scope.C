@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "scope.h"
-#include "assertion.h"
+#include "util/scope.h"
+#include "util/assertion.h"
 
 // The 'Scope' Interface.
 

@@ -22,11 +22,11 @@
 
 #define BUILD_DLL
 
-#include "select_value.h"
-#include "block_model.h"
-#include "frame.h"
-#include "librarian.h"
-#include "check.h"
+#include "daisy/output/select_value.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
 #include <cmath>
 
 void 

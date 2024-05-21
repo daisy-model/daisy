@@ -22,7 +22,7 @@
 #ifndef VERNALIZATION_H
 #define VERNALIZATION_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class Frame;
 class Log;

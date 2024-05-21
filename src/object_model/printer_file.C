@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "printer_file.h"
-#include "metalib.h"
-#include "library.h"
-#include "block_model.h"
-#include "plf.h"
-#include "daisy_time.h"
-#include "parser.h"
-#include "path.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame_model.h"
-#include "frame_submodel.h"
-#include "filepos.h"
+#include "object_model/printer_file.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "object_model/block_model.h"
+#include "object_model/plf.h"
+#include "daisy/daisy_time.h"
+#include "object_model/parser.h"
+#include "util/path.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
+#include "object_model/frame_submodel.h"
+#include "util/filepos.h"
 #include <sstream>
 #include <algorithm>
 #include <numeric>

@@ -22,7 +22,7 @@
 #ifndef DLF_H
 #define DLF_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <vector>
 

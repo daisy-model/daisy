@@ -21,8 +21,8 @@
 #ifndef GNUPLOT_H
 #define GNUPLOT_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 #include <ostream>
 
 class Treelog;

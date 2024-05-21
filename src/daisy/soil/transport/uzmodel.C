@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "uzmodel.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/soil/transport/uzmodel.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 UZmodel::UZmodel (const BlockModel& al)
   : name (al.type_name ())

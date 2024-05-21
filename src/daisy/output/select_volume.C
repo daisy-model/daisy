@@ -22,19 +22,19 @@
 
 #define BUILD_DLL
 
-#include "select_value.h"
-#include "bdconv.h"
-#include "block_model.h"
-#include "volume.h"
-#include "geometry.h"
-#include "soil.h"
-#include "vegetation.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "column.h"
+#include "daisy/output/select_value.h"
+#include "daisy/output/bdconv.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/volume.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "daisy/column.h"
 #include <memory>
 
 struct SelectVolume : public SelectValue

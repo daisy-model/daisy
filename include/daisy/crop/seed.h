@@ -21,7 +21,7 @@
 #ifndef SEED_H
 #define SEED_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class BlockModel;
 class Treelog;

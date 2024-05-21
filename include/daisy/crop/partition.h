@@ -22,7 +22,7 @@
 #ifndef PARTITION_H
 #define PARTITION_H
 
-#include "plf.h"
+#include "object_model/plf.h"
 #include <vector>
 
 class Frame;

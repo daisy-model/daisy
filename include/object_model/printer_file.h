@@ -23,8 +23,8 @@
 #ifndef PRINTER_FILE_H
 #define PRINTER_FILE_H
 
-#include "printer.h"
-#include "symbol.h"
+#include "object_model/printer.h"
+#include "object_model/symbol.h"
 #include <iosfwd>
 #include <string>
 #include <memory>

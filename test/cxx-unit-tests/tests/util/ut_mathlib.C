@@ -1,4 +1,4 @@
-#include "mathlib.h"
+#include "util/mathlib.h"
 #include <gtest/gtest.h>
 
 TEST(MathlibTest, iszero) {

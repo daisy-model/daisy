@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
-#include "assertion.h"
-#include "log.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "daisy/output/log.h"
 #include <sstream>
 
 class HydraulicLinear : public Hydraulic

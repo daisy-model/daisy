@@ -22,8 +22,8 @@
 #ifndef FORMAT_H
 #define FORMAT_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 #include <iosfwd>
 #include <stack>
 #include <vector>

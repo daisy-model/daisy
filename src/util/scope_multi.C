@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "scope_multi.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "util/scope_multi.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
 
 void 
 ScopeMulti::entries (std::set<symbol>& all) const

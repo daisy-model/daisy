@@ -22,7 +22,7 @@
 #ifndef MOVEMENT_H
 #define MOVEMENT_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <vector>
 #include <memory>
 

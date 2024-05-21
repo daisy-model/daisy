@@ -23,9 +23,9 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include "irrigate.h"
-#include "border.h"
-#include "symbol.h"
+#include "daisy/manager/irrigate.h"
+#include "daisy/soil/transport/border.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <string>
 #include <memory>

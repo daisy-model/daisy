@@ -22,8 +22,8 @@
 #ifndef NUMBER_H
 #define NUMBER_H
 
-#include "symbol.h"
-#include "model.h"
+#include "object_model/symbol.h"
+#include "object_model/model.h"
 #include <vector>
 
 class Scope;

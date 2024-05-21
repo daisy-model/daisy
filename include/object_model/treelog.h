@@ -23,7 +23,7 @@
 #ifndef TREELOG_H
 #define TREELOG_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <boost/noncopyable.hpp>
 

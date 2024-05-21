@@ -23,13 +23,13 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "block_model.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/block_model.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 class HydraulicMACRO : public Hydraulic

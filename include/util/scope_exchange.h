@@ -18,10 +18,10 @@
 // along with Daisy; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#include "model.h"
-#include "symbol.h"
-#include "scope_model.h"
-#include "memutils.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
+#include "util/scope_model.h"
+#include "util/memutils.h"
 #include <map>
 #include <vector>
 

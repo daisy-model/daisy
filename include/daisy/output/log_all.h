@@ -22,8 +22,8 @@
 #ifndef LOG_ALL_H
 #define LOG_ALL_H
 
-#include "log_select.h"
-#include "assertion.h"
+#include "daisy/output/log_select.h"
+#include "util/assertion.h"
 #include <stack>
 
 class LogAll : public LogSelect

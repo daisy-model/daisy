@@ -23,7 +23,7 @@
 #ifndef MODEL_DERIVED_H
 #define MODEL_DERIVED_H
 
-#include "model_logable.h"
+#include "object_model/model_logable.h"
 
 class ModelDerived : public ModelLogable
 {

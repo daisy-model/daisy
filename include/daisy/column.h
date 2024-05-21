@@ -23,8 +23,8 @@
 #ifndef COLUMN_H
 #define COLUMN_H
 
-#include "model_framed.h"
-#include "irrigate.h"
+#include "object_model/model_framed.h"
+#include "daisy/manager/irrigate.h"
 #include <vector>
 
 class Frame;

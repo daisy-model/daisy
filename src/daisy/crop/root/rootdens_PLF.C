@@ -21,18 +21,18 @@
 
 #define BUILD_DLL
 
-#include "rootdens.h"
-#include "geometry.h"
-#include "plf.h"
-#include "submodeler.h"
-#include "check.h"
-#include "vcheck.h"
-#include "mathlib.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "frame_submodel.h"
-#include "treelog.h"
-#include "block_model.h"
+#include "daisy/crop/root/rootdens.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/plf.h"
+#include "object_model/submodeler.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
 
 struct Rootdens_PLF : public Rootdens
 {

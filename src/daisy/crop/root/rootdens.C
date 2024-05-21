@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "rootdens.h"
-#include "block_model.h"
-#include "frame.h"
-#include "check.h"
-#include "librarian.h"
+#include "daisy/crop/root/rootdens.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
 
 const char *const Rootdens::component = "rootdens";
 

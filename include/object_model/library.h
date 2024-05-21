@@ -23,7 +23,7 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <string>
 #include <vector>
 #include <set>

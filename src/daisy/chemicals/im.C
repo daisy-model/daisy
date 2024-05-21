@@ -22,17 +22,17 @@
 
 #define BUILD_DLL
 
-#include "im.h"
-#include "chemical.h"
-#include "units.h"
-#include "unit.h"
-#include "am.h"
-#include "log.h"
-#include "block.h"
-#include "frame_submodel.h"
-#include "check.h"
-#include "assertion.h"
-#include "frame.h"
+#include "daisy/chemicals/im.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/units.h"
+#include "object_model/unit.h"
+#include "daisy/organic_matter/am.h"
+#include "daisy/output/log.h"
+#include "object_model/block.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/check.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
 #include <cmath>
 
 symbol 

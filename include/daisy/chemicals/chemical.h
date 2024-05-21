@@ -24,7 +24,7 @@
 #ifndef CHEMICAL_H
 #define CHEMICAL_H
 
-#include "model_framed.h"
+#include "object_model/model_framed.h"
 #include <vector>
 #include <iosfwd>
 

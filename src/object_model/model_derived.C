@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "model_derived.h"
-#include "log.h"
+#include "object_model/model_derived.h"
+#include "daisy/output/log.h"
 
 // The 'ModelDerived' Class.
 

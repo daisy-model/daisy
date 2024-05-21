@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "summary.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/output/summary.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Summary::component = "summary";
 

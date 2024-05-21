@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "gnuplot.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "gnuplot/gnuplot.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const Gnuplot::component = "gnuplot";
 

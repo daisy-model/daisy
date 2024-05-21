@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "unit_model.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "convert.h"
-#include "units.h"
-#include "model.h"
-#include "frame.h"
-#include "memutils.h"
+#include "object_model/unit_model.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/convert.h"
+#include "object_model/units.h"
+#include "object_model/model.h"
+#include "object_model/frame.h"
+#include "util/memutils.h"
 #include <sstream>
 
 const char *const MUnit::component = "unit";

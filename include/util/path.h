@@ -3,7 +3,7 @@
 #ifndef PATH_H
 #define PATH_H
 
-#include "symbol.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <iosfwd>
 #include <memory>

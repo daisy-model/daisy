@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "stomatacon.h"
-#include "mathlib.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "check.h"
+#include "daisy/crop/stomatacon.h"
+#include "util/mathlib.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
 #include <sstream>
 
 // The 'stomatacon' component.

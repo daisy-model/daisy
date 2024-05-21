@@ -21,8 +21,8 @@
 #ifndef UNIT_MODEL_H
 #define UNIT_MODEL_H
 
-#include "unit.h"
-#include "model.h"
+#include "object_model/unit.h"
+#include "object_model/model.h"
 
 class BlockModel;
 

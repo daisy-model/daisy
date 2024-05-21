@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "clayom.h"
-#include "block_model.h"
-#include "librarian.h"
+#include "daisy/organic_matter/clayom.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
 
 const char *const ClayOM::component = "ClayOM";
 

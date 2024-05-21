@@ -24,9 +24,9 @@
 #ifndef TYPE_H
 #define TYPE_H
 
-#include "attribute.h"
-#include "symbol.h"
-#include "frame.h"
+#include "object_model/attribute.h"
+#include "object_model/symbol.h"
+#include "object_model/frame.h"
 #include <boost/noncopyable.hpp>
 #include <vector>
 

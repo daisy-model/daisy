@@ -22,9 +22,9 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#include "model.h"
-#include "symbol.h"
-#include "run.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
+#include "ui/run.h"
 
 #include <vector>
 

@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "raddist.h"
-#include "vegetation.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/upper_boundary/bioclimate/raddist.h"
+#include "daisy/upper_boundary/vegetation/vegetation.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct RaddistStandard : public Raddist

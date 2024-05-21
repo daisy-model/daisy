@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "canopy_simple.h"
-#include "log.h"
-#include "block_submodel.h"
-#include "librarian.h"
+#include "daisy/crop/canopy_simple.h"
+#include "daisy/output/log.h"
+#include "object_model/block_submodel.h"
+#include "object_model/librarian.h"
 
 double
 CanopySimple::EpFactorDry (double DS) const

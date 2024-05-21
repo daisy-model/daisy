@@ -22,8 +22,8 @@
 #ifndef PHENOLOGY_H
 #define PHENOLOGY_H
 
-#include "model_derived.h"
-#include "symbol.h"
+#include "object_model/model_derived.h"
+#include "object_model/symbol.h"
 #include <string>
 
 class Log;

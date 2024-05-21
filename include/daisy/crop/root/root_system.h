@@ -22,8 +22,8 @@
 #ifndef ROOT_SYSTEM_H
 #define ROOT_SYSTEM_H
 
-#include "plf.h"
-#include "rootdens.h"
+#include "object_model/plf.h"
+#include "daisy/crop/root/rootdens.h"
 #include <vector>
 #include <memory>
 

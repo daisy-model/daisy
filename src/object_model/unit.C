@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "unit.h"
+#include "object_model/unit.h"
 
 symbol
 Unit::pressure ()

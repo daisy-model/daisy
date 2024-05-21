@@ -22,8 +22,8 @@
 #ifndef WSOURCE_WEATHER_H
 #define WSOURCE_WEATHER_H
 
-#include "wsource.h"
-#include "weatherdata.h"
+#include "daisy/upper_boundary/weather/wsource.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
 #include <memory>
 
 class IM;

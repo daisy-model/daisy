@@ -22,7 +22,7 @@
 #ifndef REACTION_H
 #define REACTION_H
 
-#include "model_framed.h"
+#include "object_model/model_framed.h"
 
 class Log;
 class Geometry;

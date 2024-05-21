@@ -22,18 +22,18 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "daisy.h"
-#include "librarian.h"
-#include "lexer_data.h"
-#include "block_model.h"
-#include "daisy_time.h"
-#include "assertion.h"
-#include "vcheck.h"
-#include "path.h"
-#include "mathlib.h"
-#include "condition.h"
-#include "log.h"
+#include "daisy/manager/action.h"
+#include "daisy/daisy.h"
+#include "object_model/librarian.h"
+#include "util/lexer_data.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy_time.h"
+#include "util/assertion.h"
+#include "object_model/vcheck.h"
+#include "util/path.h"
+#include "util/mathlib.h"
+#include "daisy/condition.h"
+#include "daisy/output/log.h"
 #include <istream>
 #include <map>
 

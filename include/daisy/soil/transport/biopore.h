@@ -22,11 +22,11 @@
 #ifndef BIOPORE_H
 #define BIOPORE_H
 
-#include "model_framed.h"
-#include "symbol.h"
-#include "number.h"
-#include "im.h"
-#include "imvec.h"
+#include "object_model/model_framed.h"
+#include "object_model/symbol.h"
+#include "object_model/parameter_types/number.h"
+#include "daisy/chemicals/im.h"
+#include "daisy/chemicals/imvec.h"
 #include <memory>
 #include <vector>
 

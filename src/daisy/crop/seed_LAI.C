@@ -19,13 +19,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "seed.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "plf.h"
-#include "log.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/crop/seed.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/plf.h"
+#include "daisy/output/log.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <cmath>
 
 struct SeedLAI : public Seed

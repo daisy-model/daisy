@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "weatherdata.h"
-#include "daisy_time.h"
-#include "units.h"
-#include "attribute.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "check.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
+#include "daisy/daisy_time.h"
+#include "object_model/units.h"
+#include "object_model/attribute.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 #include <map>
 

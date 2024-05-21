@@ -19,14 +19,14 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "program.h"
-#include "block_model.h"
-#include "gnuplot.h"
-#include "treelog.h"
-#include "path.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "frame.h"
+#include "programs/program.h"
+#include "object_model/block_model.h"
+#include "gnuplot/gnuplot.h"
+#include "object_model/treelog.h"
+#include "util/path.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <string>
 #include <set>
 #include <fstream>

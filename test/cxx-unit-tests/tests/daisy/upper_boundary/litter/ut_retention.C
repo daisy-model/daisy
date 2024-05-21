@@ -1,8 +1,8 @@
 #include <random>
 #include <gtest/gtest.h>
 
-#include "treelog_text.h"
-#include "retention.h"
+#include "object_model/treelog_text.h"
+#include "daisy/upper_boundary/litter/retention.h"
 
 struct RetentionTest : public testing::Test
 {

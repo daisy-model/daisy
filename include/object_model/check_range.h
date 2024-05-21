@@ -22,7 +22,7 @@
 #ifndef CHECK_RANGE_H
 #define CHECK_RANGE_H
 
-#include "check.h"
+#include "object_model/check.h"
 
 class RangeII : public Check
 {

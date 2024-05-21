@@ -21,20 +21,20 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "library.h"
-#include "plf.h"
-#include "log.h"
-#include "check_range.h"
-#include "block_model.h"
-#include "block_submodel.h"
-#include "submodeler.h"
-#include "treelog.h"
-#include "mathlib.h"
-#include "program.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/library.h"
+#include "object_model/plf.h"
+#include "daisy/output/log.h"
+#include "object_model/check_range.h"
+#include "object_model/block_model.h"
+#include "object_model/block_submodel.h"
+#include "object_model/submodeler.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
+#include "programs/program.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <memory>
 #include <sstream>
 
@@ -265,7 +265,7 @@ properties.")
 
 // The 'hydraulic' program model.
 
-#include "horizon.h"
+#include "daisy/soil/horizon.h"
 
 struct ProgramHydraulic_table : public Program
 {

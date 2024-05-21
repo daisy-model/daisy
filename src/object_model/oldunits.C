@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "oldunits.h"
-#include "mathlib.h"
-#include "memutils.h"
-#include "attribute.h"
+#include "object_model/oldunits.h"
+#include "util/mathlib.h"
+#include "util/memutils.h"
+#include "object_model/attribute.h"
 #include <map>
 
 struct Oldunits::Content

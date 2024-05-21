@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "bioincorporation.h"
-#include "frame_submodel.h"
-#include "log.h"
-#include "geometry.h"
-#include "soil.h"
-#include "am.h"
-#include "librarian.h"
-#include "plf.h"
-#include "daisy_time.h"
-#include "aom.h"
-#include "check.h"
-#include "vcheck.h"
-#include "mathlib.h"
+#include "daisy/organic_matter/bioincorporation.h"
+#include "object_model/frame_submodel.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/organic_matter/am.h"
+#include "object_model/librarian.h"
+#include "object_model/plf.h"
+#include "daisy/daisy_time.h"
+#include "daisy/organic_matter/aom.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
 #include <algorithm>
 #include <sstream>
 

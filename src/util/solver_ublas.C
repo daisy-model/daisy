@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "solver_ublas.h"
-#include "assertion.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "util/solver_ublas.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 #include <boost/numeric/ublas/triangular.hpp>
 #include <boost/numeric/ublas/vector_proxy.hpp>

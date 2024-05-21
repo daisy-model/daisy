@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "partition.h"
-#include "plf.h"
-#include "librarian.h"
-#include "frame_submodel.h"
-#include "check.h"
-#include "mathlib.h"
-#include "treelog.h"
-#include "log.h"
+#include "daisy/crop/partition.h"
+#include "object_model/plf.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/treelog.h"
+#include "daisy/output/log.h"
 #include <sstream>
 
 void

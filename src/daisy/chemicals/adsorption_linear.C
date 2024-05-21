@@ -20,13 +20,13 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "adsorption.h"
-#include "block_model.h"
-#include "check.h"
-#include "soil.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/chemicals/adsorption.h"
+#include "object_model/block_model.h"
+#include "object_model/check.h"
+#include "daisy/soil/soil.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 static const double c_fraction_in_humus = 0.587;
 

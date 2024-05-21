@@ -19,17 +19,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "select_value.h"
-#include "block_model.h"
-#include "volume.h"
-#include "border.h"
-#include "column.h"
-#include "geometry.h"
-#include "treelog.h"
-#include "librarian.h"
-#include "frame.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/output/select_value.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/volume.h"
+#include "daisy/soil/transport/border.h"
+#include "daisy/column.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/treelog.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 
 #ifdef DEBUG_EDGES
 #include <sstream>

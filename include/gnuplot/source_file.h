@@ -21,9 +21,9 @@
 #ifndef SOURCE_FILE_H
 #define SOURCE_FILE_H
 
-#include "source.h"
-#include "lexer_table.h"
-#include "timestep.h"
+#include "gnuplot/source.h"
+#include "util/lexer_table.h"
+#include "daisy/timestep.h"
 
 class SourceFile : public Source
 {

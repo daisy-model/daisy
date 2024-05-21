@@ -22,8 +22,8 @@
 #ifndef IRRIGATE_H
 #define IRRIGATE_H
 
-#include "symbol.h"
-#include "memutils.h"
+#include "object_model/symbol.h"
+#include "util/memutils.h"
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 

@@ -22,8 +22,8 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include "symbol.h"
-#include "attribute.h"
+#include "object_model/symbol.h"
+#include "object_model/attribute.h"
 #include <vector>
 #include <string>
 #include <boost/noncopyable.hpp>

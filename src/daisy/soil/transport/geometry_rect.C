@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "geometry_rect.h"
-#include "volume.h"
-#include "check.h"
-#include "vcheck.h"
-#include "block_model.h"
-#include "frame.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/geometry_rect.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 size_t 

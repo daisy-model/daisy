@@ -22,16 +22,16 @@
 
 #define BUILD_DLL
 
-#include "rootdens.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "log.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "iterative.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/crop/root/rootdens.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "util/iterative.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 
 #include <sstream>
 

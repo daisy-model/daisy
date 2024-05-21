@@ -20,17 +20,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "photo.h"
-#include "block_model.h"
-#include "canopy_std.h"
-#include "phenology.h"
-#include "plf.h"
-#include "frame.h"
-#include "mathlib.h"
+#include "daisy/crop/photo.h"
+#include "object_model/block_model.h"
+#include "daisy/crop/canopy_std.h"
+#include "daisy/crop/phenology.h"
+#include "object_model/plf.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
 #include <sstream>
-#include "check.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 
 // Chemical constants affecting the crop.
 const double molWeightCH2O = 30.0; // [gCH2O/mol]

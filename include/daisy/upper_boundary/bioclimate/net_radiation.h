@@ -23,8 +23,8 @@
 #ifndef NET_RADIATION_H
 #define NET_RADIATION_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 class Weather;
 class BlockModel;

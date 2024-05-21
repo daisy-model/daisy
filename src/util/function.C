@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "function.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "plf.h"
+#include "util/function.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/plf.h"
 
 // The 'function' component.
 

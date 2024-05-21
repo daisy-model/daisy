@@ -19,10 +19,10 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "organic.h"
-#include "geometry.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/soil/transport/geometry.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // Convertions
 

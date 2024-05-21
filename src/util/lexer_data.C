@@ -21,9 +21,9 @@
 
 #define BUILD_DLL
 
-#include "lexer_data.h"
-#include "daisy_time.h"
-#include "mathlib.h"
+#include "util/lexer_data.h"
+#include "daisy/daisy_time.h"
+#include "util/mathlib.h"
 #include <ctype.h>
 #include <cstdlib>
 

@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "transport.h"
-#include "chemical.h"
-#include "doe.h"
-#include "geometry.h"
-#include "adsorption.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "soil_water.h"
-#include "soil.h"
+#include "daisy/soil/transport/transport.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/organic_matter/doe.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/chemicals/adsorption.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil.h"
 
 const char *const Transport::component = "transport";
 

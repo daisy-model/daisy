@@ -22,7 +22,7 @@
 #ifndef SUBMODELER_H
 #define SUBMODELER_H
 
-#include "block_submodel.h"
+#include "object_model/block_submodel.h"
 #include <vector>
 #include <memory>
 

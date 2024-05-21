@@ -22,7 +22,7 @@
 #ifndef SELECT_VALUE_H
 #define SELECT_VALUE_H
 
-#include "select.h"
+#include "daisy/output/select.h"
 
 class SelectValue : public Select
 {

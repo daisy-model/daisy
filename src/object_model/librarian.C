@@ -19,17 +19,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "librarian.h"
-#include "library.h"
-#include "metalib.h"
-#include "intrinsics.h"
-#include "block_top.h"
-#include "treelog_text.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame_model.h"
-#include "block_model.h"
-#include "block_top.h"
+#include "object_model/librarian.h"
+#include "object_model/library.h"
+#include "object_model/metalib.h"
+#include "object_model/intrinsics.h"
+#include "object_model/block_top.h"
+#include "object_model/treelog_text.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
+#include "object_model/block_model.h"
+#include "object_model/block_top.h"
 #include <sstream>
 #include <map>
 

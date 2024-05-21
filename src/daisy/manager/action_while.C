@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "frame.h"
-#include "log.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "block_model.h"
+#include "daisy/manager/action.h"
+#include "object_model/frame.h"
+#include "daisy/output/log.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
 
 struct ActionWhile : public Action
 {

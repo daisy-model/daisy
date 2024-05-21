@@ -22,7 +22,7 @@
 #ifndef GHF_H
 #define GHF_H
 
-#include "model.h"
+#include "object_model/model.h"
 
 class Geometry;
 class Soil;

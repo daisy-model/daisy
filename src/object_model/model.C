@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-#include "model.h"
-#include "frame.h"
+#include "object_model/model.h"
+#include "object_model/frame.h"
 
 // Base class 'Model'
 

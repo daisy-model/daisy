@@ -19,11 +19,11 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "zone.h"
-#include "bound.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/zone.h"
+#include "daisy/soil/transport/bound.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
 
 class Bound;
 

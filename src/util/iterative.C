@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "iterative.h"
-#include "assertion.h"
-#include "treelog.h"
-#include "mathlib.h"
+#include "util/iterative.h"
+#include "util/assertion.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
 #include <sstream>
 #include <algorithm>
 #include <limits>

@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "mactrans.h"
-#include "soil_water.h"
-#include "geometry1d.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/soil/transport/mactrans.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/transport/geometry1d.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 #include <vector>
 

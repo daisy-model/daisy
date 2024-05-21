@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "log_all.h"
-#include "select.h"
-#include "metalib.h"
-#include "library.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "field.h"
+#include "daisy/output/log_all.h"
+#include "daisy/output/select.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "daisy/field.h"
 #include <sstream>
-#include "column.h"
+#include "daisy/column.h"
 
 bool 
 LogAll::check_leaf (symbol name) const

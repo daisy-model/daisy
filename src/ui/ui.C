@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "ui.h"
-#include "toplevel.h"
-#include "treelog_text.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "assertion.h"
-#include "frame.h"
+#include "ui/ui.h"
+#include "object_model/toplevel.h"
+#include "object_model/treelog_text.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
 
 #if defined (__MINGW32__) || defined (_MSC_VER)
 #include <windows.h>

@@ -19,16 +19,16 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "xysource.h"
-#include "lexer_table.h"
-#include "scope_table.h"
-#include "gnuplot_utils.h"
-#include "number.h"
-#include "boolean.h"
-#include "vcheck.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "gnuplot/xysource.h"
+#include "util/lexer_table.h"
+#include "util/scope_table.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/parameter_types/boolean.h"
+#include "object_model/vcheck.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class XYSourceExpr : public XYSource
 {

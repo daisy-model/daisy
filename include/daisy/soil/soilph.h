@@ -21,7 +21,7 @@
 #ifndef SOILPH_H
 #define SOILPH_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 
 class BlockModel;
 class Geometry;

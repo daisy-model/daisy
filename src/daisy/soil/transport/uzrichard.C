@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "uzmodel.h"
-#include "block_model.h"
-#include "groundwater.h"
-#include "surface.h"
-#include "geometry_vert.h"
-#include "soil.h"
-#include "soil_heat.h"
-#include "mathlib.h"
-#include "frame.h"
-#include "log.h"
-#include "average.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/soil/transport/uzmodel.h"
+#include "object_model/block_model.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "daisy/soil/transport/geometry_vert.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_heat.h"
+#include "util/mathlib.h"
+#include "object_model/frame.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/average.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 #include <sstream>
 #include <memory>
 

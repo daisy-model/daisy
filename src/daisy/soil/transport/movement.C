@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "movement.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "tertiary.h"
-#include "log.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "frame.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/movement.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "daisy/soil/transport/tertiary.h"
+#include "daisy/output/log.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 const char *const Movement::component = "movement";

@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "uifilter.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "program.h"
-#include "metalib.h"
-#include "library.h"
-#include "filepos.h"
-#include "memutils.h"
-#include "assertion.h"
-#include "frame_submodel.h"
+#include "ui/uifilter.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "programs/program.h"
+#include "object_model/metalib.h"
+#include "object_model/library.h"
+#include "util/filepos.h"
+#include "util/memutils.h"
+#include "util/assertion.h"
+#include "object_model/frame_submodel.h"
 #include <map>
 
 // The 'UIItem' interface.

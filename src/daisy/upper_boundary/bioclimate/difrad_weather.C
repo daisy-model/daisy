@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "difrad.h"
-#include "weather.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "treelog.h"
+#include "daisy/upper_boundary/bioclimate/difrad.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 struct DifradWeather : public Difrad

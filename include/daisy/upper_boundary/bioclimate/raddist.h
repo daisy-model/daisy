@@ -22,7 +22,7 @@
 #ifndef RADDIST_H
 #define RADDIST_H
 
-#include "model_derived.h"
+#include "object_model/model_derived.h"
 #include <vector>
 
 class Vegetation;

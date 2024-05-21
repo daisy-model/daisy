@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "block_model.h"
-#include "transform.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "soil.h"
-#include "log.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/chemicals/reaction.h"
+#include "object_model/block_model.h"
+#include "daisy/chemicals/transform.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/soil/soil.h"
+#include "daisy/output/log.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <memory>
 
 struct ReactionStandard : public Reaction

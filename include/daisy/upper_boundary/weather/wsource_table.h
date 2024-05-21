@@ -21,10 +21,10 @@
 #ifndef WSOURCE_TABLE_H
 #define WSOURCE_TABLE_H
 
-#include "wsource_base.h"
-#include "daisy_time.h"
-#include "lexer_table.h"
-#include "frame_submodel.h"
+#include "daisy/upper_boundary/weather/wsource_base.h"
+#include "daisy/daisy_time.h"
+#include "util/lexer_table.h"
+#include "object_model/frame_submodel.h"
 #include <map>
 
 class Units;

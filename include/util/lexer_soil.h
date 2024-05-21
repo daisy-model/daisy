@@ -23,7 +23,7 @@
 #ifndef LEXER_SOIL_H
 #define LEXER_SOIL_H
 
-#include "lexer_table.h"
+#include "util/lexer_table.h"
 
 class LexerSoil : public LexerTable
 {

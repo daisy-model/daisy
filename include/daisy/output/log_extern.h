@@ -22,10 +22,10 @@
 #ifndef LOG_EXTERN_H
 #define LOG_EXTERN_H
 
-#include "log_select.h"
-#include "destination.h"
-#include "scope.h"
-#include "symbol.h"
+#include "daisy/output/log_select.h"
+#include "daisy/output/destination.h"
+#include "util/scope.h"
+#include "object_model/symbol.h"
 #include <map>
 #include <vector>
 

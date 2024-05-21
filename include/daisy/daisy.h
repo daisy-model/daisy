@@ -23,7 +23,7 @@
 #ifndef DAISY_H
 #define DAISY_H
 
-#include "program.h"
+#include "programs/program.h"
 #include <vector>
 #include <memory>
 

@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "vernalization.h"
-#include "librarian.h"
-#include "log.h"
-#include "frame.h"
-#include "block_model.h"
+#include "daisy/crop/vernalization.h"
+#include "object_model/librarian.h"
+#include "daisy/output/log.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 
 // The 'vernalization' component.
 

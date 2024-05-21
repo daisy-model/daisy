@@ -29,7 +29,7 @@ extern "C" {
 #define CS_COPYRIGHT "Copyright (c) Timothy A. Davis, 2006-2013"
 #define CXSPARSE
 
-#include "SuiteSparse_config.h"
+#include "util/SuiteSparse_config.h"
 #define cs_long_t       SuiteSparse_long
 #define cs_long_t_id    SuiteSparse_long_id
 #define cs_long_t_max   SuiteSparse_long_max

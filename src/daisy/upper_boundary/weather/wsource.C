@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "wsource_weather.h"
-#include "weatherdata.h"
-#include "daisy_time.h"
-#include "librarian.h"
-#include "assertion.h"
+#include "daisy/upper_boundary/weather/wsource_weather.h"
+#include "daisy/upper_boundary/weather/weatherdata.h"
+#include "daisy/daisy_time.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
 
 // The "weather" component.
 

@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "block_model.h"
+#include "object_model/block_model.h"
 
 const FrameModel& 
 BlockModel::frame () const

@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-#include "weather.h"
-#include "astronomy.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/upper_boundary/bioclimate/astronomy.h"
 
 Weather::Weather ()
 { }

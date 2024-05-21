@@ -22,15 +22,15 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "boolean.h"
-#include "scope.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "daisy.h"
-#include "treelog.h"
-#include "frame.h"
-#include "block_model.h"
+#include "daisy/condition.h"
+#include "object_model/parameter_types/boolean.h"
+#include "util/scope.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "daisy/daisy.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
 #include <memory>
 
 struct ConditionBoolean : public Condition

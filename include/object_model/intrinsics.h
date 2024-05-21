@@ -21,8 +21,8 @@
 #ifndef INTRINSICS_H
 #define INTRINSICS_H
 
-#include "memutils.h"
-#include "symbol.h"
+#include "util/memutils.h"
+#include "object_model/symbol.h"
 #include <boost/shared_ptr.hpp>
 
 class Library;

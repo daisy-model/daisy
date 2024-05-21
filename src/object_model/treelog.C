@@ -21,7 +21,7 @@
 
 #define BUILD_DLL
 
-#include "treelog.h"
+#include "object_model/treelog.h"
 #include <sstream>
 
 Treelog::Open::Open (Treelog& l, const std::string& name)

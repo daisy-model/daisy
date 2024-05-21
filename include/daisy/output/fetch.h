@@ -22,8 +22,8 @@
 #ifndef FETCH_H
 #define FETCH_H
 
-#include "destination.h"
-#include "symbol.h"
+#include "daisy/output/destination.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <iosfwd>
 

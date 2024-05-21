@@ -21,14 +21,14 @@
 
 #define BUILD_DLL
 
-#include "log.h"
-#include "library.h"
-#include "metalib.h"
-#include "block_model.h"
-#include "daisy.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame_model.h"
+#include "daisy/output/log.h"
+#include "object_model/library.h"
+#include "object_model/metalib.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
 #include <sstream>
 #include <list>
 #include <string>

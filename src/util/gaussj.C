@@ -4,13 +4,13 @@
 
 #define BUILD_DLL
 
-#include "gaussj.h"
+#include "util/gaussj.h"
 
 #define DEBUG_MESSAGES
 
 #ifdef DEBUG_MESSAGES
-#include "mathlib.h"
-#include "assertion.h"
+#include "util/mathlib.h"
+#include "util/assertion.h"
 #include <sstream>
 #endif
 

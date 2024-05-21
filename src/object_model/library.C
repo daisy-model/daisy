@@ -21,13 +21,13 @@
 
 #define BUILD_DLL
 
-#include "library.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "frame_model.h"
-#include "filepos.h"
+#include "object_model/library.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/frame_model.h"
+#include "util/filepos.h"
 #include <map>
 #include <sstream>
 

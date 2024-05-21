@@ -20,19 +20,19 @@
 
 #define BUILD_DLL
 
-#include "biopore.h"
-#include "block_model.h"
-#include "frame.h"
-#include "librarian.h"
-#include "scope_multi.h"
-#include "scope_id.h"
-#include "units.h"
-#include "check.h"
-#include "geometry.h"
-#include "log.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/soil/transport/biopore.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "object_model/librarian.h"
+#include "util/scope_multi.h"
+#include "util/scope_id.h"
+#include "object_model/units.h"
+#include "object_model/check.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // biopore component.

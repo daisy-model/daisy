@@ -22,7 +22,7 @@
 #ifndef LITTER_RESIDUE_H
 #define LITTER_RESIDUE_H
 
-#include "litter.h"
+#include "daisy/upper_boundary/litter/litter.h"
 
 struct LitterResidue : public Litter
 {

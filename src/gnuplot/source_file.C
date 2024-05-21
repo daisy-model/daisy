@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "source_file.h"
-#include "frame.h"
-#include "gnuplot_utils.h"
-#include "vcheck.h"
-#include "mathlib.h"
-#include "submodeler.h"
+#include "gnuplot/source_file.h"
+#include "object_model/frame.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/vcheck.h"
+#include "util/mathlib.h"
+#include "object_model/submodeler.h"
 #include <algorithm>
 #include <numeric>
 

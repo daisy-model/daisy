@@ -22,26 +22,25 @@
 
 #define BUILD_DLL
 
-#include "reaction.h"
-#include "abiotic.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "soil_heat.h"
-#include "organic.h"
-#include "chemistry.h"
-#include "chemical.h"
-#include "plf.h"
-#include "log.h"
-#include "check.h"
-#include "mathlib.h"
-#include "frame.h"
-#include "treelog.h"
-#include "denprod.h"
-
 // The 'denitrification' reaction model.
+#include "daisy/chemicals/reaction.h"
+#include "daisy/chemicals/denprod.h"        
+#include "daisy/soil/abiotic.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "object_model/plf.h"
+#include "daisy/output/log.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/frame.h"
+#include "object_model/treelog.h"
 
 struct ReactionDenit : public Reaction
 {

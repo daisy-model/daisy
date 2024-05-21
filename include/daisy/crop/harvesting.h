@@ -22,9 +22,9 @@
 #ifndef HARVESTING_H
 #define HARVESTING_H
 
-#include "daisy_time.h"
-#include "plf.h"
-#include "symbol.h"
+#include "daisy/daisy_time.h"
+#include "object_model/plf.h"
+#include "object_model/symbol.h"
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>

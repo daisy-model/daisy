@@ -22,14 +22,14 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "lexer_data.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "daisy_time.h"
-#include "treelog.h"
-#include "block_model.h"
-#include "path.h"
+#include "programs/program.h"
+#include "util/lexer_data.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "daisy/daisy_time.h"
+#include "object_model/treelog.h"
+#include "object_model/block_model.h"
+#include "util/path.h"
 #include <fstream>
 #include <sstream>
 

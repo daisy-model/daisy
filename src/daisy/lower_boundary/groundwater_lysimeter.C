@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "geometry.h"
-#include "assertion.h"
-#include "librarian.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/soil/transport/geometry.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
 
 class GroundwaterLysimeter : public Groundwater
 {

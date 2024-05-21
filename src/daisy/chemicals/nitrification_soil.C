@@ -21,16 +21,16 @@
 
 #define BUILD_DLL
 
-#include "nitrification.h"
-#include "abiotic.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "plf.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame_model.h"
-#include "intrinsics.h"
-#include "library.h"
+#include "daisy/chemicals/nitrification.h"
+#include "daisy/soil/abiotic.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/plf.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
+#include "object_model/intrinsics.h"
+#include "object_model/library.h"
 
 class NitrificationSoil : public Nitrification
 {

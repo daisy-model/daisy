@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "equil.h"
-#include "block_model.h"
-#include "scope_soil.h"
-#include "number.h"
-#include "treelog.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/chemicals/equil.h"
+#include "object_model/block_model.h"
+#include "util/scope_soil.h"
+#include "object_model/parameter_types/number.h"
+#include "object_model/treelog.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <memory>
 #include <sstream>
 

@@ -21,19 +21,19 @@
 
 #define BUILD_DLL
 
-#include "soil_water.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_heat.h"
-#include "groundwater.h"
-#include "log.h"
-#include "librarian.h"
-#include "block.h"
-#include "check.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "mathlib.h"
-#include "frame_submodel.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_heat.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/block.h"
+#include "object_model/check.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
+#include "object_model/frame_submodel.h"
 #include <sstream>
 
 void

@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "output.h"
-#include "daisy.h"
-#include "log_all.h"
-#include "treelog.h"
-#include "daisy_time.h"
-#include "timestep.h"
-#include "block_model.h"
-#include "frame.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "scope_model.h"
+#include "daisy/output/output.h"
+#include "daisy/daisy.h"
+#include "daisy/output/log_all.h"
+#include "object_model/treelog.h"
+#include "daisy/daisy_time.h"
+#include "daisy/timestep.h"
+#include "object_model/block_model.h"
+#include "object_model/frame.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "util/scope_model.h"
 
 void
 Output::initial_logs (const Daisy& daisy, const Time& previous, Treelog& msg)

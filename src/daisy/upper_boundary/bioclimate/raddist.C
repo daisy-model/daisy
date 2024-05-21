@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "raddist.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
+#include "daisy/upper_boundary/bioclimate/raddist.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
 
 const char *const Raddist::component = "raddist";
 

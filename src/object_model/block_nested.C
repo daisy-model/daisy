@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-#include "block_nested.h"
-#include "frame.h"
+#include "object_model/block_nested.h"
+#include "object_model/frame.h"
 
 const Metalib& 
 BlockNested::metalib () const

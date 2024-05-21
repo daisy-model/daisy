@@ -6,7 +6,7 @@
 #pragma GCC system_header
 
 extern "C" {
-#include "cs.h"
+#include "util/cs.h"
 }
 
 namespace CS {

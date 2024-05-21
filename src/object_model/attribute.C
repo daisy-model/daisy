@@ -22,8 +22,8 @@
 
 #define BUILD_DLL
 
-#include "attribute.h"
-#include "assertion.h"
+#include "object_model/attribute.h"
+#include "util/assertion.h"
 #include <sstream>
 
 symbol 

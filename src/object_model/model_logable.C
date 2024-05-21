@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "model_logable.h"
+#include "object_model/model_logable.h"
 
 // The 'ModelLogable' Class.
 

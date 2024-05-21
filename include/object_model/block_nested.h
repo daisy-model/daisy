@@ -22,8 +22,8 @@
 #ifndef BLOCK_NESTED_H
 #define BLOCK_NESTED_H
 
-#include "block.h"
-#include "treelog.h"
+#include "object_model/block.h"
+#include "object_model/treelog.h"
 
 class BlockNested : public Block
 {

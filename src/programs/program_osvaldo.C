@@ -20,12 +20,12 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "librarian.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "path.h"
-#include "treelog.h"
+#include "programs/program.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "util/path.h"
+#include "object_model/treelog.h"
 #include <cstdio>
 #include <istream>
 #include <sstream>

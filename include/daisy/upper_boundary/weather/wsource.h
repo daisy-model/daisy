@@ -21,10 +21,10 @@
 #ifndef WSOURCE_H
 #define WSOURCE_H
 
-#include "weather.h"
-#include "model_derived.h"
-#include "scope.h"
-#include "symbol.h"
+#include "daisy/upper_boundary/weather/weather.h"
+#include "object_model/model_derived.h"
+#include "util/scope.h"
+#include "object_model/symbol.h"
 #include <vector>
 
 class BlockModel;

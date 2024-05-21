@@ -21,7 +21,7 @@
 #ifndef WSOURCE_INDIRECT_H
 #define WSOURCE_INDIRECT_H
 
-#include "wsource_weather.h"
+#include "daisy/upper_boundary/weather/wsource_weather.h"
 
 class WSourceIndirect : public WSourceWeather
 {

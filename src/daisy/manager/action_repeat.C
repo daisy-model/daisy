@@ -21,13 +21,13 @@
 
 #define BUILD_DLL
 
-#include "action.h"
-#include "daisy.h"
-#include "block_model.h"
-#include "log.h"
-#include "librarian.h"
-#include "frame_model.h"
-#include "assertion.h"
+#include "daisy/manager/action.h"
+#include "daisy/daisy.h"
+#include "object_model/block_model.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_model.h"
+#include "util/assertion.h"
 #include <memory>
 
 struct ActionRepeat : public Action

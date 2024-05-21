@@ -23,7 +23,7 @@
 #ifndef PHOTO_FARQUHAR_H
 #define PHOTO_FARQUHAR_H
 
-#include "photo.h"
+#include "daisy/crop/photo.h"
 #include <memory>
 #include <vector>
 

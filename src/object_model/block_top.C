@@ -20,7 +20,7 @@
 
 #define BUILD_DLL
 
-#include "block_top.h"
+#include "object_model/block_top.h"
 
 const Metalib&
 BlockTop::metalib () const

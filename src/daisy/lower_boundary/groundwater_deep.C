@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class GroundwaterDeep : public Groundwater
 {

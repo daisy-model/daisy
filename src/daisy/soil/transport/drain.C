@@ -20,10 +20,10 @@
 
 #define BUILD_DLL
 
-#include "drain.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/soil/transport/drain.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 // The 'drain' component.
 

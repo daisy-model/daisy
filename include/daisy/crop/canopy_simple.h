@@ -22,7 +22,7 @@
 #ifndef CANOPY_SIMPLE_H
 #define CANOPY_SIMPLE_H
 
-#include "plf.h"
+#include "object_model/plf.h"
 #include <boost/noncopyable.hpp>
 
 class Log;

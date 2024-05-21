@@ -20,16 +20,16 @@
 
 #define BUILD_DLL
 
-#include "retention.h"
-#include "block_model.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "check.h"
-#include "intrinsics.h"
-#include "library.h"
-#include "frame_model.h"
-#include "treelog.h"
-#include "mathlib.h"
+#include "daisy/upper_boundary/litter/retention.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/check.h"
+#include "object_model/intrinsics.h"
+#include "object_model/library.h"
+#include "object_model/frame_model.h"
+#include "object_model/treelog.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 // The 'retention' component.

@@ -22,17 +22,17 @@
 
 #define BUILD_DLL
 
-#include "condition.h"
-#include "block_model.h"
-#include "daisy_time.h"
-#include "daisy.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "timestep.h"
-#include "log.h"
-#include "submodeler.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/condition.h"
+#include "object_model/block_model.h"
+#include "daisy/daisy_time.h"
+#include "daisy/daisy.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "daisy/timestep.h"
+#include "daisy/output/log.h"
+#include "object_model/submodeler.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct ConditionMMDD : public Condition

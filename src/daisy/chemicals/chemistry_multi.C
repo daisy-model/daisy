@@ -19,18 +19,18 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "chemistry.h"
-#include "chemical.h"
-#include "log.h"
-#include "block_model.h"
-#include "treelog.h"
-#include "assertion.h"
-#include "memutils.h"
-#include "librarian.h"
-#include "vcheck.h"
-#include "check.h"
-#include "frame.h"
-#include "mathlib.h"
+#include "daisy/chemicals/chemistry.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/output/log.h"
+#include "object_model/block_model.h"
+#include "object_model/treelog.h"
+#include "util/assertion.h"
+#include "util/memutils.h"
+#include "object_model/librarian.h"
+#include "object_model/vcheck.h"
+#include "object_model/check.h"
+#include "object_model/frame.h"
+#include "util/mathlib.h"
 #include <map>
 #include <sstream>
  

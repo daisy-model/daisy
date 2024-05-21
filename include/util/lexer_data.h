@@ -23,7 +23,7 @@
 #ifndef LEXER_DATA_H
 #define LEXER_DATA_H
 
-#include "lexer.h"
+#include "util/lexer.h"
 
 class Time;
 

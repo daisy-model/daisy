@@ -23,17 +23,17 @@
 
 #define BUILD_DLL
 
-#include "hydraulic.h"
-#include "block_model.h"
-#include "texture.h"
-#include "plf.h"
-#include "treelog.h"
+#include "daisy/soil/hydraulic.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/texture.h"
+#include "object_model/plf.h"
+#include "object_model/treelog.h"
 #include <sstream>
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
-#include "log.h"
-#include "check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
+#include "daisy/output/log.h"
+#include "object_model/check.h"
 
 class HydraulicWEPP : public Hydraulic
 {

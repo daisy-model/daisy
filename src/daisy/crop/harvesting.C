@@ -21,20 +21,20 @@
 
 #define BUILD_DLL
 
-#include "harvesting.h"
-#include "production.h"
-#include "am.h"
-#include "aom.h"
-#include "crop.h"		// for Crop::DSremove.
-#include "harvest.h"
-#include "geometry.h"
-#include "log.h"
-#include "timestep.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "check_range.h"
-#include "submodeler.h"
-#include "frame.h"
+#include "daisy/crop/harvesting.h"
+#include "daisy/crop/production.h"
+#include "daisy/organic_matter/am.h"
+#include "daisy/organic_matter/aom.h"
+#include "daisy/crop/crop.h"		// for Crop::DSremove.
+#include "daisy/output/harvest.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "daisy/timestep.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/check_range.h"
+#include "object_model/submodeler.h"
+#include "object_model/frame.h"
 #include <numeric>
 
 // Dimensional conversion.

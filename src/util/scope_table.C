@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "scope_table.h"
-#include "lexer_table.h"
-#include "assertion.h"
+#include "util/scope_table.h"
+#include "util/lexer_table.h"
+#include "util/assertion.h"
 
 void 
 ScopeTable::entries (std::set<symbol>& all) const

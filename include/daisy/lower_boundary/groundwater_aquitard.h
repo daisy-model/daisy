@@ -4,17 +4,17 @@
 #include <map>
 #include <memory>
 
-#include "assertion.h"
-#include "block_model.h"
-#include "check.h"
-#include "depth.h"
-#include "frame.h"
-#include "geometry.h"
-#include "groundwater.h"
-#include "librarian.h"
-#include "log.h"
-#include "soil_water.h"
-#include "treelog.h"
+#include "util/assertion.h"
+#include "object_model/block_model.h"
+#include "object_model/check.h"
+#include "util/depth.h"
+#include "object_model/frame.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "object_model/librarian.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/soil_water.h"
+#include "object_model/treelog.h"
 
 struct GroundwaterAquitard : public Groundwater
 {

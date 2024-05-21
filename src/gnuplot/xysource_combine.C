@@ -19,15 +19,15 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "xysource.h"
-#include "block_model.h"
-#include "gnuplot_utils.h"
-#include "number.h"
-#include "scope_sources.h"
-#include "source.h"
-#include "assertion.h"
-#include "librarian.h"
-#include "frame.h"
+#include "gnuplot/xysource.h"
+#include "object_model/block_model.h"
+#include "gnuplot/gnuplot_utils.h"
+#include "object_model/parameter_types/number.h"
+#include "util/scope_sources.h"
+#include "gnuplot/source.h"
+#include "util/assertion.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 struct XYSourceCombine : public XYSource
 {

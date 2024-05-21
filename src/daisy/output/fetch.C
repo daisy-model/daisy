@@ -20,11 +20,11 @@
 
 #define BUILD_DLL
 
-#include "fetch.h"
-#include "select.h"
-#include "treelog.h"
-#include "frame_submodel.h"
-#include "librarian.h"
+#include "daisy/output/fetch.h"
+#include "daisy/output/select.h"
+#include "object_model/treelog.h"
+#include "object_model/frame_submodel.h"
+#include "object_model/librarian.h"
 
 void 
 Fetch::missing ()

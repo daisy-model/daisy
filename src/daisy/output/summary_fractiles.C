@@ -20,17 +20,17 @@
 
 #define BUILD_DLL
 
-#include "summary.h"
-#include "destination.h"
-#include "select.h"
-#include "block_submodel.h"
-#include "block_model.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "daisy_time.h"
-#include "memutils.h"
-#include "mathlib.h"
-#include "vcheck.h"
+#include "daisy/output/summary.h"
+#include "daisy/output/destination.h"
+#include "daisy/output/select.h"
+#include "object_model/block_submodel.h"
+#include "object_model/block_model.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "daisy/daisy_time.h"
+#include "util/memutils.h"
+#include "util/mathlib.h"
+#include "object_model/vcheck.h"
 #include <numeric>
 #include <sstream>
 #include <map>

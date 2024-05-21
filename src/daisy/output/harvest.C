@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "harvest.h"
-#include "frame.h"
-#include "log.h"
-#include "librarian.h"
+#include "daisy/output/harvest.h"
+#include "object_model/frame.h"
+#include "daisy/output/log.h"
+#include "object_model/librarian.h"
 
 double
 Harvest::total_N () const

@@ -22,8 +22,8 @@
 #ifndef CONDEDGE_H
 #define CONDEDGE_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 #include <memory>
 

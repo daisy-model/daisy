@@ -20,15 +20,15 @@
 
 #define BUILD_DLL
 
-#include "program.h"
-#include "lexer.h"
-#include "librarian.h"
-#include "assertion.h"
-#include "daisy_time.h"
-#include "treelog.h"
-#include "path.h"
-#include "block_model.h"
-#include "mathlib.h"
+#include "programs/program.h"
+#include "util/lexer.h"
+#include "object_model/librarian.h"
+#include "util/assertion.h"
+#include "daisy/daisy_time.h"
+#include "object_model/treelog.h"
+#include "util/path.h"
+#include "object_model/block_model.h"
+#include "util/mathlib.h"
 #include <sstream>
 #include <cctype>
 

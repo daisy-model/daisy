@@ -20,7 +20,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-#include "groundwater_file.h"
+#include "daisy/lower_boundary/groundwater_file.h"
 
 Groundwater::bottom_t
 GroundwaterFile::bottom_type () const

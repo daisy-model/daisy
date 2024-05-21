@@ -21,11 +21,11 @@
 
 #define BUILD_DLL
 
-#include "groundwater.h"
-#include "block_model.h"
-#include "check.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/lower_boundary/groundwater.h"
+#include "object_model/block_model.h"
+#include "object_model/check.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 
 class GroundwaterFlux : public Groundwater
 {

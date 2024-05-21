@@ -20,13 +20,13 @@
 
 #define BUILD_DLL
 
-#include "bdconv.h"
-#include "geometry.h"
-#include "soil.h"
-#include "volume.h"
-#include "units.h"
-#include "assertion.h"
-#include "mathlib.h"
+#include "daisy/output/bdconv.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/transport/volume.h"
+#include "object_model/units.h"
+#include "util/assertion.h"
+#include "util/mathlib.h"
 #include <sstream>
 
 double

@@ -21,15 +21,15 @@
 
 #define BUILD_DLL
 
-#include "rootdens.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "log.h"
-#include "plf.h"
-#include "check.h"
-#include "mathlib.h"
-#include "librarian.h"
-#include "frame.h"
+#include "daisy/crop/root/rootdens.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/output/log.h"
+#include "object_model/plf.h"
+#include "object_model/check.h"
+#include "util/mathlib.h"
+#include "object_model/librarian.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct Rootdens_AP : public Rootdens

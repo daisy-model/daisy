@@ -21,20 +21,20 @@
 
 #define BUILD_DLL
 
-#include "macro.h"
-#include "block_model.h"
-#include "geometry1d.h"
-#include "soil.h"
-#include "surface.h"
-#include "plf.h"
-#include "mathlib.h"
-#include "log.h"
-#include "uzmodel.h"
-#include "check.h"
-#include "vcheck.h"
-#include "librarian.h"
-#include "treelog.h"
-#include "frame.h"
+#include "daisy/soil/transport/macro.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry1d.h"
+#include "daisy/soil/soil.h"
+#include "daisy/upper_boundary/surface/surface.h"
+#include "object_model/plf.h"
+#include "util/mathlib.h"
+#include "daisy/output/log.h"
+#include "daisy/soil/transport/uzmodel.h"
+#include "object_model/check.h"
+#include "object_model/vcheck.h"
+#include "object_model/librarian.h"
+#include "object_model/treelog.h"
+#include "object_model/frame.h"
 #include <sstream>
 
 struct MacroStandard : public Macro

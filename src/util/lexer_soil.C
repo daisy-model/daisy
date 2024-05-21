@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-#include "lexer_soil.h"
-#include "assertion.h"
+#include "util/lexer_soil.h"
+#include "util/assertion.h"
 #include <sstream>
 
 bool

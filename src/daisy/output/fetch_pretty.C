@@ -21,10 +21,10 @@
 
 #define BUILD_DLL
 
-#include "fetch_pretty.h"
-#include "librarian.h"
-#include "frame_submodel.h"
-#include "mathlib.h"
+#include "daisy/output/fetch_pretty.h"
+#include "object_model/librarian.h"
+#include "object_model/frame_submodel.h"
+#include "util/mathlib.h"
 #include <ostream>
 
 int 

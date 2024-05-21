@@ -23,8 +23,8 @@
 #ifndef AVERAGE_H
 #define AVERAGE_H
 
-#include "model.h"
-#include "symbol.h"
+#include "object_model/model.h"
+#include "object_model/symbol.h"
 
 #include <memory>
 
