@@ -7,9 +7,14 @@
 (defcrop test-crop SilomajsFoulum
   (LeafPhot FC_C3
             (TempEff (0 1) (100 1))
-            (Stomatacon SHA12 ; TOOD: Find meaningful parameters
-                        (min 0.1)
-                        (m 10))))
+            (Stomatacon SHA12
+                        (alpha 1.909)
+                        (m 339.9)
+                        (min 0.1) ; This is optional according to reference manual
+                        (lambda 0.288)
+                        (beta 0.000411)
+                        (delta 0.408)
+                        )))
 
 (input file "test_base_2.dai")
 
