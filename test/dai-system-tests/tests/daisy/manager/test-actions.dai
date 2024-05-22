@@ -1,0 +1,38 @@
+(input file "test_columns.dai")
+(input file "test_movement.dai")
+(input file "test_base.dai")
+(input file "chemistry.dai")
+
+(defaction test-manager activity
+  (at 2000 03 31 (do (cond ((mm_dd 03 31) (assert true)))))
+  (at 2000 03 31 (do message "A message"))
+  (warning "A warning")
+  (error "An error")
+  (wait_mm_dd 04 01) (plowing)
+  (wait_mm_dd 04 02) (mix -100)
+  (wait_mm_dd 04 03) (plant "SB")
+  (wait_mm_dd 04 13) (fertilize (pig_slurry (first_year_utilization 0.8)) (equivalent_weight 160.0 [kg N/ha]))
+  (wait_mm_dd 04 20) (if false t (spray DDT 1000))
+  (wait_mm_dd 04 21) (remove_solute DDT)
+  (wait_mm_dd 04 22) (spray_surface Ioxynil 1000)
+  (wait_mm_dd 04 23) (remove_solute Ioxynil)
+  (wait_mm_dd 08 10) (harvest "SB" (sorg 0.99) (leaf 0.95) (stem 0.95) (stub 10 [cm]))
+  )
+
+(defprogram test Daisy
+  "Test some actions."
+  (time 2000 03 31)
+  (stop 2000 09 01)
+  (activate_output (after 2000 03 30))
+  (manager test-manager)
+  (column JB6med)
+  (weather westDK)
+  (output ("Crop" (when monthly) (print_initial false))
+          ("Field water" (when monthly) (print_initial false))
+          ("Field nitrogen" (when monthly) (print_initial false))
+          ("Field chemical" (chemical N) (when monthly) (print_initial false))
+          ("Soil water" (when monthly) (print_initial false))
+          ("Soil nitrogen" (when monthly) (print_initial false))
+          ("Soil chemical" (chemical N) (when monthly) (print_initial false))))
+
+(run test)
