@@ -1,0 +1,24 @@
+dlf-0.0 -- Crop (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: crop.dlf
+RUN: Wed May 22 10:12:07 2024
+
+COLUMN: *
+CROP: *
+INTERVAL: box none
+
+LOG: Crop development and production.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/manager/test-actions.dai
+SIM: Test some actions.
+
+--------------------
+year	month	mday	hour	DS	Height	LAI	Depth	WLeaf	WDead	WStem	WSOrg	WRoot	Fixated	NLeaf	NDead	NStem	NSOrg	NRoot	water_stress	nitrogen_stress	Phenology
+				DS	cm	m^2/m^2	cm	Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	Mg DM/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha	kg N/ha			
+2000	4	1	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00
+2000	5	1	0	0.149776	7.5	0.240462	-23.252	0.0470586	0	0	0	0.0817472	0	2.5811	0	0	0	1.49713	0	0	0
+2000	6	1	0	0.780851	57.4284	2.06223	-74.4422	0.671331	0.00625414	1.75109	0	0.575515	0	21.628	0.0420775	27.7091	0	5.5034	0	0.047159	0
+2000	7	1	0	1.27887	75	1.74049	-120	0.552425	0.0552896	2.73584	2.90665	0.660797	0	17.2439	0.378114	44.7226	53.7666	7.33254	0	0	1
+2000	8	1	0	1.76301	75	0.557228	-120	0.169815	0.170073	2.62805	5.43868	0.537979	0	4.09538	1.11242	32.9619	104.093	5.6719	0	0	1
+2000	9	1	0	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	0	00.00	00.00	00.00	00.00	00.00	0	0	00.00
