@@ -39,6 +39,7 @@
 #include "mathlib.h"
 #include "frame.h"
 #include "treelog.h"
+#include "denprod.h"
 
 // The 'denitrification' reaction model.
 
@@ -53,6 +54,7 @@ struct ReactionDenit : public Reaction
   const PLF water_factor;
   const PLF water_factor_fast;
   const double redox_height;    // Chemical denitrification below this depth.
+  std::unique_ptr<Denprod> denprod;
   
   // Log variable.
   std::vector<double> converted;
@@ -86,6 +88,7 @@ struct ReactionDenit : public Reaction
 void
 ReactionDenit::output (Log& log) const
 {
+  output_derived (denprod, "denprod", log);
   output_variable (converted, log);
   output_variable (converted_fast, log);
   output_variable (converted_redox, log);
@@ -98,7 +101,7 @@ ReactionDenit::tick_soil (const Geometry& geo,
                           const Soil& soil, const SoilWater& soil_water,
                           const SoilHeat& soil_heat,
                           OrganicMatter& organic_matter, Chemistry& chemistry, 
-                          const double dt, Treelog&)
+                          const double dt, Treelog& msg)
 {
   const size_t cell_size = geo.cell_size ();
   const std::vector<bool> active = organic_matter.active (); 
@@ -146,14 +149,10 @@ ReactionDenit::tick_soil (const Geometry& geo,
       converted_fast[i] = (M / dt > rate ? M / dt - rate : 0.0);
       potential[i] = pot;
       potential_fast[i] = pot_fast;
-
-#if 0
-      // cell, [g N/cm^3 S], [0-1], [g N/cm^3 S], [g C/cm^3 S], [dg C], [h]
-      denprod->split (i, M, Theta_fraction, NO3, (CO2_fast + CO2_slow) * dt, T,
-		      dt);
-#endif
     }
   soil_NO3.add_to_transform_sink (converted);
+  denprod->split (converted, geo, soil, soil_water, soil_NO3, organic_matter,
+		  msg);
 }
 
 bool 
@@ -172,12 +171,13 @@ ReactionDenit::check (const Geometry&,
 }
 
 void
-ReactionDenit::initialize (const Geometry&,
+ReactionDenit::initialize (const Geometry& geo,
                            const Soil& soil, const SoilWater&,
                            const SoilHeat&, const OrganicMatter&,
 			   const Surface&, Treelog&)
 {
-  const size_t cell_size = soil.size ();
+  denprod->initialize (geo);
+  const size_t cell_size = geo.cell_size ();
 
   converted.insert (converted.begin (), cell_size, 0.0);
   converted_fast.insert (converted_fast.begin (), cell_size, 0.0);
@@ -199,7 +199,8 @@ ReactionDenit::ReactionDenit (const BlockModel& al)
     water_factor_fast (al.check ("water_factor_fast" )
                        ? al.plf ("water_factor_fast")
                        : water_factor),
-    redox_height (al.number ("redox_height", 1.0))
+    redox_height (al.number ("redox_height", 1.0)),
+    denprod (Librarian::build_item<Denprod> (al, "denprod"))
 { }
 
 static struct ReactionDenitSyntax : public DeclareModel
@@ -220,6 +221,9 @@ limited by K_fast.")
   { }
   void load_frame (Frame& frame) const
   {
+    frame.declare_object ("denprod", Denprod::component,
+                          "Denitrification products.");
+    frame.set ("denprod", "Parton1996");
     frame.declare ("converted", "g/cm^3/h",
                    Attribute::LogOnly, Attribute::Variable,
                    "Amount of denitrification.");

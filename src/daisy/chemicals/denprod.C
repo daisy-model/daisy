@@ -22,6 +22,7 @@
 
 #include "denprod.h"
 #include "librarian.h"
+#include "block_model.h"
 
 // The 'denprod' component.
 
@@ -34,8 +35,8 @@ Denprod::library_id () const
   return id;
 }
 
-Denprod::Denprod ()
-  : Model ()
+Denprod::Denprod (const BlockModel& al)
+  : ModelDerived (al.type_name ())
 { }
 
 Denprod::~Denprod ()

@@ -59,7 +59,6 @@ public:
   virtual void tick_soil (const Geometry&, const Soil&, const SoilWater&,
                           const SoilHeat&, OrganicMatter&, Chemistry&,
                           const double dt, Treelog&);
-  virtual void output (Log&) const = 0;
 
   // Create and Destroy.
 public:

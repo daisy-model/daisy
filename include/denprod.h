@@ -22,12 +22,19 @@
 #ifndef DENPROD_H
 #define DENPROD_H
 
-#include "model.h"
+#include "model_derived.h"
 #include "symbol.h"
+#include <vector>
 
+class Geometry;
+class Soil;
+class SoilWater;
+class Chemical;
+class OrganicMatter;
+class Treelog;
 class BlockModel;
 
-class Denprod : public Model
+class Denprod : public ModelDerived
 {
   // Content.
 public:
@@ -36,13 +43,16 @@ public:
 
   // Simulation.
 public:
-  virtual void split (const double N, const double wfps, const double NO3,
-		      const double CO2, const double T,
-		      double& N2O) const = 0;
-
+  virtual void split (const std::vector<double>& N, const Geometry& geo,
+		      const Soil& soil, const SoilWater& soil_water,
+		      Chemical& soil_NO3, const OrganicMatter& organic,
+		      Treelog& msg) = 0;
+  
   // Create and Destroy.
+public:
+  virtual void initialize (const Geometry&) = 0;
 protected:
-  Denprod ();
+  Denprod (const BlockModel&);
 public:
   ~Denprod ();
 };
