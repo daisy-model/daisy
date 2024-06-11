@@ -29,7 +29,9 @@ install(FILES
   $ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
   $ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
   $ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
+  $ENV{MINGW_PREFIX}/bin/libgomp-1.dll
   $ENV{MINGW_PREFIX}/bin/libcxsparse.dll
+  $ENV{MINGW_PREFIX}/bin/libsuitesparseconfig.dll
   $ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
   TYPE BIN
   COMPONENT runtime

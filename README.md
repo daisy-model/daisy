@@ -143,6 +143,15 @@ Use [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) to run test
 
     ctest
 
+#### Windows
+If you use `MSYS2` you need to install `python`, `pip` and `pandas`. Installing `pandas` with `pip` fails.
+
+    pacman -S mingw-w64-ucrt-x86_64-python
+    pacman -S mingw-w64-ucrt-x86_64-python-pip
+    pacman -S mingw-w64-ucrt-x86_64-python-pandas
+
+Then you can use `pip` to install `daispy-test`
+
 ## Code coverage
 To get code coverage you need to set the build type to `Coverage`. This will disable some optimizations.
 There is a coverage preset defined for gcc.
