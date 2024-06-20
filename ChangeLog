@@ -1,3 +1,9 @@
+2024-06-20  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/bioclimate/svat_ssoc.C
+	(SVAT_SSOC::calculate_conductances): Fix argument order (reported
+	by Delhez Laura <Laura.Delhez@uliege.be>).
+
 2024-05-01  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* test/dai-unit-tests/CMakeLists.txt: Change 'dai_file' to 'name'

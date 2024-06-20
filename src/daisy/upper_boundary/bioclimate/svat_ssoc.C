@@ -444,8 +444,8 @@ SVAT_SSOC::tick (const Weather& weather, const Vegetation& vegetation,
 }
 
 void 
-SVAT_SSOC::calculate_conductances (const double g_s_sun /* stom cond. [m/s]*/, 
-                                   const double g_s_shadow /* stomc. [m/s]*/, 
+SVAT_SSOC::calculate_conductances (const double g_s_shadow /* stomc. [m/s]*/, 
+                                   const double g_s_sun /* stom cond. [m/s]*/, 
                                    Treelog& msg)
 {
   // Function to correct diffusivities for temperature and pressure
