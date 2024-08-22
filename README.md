@@ -69,21 +69,15 @@ Build it
     cmake ../../ --preset macos-clang-native
     cmake --build . -j <number-of-concurrent-jobs>
 
-
 #### Build for distribution
 Build a portable binary
 
     cmake ../../ --preset macos-clang-portable
     cmake --build . -j <number-of-concurrent-jobs>
 
-Test it
-
-	ctest
-
 Make an installer
 
     cpack
-
 
 ### Windows
 Install [MSYS2](https://www.msys2.org/).
@@ -107,19 +101,11 @@ Build it
     cmake ../../ --preset mingw-gcc-release
     cmake --build .
 
-Test it
-
-    ctest
-
 #### Build for distribution
 Build a portable binary
 
     cmake ../../ --preset mingw-gcc-portable
     cmake --build .
-
-Test it
-
-	ctest
 
 Install dependencies
 
@@ -128,7 +114,6 @@ Install dependencies
 Make an installer
 
 	cpack
-
 
 ## Testing
 ### Install test dependencies
@@ -142,6 +127,15 @@ When adding a test you need to add it as a `dai_test_case` in [test/CMakeLists.t
 Use [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) to run tests.
 
     ctest
+
+#### Windows
+If you use `MSYS2` you need to install `python`, `pip` and `pandas`. Installing `pandas` with `pip` fails, so it needs to be installed before `daisypy-test`
+
+    pacman -S mingw-w64-ucrt-x86_64-python
+    pacman -S mingw-w64-ucrt-x86_64-python-pip
+    pacman -S mingw-w64-ucrt-x86_64-python-pandas
+
+Then you can use `pip` to install `daispy-test`
 
 ## Code coverage
 To get code coverage you need to set the build type to `Coverage`. This will disable some optimizations.
