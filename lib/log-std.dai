@@ -541,7 +541,7 @@ The total amount of biopore water in the soil interval")
 	 "Org-Fertilizer"
          "Deposition"
          Fixated "Seed")
-  (output "N2O-Nitrification" "Denitrification"
+  (output "N2O-Nitrification" "NO3-Denitrification"
           "Matrix-Leaching" "Biopore-Leaching"
           "Soil-Drain" "Biopore-Drain"
           "Surface-Loss"
@@ -558,7 +558,7 @@ The total amount of biopore water in the soil interval")
   (output "Immobilization" "Matrix-Leaching" "Biopore-Leaching"
           "Soil-Drain" "Biopore-Drain" 
           "Surface-Loss" "Crop-Uptake"
-          "N2O-Nitrification" "Denitrification")
+          "N2O-Nitrification" "NO3-Denitrification")
   (content "Min-Surface" "Min-Soil" "Min-Biopores"))
 
 (defsummary "Field crop nitrogen balance" balance
@@ -753,10 +753,19 @@ not be traced by the model.")
                            combine "N" reaction denitrification converted)
                      (documentation "\
 Loss of NO3-N due to denitrification.")
-                     (tag "Denitrification")
+                     (tag "NO3-Denitrification")
                      (handle sum)
                      (dimension "${unit}")
                      (spec reaction denitrification converted))
+	   (interval (path column "${column}" Chemistry "*"
+                           combine "N" reaction denitrification
+			   denprod Parton1996 N2O)
+                     (documentation "\
+N2O-N released by denitrification.")
+                     (tag "N2O-Denitrification")
+                     (handle sum)
+                     (dimension "${unit}")
+                     (spec denprod Parton1996 N2O))
            (number (tag Fixated)
                    (path column "${column}"
 			 Vegetation component N_fixated)
@@ -840,7 +849,7 @@ Nitrogen content of the crop, excluding dead leaves.")
 	 "NO3-Nitrification" )
   (output "NO3-Leak-Matrix" "NO3-Leak-Biopore" 
 	  "NO3-Soil-Drain" "NO3-Biopore-Drain"
-	  "NO3-Uptake" "Denitrification" "NO3-Immobilization")
+	  "NO3-Uptake" "NO3-Denitrification" "NO3-Immobilization")
   (content "NO3-Soil" "NO3-Biopores"))
 
 (defsummary "Soil NH4+ balance" N_balance
@@ -864,7 +873,7 @@ Nitrogen content of the crop, excluding dead leaves.")
 	  "NO3-Soil-Drain" "NH4-Soil-Drain" 
 	  "NO3-Biopore-Drain" "NH4-Biopore-Drain"
 	  "NO3-Uptake" "NH4-Uptake"
-	  "Denitrification" "N2O-Nitrification"
+	  "NO3-Denitrification" "N2O-Nitrification"
 	  "NO3-Immobilization")
   (content "NO3-Soil" "NH4-Soil" "NO3-Biopores" "NH4-Biopores"))
 
@@ -885,7 +894,7 @@ Nitrogen content of the crop, excluding dead leaves.")
 	  "NO3-Soil-Drain" "NH4-Soil-Drain" 
 	  "NO3-Biopore-Drain" "NH4-Biopore-Drain"
 	  "NO3-Uptake" "NH4-Uptake"
-	  "Denitrification" "N2O-Nitrification"	  )
+	  "NO3-Denitrification" "N2O-Nitrification"	  )
   (content "NO3-Soil" "NH4-Soil" "NO3-Biopores" "NH4-Biopores"
 	   "AOM" "SOM" "SMB" "Buffer"))
 
@@ -1149,10 +1158,19 @@ fast compared to the time step.")
                            combine "N" reaction denitrification converted)
                      (documentation "\
 NO3-N removed by denitrification.")
-                     (tag "Denitrification")
+                     (tag "NO3-Denitrification")
                      (handle sum)
                      (dimension "${unit}")
                      (spec reaction denitrification converted))
+	   (interval (path column "${column}" Chemistry "*"
+                           combine "N" reaction denitrification
+			   denprod Parton1996 N2O)
+                     (documentation "\
+N2O-N released by denitrification.")
+                     (tag "N2O-Denitrification")
+                     (handle sum)
+                     (dimension "${unit}")
+                     (spec denprod Parton1996 N2O))
 	   (interval (path column "${column}" Chemistry "*"
                            combine "N" reaction nitrification NH4)
                      (documentation "\
