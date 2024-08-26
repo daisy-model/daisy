@@ -42,6 +42,7 @@ file(INSTALL
   "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
   "${HOMEBREW_PREFIX}/lib/libboost_filesystem-mt.dylib"
   "${HOMEBREW_PREFIX}/lib/libboost_atomic-mt.dylib"
+  "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
   DESTINATION ${_dylib_target_dir}
   FOLLOW_SYMLINK_CHAIN
 )
@@ -66,7 +67,6 @@ set_target_properties(daisy
 # This is brittle. Would be nice to get the dir path dynamically.
 set(_dylibs_rel_path
   "suite-sparse/lib/libcxsparse.4.dylib"
-  "suite-sparse/lib/libsuitesparseconfig.7.dylib"
   "boost/lib/libboost_filesystem-mt.dylib"
   "boost/lib/libboost_atomic-mt.dylib"
 )
@@ -75,7 +75,7 @@ foreach(_dylib_rel_path ${_dylibs_rel_path})
   cmake_path(GET _old_lib_id FILENAME _dylib)
   set(_new_lib_id "@rpath/lib/${_dylib}")
 
-  message("-change ${_old_lib_id} ${_new_lib_id}")
+  message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
   add_custom_command(TARGET daisy
     POST_BUILD
     COMMAND "install_name_tool"
@@ -83,3 +83,15 @@ foreach(_dylib_rel_path ${_dylibs_rel_path})
     "${DAISY_BIN_NAME}"
   )
 endforeach()
+
+# We also need to update the path of libomp in libsuitesparseconfig
+set(_old_lib_id "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib")
+set(_new_lib_id "@rpath/libomp.dylib")
+set(_suitesparseconfig "bin/lib/libsuitesparseconfig.7.dylib")
+message("-- In ${_suitesparseconfig}: Change ${_old_lib_id} -> ${_new_lib_id}")
+add_custom_command(TARGET daisy
+  POST_BUILD
+  COMMAND "install_name_tool"
+  ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
+  "${_suitesparseconfig}"
+)
