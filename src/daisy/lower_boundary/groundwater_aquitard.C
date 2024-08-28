@@ -1,3 +1,5 @@
+#define BUILD_DLL
+
 #include "daisy/lower_boundary/groundwater_aquitard.h"
 
 GroundwaterAquitard::GroundwaterAquitard (const BlockModel& al)
