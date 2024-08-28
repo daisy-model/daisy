@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Tue Apr 30 13:32:42 2024
+RUN: Wed Aug 28 10:52:36 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Content, transport and transformation of chemicals in the soil.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-cloudiness-Kjaersgaard.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/bioclimate/test-cloudiness-Kjaersgaard.dai
 SIM: Test cloudiness Kjaersgaard
 
 --------------------

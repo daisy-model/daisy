@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Tue Apr 30 13:43:48 2024
+RUN: Wed Aug 28 10:52:31 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -21,7 +21,7 @@ LOG:
 LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-cloudiness-const.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/bioclimate/test-cloudiness-const.dai
 SIM: Test cloudiness const
 
 --------------------

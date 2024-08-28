@@ -2,7 +2,7 @@ dlf-0.0 -- Soil water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_water.dlf
-RUN: Fri May 17 15:24:14 2024
+RUN: Wed Aug 28 10:54:37 2024
 
 COLUMN: *
 INTERVAL: box none

@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Mon Apr 29 13:28:51 2024
+RUN: Wed Aug 28 10:53:42 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -21,7 +21,7 @@ LOG:
 LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-maize.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/litter/test-litter-maize.dai
 SIM: Test litter Maize
 
 --------------------

@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Wed Apr 10 14:07:17 2024
+RUN: Wed Aug 28 10:49:38 2024
 
 COLUMN: *
 CROP: *
@@ -10,8 +10,8 @@ INTERVAL: box none
 
 LOG: Crop development and production.
 
-SIMFILE: test-ref.dai
-SIM: westDK-JB6med-SMaize scenarie
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/ref/test-ref.dai
+SIM: Reference test
 
 --------------------
 year	month	mday	hour	DS	Height	LAI	Depth	WLeaf	WDead	WStem	WSOrg	WRoot	Fixated	NLeaf	NDead	NStem	NSOrg	NRoot	water_stress	nitrogen_stress	Phenology

@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Tue Apr 30 14:15:55 2024
+RUN: Wed Aug 28 10:53:07 2024
 
 COLUMN: *
 CROP: *
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Crop development and production.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-net_radiation-swinbank.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/bioclimate/test-net_radiation-swinbank.dai
 SIM: Test net_radiation swinbank
 
 --------------------

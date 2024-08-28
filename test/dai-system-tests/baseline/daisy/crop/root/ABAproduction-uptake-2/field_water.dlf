@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Fri May 10 12:55:21 2024
+RUN: Wed Aug 28 10:50:04 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -22,7 +22,7 @@ LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/crop/root/test-ABAproduction-uptake-2.dai
-SIM: Test ABAprod uptake
+SIM: Test ABAprod uptake sometimes negative
 
 --------------------
 year	month	mday	hour	Precipitation	Irrigation	Potential evapotranspiration	Actual evapotranspiration	Matrix percolation	Biopore percolation	Matrix drain flow	Biopore drain flow	Runoff	Biopore water	Soil matrix water	Surface water

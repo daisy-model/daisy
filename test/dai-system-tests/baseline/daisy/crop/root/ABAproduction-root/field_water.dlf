@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Fri May 10 10:19:10 2024
+RUN: Wed Aug 28 10:49:52 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -27,9 +27,9 @@ SIM: Test ABAprod root
 --------------------
 year	month	mday	hour	Precipitation	Irrigation	Potential evapotranspiration	Actual evapotranspiration	Matrix percolation	Biopore percolation	Matrix drain flow	Biopore drain flow	Runoff	Biopore water	Soil matrix water	Surface water
 				mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm	mm
-2000	1	1	0	1.34167	0	0.120014	0.120014	-2.34354e-07	-0	0	0	0	0	789.208	0
+2000	1	1	0	1.34167	0	0.120014	0.120014	-2.34354e-07	-0	0	0	0	0	789.208	-6.93889e-18
 2000	2	1	0	91	0	4.38138	4.38138	0.122208	-0	0	0	0	0	875.704	0
-2000	3	1	0	113.2	0	7.62306	7.62306	10.7933	-0	18.9298	0	0	0	951.558	0
+2000	3	1	0	113.2	0	7.62306	7.62306	10.7933	-0	18.9298	0	0	0	951.558	-2.77556e-17
 2000	4	1	0	99.8	0	17.2241	17.2241	23.1511	-0	83.0773	0	0	0	927.905	0
 2000	5	1	0	51.1	0	34.383	34.383	18.1281	-0	12.8065	0	0	0	913.688	0
 2000	6	1	0	75.8	0	63.3766	63.2062	17.1291	-0	5.89703	0	0	0	903.247	0.00850589

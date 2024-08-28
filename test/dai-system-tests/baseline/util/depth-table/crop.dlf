@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Fri May 17 15:44:17 2024
+RUN: Wed Aug 28 10:54:41 2024
 
 COLUMN: *
 CROP: *

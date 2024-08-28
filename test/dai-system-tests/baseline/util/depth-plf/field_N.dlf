@@ -2,7 +2,7 @@ dlf-0.0 -- Field chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_N.dlf
-RUN: Fri May 17 14:52:44 2024
+RUN: Wed Aug 28 10:54:34 2024
 
 COLUMN: *
 CHEMICAL: N

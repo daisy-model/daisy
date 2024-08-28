@@ -2,7 +2,7 @@ dlf-0.0 -- Soil water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_water.dlf
-RUN: Fri Apr 12 14:34:29 2024
+RUN: Wed Aug 28 10:51:54 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -15,7 +15,7 @@ LOG: considered external to the system.  The balances provided by the
 LOG: log will work on any subset of the soil that matches the
 LOG: discretization.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzrect-vh.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/soil/transport/test-uzrect-vh.dai
 SIM: Test 2d transport using v+h module
 
 --------------------

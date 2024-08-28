@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Fri May 10 12:55:21 2024
+RUN: Wed Aug 28 10:50:04 2024
 
 COLUMN: *
 CROP: *
@@ -11,7 +11,7 @@ INTERVAL: box none
 LOG: Crop development and production.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/crop/root/test-ABAproduction-uptake-2.dai
-SIM: Test ABAprod uptake
+SIM: Test ABAprod uptake sometimes negative
 
 --------------------
 year	month	mday	hour	DS	Height	LAI	Depth	WLeaf	WDead	WStem	WSOrg	WRoot	Fixated	NLeaf	NDead	NStem	NSOrg	NRoot	water_stress	nitrogen_stress	Phenology

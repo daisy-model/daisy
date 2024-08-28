@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Fri Apr 12 10:37:14 2024
+RUN: Wed Aug 28 10:51:23 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -10,8 +10,8 @@ INTERVAL: box none
 
 LOG: Content, transport and transformation of chemicals in the soil.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-matrix-solute-none.dai
-SIM: westDK-JB6med-SMaize scenarie
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/soil/transport/test-transport-none.dai
+SIM: Test 1d transport using none module
 
 --------------------
 year	month	mday	hour	In-Matrix	In-Biopores	Leak-Matrix	Leak-Biopores	Biopores to matrix	Matrix to biopores	Tillage	Drain-Soil	Drain-Biopores	Drain-Biopores-Indirect	External	Uptake	Decompose	Transform	Content	Biopores	Error

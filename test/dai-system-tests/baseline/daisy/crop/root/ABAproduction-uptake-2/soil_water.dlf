@@ -2,7 +2,7 @@ dlf-0.0 -- Soil water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_water.dlf
-RUN: Fri May 10 12:55:21 2024
+RUN: Wed Aug 28 10:50:04 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -16,7 +16,7 @@ LOG: log will work on any subset of the soil that matches the
 LOG: discretization.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/crop/root/test-ABAproduction-uptake-2.dai
-SIM: Test ABAprod uptake
+SIM: Test ABAprod uptake sometimes negative
 
 --------------------
 year	month	mday	hour	Matrix infiltration	Matrix percolation	Biopore infiltration	Biopore percolation	Subsoil irrigation	Matrix direct drain flow	Matrix indirect drain flow	Biopore drain flow	Root extraction	Freezing	Tillage	Matrix to biopores	Biopores to matrix	Matrix water	Biopore water

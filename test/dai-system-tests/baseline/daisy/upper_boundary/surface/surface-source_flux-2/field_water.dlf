@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Wed Apr 24 10:16:53 2024
+RUN: Wed Aug 28 10:54:22 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -21,7 +21,7 @@ LOG:
 LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-surface-source_flux-2.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/surface/test-surface-source_flux-2.dai
 SIM: Test Surface source flux without interpolation
 
 --------------------

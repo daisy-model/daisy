@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Wed Apr 24 09:34:49 2024
+RUN: Wed Aug 28 10:54:06 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Content, transport and transformation of chemicals in the soil.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-surface-const_pressure.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/surface/test-surface-const_pressure.dai
 SIM: Test Surface none
 
 --------------------

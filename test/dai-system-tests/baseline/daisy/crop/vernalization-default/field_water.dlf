@@ -2,7 +2,7 @@ dlf-0.0 -- Field water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: field_water.dlf
-RUN: Tue Apr 16 13:33:13 2024
+RUN: Wed Aug 28 10:49:49 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -21,7 +21,7 @@ LOG:
 LOG: For the balances of this log to work, you must include the entire
 LOG: root zone, as well as the biopore zone.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-vernalization-none.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/crop/test-vernalization-default.dai
 SIM: Test vernalization default
 
 --------------------

@@ -2,7 +2,7 @@ dlf-0.0 -- Soil water (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_water.dlf
-RUN: Tue Apr 30 13:14:47 2024
+RUN: Wed Aug 28 10:52:09 2024
 
 COLUMN: *
 INTERVAL: box none
@@ -15,7 +15,7 @@ LOG: considered external to the system.  The balances provided by the
 LOG: log will work on any subset of the soil that matches the
 LOG: discretization.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-bioclimate-FAO56_daily.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/bioclimate/test-bioclimate-FAO56_daily.dai
 SIM: Test bioclimate FAO56_daily
 
 --------------------

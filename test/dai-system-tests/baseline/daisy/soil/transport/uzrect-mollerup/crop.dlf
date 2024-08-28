@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Fri Apr 12 14:33:45 2024
+RUN: Wed Aug 28 10:51:45 2024
 
 COLUMN: *
 CROP: *
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Crop development and production.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-uzrect-mollerup.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/soil/transport/test-uzrect-mollerup.dai
 SIM: Test 2d transport using Mollerup module
 
 --------------------

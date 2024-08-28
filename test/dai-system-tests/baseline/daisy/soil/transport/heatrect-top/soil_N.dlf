@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Mon Apr 15 09:58:43 2024
+RUN: Wed Aug 28 10:51:04 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Content, transport and transformation of chemicals in the soil.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-heatrect-top.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/soil/transport/test-heatrect-top.dai
 SIM: Test heat transport in 2d grid using top model
 
 --------------------

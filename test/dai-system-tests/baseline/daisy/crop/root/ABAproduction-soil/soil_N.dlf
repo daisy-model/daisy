@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Fri May 10 12:09:44 2024
+RUN: Wed Aug 28 10:49:56 2024
 
 COLUMN: *
 CHEMICAL: N

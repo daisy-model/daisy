@@ -2,7 +2,7 @@ dlf-0.0 -- Crop (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: crop.dlf
-RUN: Mon Apr 29 13:39:29 2024
+RUN: Wed Aug 28 10:53:50 2024
 
 COLUMN: *
 CROP: *
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Crop development and production.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-mulch.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/litter/test-litter-mulch.dai
 SIM: Test litter mulch
 
 --------------------

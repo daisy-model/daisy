@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Tue Apr 16 09:07:59 2024
+RUN: Wed Aug 28 10:50:33 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -10,7 +10,7 @@ INTERVAL: box none
 
 LOG: Content, transport and transformation of chemicals in the soil.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-groundwater-lysimeter.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/lower_boundary/test-groundwater-lysimeter.dai
 SIM: Test groundwater lysimeter
 
 --------------------

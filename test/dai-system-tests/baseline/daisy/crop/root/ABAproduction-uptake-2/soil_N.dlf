@@ -2,7 +2,7 @@ dlf-0.0 -- Soil chemical (defined in 'log-std.dai').
 
 VERSION: 7.0.0
 LOGFILE: soil_N.dlf
-RUN: Fri May 10 12:55:21 2024
+RUN: Wed Aug 28 10:50:04 2024
 
 COLUMN: *
 CHEMICAL: N
@@ -11,7 +11,7 @@ INTERVAL: box none
 LOG: Content, transport and transformation of chemicals in the soil.
 
 SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/crop/root/test-ABAproduction-uptake-2.dai
-SIM: Test ABAprod uptake
+SIM: Test ABAprod uptake sometimes negative
 
 --------------------
 year	month	mday	hour	In-Matrix	In-Biopores	Leak-Matrix	Leak-Biopores	Biopores to matrix	Matrix to biopores	Tillage	Drain-Soil	Drain-Biopores	Drain-Biopores-Indirect	External	Uptake	Decompose	Transform	Content	Biopores	Error
