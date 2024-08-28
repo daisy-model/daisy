@@ -56,3 +56,17 @@ where `name` is the `<descriptive-name>` part of the file name and `dir` is the 
         bash generate_baseline.sh <path-to-daisy-binary> uzrect-mollerup daisy/soil/transport
 
 4. Verify baseline output and delete any files that should not be compared, e.g. daisy.log
+
+
+## Coverage
+There are scripts for generating coverage reports
+
+### Coverage from dai system tests
+Run `test/coverage/dai_system_test_coverage.sh` from the build directory. This will run all dai system tests and summarize how they cover all source files. 
+
+Use `test/coverage/dai_system_test_coverage_detals.sh` to generate a detailed coverage report for a subset of the codebase. For example, to get a detailed report for all files under `daisy/bioclimate` you would do
+
+    test/coverage/dai_system_test_coverage_detals.sh bioclimate
+
+### Coverage from C++ unit tests
+Run `test/coverage/cxx_unit_test_coverage.sh` from the build directory. This will run all C++ unit tests and summarize how they cover the corresponding source files. The summary is stored in `test/coverage/cxx-unit-tests/coverage.html` and contains annotated source code.
