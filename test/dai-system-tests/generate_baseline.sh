@@ -15,3 +15,4 @@ test_file=${base_dir}/tests/${test_dir}/test-${test_name}.dai
 
 mkdir -p ${baseline_dir}
 DAISYHOME=$daisy_home $daisy_path -d $baseline_dir -D $common_dir $test_file
+rm $baseline_dir/daisy.log
