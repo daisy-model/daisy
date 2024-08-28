@@ -11,7 +11,7 @@
   
 (defchemical classic default
   "For chemicals where we know no better."
-  (cite focus2002)
+  (cite focusgw2002)
   ;; decompose depth factor is from FOCUS 2002.
   (decompose_depth_factor (-105 [cm] 0.0 [])
                           ( -95 [cm] 0.3 []) ;FOCUS lim 100 cm
