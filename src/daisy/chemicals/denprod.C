@@ -20,9 +20,9 @@
 
 #define BUILD_DLL
 
-#include "denprod.h"
-#include "librarian.h"
-#include "block_model.h"
+#include "daisy/chemicals/denprod.h"
+#include "object_model/librarian.h"
+#include "object_model/block_model.h"
 
 // The 'denprod' component.
 

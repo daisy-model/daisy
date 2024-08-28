@@ -20,18 +20,18 @@
 
 #define BUILD_DLL
 
-#include "denprod.h"
-#include "function.h"
-#include "librarian.h"
-#include "mathlib.h"
-#include "frame.h"
-#include "block_model.h"
-#include "geometry.h"
-#include "soil.h"
-#include "soil_water.h"
-#include "organic.h"
-#include "chemical.h"
-#include "log.h"
+#include "daisy/chemicals/denprod.h"
+#include "util/function.h"
+#include "object_model/librarian.h"
+#include "util/mathlib.h"
+#include "object_model/frame.h"
+#include "object_model/block_model.h"
+#include "daisy/soil/transport/geometry.h"
+#include "daisy/soil/soil.h"
+#include "daisy/soil/soil_water.h"
+#include "daisy/organic_matter/organic.h"
+#include "daisy/chemicals/chemical.h"
+#include "daisy/output/log.h"
 
 class Geometry;
 
