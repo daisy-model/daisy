@@ -333,7 +333,7 @@ LogSubmodel::close_unnamed ()
       // Use next entry.
       if (unnamed () >= 0)
 	unnamed_stack[0]++;
-      const std::string& sentry = entry ().name ();
+      const symbol sentry = entry ();
       daisy_assert (frame_stack[1]->lookup (sentry) == Attribute::Submodel);
       daisy_assert (frame_stack[1]->type_size (sentry) != Attribute::Singleton);
     }

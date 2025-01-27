@@ -22,6 +22,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "object_model/symbol.h"
 #include <boost/noncopyable.hpp>
 
 class Log;
@@ -31,6 +32,11 @@ class Frame;
 // Inheriting from model is needed in order to be put in libraries.
 class Model : private boost::noncopyable
 {
+  // Utilities.
+public:
+  static symbol obsolete ();
+  static void declare_obsolete (Frame&, symbol);
+
   // Create and Destroy.
 public:
   static void load_model (Frame&);

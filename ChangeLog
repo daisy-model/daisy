@@ -1,3 +1,12 @@
+2025-01-27  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/object_model/model.C (Model::obsolete)
+	(Model::declare_obsolete): New functions.
+	* src/daisy/lower_boundary/groundwater_static.C (load_frame): Use them.
+	* src/daisy/output/log_alist.C (LogSubmodel::close_unnamed): Make
+	sentry a symbol.
+	* src/object_model/parser_file.C (load_list): Support them.
+
 2025-01-17  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/chemicals/adsorption_langmuir.C (C_to_M, M_to_C): Fix.

@@ -93,17 +93,7 @@ static struct GroundwaterStaticSyntax : public DeclareModel
     return new GroundwaterStatic (al);
   }
   static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
-  {
-    static bool warned = false;
-    if (warned)
-      return true;
-    else if (al.number ("table") > 0)
-      err.entry ("OBSOLETE: Use 'deep' instead 'table' groundwater");
-    else
-      err.entry ("OBSOLETE: Use 'fixed' instead 'table' groundwater");
-    warned = true;
-    return true;
-  }
+  { return true; }
   GroundwaterStaticSyntax ()
     : DeclareModel (Groundwater::component, "static", "common", "\
 Static groundwater level.\n\
@@ -111,6 +101,7 @@ Provided for backward compatibility, use 'deep' or 'fixed' instead.")
   { }
   void load_frame (Frame& frame) const
   { 
+    Model::declare_obsolete (frame, "Use 'deep' or 'fixed' instead'.");
     frame.add_check (check_alist);
     frame.declare ("table", "cm", Attribute::Const,
 		"Groundwater level.\n\
@@ -119,4 +110,4 @@ Positive numbers indicate free drainage.");
   }
 } GroundwaterStatic_syntax;
 
-
+// groundwater_static.C ends here.
