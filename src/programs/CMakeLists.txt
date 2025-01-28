@@ -2,6 +2,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   program.C
   program_GP2D.C
   program_KM2.C
+  program_astdump.C
   program_batch.C
   program_cpedata.C
   program_document.C
