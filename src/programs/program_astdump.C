@@ -132,7 +132,6 @@ struct ProgramASTdump : public Program
   void print_entry_type (const symbol name, 
 			 const Frame& frame);
   void print_entry_submodel (const symbol name, 
-			     int level,
 			     const Frame& frame);
   void print_entry_category (const symbol name, 
 			     const Frame& frame);
@@ -149,12 +148,10 @@ struct ProgramASTdump : public Program
   static void inherited_entries (const Metalib&, const Library& library,
                                  const symbol name, 
                                  std::set<symbol>& entries);
-  void print_submodel (const symbol name, int level,
-		       const Frame& frame);
-  void print_submodel_entries (const symbol name, int level,
-                               const Frame& frame,
+  void print_submodel (const symbol name, const Frame& frame);
+  void print_submodel_entries (const Frame& frame,
                                const std::set<symbol>& entries);
-  void print_submodel_entry (const symbol, int level,
+  void print_submodel_entry (const symbol, 
                              const Frame& frame);
   void print_model (symbol name, const Library& library, Treelog&);
   void print_fixed (const symbol name, 
@@ -231,7 +228,6 @@ ProgramASTdump::print_entry_type (const symbol name,
 
 void 
 ProgramASTdump::print_entry_submodel (const symbol name, 
-				      const int level,
 				      const Frame& frame)
 {
   const Attribute::type type = frame.lookup (name);
@@ -240,7 +236,7 @@ ProgramASTdump::print_entry_submodel (const symbol name,
       const FrameSubmodel& child = frame.submodel (name);
       if (frame.submodel_name (name) == Attribute::None ())
 	{
-	  print_submodel (name, level, child);
+	  print_submodel (name, child);
 	}
     }
 }
@@ -333,17 +329,15 @@ ProgramASTdump::inherited_entries (const Metalib& metalib,
 
 
 void 
-ProgramASTdump::print_submodel (const symbol name, int level,
-				const Frame& frame)
+ProgramASTdump::print_submodel (const symbol name, const Frame& frame)
 {
   std::set<symbol> entries;
   frame.entries (entries);
-  print_submodel_entries (name, level, frame, entries);
+  print_submodel_entries (frame, entries);
 }
 
 void 
-ProgramASTdump::print_submodel_entries (const symbol name, int level,
-					const Frame& frame,
+ProgramASTdump::print_submodel_entries (const Frame& frame,
 					const std::set<symbol>& entries)
 {
   Nest nest (pp, "entries");      
@@ -360,11 +354,11 @@ ProgramASTdump::print_submodel_entries (const symbol name, int level,
   for (std::set<symbol>::const_iterator i = entries.begin (); 
        i != entries.end (); 
        i++)
-    print_submodel_entry (*i, level, frame);
+    print_submodel_entry (*i, frame);
 }
 
 void 
-ProgramASTdump::print_submodel_entry (const symbol name, int level,
+ProgramASTdump::print_submodel_entry (const symbol name, 
 				      const Frame& frame)
 {
   Nest nest (pp, "entry", name);
@@ -395,7 +389,7 @@ ProgramASTdump::print_submodel_entry (const symbol name, int level,
       print_description (description);
 
   // print submodel entries, if applicable
-  print_entry_submodel (name, level + 1, frame);
+  print_entry_submodel (name, frame);
 }
 
 
@@ -429,8 +423,7 @@ ProgramASTdump::print_model (const symbol name, const Library& library,
   own_entries (metalib, library, name, entries, true);
   if (entries.size () > 0)
     {
-      print_submodel_entries (name, 0, 
-                              frame, entries);
+      print_submodel_entries (frame, entries);
     }
 }
 
@@ -444,7 +437,7 @@ ProgramASTdump::print_fixed (const symbol name,
   // Print description, if any.
   print_description (description);
 
-  print_submodel (name, 0, frame);
+  print_submodel (name, frame);
 }
 
 class ModelCompare
@@ -516,7 +509,7 @@ ProgramASTdump::print_component (const Library& library, Treelog& msg)
   if (my_entries.size () > 0)
     {
       const FrameModel& frame = library.model (root_name);
-      print_submodel_entries (root_name, 0, frame, my_entries);
+      print_submodel_entries (frame, my_entries);
     }
 
   // For all members...
