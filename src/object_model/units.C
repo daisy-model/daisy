@@ -448,10 +448,10 @@ Units::get_convertion (const symbol from, const symbol to) const
               : old (o)
             { }
           };
-          const Oldunits::Convert& old
-            = Oldunits::get_convertion (from.name (), to.name ());
+          const Oldunits::Convert *const old
+            = &Oldunits::get_convertion (from, to);
           
-          const Convert* convert = new ConvertOld (old);
+          const Convert* convert = new ConvertOld (*old);
           daisy_assert (convert);
           conversions[key] = convert;
           return *convert;
