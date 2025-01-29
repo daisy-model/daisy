@@ -1,3 +1,16 @@
+2025-01-29  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/crop/stomatacon_SHA.C (MNA): Mark obsolete.
+
+	* src/daisy/crop/root/rubiscoNdist_DPF.C (f_photo): Removed
+	parameter, redundant as cropN is already set to rubiscoN.
+
+	* src/daisy/upper_boundary/bioclimate/difrad_DPF.C (fa): Fix
+	default value and description.
+
+	* src/daisy/upper_boundary/vegetation/vegetation_crops.C
+	(LAIvsDAY): Switch domain and range.
+
 2025-01-17  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/chemicals/adsorption_langmuir.C (C_to_M, M_to_C): Fix.

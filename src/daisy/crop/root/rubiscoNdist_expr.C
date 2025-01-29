@@ -181,7 +181,9 @@ static struct rubiscoNdist_exprSyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   {
-
+#ifdef STYCZEN
+    Model::obsolete (frame, "Experimental, avoid");
+#endif
     frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
                 "Fraction of photosynthetically active N in canopy. According to (Boegh et al., 2002) f_photo = 0.75. However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
     frame.set ("f_photo", 1.0);
