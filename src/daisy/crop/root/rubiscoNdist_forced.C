@@ -143,7 +143,9 @@ static struct rubiscoNdist_forcedSyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   {
-
+#ifdef STYCZEN
+    Model::obsolete (frame, "Experimental, avoid");
+#endif
     frame.declare_object ("value", Number::component, 
                        Attribute::Const, Attribute::Singleton, "\
 Expression that evaluates to the relative rubisco capacity where 1 is the value in top of the canopy.");

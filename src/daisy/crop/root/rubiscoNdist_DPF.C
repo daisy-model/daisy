@@ -34,7 +34,6 @@ struct rubiscoNdistDPF : public RubiscoNdist
   // Parameters.
 private:
   const double kn;  //Extinction coefficient of nitrogen in the canopy
-  const double f_photo; //Fraction of photosynthetically active N in canopy
   
   // Simulation.
   void tick (std::vector <double>& , std::vector <double>& , 
@@ -52,8 +51,7 @@ private:
   public:
   rubiscoNdistDPF (const BlockModel& al)
     : RubiscoNdist (al),
-       kn (al.number ("kn")),
-       f_photo (al.number ("f_photo"))
+       kn (al.number ("kn"))
   { }
 };
 
@@ -81,7 +79,7 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
 
   const double dLAI = (LAI /(No + 0.0));
   for (int i = 0; i < No; i++)
-     rubiscoNdist[i] = f_photo * cropN0 * (exp(-kn * dLAI *(i+0.5))); //[mol/mÂ² leaf]
+     rubiscoNdist[i] = cropN0 * (exp(-kn * dLAI *(i+0.5))); //[mol/mÂ² leaf]
 
 
 }
@@ -101,10 +99,6 @@ static struct rubiscoNdistDPFSyntax : public DeclareModel
     frame.declare ("kn", Attribute::None (), Check::positive (), Attribute::Const,
                 "Extinction coefficient of nitrogen in the canopy, kn = 0.713 (De Pury &Farquhar, 1997)");
     frame.set ("kn", 0.713);
-
-    frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
-                "Fraction of photosynthetically active N in canopy. According to (Boegh et al., 2002) f_photo = 0.75. However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
-    frame.set ("f_photo", 1.00);
   }
 } rubiscoNdistDPF_syntax;
 
