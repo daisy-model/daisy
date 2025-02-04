@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 project(
-  daisy-epy
+  daisy
   VERSION 7.0.0
   DESCRIPTION "Mechanistic simulation of agricultural fields"
   HOMEPAGE_URL https://daisy.ku.dk/
