@@ -204,12 +204,31 @@ Fast SMB pool parameterization.")
     frame.set ("maintenance", 4.16666666667e-4);
     std::vector<double> SMB2_fractions;
     SMB2_fractions.push_back (0.0);
+    SMB2_fractions.push_back (0.6);
+    SMB2_fractions.push_back (0.0);
+    SMB2_fractions.push_back (0.4);
+    SMB2_fractions.push_back (0.0);
+    frame.set ("fractions", SMB2_fractions);
+  }
+} SMBFast_syntax;
+
+static struct SMBFast2000Syntax : public DeclareParam
+{
+  SMBFast2000Syntax ()
+    : DeclareParam (SMB::component, "SMB-FAST-2000", "SMB-FAST", "\
+Fast SMB pool parameterization.")
+  { }
+  void load_frame (Frame& frame) const
+  {
+    std::vector<double> SMB2_fractions;
+    SMB2_fractions.push_back (0.0);
     SMB2_fractions.push_back (0.4);
     SMB2_fractions.push_back (0.0);
     SMB2_fractions.push_back (0.6);
     SMB2_fractions.push_back (0.0);
     frame.set ("fractions", SMB2_fractions);
   }
-} SMBFast_syntax;
+} SMBFast2000_syntax;
+
 
 // smb.C ends here.
