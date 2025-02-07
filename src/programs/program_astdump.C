@@ -50,7 +50,7 @@ struct ProgramASTdump : public Program
   const Metalib& metalib;
   const symbol where;
 
-  struct PP
+  struct PrettyPrint
   {
     int indent;
     std::ofstream out;
@@ -64,22 +64,22 @@ struct ProgramASTdump : public Program
     { print (name.name ()); }
     void print (const char *const name)
     { print (std::string (name)); }
-    PP (const symbol where)
+    PrettyPrint (const symbol where)
       : indent (0),
 	out (where.name ().c_str ())
     { }
   } pp;
   struct Nest
   {
-    PP & pp;
-    Nest (PP& pp_, const symbol a, const symbol b)
+    PrettyPrint & pp;
+    Nest (PrettyPrint& pp_, const symbol a, const symbol b)
       : pp (pp_)
     {
       pp.print ("(" + quote_string (a.name ())
 		+ " " + quote_string (b.name ()));
       pp.indent += 1;
     }
-    Nest (PP& pp_, const symbol a)
+    Nest (PrettyPrint& pp_, const symbol a)
       : pp (pp_)
     {
       pp.print ("(" + quote_string (a.name ()));
