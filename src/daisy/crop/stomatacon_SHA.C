@@ -260,9 +260,7 @@ Stomata conductance calculated by the model given by Eq. 14.")
   { }
   void load_frame (Frame& frame) const
   {
-#ifdef STYCZEN
     Model::obsolete (frame, "We can't find a source to this equation.");
-#endif
     frame.declare ("alpha", Attribute::None (), Check::non_negative (),
                    Attribute::Const,
                    "Humidity effect");
