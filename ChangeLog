@@ -1,3 +1,8 @@
+2025-02-10  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/bioclimate/resistance.C
+	(Resistance::T_c): Fix parenthesis.
+
 2025-01-29  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/crop/stomatacon_SHA.C (MNA): Mark obsolete.
