@@ -260,7 +260,7 @@ Stomata conductance calculated by the model given by Eq. 14.")
   { }
   void load_frame (Frame& frame) const
   {
-    Model::obsolete (frame, "We can't find a source to this equation.");
+    Model::declare_obsolete (frame, "We can't find a source to this equation.");
     frame.declare ("alpha", Attribute::None (), Check::non_negative (),
                    Attribute::Const,
                    "Humidity effect");
