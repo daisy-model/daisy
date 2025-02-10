@@ -11,6 +11,7 @@
 	* src/daisy/upper_boundary/vegetation/vegetation_crops.C
 	(LAIvsDAY): Switch domain and range.
 
+<<<<<<< HEAD
 2025-01-27  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/object_model/model.C (Model::obsolete)
@@ -20,6 +21,8 @@
 	sentry a symbol.
 	* src/object_model/parser_file.C (load_list): Support them.
 
+=======
+>>>>>>> feb25daf8cc4235078294b718a6c748a57c948e6
 2025-01-17  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/chemicals/adsorption_langmuir.C (C_to_M, M_to_C): Fix.
