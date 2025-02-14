@@ -34,9 +34,9 @@ struct DifradDPF : public Difrad
 {
   // Parameters.
   private:
-  const double fa; // The proportion of attenuated radiation that reaches the surface as diffuse radiation [fraction]
-  const double a;  // Atmospheric transmission coefficeint of PAR []
-
+  const double fa; // Forward scattering coefficient of PAR in the atmosph. []
+  const double a;  // Atmospheric transmission coefficient of PAR []
+  
   // Simulation.
   double value (const Time& time, const Weather& weather, Treelog&)
   {
@@ -99,15 +99,15 @@ Diffuse radiation calculated using the model of De Pury and Farquhar, 1997.")
   {
     frame.set_strings ("cite", "pf1997simple");
     frame.declare ("fa", Attribute::Fraction (), Check::positive (), Attribute::Const, "\
-Diffuse radiation proportion.\n\
-Proportion of attenuated radiation that reaches the surface as diffuse\n\
-radiation.");
-    frame.set ("fa", 0.5);
+Forward scattering coefficient of PAR in the atmosphere.");
+    frame.set_described ("fa", 0.426, "Table 2 in cited paper.");
 
     frame.declare ("a", Attribute::None (), Check::positive (), Attribute::Const, "\
 Atmospheric transmission coefficient of PAR.\n\
 Value around 0.6-0.9 depending on dust particles.");
-    frame.set ("a", 0.84);
+    frame.set_described ("a", 0.72, "Table 5 in cited paper.");
     
   }
 } DifradDPF_syntax;
+
+// difrad_DPF.C ends here.

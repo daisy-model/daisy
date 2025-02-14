@@ -260,6 +260,7 @@ Stomata conductance calculated by the model given by Eq. 14.")
   { }
   void load_frame (Frame& frame) const
   {
+    Model::declare_obsolete (frame, "We can't find a source to this equation.");
     frame.declare ("alpha", Attribute::None (), Check::non_negative (),
                    Attribute::Const,
                    "Humidity effect");
@@ -275,7 +276,7 @@ Ball and Berry (1982) & Wang and Leuning(1998): (0.01 mol/m2/s)");
     frame.declare ("max", "mol H2O/m^2 leaf/s", 
                    Check::none (), Attribute::OptionalConst,
                    "Maximal conductivity.\n\
-By default, there is no maixum.");
+By default, there is no maximum.");
   }
 } StomataConMNAsyntax;
 

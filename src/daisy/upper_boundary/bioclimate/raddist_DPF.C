@@ -311,7 +311,6 @@ void RaddistDPF::tick (std::vector <double>& fraction_sun_LAI,
 
   // Fraction of Photosynthetically Active Radiation (NIR) in Shortwave
   // incoming radiation. 
-  //static const double NIRinSi = 0.50;	
 
   // Total NIR
   // Fill beam NIR (cummulative)

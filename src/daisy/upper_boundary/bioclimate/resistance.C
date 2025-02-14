@@ -411,7 +411,9 @@ Resistance::T_c (const double T_l_sun /* leaf sun temperature [dg C]*/,
                  const double kb /* extinction coefficient []*/,
                  const double LAI /*[m^2 m^-2]*/) 
 {
-  const double f_sun = (1. - exp(-kb * LAI)/kb)/LAI;
+  // Plauborg et al (2010), Equation (A6).
+  // https://doi.org/10.1016/j.agwat.2010.10.006
+  const double f_sun = (1. - exp(-kb * LAI))/kb/LAI;
 
   const double T_c = f_sun * T_l_sun + (1. - f_sun) * T_l_sha; 
   return T_c; // [dg C]
