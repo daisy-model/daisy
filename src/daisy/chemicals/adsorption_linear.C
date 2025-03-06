@@ -1,6 +1,6 @@
-// adsorption_linear.C -- Lininear adsorption.
+// adsorption_linear.C -- Linear adsorption.
 // 
-// Copyright 1996-2001 Per Abrahamsen and SÃ¸ren Hansen
+// Copyright 1996-2001 Per Abrahamsen and Søren Hansen
 // Copyright 2000-2001 KVL.
 //
 // This file is part of Daisy.
@@ -30,7 +30,7 @@
 
 static const double c_fraction_in_humus = 0.587;
 
-class AdsorptionLinearOld : public AdsorptionLinear
+class AdsorptionLinear : public Adsorption
 {
   // Parameters.
   const double K_d;
@@ -48,14 +48,14 @@ public:
       + soil.humus (c) * c_fraction_in_humus * K_OC;
   }
 
-  double C_to_M (const Soil& soil, double Theta, int i, 
+  double C_to_M (const Soil& soil, double Theta, double T, int i, 
                  double C, double sf) const
   {
     const double K = this->K (soil, i);
     const double rho = soil.dry_bulk_density (i);
     return C * (K * rho * sf + Theta);
   }
-  double M_to_C (const Soil& soil, double Theta, int i, 
+  double M_to_C (const Soil& soil, double Theta, double T, int i, 
                  double M, double sf) const
   {
     const double K = this->K (soil, i);
@@ -65,19 +65,19 @@ public:
 
   // Create.
 public:
-  AdsorptionLinearOld (const BlockModel& al)
-    : AdsorptionLinear (al),
+  AdsorptionLinear (const BlockModel& al)
+    : Adsorption (al),
       K_d (al.number ("K_d", -1.0)),
       K_clay (al.number ("K_clay", 0.0)),
       K_OC (al.check ("K_OC") ? al.number ("K_OC") : K_clay)
   { }
 };
 
-static struct AdsorptionLinearOldSyntax : DeclareModel
+static struct AdsorptionLinearSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   {
-    return new AdsorptionLinearOld (al);
+    return new AdsorptionLinear (al);
   }
 
   static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
@@ -95,7 +95,7 @@ static struct AdsorptionLinearOldSyntax : DeclareModel
       }
     return ok;
   }
-  AdsorptionLinearOldSyntax ()
+  AdsorptionLinearSyntax ()
     : DeclareModel (Adsorption::component, "linear", "M = rho K C + Theta C")
   { }
   void load_frame (Frame& frame) const
@@ -117,6 +117,6 @@ It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of the 'K_d' factor.  By default, 'K_OC' is equal to 'K_clay'.");
 
   }
-} AdsorptionLinearOld_syntax;
+} AdsorptionLinear_syntax;
 
 // adsorption_linear.C ends here.

@@ -44,8 +44,12 @@
 
 #include <boost/noncopyable.hpp>
 
+#include <pybind11/embed.h>
+
 struct Toplevel::Implementation : boost::noncopyable
 {
+  pybind11::scoped_interpreter guard;
+  
   const symbol preferred_ui;
   const std::string program_name;
   std::unique_ptr<Program> program;
@@ -58,7 +62,7 @@ struct Toplevel::Implementation : boost::noncopyable
   std::time_t start_time;
   bool has_printed_copyright;
   Toplevel::state_t state;
-  
+
   void run_program (const std::string& name);
 
   std::vector<std::string> files_found;

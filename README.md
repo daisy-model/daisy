@@ -17,10 +17,11 @@ Install dependencies
 * boost (filesystem and system)
 * suitesparse
 * g++
+* pybind11
 
 Using apt
 
-    apt g++ install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
+    apt install g++ cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev python3-pybind11
 
 [CMakePresets.json](CMakePresets.json) define setups for building with gcc and clang on linux.
 
@@ -55,9 +56,13 @@ For the generic linux installer it is necesary to set the environment variable `
 TODO: Need to figure out static linking vs specifying depends in the package. The deb package and similar should probably be dynamically linked with depends, and the generic installer should probably be statically linked.
 
 ### MacOS
+#### Note on python suppport
+At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the on-click installer from python.org.
+
+
 Install dependencies
 
-    brew install cmake boost suite-sparse 
+    brew install cmake boost@1.85 suite-sparse pybind11
 
 Download the source code and setup a build dir
 
@@ -89,13 +94,17 @@ Install build environment
 
 Install daisy dependencies
     
-    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost
-    
+    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost mingw-w64-ucrt-x86_64-pybind11 mingw-w64-ucrt-x86_64-python
+	
+   
 Download the source code and setup a build dir
 
     git clone git@github.com:daisy-model/daisy.git
     mkdir -p daisy/build/release
     cd daisy/build/release
+
+
+Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/<python-release-name>`. Then update `Python_ROOT_DIR` in `cmake/MinGW.cmake` to point to the directory you just unpacked.
     
 Build it
 

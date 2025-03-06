@@ -43,7 +43,7 @@ private:
 
   // Simulation.
 public:
-  void tick (const double M, const double C, 
+  void tick (const double M, const double C, const double Theta, 
              const double h, const double T,
              double& NH4, double& N2O, double& NO3) const;
 
@@ -55,7 +55,8 @@ public:
 
 void 
 NitrificationSoil::tick (const double M, const double /* C */, 
-                         const double h, const double T,
+                         const double /* Theta */,
+			 const double h, const double T,
                          double& NH4, double& N2O, double& NO3) const
 {
   const double T_factor = (heat_factor.size () < 1)

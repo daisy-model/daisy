@@ -38,7 +38,7 @@
 #include "object_model/treelog.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
-#include "util/function.h"
+#include "object_model/function.h"
 #include <vector>
 #include <set>
 #include <sstream>

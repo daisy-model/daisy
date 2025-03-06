@@ -48,40 +48,66 @@ Adsorption::output (Log&) const
 { }
 
 double 
-Adsorption::C_to_M_total (const Soil& soil, double Theta, int i, double C) const
-{ return C_to_M (soil, Theta, i, C, 1.0); }
+Adsorption::C_to_M_total (const Soil& soil, double Theta, double T, int i, double C) const
+{ return C_to_M (soil, Theta, T, i, C, 1.0); }
 
 double 
-Adsorption::M_to_C_total (const Soil& soil, double Theta, int i, double M) const
-{ return M_to_C (soil, Theta, i, M, 1.0); }
+Adsorption::M_to_C_total (const Soil& soil, double Theta, double T, int i, double M) const
+{ return M_to_C (soil, Theta, T, i, M, 1.0); }
 
 double 
-Adsorption::C_to_M1 (const Soil& soil, double Theta, int i, double C) const
+Adsorption::C_to_M1 (const Soil& soil, double Theta, double T, int i, double C) const
 {
   const double sf = soil.primary_sorption_fraction (i);
-  return C_to_M (soil, Theta, i, C, sf);
+  return C_to_M (soil, Theta, T, i, C, sf);
 }
 
 double 
-Adsorption::M_to_C1 (const Soil& soil, double Theta, int i, double M) const
+Adsorption::M_to_C1 (const Soil& soil, double Theta, double T, int i, double M) const
 {
   const double sf = soil.primary_sorption_fraction (i);
-  return M_to_C (soil, Theta, i, M, sf);
+  return M_to_C (soil, Theta, T, i, M, sf);
 }
 
 double 
-Adsorption::C_to_M2 (const Soil& soil, double Theta, int i, double C) const
+Adsorption::C_to_M2 (const Soil& soil, double Theta, double T, int i, double C) const
 {
   const double sf = 1.0 - soil.primary_sorption_fraction (i);
-  return C_to_M (soil, Theta, i, C, sf);
+  return C_to_M (soil, Theta, T, i, C, sf);
 }
-double 
 
-Adsorption::M_to_C2 (const Soil& soil, double Theta, int i, double M) const
+double 
+Adsorption::M_to_C2 (const Soil& soil,
+		     double Theta, double T, int i, double M) const
 {
   const double sf = 1.0 - soil.primary_sorption_fraction (i);
-  return M_to_C (soil, Theta, i, M, sf);
+  return M_to_C (soil, Theta, T, i, M, sf);
 }
+
+double
+Adsorption::M_to_C_bisect (const Soil& soil, double Theta, double T,
+			   int i, double M, double sf,
+			   double C_lower, double C_upper) const
+{
+  double M_lower = C_to_M (soil, Theta, T, i, C_lower, sf);
+  double M_upper = C_to_M (soil, Theta, T, i, C_upper, sf);
+  daisy_assert (M >= M_lower);
+  daisy_assert (M <= M_upper);
+
+  while (true)
+    {
+      const double C_guess = (C_lower + C_upper) / 2.0;
+      const double M_guess = C_to_M (soil, Theta, T, i, C_guess, sf);
+
+      if (M_guess > M)
+	C_upper = C_guess;
+      else if (M_guess < M)
+	C_lower = C_guess;
+      else
+	return C_guess;
+    }
+}
+
 
 Adsorption::Adsorption (const char *const type)
   : ModelDerived (symbol (type))
@@ -106,21 +132,17 @@ transported with the water.")
   { Model::load_model (frame); }
 } Adsorption_init;
 
-// "linear" special.
-
-AdsorptionLinear::AdsorptionLinear (const BlockModel& al)
-  : Adsorption (al)
-{ }
-
 // "none" model.
 
 class AdsorptionNone : public Adsorption
 {
   // Simulation.
 public:
-  double C_to_M (const Soil&, double Theta, int, double C, double) const
+  double C_to_M (const Soil&, double Theta, double,
+		 int, double C, double) const
   { return C * Theta; }
-  double M_to_C (const Soil&, double Theta, int, double M, double) const
+  double M_to_C (const Soil&, double Theta, double,
+		 int, double M, double) const
   { return M / Theta; }
 
   // Create.
@@ -161,7 +183,7 @@ public:
   bool full () const
   { return true; }
 
-  double C_to_M (const Soil&, double Theta, int, double C, double) const
+  double C_to_M (const Soil&, double Theta, double, int, double C, double) const
   { 
     if (fabs (C) < 1.0e-100)
       return 0.0;
@@ -169,7 +191,7 @@ public:
     // If we initialized a non-zero C, put it all in M right away.
     return C * Theta;
   }
-  double M_to_C (const Soil&, double, int, double, double) const
+  double M_to_C (const Soil&, double, double, int, double, double) const
   { return 0; }
 
   // Create.

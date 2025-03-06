@@ -1,19 +1,19 @@
 // program_spawn.C -- Spawn a number of Daisy programs.
-// 
+//
 // Copyright 2023 Per Abrahamsen and KU.
 //
 // This file is part of Daisy.
-// 
+//
 // Daisy is free software; you can redistribute it and/or modify
 // it under the terms of the GNU Lesser Public License as published by
 // the Free Software Foundation; either version 2.1 of the License, or
 // (at your option) any later version.
-// 
+//
 // Daisy is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser Public License
 // along with Daisy; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -28,61 +28,44 @@
 #include "util/assertion.h"
 #include "object_model/metalib.h"
 
-#include <boost/asio/io_service.hpp>
+#include <boost/asio.hpp>
 #include <boost/dll/runtime_symbol_info.hpp>
-#include <boost/process.hpp>
+#include <boost/process/v2.hpp>
 #include <sstream>
 #include <vector>
 #include <memory>
 #include <thread>
 #include <fstream>
 
-namespace bp = boost::process;
+namespace bp = boost::process::v2;
+
+template<class Executor>
+struct DaisyRunner {
+  Executor executor;
+  std::string prog_path;
+  std::string start_directory;
+  std::vector<std::string> args;
+
+  DaisyRunner(Executor executor, std::string prog_path, std::string start_directory,
+              std::initializer_list<std::string> args)
+    : executor(executor),
+      prog_path(prog_path),
+      start_directory(start_directory),
+      args(args)
+  { }
+
+  void operator()() {
+    bp::process proc(this->executor,
+                     this->prog_path,
+                     this->args,
+                     bp::process_start_dir(this->start_directory));
+    proc.wait();
+  }
+};
+
 
 struct ProgramSpawn : public Program
 {
-  struct Cleaner
-  {
-    Treelog& msg;
-    int& running;
-    const symbol name;
-    void operator ()(int exit, const std::error_code& ec_in)
-    {
-      std::ostringstream tmp;
-      tmp << "'" + name + "' ";
-      if (exit == EXIT_SUCCESS)
-	{
-	  tmp << "finished sucessfully";
-#ifdef CPP23			// noreplace is a c++23 feature.
-	  std::ofstream success (name + "/SUCCESS", std::ios::noreplace);
-	  if (!success)
-	    {
-	      tmp << "... twice? Possible race condition, check results";
-	      std::ofstream toomuchwin (name + "/SUCCESS_FAILED");
-	    }
-#else
-	  std::ofstream file (name + "/SUCCESS");
-#endif
-	}
-      else
-	{
-	  tmp << "failed with exit code " << exit
-	      << " (error " << ec_in.message ()  << ")";
-	  std::ofstream file (name + "/FAILED");
-	  file << "Exit code " << exit
-	       << " (error " << ec_in.message ()  << ")";
-	}
-      msg.message (tmp.str ());
-      running--;
-    }
-    explicit Cleaner (Treelog& m, int& r, const symbol p)
-      : msg (m),
-	running (r),
-	name (p)
-    { }
-  };
-
-
   // Content.
   const symbol input_directory;
   const symbol exe;
@@ -91,29 +74,28 @@ struct ProgramSpawn : public Program
   const std::vector<symbol> directory;
   const std::vector<symbol> file;
   const int length;
-  
+
   // State.
   int index;
-  int running;
-  std::vector<std::shared_ptr<bp::child>> children;
-  std::vector<std::shared_ptr<Cleaner>> cleaners;
-  boost::asio::io_service ios;
+  boost::asio::thread_pool pool;
 
   bool done () const
   { return index >= length; }
 
+
   void spawn_all (Treelog& msg)
   {
-    while (!done () && (parallel == 0 || running < parallel))
+    for (int i = 0; i < length; ++i) {
       spawn_one (msg);
+    }
   }
+
   void spawn_one (Treelog& msg)
   {
     // Find program to run (if any).
     // 0: Don't run a named program.
     // 1: Always run this program.
     // n: Use these programs.
-    daisy_assert (program.size () < 2 || program.size () > index);
     const symbol program_one =
       (program.size () == 0) ? Attribute::None ()
       : ((program.size () == 1) ? program[0]
@@ -125,7 +107,7 @@ struct ProgramSpawn : public Program
     daisy_assert (file.size () > 0);
     daisy_assert (file.size () == 1 || file.size () > index);
     const symbol file_one = (file.size () == 1) ? file[0] : file[index];
-    
+
     // Directory.
     // 0: Use program names.
     // n: Use these directories.
@@ -146,33 +128,23 @@ struct ProgramSpawn : public Program
     tmp << "Spawning '" << directory_one << "'";
     msg.message (tmp.str ());
     msg.flush ();
-    std::shared_ptr<Cleaner> cleaner (new Cleaner (msg, running,
-						   directory_one));
     if (program_one == Attribute::None ())
       {
-	std::shared_ptr<bp::child> c
-	  (new bp::child (exe.name (),
-			  ios,
-			  bp::start_dir = directory_one.name (),
-			  bp::on_exit = *cleaner,
-			  "-D", input_directory.name (),
-			  "-q", file_one.name ()));
-	children.push_back (c);
+        boost::asio::post(pool, DaisyRunner(pool.executor(),
+                                            exe.name(),
+                                            directory_one.name(),
+                                            { "-D", input_directory.name(),
+                                              "-q", file_one.name() }));
       }
     else
       {
-	std::shared_ptr<bp::child> c
-	  (new bp::child (exe.name (),
-			  ios,
-			  bp::start_dir = directory_one.name (),
-			  bp::on_exit = *cleaner,
-			  "-D", input_directory.name (),
-			  "-q", file_one.name (),
-			  "-p", program_one.name()));
-	children.push_back (c);
+        boost::asio::post(pool, DaisyRunner(pool.executor(),
+                                            exe.name(),
+                                            directory_one.name(),
+                                            { "-D", input_directory.name(),
+                                              "-q", file_one.name(),
+                                              "-p", program_one.name() }));
       }
-    cleaners.push_back (cleaner);
-    running++;
   }
 
   // Use.
@@ -194,19 +166,13 @@ struct ProgramSpawn : public Program
     else
       {
 	std::ostringstream tmp;
-	tmp << "Spawning at most " << parallel << " programs in parallel";
+	tmp << "Running at most " << parallel << " programs in parallel";
 	msg.message (tmp.str ());
       }
-    msg.message ("Initial spawn");
+    msg.message ("Spawning");
     spawn_all (msg);
     msg.message ("Running...");
-    while (running > 0 && !done ())
-      {
-	ios.run_one ();
-	spawn_all (msg);
-      }
-    ios.reset ();
-    ios.run ();
+    pool.wait();
     msg.message ("Done");
     return true;
   }
@@ -231,8 +197,7 @@ struct ProgramSpawn : public Program
 
     return result;
   }
-    
-    
+
   ProgramSpawn (const BlockModel& al)
     : Program (al),
       input_directory (al.name ("input_directory")),
@@ -244,8 +209,7 @@ struct ProgramSpawn : public Program
       length (std::max ({ program.size (),
 			  directory.size (),
 			  file.size ()})),
-      index (0),
-      running (0)
+      pool (std::max(1, al.integer ("parallel", std::thread::hardware_concurrency ())))
   { }
   ~ProgramSpawn ()
   {  }
@@ -277,7 +241,7 @@ Spawn a number of programs in parallel.")
 	    << directory_len << " directories";
 	msg.error (tmp.str ());
       }
-    
+
     if (file_len > 1 && directory_len > 0 && file_len != directory_len)
       {
 	ok = false;
@@ -286,7 +250,7 @@ Spawn a number of programs in parallel.")
 	    << directory_len << " directories";
 	msg.error (tmp.str ());
       }
-    
+
     if (program_len > 1 && file_len > 1 && program_len != file_len)
       {
 	ok = false;
@@ -313,10 +277,10 @@ Spawn a number of programs in parallel.")
 	    << named_len << " names";
 	msg.error (tmp.str ());
       }
-    
+
     return ok;
   }
-  
+
   void load_frame (Frame& frame) const
   {
     frame.add_check (check_alist);
@@ -326,9 +290,8 @@ When trying to open files from the current directory look here instead.");
     frame.declare_string ("exe", Attribute::OptionalConst,  "\
 Name of executable to spawn. By default, the currently running executable.");
     frame.declare_integer ("parallel", Attribute::OptionalConst, "\
-Maximum number of programs to run in parallel.\n\
-By default this is determined by the hardware.\n\
-Select 0 to spawn all in parallel.");
+Maximum number of threads to use.\n\
+By default this is determined by the hardware.");
     frame.declare_string ("program", Attribute::Const, Attribute::Variable, "\
 Names of programs to run.");
     frame.set_empty ("program");

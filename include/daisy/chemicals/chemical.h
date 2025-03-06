@@ -103,9 +103,11 @@ public:
   // Transport.
 public:
   virtual void set_primary (const Soil& soil, const SoilWater& soil_water,
+			    const SoilHeat& soil_heat,
                             const std::vector<double>& M,
                             const std::vector<double>& J) = 0;
   virtual void set_secondary (const Soil& soil, const SoilWater& soil_water,
+			      const SoilHeat&,
                               const std::vector<double>& M,
                               const std::vector<double>& J) = 0;
   virtual void set_tertiary (const std::vector<double>& S_p, 
@@ -133,7 +135,7 @@ public:
 public:
   virtual void remove_all () = 0;
   virtual double total_content (const Geometry&) const = 0; // [g/m^2]
-  virtual void update_C (const Soil&, const SoilWater&) = 0;
+  virtual void update_C (const Soil&, const SoilWater&, const SoilHeat&) = 0;
   virtual void deposit (double flux /* [g/m^2/h] */) = 0;
   virtual void spray_overhead (double amount /* [g/m^2] */) = 0;
   virtual void spray_surface (double amount /* [g/m^2] */) = 0;
@@ -144,8 +146,10 @@ public:
   virtual void incorporate (const Geometry&, double amount /* [g/m^2] */, 
 			    const Volume& volume) = 0;
   virtual void mix (const Geometry& geo, const Soil&, const SoilWater&,
+		    const SoilHeat&, 
 		    double from, double to, double penetration) = 0;
   virtual void swap (const Geometry& geo, const Soil&, const SoilWater&,
+		     const SoilHeat&,
 		     double from, double middle, double to) = 0;
 
   // Simulation.
@@ -161,8 +165,9 @@ public:
                          double dt /* [h] */,
                          Treelog&) = 0;
   virtual void tick_surface (const double pond /* [cm] */,
+			     const double T /* [dg C] */,
                              const Geometry& geo, 
-                             const Soil& soil, const SoilWater& soil_water, 
+                             const Soil& soil, const SoilWater& soil_water,
                              const double z_mixing /* [cm] */,
                              Treelog& msg) = 0;
   virtual void tick_soil (const Geometry&, const Soil&, const SoilWater&,
@@ -193,7 +198,7 @@ public:
   static const VCheck& check_buildable ();
   virtual bool check (const Scope&, 
                       const Geometry&, const Soil&, const SoilWater&,
-		      const OrganicMatter&, const Chemistry&,
+		      const SoilHeat&, const OrganicMatter&, const Chemistry&,
 		      Treelog&) const = 0;
   virtual void initialize (const Scope&, const Geometry&,
                            const Soil&, const SoilWater&, const SoilHeat&,

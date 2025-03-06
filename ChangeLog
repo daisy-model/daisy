@@ -1,3 +1,22 @@
+2025-03-04  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/chemicals/adsorption.h: 
+	* src/daisy/chemicals/adsorption.C (M_to_C_bisect):
+	New function.
+	* src/daisy/chemicals/adsorption_Python.C (M_to_C): Use
+	'M_to_C_bisect' if no Python function is specified.
+
+2025-03-03  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/chemicals/reaction_Python.C: New model.
+	* src/daisy/chemicals/CMakeLists.txt: Add it.
+
+2025-02-28  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/chemicals/reaction.h:
+	* include/daisy/chemicals/chemistry.h (initialize): Take
+	'chemistry' parameter.
+
 2025-02-10  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/upper_boundary/bioclimate/resistance.C
@@ -42,6 +61,54 @@
 	Fix units.
 	("Drain Sink NO3", "Drain Sink NH4"): Remove dimension.
 	("Fertilizer"): Add spec.
+
+2024-11-21  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/chemicals/nitrification_solute.C (tick): Multiply with
+	Theta.
+	* include/daisy/chemicals/nitrification.h: Update signature.
+	* src/daisy/chemicals/nitrification_soil.C:
+	* src/daisy/chemicals/reaction_nit.C (tick_soil): Pass Theta.
+	* include/daisy/soil/soil.h:
+	* src/daisy/soil/horizon.C:
+
+2024-10-30  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/soil/soil.h:
+	* src/daisy/soil/soil.C (Soil::texture_fractile): New function.
+
+
+	* include/daisy/soil/texture.h:
+	* src/daisy/chemicals/nitrification_soil.C:
+	* src/daisy/chemicals/reaction_nit.C (tick_soil): Pass Theta.
+	* include/daisy/soil/soil.h:
+	* src/daisy/soil/horizon.C:
+
+2024-10-30  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/soil/soil.h:
+	* src/daisy/soil/soil.C (Soil::texture_fractile): New function.
+
+	* include/daisy/soil/texture.h:
+	* src/daisy/soil/texture.C (Texture::fractile): New function.
+
+	* src/daisy/chemicals/adsorption.h:
+	* src/daisy/chemicals/adsorption.C (AdsorptionLinear): Removed.
+	* src/daisy/chemicals/adsorption_linear.C (AdsorptionLinearOld):
+	Renamed to AdsorptionLinear.
+
+2024-10-22  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/util/function_Python.C: Better error messages.
+
+2024-10-21  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/util/function_Python.C: New function model.
+
+2024-10-18  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/object_model/parameter_types/number_apply.C: New model.
+	* src/object_model/toplevel.C (Toplevel::run): Start python.
 
 2024-10-07  Per Abrahamsen  <pa@plen.ku.dk>
 

@@ -41,7 +41,7 @@ class AdsorptionLangmuir : public Adsorption
 
   // Simulation.
 public:
-  double C_to_M (const Soil& soil, const double Theta,
+  double C_to_M (const Soil& soil, const double Theta, const double T,
 		 const int i, const double C, double sf) const
     {
       const double my_max 
@@ -50,7 +50,7 @@ public:
       const double S = (my_max * C) / (B + C);
       return sf * soil.dry_bulk_density (i) * S + Theta * C;
     }
-  double M_to_C (const Soil& soil, const double Theta, 
+  double M_to_C (const Soil& soil, const double Theta, const double T,
 		 const int i, const double M, double sf) const
     {
       // We need to solve the following equation w.r.t. C.

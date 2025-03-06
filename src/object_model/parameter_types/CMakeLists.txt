@@ -1,4 +1,5 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
+  number_apply.C
   boolean.C
   boolean_number.C
   boolean_string.C

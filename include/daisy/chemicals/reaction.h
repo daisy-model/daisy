@@ -64,7 +64,8 @@ public:
 public:
   virtual void initialize (const Geometry& geo,
                            const Soil&, const SoilWater&, const SoilHeat&, 
-                           const OrganicMatter&, const Surface&, Treelog&) = 0;
+                           const OrganicMatter&, const Chemistry&,
+			   const Surface&, Treelog&) = 0;
   virtual bool check (const Geometry& geo,
                       const Soil&, const SoilWater&, const SoilHeat&,
 		      const OrganicMatter&, const Chemistry&,

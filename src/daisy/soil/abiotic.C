@@ -26,7 +26,7 @@
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "object_model/check.h"
-#include "util/function.h"
+#include "object_model/function.h"
 #include "object_model/units.h"
 #include "object_model/librarian.h"
 

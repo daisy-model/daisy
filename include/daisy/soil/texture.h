@@ -33,6 +33,7 @@ class Texture
   const PLF accumulated; // Accumulated mineral content [log(um)]->[].
 public:
   double fraction_of_minerals_smaller_than (double size /* [um] */) const;
+  double /* [um] */ fractile (double fraction /* [] */) const;
   double mineral () const;     // Fraction of minerals in dry soil [].
   const double humus;           // Fraction of humus in dry soil [].
   const double chalk;           // Fraction of chalk in dry soil.

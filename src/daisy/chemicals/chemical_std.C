@@ -209,12 +209,14 @@ struct ChemicalBase : public Chemical
   // Transport.
   void set_macro_flux (size_t e, double value);
   void set_primary (const Soil& soil, const SoilWater& soil_water,
+		    const SoilHeat& soil_heat,
                     const std::vector<double>& M,
                     const std::vector<double>& J);
   void set_secondary (const Soil& soil, const SoilWater& soil_water,
+		      const SoilHeat&,
                       const std::vector<double>& M,
                       const std::vector<double>& J);
-  void update_matrix (const Soil& soil, const SoilWater& soil_water);
+  void update_matrix (const Soil&, const SoilWater& , const SoilHeat&);
   void set_tertiary (const std::vector<double>& S_p, 
 		     const std::vector<double>& J_p);
   void add_tertiary (const std::vector<double>& pM,
@@ -244,7 +246,7 @@ struct ChemicalBase : public Chemical
   // Management.
   void remove_all ();
   double total_content (const Geometry&) const; // [g/m^2]
-  void update_C (const Soil&, const SoilWater&);
+  void update_C (const Soil&, const SoilWater&, const SoilHeat&);
   void deposit (const double flux); // [g/m^2/h]
   void spray_overhead (const double amount); // [g/m^2]
   void spray_surface (const double amount); // [g/m^2]
@@ -252,9 +254,10 @@ struct ChemicalBase : public Chemical
   void harvest (const double removed, const double surface);
   void incorporate (const Geometry&, double amount, double from, double to);
   void incorporate (const Geometry&, double amount, const Volume&);
-  void mix (const Geometry& geo, const Soil&, const SoilWater&,
+  void mix (const Geometry& geo, const Soil&, const SoilWater&, const SoilHeat&,
             double from, double to, double penetration);
   void swap (const Geometry& geo, const Soil&, const SoilWater&,
+	     const SoilHeat&,
              double from, double middle, double to);
   
   // Simulation.
@@ -273,7 +276,7 @@ struct ChemicalBase : public Chemical
                  const double surface_runoff_rate, // [h^-1]
                  const double dt, // [h]
                  Treelog& msg);
-  void tick_surface (const double pond,
+  void tick_surface (const double pond, const double T,
                      const Geometry& geo, 
                      const Soil& soil, const SoilWater& soil_water, 
                      const double z_mixing, Treelog&);
@@ -295,7 +298,7 @@ struct ChemicalBase : public Chemical
 
   // Create.
   bool check (const Scope&, 
-              const Geometry&, const Soil&, const SoilWater&,
+              const Geometry&, const Soil&, const SoilWater&, const SoilHeat&,
 	      const OrganicMatter&, const Chemistry&, Treelog&) const;
   static void fillup (std::vector<double>& v, const size_t size);
   void initialize (const Scope&, const Geometry&,
@@ -332,12 +335,14 @@ ChemicalBase::sorption_table (const Soil& soil, const size_t cell,
 			      const int intervals,
 			      Treelog& msg) const
 {
+  const double T = 20.0; 	// [dg C]
   std::ostringstream tmp;
   tmp << "Sorption table for " << objid << " cell " << cell << "\n"
       << "Theta = " << Theta << " []"
       << "; clay = " << soil.clay (cell) << " []"
       << "; OC = " << soil.humus_C (cell) << " []"
-      << "; rho_b = " << soil.dry_bulk_density (cell) << " [g/cm^3]\n"
+      << "; rho_b = " << soil.dry_bulk_density (cell) << " [g/cm^3]"
+      << "; T = " << T << " [dg C]\n"
       << "----\n"
       << "C\tM\n"
       << "g/cm^3\tg/cm^3";
@@ -346,7 +351,7 @@ ChemicalBase::sorption_table (const Soil& soil, const size_t cell,
       double C = start;
       for (int i = 0; i < intervals; i++)
         {
-          const double M = adsorption_->C_to_M_total (soil, Theta, cell, C);
+          const double M = adsorption_->C_to_M_total (soil, Theta, T, cell, C);
           tmp << "\n" << C << "\t" << M;
           if (std::isnormal (factor))
             C *= factor;
@@ -451,6 +456,7 @@ ChemicalBase::S_primary (size_t i) const
 
 void 
 ChemicalBase::set_primary (const Soil& soil, const SoilWater& soil_water,
+			   const SoilHeat& soil_heat,
 			   const std::vector<double>& M,
 			   const std::vector<double>& J)
 {
@@ -473,25 +479,28 @@ ChemicalBase::set_primary (const Soil& soil, const SoilWater& soil_water,
           M_primary_[c] = 0.0;
         }
       const double Theta_primary = soil_water.Theta_primary (c);
+      const double T = soil_heat.T (c);
       C_primary_[c] 
-        = adsorption_->M_to_C1 (soil, Theta_primary, c, M_primary_[c]);
+        = adsorption_->M_to_C1 (soil, Theta_primary, T, c, M_primary_[c]);
     }
 
-  update_matrix (soil, soil_water);
+  update_matrix (soil, soil_water, soil_heat);
 }
 
 void 
 ChemicalBase::set_secondary (const Soil& soil, const SoilWater& soil_water,
+			     const SoilHeat& soil_heat,
 			     const std::vector<double>& M,
 			     const std::vector<double>& J)
 {
   M_secondary_ = M;
   J_secondary = J;
-  update_matrix (soil, soil_water);
+  update_matrix (soil, soil_water, soil_heat);
 }
 
 void 
-ChemicalBase::update_matrix (const Soil& soil, const SoilWater& soil_water)
+ChemicalBase::update_matrix (const Soil& soil, const SoilWater& soil_water,
+			     const SoilHeat& soil_heat)
 {
   // Update cells.
   const size_t cell_size = M_total_.size ();
@@ -511,10 +520,11 @@ ChemicalBase::update_matrix (const Soil& soil, const SoilWater& soil_water)
       const double Theta_primary = soil_water.Theta_primary (c);
       const double Theta_secondary = soil_water.Theta_secondary (c);
       const double Theta_matrix = Theta_primary + Theta_secondary;
+      const double T = soil_heat.T (c);
       
       if (Theta_secondary > 0.0)
         C_secondary_[c]
-          = adsorption_->M_to_C2 (soil, Theta_secondary, c, M_secondary_[c]);
+          = adsorption_->M_to_C2 (soil, Theta_secondary, T, c, M_secondary_[c]);
       else
 	{
 	  if (M_secondary_[c] > 1e-90)
@@ -804,7 +814,8 @@ ChemicalBase::total_content (const Geometry& geo) const
     + geo.total_surface (M_total_) * 10000.0 /* [cm^2/m^2] */; } 
 
 void
-ChemicalBase::update_C (const Soil& soil, const SoilWater& soil_water)
+ChemicalBase::update_C (const Soil& soil, const SoilWater& soil_water,
+			const SoilHeat& soil_heat)
 {
   if (adsorption_->full ())
     // Always zero.
@@ -819,6 +830,7 @@ ChemicalBase::update_C (const Soil& soil, const SoilWater& soil_water)
   
   for (size_t c = 0; c < cell_size; c++)
     {
+      const double Temp = soil_heat.T (c);
       const double T1 = soil_water.Theta_primary (c);
       const double T2 = soil_water.Theta_secondary (c);
       const double M = M_total_[c];
@@ -830,9 +842,9 @@ ChemicalBase::update_C (const Soil& soil, const SoilWater& soil_water)
       const double M1 = M - M2;
       daisy_assert (T1 > 0.0);
       daisy_assert (M1 >= 0.0);
-      const double C1 = adsorption_->M_to_C1 (soil, T1, c, M1);
+      const double C1 = adsorption_->M_to_C1 (soil, T1, Temp, c, M1);
       const double C2 = (T2 > 0.0)
-	? adsorption_->M_to_C2 (soil, T2, c, M2)
+	? adsorption_->M_to_C2 (soil, T2, Temp, c, M2)
 	: C1;
       const double C = (C1 * T1 + C2 * T2) / (T1 + T2);
 
@@ -893,7 +905,8 @@ ChemicalBase::incorporate (const Geometry& geo, const double amount,
 
 void 
 ChemicalBase::mix (const Geometry& geo,
-		   const Soil& soil, const SoilWater& soil_water, 
+		   const Soil& soil, const SoilWater& soil_water,
+		   const SoilHeat& soil_heat,
 		   const double from, const double to,
 		   const double penetration)
 { 
@@ -921,16 +934,17 @@ ChemicalBase::mix (const Geometry& geo,
 
   // Mix.
   geo.mix (M_total_, from, to, tillage);
-  update_C (soil, soil_water);
+  update_C (soil, soil_water, soil_heat);
 }
 
 void 
 ChemicalBase::swap (const Geometry& geo,
 		    const Soil& soil, const SoilWater& soil_water,
+		    const SoilHeat& soil_heat,
 		    const double from, const double middle, const double to)
 { 
   geo.swap (M_total_, from, middle, to, tillage);
-  update_C (soil, soil_water);
+  update_C (soil, soil_water, soil_heat);
 }
 
 void 
@@ -1200,8 +1214,9 @@ ChemicalBase::tick_top (const Vegetation& vegetation,
 
 void
 ChemicalBase::tick_surface (const double pond /* [cm] */,
+			    const double T /* [dg C] */,
 			    const Geometry& geo, 
-			    const Soil& soil, const SoilWater& soil_water, 
+			    const Soil& soil, const SoilWater& soil_water,
 			    const double z_mixing /* [cm] */,
 			    Treelog& msg)
 // Divide surface storage in immobile and solute mixing layer.
@@ -1234,7 +1249,7 @@ ChemicalBase::tick_surface (const double pond /* [cm] */,
       const double Theta = soil_water.Theta (cell) + Theta_pond;
       daisy_assert (Theta > 0.0);
       const double C 
-        = adsorption_->M_to_C_total (soil, Theta, cell, M); // [g/cm^3]
+        = adsorption_->M_to_C_total (soil, Theta, T, cell, M); // [g/cm^3]
       daisy_assert (C >= 0.0);
       // Accumulate based on cell surface area.
       const double area = geo.edge_area (edge); // [cm^2]
@@ -1718,6 +1733,7 @@ bool
 ChemicalBase::check (const Scope& scope, 
 		     const Geometry& geo, 
 		     const Soil& soil, const SoilWater& soil_water,
+		     const SoilHeat& soil_heat,
 		     const OrganicMatter&, const Chemistry& chemistry, 
 		     Treelog& msg) const
 {
@@ -1758,6 +1774,7 @@ ChemicalBase::check (const Scope& scope,
 
   for (size_t i = 0; i < cell_size; i++)
     {
+      const double T = soil_heat.T (i);
       const double Theta_primary = soil_water.Theta_primary (i);
       const double Theta_secondary = soil_water.Theta_secondary (i);
       const double M = M_total_[i];
@@ -1770,7 +1787,7 @@ ChemicalBase::check (const Scope& scope,
       try 
         {   
           if (Theta_secondary > 0.0 && 
-              !approximate (adsorption_->M_to_C2 (soil, Theta_secondary, i, 
+              !approximate (adsorption_->M_to_C2 (soil, Theta_secondary, T, i, 
                                                   M_secondary),
                             C_secondary))
             {
@@ -1778,12 +1795,13 @@ ChemicalBase::check (const Scope& scope,
               tmp << "Theta_secondary = " << Theta_secondary 
                   << ", M_secondary = " << M_secondary
                   << ", M2C = " << (adsorption_->M_to_C2 (soil, Theta_secondary,
+							  T,
                                                           i, M_secondary))
                   << ", C = " << C_secondary;
               msg.message (tmp.str ());
               throw "C_secondary does not match M_secondary";
             }
-          if (!approximate (adsorption_->M_to_C1 (soil, Theta_primary, i, 
+          if (!approximate (adsorption_->M_to_C1 (soil, Theta_primary, T, i, 
                                                   M_primary),
                             C_primary))
             throw "C_primary does not match M_primary";
@@ -1916,6 +1934,7 @@ ChemicalBase::initialize (const Scope& parent_scope,
       Treelog::Open nest (msg, "cell", i, "loop");
       daisy_assert (M_primary_.size () == i);
 
+      const double T = soil_heat.T (i);
       const double Theta = soil_water.Theta (i);
       const double Theta_primary = soil_water.Theta_primary (i);
       const double Theta_secondary = soil_water.Theta_secondary (i);
@@ -1934,9 +1953,9 @@ ChemicalBase::initialize (const Scope& parent_scope,
         // No secondary water.
         {
           if (!has_C_avg)
-            C_avg_.push_back (adsorption_->M_to_C1 (soil, Theta, i, 
+            C_avg_.push_back (adsorption_->M_to_C1 (soil, Theta, T, i, 
                                                     M_total_[i]));
-          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta, i, 
+          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta, T, i, 
                                                       C_avg_[i])); 
           if (!has_M_secondary)
             M_secondary_.push_back (0.0);
@@ -1953,17 +1972,17 @@ ChemicalBase::initialize (const Scope& parent_scope,
           daisy_assert (has_C_avg || has_M_total);
 
           if (!has_C_avg)
-            C_avg_.push_back (adsorption_->M_to_C_total (soil, Theta, i, 
+            C_avg_.push_back (adsorption_->M_to_C_total (soil, Theta, T, i, 
                                                          M_total_[i]));
           if (!has_M_total) 
-            M_total_.push_back (adsorption_->C_to_M_total (soil, Theta, i, 
+            M_total_.push_back (adsorption_->C_to_M_total (soil, Theta, T, i, 
                                                            C_avg_[i])); 
           C_primary_.push_back (C_avg_[i]);
           C_secondary_.push_back (C_avg_[i]);
-          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta_primary, i, 
-                                                      C_primary_[i]));
+          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta_primary,
+						      T, i, C_primary_[i]));
           M_secondary_.push_back (adsorption_->C_to_M2 (soil, 
-                                                        Theta_secondary, i, 
+                                                        Theta_secondary, T, i, 
                                                         C_secondary_[i]));
         }
       else if (has_C_avg)
@@ -1973,12 +1992,12 @@ ChemicalBase::initialize (const Scope& parent_scope,
           daisy_assert (has_C_secondary || has_M_secondary);
           if (!has_C_secondary)
             C_secondary_.push_back (adsorption_->M_to_C2 (soil, Theta_secondary,
-                                                          i, 
-                                                          M_secondary_[i]));
+                                                          T, i,
+							  M_secondary_[i]));
           if (!has_M_secondary)
             M_secondary_.push_back (adsorption_->C_to_M2 (soil, Theta_secondary,
-                                                          i, 
-                                                          C_secondary_[i]));
+                                                          T, i,
+							  C_secondary_[i]));
           
           // Theta * C_a = Theta_i * C_i + Theta_m * C_m
           // => C_i = (Theta * C_a - Theta_m * C_m) / Theta_i
@@ -1986,8 +2005,8 @@ ChemicalBase::initialize (const Scope& parent_scope,
 					   - Theta_secondary * C_secondary_[i])
 					  / Theta_primary,
 					  0.0));
-          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta_primary, i, 
-                                                      C_primary_[i]));
+          M_primary_.push_back (adsorption_->C_to_M1 (soil, Theta_primary, T,
+						      i, C_primary_[i]));
           if (!has_M_total)
             M_total_.push_back (M_primary_[i] + M_secondary_[i]);
         }
@@ -1998,17 +2017,17 @@ ChemicalBase::initialize (const Scope& parent_scope,
           daisy_assert (has_C_secondary || has_M_secondary);
           if (!has_C_secondary)
             C_secondary_.push_back (adsorption_->M_to_C2 (soil, Theta_secondary,
-                                                          i, 
+							  T, i, 
                                                           M_secondary_[i]));
           if (!has_M_secondary)
             M_secondary_.push_back (adsorption_->C_to_M2 (soil, Theta_secondary,
-                                                          i, 
+                                                          T, i, 
                                                           C_secondary_[i]));
           daisy_assert (has_M_total);
           M_primary_.push_back (std::max (M_total_[i] - M_secondary_[i], 0.0));
           C_primary_.push_back (adsorption_->M_to_C1 (soil, 
                                                       Theta_primary,
-                                                      i,
+                                                      T, i,
                                                       M_primary_[i]));
           C_avg_.push_back ((C_secondary_[i] * Theta_secondary
                              + C_primary_[i] * Theta_primary)
@@ -2665,10 +2684,11 @@ struct ChemicalStandard : public ChemicalBase
 
   bool check (const Scope& scope, const Geometry& geo, 
 	      const Soil& soil, const SoilWater& soil_water,
+	      const SoilHeat& soil_heat,
 	      const OrganicMatter& organic_matter, const Chemistry& chemistry, 
 	      Treelog& msg) const
   {
-    bool ok = ChemicalBase::check (scope, geo, soil, soil_water,
+    bool ok = ChemicalBase::check (scope, geo, soil, soil_water, soil_heat,
 				   organic_matter, chemistry, msg);
     if (decompose_SMB_KM > 0.0
 	&& decompose_SMB_pool >= organic_matter.get_smb ().size ())

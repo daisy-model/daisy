@@ -262,7 +262,7 @@ struct ReactionEquilibrium : public Reaction
   }
   void initialize (const Geometry& geo, const Soil& soil, 
                    const SoilWater& soil_water, const SoilHeat& soil_heat,
-                   const OrganicMatter&, const Surface&, Treelog& msg)
+                   const OrganicMatter&, const Chemistry&, const Surface&, Treelog& msg)
   { 
     TREELOG_MODEL (msg);
     ScopeSoil scope (geo, soil, soil_water, soil_heat);

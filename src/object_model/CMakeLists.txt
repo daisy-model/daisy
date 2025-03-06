@@ -12,6 +12,8 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   frame.C
   frame_model.C
   frame_submodel.C
+  function.C
+  function_Python.C
   intrinsics.C
   librarian.C
   library.C

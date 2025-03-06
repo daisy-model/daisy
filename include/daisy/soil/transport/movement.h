@@ -87,7 +87,7 @@ public:
   virtual void tick (const Soil&, SoilWater&, const SoilHeat&, Surface&,
                      Groundwater&, const Time&, const Scope&, const Weather&, 
                      double dt, Treelog&) = 0;
-  virtual void solute (const Soil&, const SoilWater&, 
+  virtual void solute (const Soil&, const SoilWater&, const SoilHeat&,
                        const double J_above, Chemical&,
 		       double dt, const Scope&, Treelog&) = 0;
   virtual void element (const Soil&, const SoilWater&, 

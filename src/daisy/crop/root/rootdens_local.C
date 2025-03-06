@@ -36,7 +36,7 @@
 #include "daisy/soil/soil_water.h"
 #include "daisy/soil/soil_heat.h"
 #include "daisy/soil/abiotic.h"
-#include "util/function.h"
+#include "object_model/function.h"
 #include <sstream>
 #include <algorithm>
 
@@ -174,7 +174,7 @@ RootdensLocal::expansion (const Geometry& geo,
       const double fE		// Expansion factor []
 	= (flooded[c] > 0.0) ? 0.0 : 1.0;
 	
-      if (L[c] > DensRtTip)
+      if (L[c] > DensRtTip * 0.99)
 	// Ignore existing root zone
 	continue;
 

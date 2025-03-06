@@ -2,3 +2,6 @@
 build
 .DS_Store
 TAGS
+
+# python stuff
+__pycache__

@@ -129,7 +129,7 @@ struct ReactionFilter : public Reaction
   }
   void initialize (const Geometry&, const Soil& soil, 
                    const SoilWater&, const SoilHeat&, const OrganicMatter&,
-		   const Surface&, Treelog&)
+		   const Chemistry&, const Surface&, Treelog&)
   { 
     F_primary.insert (F_primary.begin (), soil.size (), 0.0);
     daisy_assert (F_primary.size () == soil.size ());

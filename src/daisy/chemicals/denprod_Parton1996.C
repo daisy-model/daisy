@@ -21,7 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/denprod.h"
-#include "util/function.h"
+#include "object_model/function.h"
 #include "object_model/librarian.h"
 #include "util/mathlib.h"
 #include "object_model/frame.h"
