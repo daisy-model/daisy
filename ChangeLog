@@ -1,3 +1,12 @@
+2025-03-06  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/organic_matter/om.C (turnover): Combine rate and
+	halftime.
+	* src/daisy/organic_matter/som.C: 
+	* src/daisy/organic_matter/aom.C: 
+	* src/object_model/parser_file.C (load_list): Handle '*_rate' and
+	'*_halftime' parameters specially.
+
 2025-03-04  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* include/daisy/chemicals/adsorption.h: 

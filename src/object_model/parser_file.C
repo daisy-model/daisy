@@ -1106,7 +1106,50 @@ ParserFile::Implementation::load_list (Frame& frame)
 
       if (type == Attribute::Error)
         {
-          error (std::string("Unknown attribute '") + name + "', did you miss a ')'?");
+	  // The following horrible code allows the user to write
+	  // "turnover_rate" (or halftime) instead "turnover rate".
+	  // For backward compability.
+	  auto ends_with = [](std::string const& value,
+			      std::string const & ending)
+	  // C++20 string function.
+	  {
+	    return (ending.size () > value.size ())
+	      ? false
+	      : std::equal (ending.rbegin (), ending.rend (),
+			    value.rbegin ());
+	  };
+	  const symbol par_type = ends_with (name.name (), "_rate")
+	    ? "rate"
+	    : ends_with (name.name (), "_rate")
+	    ? "halftime"
+	    : Attribute::None ();
+	  if (par_type != Attribute::None ())
+	    {
+	      const std::string par_name
+		= name.name ().substr (0,
+				       name.name ().length ()
+				       - par_type.name ().length () - 1);
+	      if (frame.type_size (par_name) == Attribute::Singleton
+		  && frame.lookup (par_name) == Attribute::Model)
+		{
+		  const symbol component = frame.component (par_name);
+		  const Library& lib = metalib ().library (component);
+		  boost::shared_ptr<FrameModel> child
+		    (new FrameModel (lib.model (par_type), Frame::parent_link));
+		  const double value = get_number (child->dimension (par_type));
+		  check_value (*child, par_type, value);
+		  child->set (par_type, value);
+		  frame.set (par_name, child);
+		  warning ("'" + par_name + "_" + par_type
+			   + "' interpreted as '" + par_name + " " + par_type
+			   + "'");
+		}
+	      else
+		error ("'" + par_name + "_" + par_type + "' not known");
+	    }
+	  else
+	    error (std::string("Unknown attribute '")
+		   + name + "', did you miss a ')'?");
           skip_to_end ();
         }
       else if (looking_at ('$'))
