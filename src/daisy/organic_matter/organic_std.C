@@ -3272,4 +3272,17 @@ expect the first will be assumed to be in equilibrium as well.",
   }
 } OrganicStandard_syntax;
 
+static struct Organic2000Syntax : public DeclareParam
+{
+  Organic2000Syntax ()
+    : DeclareParam (OrganicMatter::component, "SMB-2000", "default", "\
+Using pre Daisy v7 parameterization of SMB-FAST.")
+  { }
+  void load_frame (Frame& frame) const
+  {
+    frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST-2000");
+  }
+} Organic2000_syntax;
+
+
 // organic_std.C ends here.

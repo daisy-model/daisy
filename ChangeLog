@@ -16,6 +16,13 @@
 	* src/daisy/upper_boundary/vegetation/vegetation_crops.C
 	(LAIvsDAY): Switch domain and range.
 
+2025-01-28  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/programs/program_astdump.C: New model.
+
+	* src/object_model/units.C (Units::get_convertion): Suppress false
+	positive "Wdangling-reference" warning.
+
 2025-01-27  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/object_model/model.C (Model::obsolete)

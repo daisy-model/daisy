@@ -20,9 +20,7 @@
             "hidden" : true,
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
-                // Homebrew uses different locations for library symlinks depending on hardware
-                // /usr/local/lib on Intel
-                // /opt/homebrew/lib on Apple
+                "__comment" : "Homebrew uses different locations for library symlinks depending on hardware. '/usr/local/lib' on Intel and '/opt/homebrew/lib on Apple'",
 		"EXTRA_SYSTEM_INCLUDE_DIRECTORIES" : "/usr/local/lib;/opt/homebrew/lib",
                 "OS_OPTIONS" : "-D__unix",
                 "OS" : "macos"
