@@ -1,0 +1,21 @@
+(input file "dk-soil.dai")
+(input file "log.dai")
+(input file "chemistry.dai")
+
+(defcolumn test-column Askov
+  (Chemistry multi (combine Tracer colloid)))
+
+(defprogram test Daisy "Test colloid tracer"
+  (column test-column)
+  (weather default "dk-taastrup.dwf")
+  (manager activity
+	   (wait_mm_dd 4 1)
+	   (spray Tracer 1 [kg/ha]))
+  (time 1986 12 1 1)
+  (stop 1987 12 1 1)
+  (output ("Chemical Content" (chemical Tracer) (when monthly) (unit "ppm dry soil"))
+	  ("Chemical Content" (chemical colloid) (when monthly) (unit "ppm dry soil"))
+	  ("Field chemical" (chemical Tracer) (when monthly))
+	  ("Field chemical" (chemical colloid) (when monthly))
+	  ("Colloids" (when monthly)))) ;; tracking			      
+(run test)

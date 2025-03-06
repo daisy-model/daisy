@@ -876,6 +876,20 @@ ParserFile::Implementation::load_list (Frame& frame)
   const std::vector<symbol>::const_iterator end = frame.order ().end ();
   std::set<symbol> found;
 
+  const symbol obsolete = Model::obsolete ();
+  static std::set<symbol> obsolete_warned;
+  if (frame.lookup (obsolete) == Attribute::String)
+    {
+      
+      const symbol obsolete_message = frame.check (obsolete)
+	? frame.name (obsolete)
+	: frame.description (obsolete);
+      if (obsolete_warned.find (obsolete_message) == obsolete_warned.end ())
+	{
+	  obsolete_warned.insert (obsolete_message);
+	  warning (obsolete_message.name ());
+	}
+    }
   while ( good () && !looking_at (')'))
     {
       bool skipped = false;

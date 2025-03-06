@@ -25,6 +25,17 @@
 
 // Base class 'Model'
 
+symbol
+Model::obsolete ()
+{
+  static const symbol name ("obsolete");
+  return name;
+}
+
+void 
+Model::declare_obsolete (Frame& frame, const symbol message)
+{ frame.declare_text (obsolete (), Attribute::OptionalConst, message); }
+
 void 
 Model::load_model (Frame& frame)
 { 

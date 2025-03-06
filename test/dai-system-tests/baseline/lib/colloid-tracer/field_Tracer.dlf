@@ -1,0 +1,31 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_Tracer.dlf
+RUN: Tue Feb  4 11:36:06 2025
+
+COLUMN: *
+CHEMICAL: Tracer
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/lib/test-colloid-tracer.dai
+SIM: Test colloid tracer
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+1986	12	1	1	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	0	0	0	0	0	0	0
+1987	1	1	0	0	0	0	0	0	0	0	0	0	-0	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	0	0	0
+1987	2	1	0	0	0	0	0	0	0	0	0	0	-0	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	0	0	0
+1987	3	1	0	0	0	0	0	0	0	0	0	0	-0	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	0	0	0
+1987	4	1	0	0	0	0	0	0	0	0	0	0	-0	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	0	0	0
+1987	5	1	0	1000	0	0	0	0	0	0	0	0	-1.27146e-12	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	1000	0	0
+1987	6	1	0	0	0	0	0	0	0	0	0	0	-6.20356e-13	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	1000	0	0
+1987	7	1	0	0	0	0	0	0	0	0	0	0	-1.91027e-12	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	1000	0	0
+1987	8	1	0	0	0	0	0	0	0	0	0	0	0.00124536	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	999.999	0	0
+1987	9	1	0	0	0	0	0	0	0	0	0	0	0.110092	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	999.889	0	0
+1987	10	1	0	0	0	0	0	0	0	0	0	0	0.557304	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	999.331	0	0
+1987	11	1	0	0	0	0	0	0	0	0	0	0	1.59193	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	997.739	0	0
+1987	12	1	0	0	0	0	0	0	0	0	0	0	1.98972	-0	0	-0	00.00	0	-0	-0	0	0	0	0	0	995.75	0	0

@@ -541,7 +541,7 @@
      (Chemistry multi 
       (combine (N          (reaction nitrification   	   (denitrification 
      	   	(water_factor      (0.6 0.0)(0.8 0.1)(0.9 0.2)(1.0 1.0))     	   	)))))	
-  (OrganicMatter original (init 
+  (OrganicMatter "SMB-2000" (init
      (input 4000 [kg C/ha/y])
      (root 1000 [kg C/ha/y]) 	)) )
 

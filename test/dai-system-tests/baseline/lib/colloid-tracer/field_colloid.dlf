@@ -1,0 +1,31 @@
+dlf-0.0 -- Field chemical (defined in 'log-std.dai').
+
+VERSION: 7.0.0
+LOGFILE: field_colloid.dlf
+RUN: Tue Feb  4 11:36:06 2025
+
+COLUMN: *
+CHEMICAL: colloid
+INTERVAL: box none
+
+LOG: Content, transport and transformation of chemicals in the field.
+
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/lib/test-colloid-tracer.dai
+SIM: Test colloid tracer
+
+--------------------
+year	month	mday	hour	Spray	Deposit	Harvest	Dissipate	Litter Decompose	Litter Transform	Surface Decompose	Surface Transform	Runoff	Leak matrix	Leak biopores	Biopore drain	Soil drain	Surface drain	External	Uptake	Soil Decompose	Soil Transform	Snow	Canopy	Litter	Surface	Soil	Biopores	Error
+				g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha	g/ha
+1986	12	1	1	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	00.00	0	0	0	0	0	0	0
+1987	1	1	0	0	0	0	0	0	0	0	476418	0	-4.15318e-11	-0	0	-0	00.00	0	-0	-0	-460308	0	0	0	0	16110	0	0
+1987	2	1	0	0	0	0	0	0	0	0	7367.79	0	3.92754e-11	-0	0	-0	00.00	0	-0	-0	-17796.8	0	0	0	6.93889e-14	5680.9	0	0
+1987	3	1	0	0	0	0	0	0	0	0	269972	0	-8.65567e-11	-0	0	-0	00.00	0	-0	-0	-266120	0	0	0	0	9532.89	0	0
+1987	4	1	0	0	0	0	0	0	0	0	395167	0	-5.31082e-11	-0	0	-0	00.00	0	-0	-0	-342562	0	0	0	0	62137.7	0	0
+1987	5	1	0	0	0	0	0	0	0	0	456849	0	-1.74728e-10	-0	0	-0	00.00	0	-0	-0	-518806	0	0	0	0	181.276	0	0
+1987	6	1	0	0	0	0	0	0	0	0	550918	0	-3.78211e-11	-0	0	-0	00.00	0	-0	-0	-528559	0	0	0	0	22540.3	0	0
+1987	7	1	0	0	0	0	0	0	0	0	672550	0	-3.09232e-11	-0	0	-0	00.00	0	-0	-0	-678845	0	0	0	0	16245.6	0	0
+1987	8	1	0	0	0	0	0	0	0	0	502899	0	2.73342e-11	-0	0	-0	00.00	0	-0	-0	-484143	0	0	0	0	35001.7	0	0
+1987	9	1	0	0	0	0	0	0	0	0	601259	0	-6.46981e-11	-0	0	-0	00.00	0	-0	-0	-605475	0	0	0	0	30785.6	0	0
+1987	10	1	0	0	0	0	0	0	0	0	546382	0	-5.36338e-11	-0	0	-0	00.00	0	-0	-0	-557008	0	0	0	0	20159.7	0	0
+1987	11	1	0	0	0	0	0	0	0	0	276428	0	-7.48679e-11	-0	0	-0	00.00	0	-0	-0	-287266	0	0	0	0	9321.24	0	0
+1987	12	1	0	0	0	0	0	0	0	0	632968	0	1.42406e-10	-0	0	-0	00.00	0	-0	-0	-615450	0	0	0	0	26839.3	0	0

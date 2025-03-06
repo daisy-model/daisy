@@ -46,4 +46,11 @@
   (trace DDT
 	 Heptachlor "2,4-D" Ioxynil Pendimethalin MCPP IPU Bentazon Atrazine))
 
+(defchemistry Tracer default
+  (trace Tracer))
+
+ (defchemistry colloid default
+   (trace colloid)
+   (reaction colloid-filter colloid-generation))
+
 ;;; chemestry.dai ends here.
