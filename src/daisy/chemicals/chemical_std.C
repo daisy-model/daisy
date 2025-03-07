@@ -43,6 +43,7 @@
 #include "util/memutils.h"
 #include "object_model/submodeler.h"
 #include "object_model/treelog.h"
+#include "object_model/rate.h"
 #include "daisy/upper_boundary/vegetation/vegetation.h"
 #include "daisy/upper_boundary/bioclimate/bioclimate.h"
 #include "daisy/upper_boundary/litter/litter.h"
@@ -2075,12 +2076,7 @@ ChemicalBase::ChemicalBase (const BlockModel& al)
     /**/ (al.number ("solubility_infiltration_factor")),
     crop_uptake_reflection_factor 
     /**/ (al.number ("crop_uptake_reflection_factor")),
-    canopy_dissipation_rate 
-    /**/ (al.check ("canopy_dissipation_rate")
-          ? al.number ("canopy_dissipation_rate")
-          : (al.check ("canopy_dissipation_halftime")
-             ? halftime_to_rate (al.number ("canopy_dissipation_halftime"))
-             : al.number ("canopy_dissipation_rate_coefficient"))),
+    canopy_dissipation_rate (Rate::value (al, "canopy_dissipation")),
     canopy_washoff_coefficient (al.number ("canopy_washoff_coefficient")),
     surface_decompose_rate (al.check ("surface_decompose_rate")
                             ? al.number ("surface_decompose_rate")
@@ -2235,31 +2231,6 @@ Read chemical properties as normal Daisy parameters.")
   { 
     bool ok = true;
 
-    static bool warned = false;
-    if (al.check ("canopy_dissipation_rate_coefficient") && !warned)
-      {
-        msg.entry ("OBSOLETE: Use 'canopy_dissipation_rate' instead "
-                   "of 'canopy_dissipation_rate_coefficient'");
-        warned = true;
-      }
-
-    if (!al.check ("canopy_dissipation_rate")
-        && !al.check ("canopy_dissipation_halftime")
-        && !al.check ("canopy_dissipation_rate_coefficient"))
-      {
-        msg.entry ("\
-You must specify 'canopy_dissipation_rate' or 'canopy_dissipation_halftime'");
-        ok = false;
-      }
-    if (al.check ("canopy_dissipation_rate") 
-        && al.check ("canopy_dissipation_halftime"))
-      {
-        msg.entry ("\
-You may not specify both 'canopy_dissipation_rate' and \
-'canopy_dissipation_halftime'");
-        ok = false;
-      }
-
     if (al.check ("surface_decompose_rate") 
         && al.check ("surface_decompose_halftime"))
       {
@@ -2353,19 +2324,8 @@ Adjustment for maximum concentration in infiltrated water.");
                             Attribute::Const, "\
 How much of the chemical is reflected at crop uptake.");
     frame.set ("crop_uptake_reflection_factor", 1.0);
-    frame.declare ("canopy_dissipation_rate", "h^-1", 
-                   Check::fraction (), Attribute::OptionalConst,
-                   "How fast does the chemical dissipate on canopy.\n\
-You must specify it with either 'canopy_dissipation_halftime' or\n\
-'canopy_dissipation_rate'.");
-    frame.declare ("canopy_dissipation_halftime", "h", 
-                   Check::positive (), Attribute::OptionalConst,
-                   "How fast does the chemical dissipate on canopy.\n\
-You must specify it with either 'canopy_dissipation_halftime' or\n\
-'canopy_dissipation_rate'.");
-    frame.declare ("canopy_dissipation_rate_coefficient", "h^-1", 
-                   Check::fraction (), Attribute::OptionalConst,
-                   "Obsolete alias for 'canopy_dissipation_rate'.");
+    Rate::declare (frame, "canopy_dissipation", "\
+How fast does the chemical dissipate on canopy.");
     frame.declare_fraction ("canopy_washoff_coefficient", Attribute::Const, "\
 Fraction of the chemical that follows the water off the canopy.");
     frame.declare ("surface_decompose_rate", "h^-1", 
@@ -2373,19 +2333,19 @@ Fraction of the chemical that follows the water off the canopy.");
                    "How fast does the chemical decompose on surface.\n\
 You must specify it with either 'surface_decompose_halftime' or\n\
 'surface_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation_rate' is used.");
+'canopy_dissipation rate' is used.");
     frame.declare ("surface_decompose_halftime", "h", 
                    Check::positive (), Attribute::OptionalConst,
                    "How fast does the chemical decompose on surface.\n\
 You must specify it with either 'surface_decompose_halftime' or\n\
 'surface_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation_rate' is used.");
+'canopy_dissipation rate' is used.");
     frame.declare ("litter_decompose_rate", "h^-1", 
                    Check::fraction (), Attribute::OptionalConst,
                    "How fast does the chemical decompose on litter.\n\
 You must specify it with either 'litter_decompose_halftime' or\n\
 'litter_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation_rate' is used.");
+'canopy_dissipation rate' is used.");
     frame.declare_fraction ("litter_washoff_coefficient", Attribute::Const, "\
 Fraction of the chemical that follows the water off the litter.");
     frame.set ("litter_washoff_coefficient", 1.0);
@@ -2879,8 +2839,8 @@ Factor to apply to decompose rate at each interval.");
     frame.set ("z_factor", std::vector<double> ({1.0, 0.5, 0.3}));
 
     // 'base' paramaters.
-    frame.set_cited ("canopy_dissipation_halftime", 10.0 * 24.0,
-		     "Section 7.4.10", "focussw2002");
+    Rate::set_halftime_cited (frame, "canopy_dissipation", 10.0 * 24.0,
+			      "Section 7.4.10", "focussw2002");
     frame.set_cited ("canopy_washoff_coefficient", 0.075, "\
 Washoff in FOCUS use FEXTRC = 0.05.\n\
 CWC = IC * FEXTRC\n\
@@ -2934,7 +2894,7 @@ static struct ChemicalNutrientSyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
     frame.set ("crop_uptake_reflection_factor", 1.0); // Specific uptake code.
-    frame.set ("canopy_dissipation_rate", 0.0);
+    Rate::set_rate (frame, "canopy_dissipation", 0.0);
     frame.set ("canopy_washoff_coefficient", 1.0);
     frame.set ("decompose_rate", 0.0);
   }

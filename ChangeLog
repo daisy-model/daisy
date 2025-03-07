@@ -1,15 +1,29 @@
+2025-03-07  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/chemicals/chemical_std.C (canopy_dissipation_rate):
+	Use Rate.
+
+	* src/object_model/rate.C (Rate::declare_optional): New function.
+	(Rate::value): Overloaded function with default value.
+
+	* src/daisy/chemicals/chemical_std.C
+	(canopy_dissipation_rate_coefficient): Removed obsolete parameter.
+
+	* include/object_model/rate.h:
+	* src/object_model/rate.C (Rate::set_halftime_cited): New function.
+
 2025-03-06  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/organic_matter/om.C (turnover): Combine rate and
 	halftime.
-	* src/daisy/organic_matter/som.C: 
-	* src/daisy/organic_matter/aom.C: 
+	* src/daisy/organic_matter/som.C:
+	* src/daisy/organic_matter/aom.C:
 	* src/object_model/parser_file.C (load_list): Handle '*_rate' and
 	'*_halftime' parameters specially.
 
 2025-03-04  Per Abrahamsen  <pa@plen.ku.dk>
 
-	* include/daisy/chemicals/adsorption.h: 
+	* include/daisy/chemicals/adsorption.h:
 	* src/daisy/chemicals/adsorption.C (M_to_C_bisect):
 	New function.
 	* src/daisy/chemicals/adsorption_Python.C (M_to_C): Use
