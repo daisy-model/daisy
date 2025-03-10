@@ -1637,7 +1637,7 @@ ChemicalBase::output (Log& log) const
   output_variable (canopy_transform, log);
   output_variable (litter_storage, log);
   output_variable (litter_in, log);
-  output_variable (litter_decompose, log);
+  output_value (litter_decompose, "litter_decomposed", log);
   output_variable (litter_transform, log);
   output_variable (litter_out, log);
   output_variable (litter_leak, log);
@@ -1647,7 +1647,7 @@ ChemicalBase::output (Log& log) const
   output_variable (surface_immobile, log);
   output_variable (surface_in, log);
   output_variable (surface_runoff, log);
-  output_variable (surface_decompose, log);
+  output_value (surface_decompose, "surface_decomposed", log);
   output_variable (surface_transform, log);
   output_variable (surface_release, log);
   output_variable (surface_mixture, log);
@@ -2078,16 +2078,10 @@ ChemicalBase::ChemicalBase (const BlockModel& al)
     /**/ (al.number ("crop_uptake_reflection_factor")),
     canopy_dissipation_rate (Rate::value (al, "canopy_dissipation")),
     canopy_washoff_coefficient (al.number ("canopy_washoff_coefficient")),
-    surface_decompose_rate (al.check ("surface_decompose_rate")
-                            ? al.number ("surface_decompose_rate")
-                            : (al.check ("surface_decompose_halftime")
-                               ? halftime_to_rate (al.number ("surface_decompose_halftime"))
-                               : canopy_dissipation_rate)),
-    litter_decompose_rate (al.check ("litter_decompose_rate")
-			   ? al.number ("litter_decompose_rate")
-			   : (al.check ("litter_decompose_halftime")
-			      ? halftime_to_rate (al.number ("litter_decompose_halftime"))
-			      : canopy_dissipation_rate)),
+    surface_decompose_rate (Rate::value (al, "surface_decompose",
+					 canopy_dissipation_rate)),
+    litter_decompose_rate (Rate::value (al, "litter_decompose",
+					canopy_dissipation_rate)),
     litter_washoff_coefficient (al.number ("litter_washoff_coefficient")),
     litter_diffusion_rate (al.number ("litter_diffusion_rate")),
     diffusion_coefficient_ (al.number ("diffusion_coefficient") * 3600.0),
@@ -2231,23 +2225,6 @@ Read chemical properties as normal Daisy parameters.")
   { 
     bool ok = true;
 
-    if (al.check ("surface_decompose_rate") 
-        && al.check ("surface_decompose_halftime"))
-      {
-        msg.entry ("\
-You may not specify both 'surface_decompose_rate' and \
-'surface_decompose_halftime'");
-        ok = false;
-      }
-
-    if (al.check ("litter_decompose_rate") 
-        && al.check ("litter_decompose_halftime"))
-      {
-        msg.entry ("\
-You may not specify both 'litter_decompose_rate' and \
-'litter_decompose_halftime'");
-        ok = false;
-      }
 
     if (!al.check ("decompose_rate") && !al.check ("decompose_halftime"))
       {
@@ -2328,24 +2305,12 @@ How much of the chemical is reflected at crop uptake.");
 How fast does the chemical dissipate on canopy.");
     frame.declare_fraction ("canopy_washoff_coefficient", Attribute::Const, "\
 Fraction of the chemical that follows the water off the canopy.");
-    frame.declare ("surface_decompose_rate", "h^-1", 
-                   Check::fraction (), Attribute::OptionalConst,
-                   "How fast does the chemical decompose on surface.\n\
-You must specify it with either 'surface_decompose_halftime' or\n\
-'surface_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation rate' is used.");
-    frame.declare ("surface_decompose_halftime", "h", 
-                   Check::positive (), Attribute::OptionalConst,
-                   "How fast does the chemical decompose on surface.\n\
-You must specify it with either 'surface_decompose_halftime' or\n\
-'surface_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation rate' is used.");
-    frame.declare ("litter_decompose_rate", "h^-1", 
-                   Check::fraction (), Attribute::OptionalConst,
-                   "How fast does the chemical decompose on litter.\n\
-You must specify it with either 'litter_decompose_halftime' or\n\
-'litter_decompose_rate'.  If neither is specified,\n\
-'canopy_dissipation rate' is used.");
+    Rate::declare_optional (frame, "surface_decompose", "\
+How fast does the chemical decompose on surface.\n\
+Defaults to 'canopy_dissipation' rate.");
+    Rate::declare_optional (frame, "litter_decompose", "\
+How fast does the chemical decompose on litter.\n\
+Default to 'canopy_dissipation' rate.");
     frame.declare_fraction ("litter_washoff_coefficient", Attribute::Const, "\
 Fraction of the chemical that follows the water off the litter.");
     frame.set ("litter_washoff_coefficient", 1.0);
@@ -2462,7 +2427,7 @@ with 'none' adsorption and one with 'full' adsorption, and an\n\
     frame.set ("litter_storage", 0.0);
     frame.declare ("litter_in", "g/m^2/h", Attribute::LogOnly, 
                    "Entering litter .");
-    frame.declare ("litter_decompose", "g/m^2/h", Attribute::LogOnly, 
+    frame.declare ("litter_decomposed", "g/m^2/h", Attribute::LogOnly, 
                    "Decomposed from the litter.");
     frame.declare ("litter_transform", "g/m^2/h", Attribute::LogOnly, 
                    "Added through transformation in litter layer.");
@@ -2488,7 +2453,7 @@ This is part of 'surface_storage'.");
                    "Falling on the bare soil surface.");
     frame.declare ("surface_runoff", "g/m^2/h", Attribute::LogOnly, 
                    "Removed through lateral movement on the soil.");
-    frame.declare ("surface_decompose", "g/m^2/h", Attribute::LogOnly, 
+    frame.declare ("surface_decomposed", "g/m^2/h", Attribute::LogOnly, 
                    "Decomposed from the surface.");
     frame.declare ("surface_transform", "g/m^2/h", Attribute::LogOnly, 
                    "Added through transformation to surface.");
@@ -2526,9 +2491,11 @@ which can be negative.");
     Geometry::add_layer (frame, Attribute::LogOnly, "M_primary", 
                          load_M_primary);
     Geometry::add_layer (frame, Attribute::OptionalConst, "Ms", load_Ms);
+#if 0
     frame.declare ("M_secondary", "g/cm^3", 
                    Attribute::LogOnly, Attribute::SoilCells, 
                    "Mass in secondary domain.");
+#endif
     frame.declare ("M_error", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 
                    "Mass substracted to avoid negative values.");
     frame.declare ("M_tertiary", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 

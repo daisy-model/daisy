@@ -687,13 +687,13 @@ sum of all chemicals will be logged."
 	   (balance (description "Litter")
 		    (precision 3)
                     (input litter_in litter_transform)
-                    (output litter_decompose
+                    (output litter_decomposed
 			    litter_leak litter_diffuse litter_tillage)
                     (content litter_storage))
 	   (balance (description "Surface")
 		    (precision 3)
                     (input surface_in surface_transform)
-                    (output surface_decompose 
+                    (output surface_decomposed
                             surface_runoff surface_out surface_mixture 
                             surface_tillage)
                     (content surface_solute surface_immobile))
@@ -701,7 +701,7 @@ sum of all chemicals will be logged."
 		    (precision 3)
                     (input spray deposit surface_transform litter_transform)
                     (output canopy_harvest canopy_dissipate
-			    litter_decompose surface_decompose 
+			    litter_decomposed surface_decomposed 
                             surface_runoff surface_out surface_mixture 
                             litter_tillage surface_tillage)
                     (content snow_storage canopy_storage litter_storage
@@ -857,15 +857,15 @@ sum of all chemicals will be logged."
                    (dimension "${unit}")
                    (spec chemical default surface_transform))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
-                         litter_decompose)
+                         litter_decomposed)
                    (handle sum)
                    (dimension "${unit}")
-                   (spec chemical default litter_decompose))
+                   (spec chemical default litter_decomposed))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
-                         surface_decompose)
+                         surface_decomposes)
                    (handle sum)
                    (dimension "${unit}")
-                   (spec chemical default surface_decompose))))
+                   (spec chemical default surface_decomposed))))
 
 ;; We need two new log models.
 (deflog "Chemical Content" chemical

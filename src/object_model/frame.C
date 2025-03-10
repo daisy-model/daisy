@@ -103,6 +103,8 @@ Frame::Implementation::counter = 0;
 void
 Frame::Implementation::declare_type (const symbol key, const Type* type)
 {
+  if (types.find (key) != types.end ())
+    Assertion::warning ("Duplicate declaration '" + key + "'");
   types[key].reset (type);
 }
 

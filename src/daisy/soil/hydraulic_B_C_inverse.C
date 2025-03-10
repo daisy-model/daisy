@@ -201,10 +201,12 @@ the condutivity curve is fully specified by a single point.")
     frame.add_check (check_alist);
     Hydraulic::load_Theta_sat (frame);
     Hydraulic::load_K_sat_optional (frame);
+#if 0
     frame.declare_fraction ("Theta_sat",  Attribute::OptionalState, "\
 Saturation point.\n\
 By default, this will be estimated from soil composition and\n\
 dry bulk density.");
+#endif
     frame.declare_fraction ("Theta_fc",  Attribute::Const, " \
 Field capacity."); 
     frame.declare_number_cited ("Theta_wp",  Attribute::Fraction (), 

@@ -1,4 +1,17 @@
+2025-03-10  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* lib/log-std.dai ("Field chemical", "Field nitrogen"):
+	* lib/log.dai ("Surface Chemicals"): Renamed 'litter_decomposed
+	and 'surface_decomposed'.
+	* src/daisy/chemicals/chemical_std.C: Ditto.
+	(M_secondary): Removed duplicate definition.
+	* src/daisy/soil/hydraulic_B_C_inverse.C (Theta_sat): Ditto.
+
+
 2025-03-07  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/weather/wsource_weather.C (load_frame):
+	Remove duplicate declaration of "sunrise".
 
 	* src/daisy/chemicals/chemical_std.C (canopy_dissipation_rate):
 	Use Rate.

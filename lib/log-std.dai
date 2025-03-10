@@ -731,8 +731,8 @@ Nitrogen uptake by the roots.")
                      (handle sum)
                      (dimension "${unit}"))
            (number (path column "${column}" 
-			 Chemistry "*" trace NH4 surface_decompose)
-                   (spec chemical default surface_decompose)
+			 Chemistry "*" trace NH4 surface_decomposed)
+                   (spec chemical default surface_decomposed)
                    (handle sum)
                    (documentation "\
 NH4-fertilizer lost during the application.")
@@ -1338,13 +1338,13 @@ Some chemicals evaporate or decompose when stored on the canopy.")
                    (dimension "${unit}")
                    (spec chemical default canopy_dissipate))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
-                         litter_decompose)
+                         litter_decomposed)
                    (documentation "\
 Decomposed while stored in the litter pack.")
                    (tag "Litter Decompose")
                    (handle sum)
                    (dimension "${unit}")
-                   (spec chemical default litter_decompose))
+                   (spec chemical default litter_decomposed))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
                          litter_transform)
                    (documentation "\
@@ -1354,13 +1354,13 @@ Added from chemical transformation in the litter pack.")
                    (dimension "${unit}")
                    (spec chemical default litter_transform))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
-                         surface_decompose)
+                         surface_decomposed)
                    (documentation "\
 Decomposed while stored on the soil surface.")
                    (tag "Surface Decompose")
                    (handle sum)
                    (dimension "${unit}")
-                   (spec chemical default surface_decompose))
+                   (spec chemical default surface_decomposed))
            (number (path column "${column}" Chemistry "*" trace "${chemical}"
                          surface_transform)
                    (documentation "\
