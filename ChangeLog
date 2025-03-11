@@ -1,3 +1,11 @@
+2025-03-11  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/organic_matter/dom.C: Use rate.
+
+	* lib/fertilizer.dai (slurry): Use Rate.
+	* lib/chemistry-base.dai (solid, classic, Tracer, colloid): Ditto.
+	* lib/chemistry.dai: Ditto.
+
 2025-03-10  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* lib/log-std.dai ("Field chemical", "Field nitrogen"):

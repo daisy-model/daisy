@@ -1120,7 +1120,7 @@ ParserFile::Implementation::load_list (Frame& frame)
 	  };
 	  const symbol par_type = ends_with (name.name (), "_rate")
 	    ? "rate"
-	    : ends_with (name.name (), "_rate")
+	    : ends_with (name.name (), "_halftime")
 	    ? "halftime"
 	    : Attribute::None ();
 	  if (par_type != Attribute::None ())

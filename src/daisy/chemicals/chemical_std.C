@@ -2083,11 +2083,9 @@ ChemicalBase::ChemicalBase (const BlockModel& al)
     litter_decompose_rate (Rate::value (al, "litter_decompose",
 					canopy_dissipation_rate)),
     litter_washoff_coefficient (al.number ("litter_washoff_coefficient")),
-    litter_diffusion_rate (al.number ("litter_diffusion_rate")),
+    litter_diffusion_rate (Rate::value (al, "litter_diffusion")),
     diffusion_coefficient_ (al.number ("diffusion_coefficient") * 3600.0),
-    decompose_rate (al.check ("decompose_rate")
-                    ? al.number ("decompose_rate")
-                    : halftime_to_rate (al.number ("decompose_halftime"))),
+    decompose_rate (Rate::value (al, "decompose")),
     decompose_conc_factor (al.plf ("decompose_conc_factor")),
     decompose_lag_increment (al.plf ("decompose_lag_increment")),
     enable_surface_products (al.flag ("enable_surface_products")),
@@ -2224,21 +2222,6 @@ Read chemical properties as normal Daisy parameters.")
   static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
   { 
     bool ok = true;
-
-
-    if (!al.check ("decompose_rate") && !al.check ("decompose_halftime"))
-      {
-        msg.entry ("\
-You must specify 'decompose_rate' or 'decompose_halftime'");
-        ok = false;
-
-      }
-    if (al.check ("decompose_rate") && al.check ("decompose_halftime"))
-      {
-        msg.entry ("\
-You may not specify both 'decompose_rate' and 'decompose_halftime'");
-        ok = false;
-      }
     return ok;
   }
 
@@ -2314,28 +2297,15 @@ Default to 'canopy_dissipation' rate.");
     frame.declare_fraction ("litter_washoff_coefficient", Attribute::Const, "\
 Fraction of the chemical that follows the water off the litter.");
     frame.set ("litter_washoff_coefficient", 1.0);
-    frame.declare ("litter_diffusion_rate", "h^-1", Attribute::Const, "\
+    Rate::declare (frame, "litter_diffusion", "\
 How fast chemical diffuse to water passing on surface.");
-    frame.set ("litter_diffusion_rate", 0.0);
-    frame.declare ("litter_decompose_halftime", "h", 
-                   Check::positive (), Attribute::OptionalConst,
-                   "How fast does the chemical decompose on litter.\n\
-You must specify it with either 'litter_decompose_halftime' or\n\
-'litter_decompose_rate'.  If neither is specified,\n\
-'surface_decompose_rate' is used.");
+    Rate::set_rate (frame, "litter_diffusion", 0.0);
 
     // Soil parameters.
     frame.declare ("diffusion_coefficient", "cm^2/s", Check::non_negative (),
                    Attribute::Const, "Diffusion coefficient.");
-    frame.declare ("decompose_rate", "h^-1", Check::fraction (),
-                   Attribute::OptionalConst,
-                   "How fast the chemical is being decomposed in the soil.\n\
-You must specify it with either 'decompose_rate' or 'decompose_halftime'.");
-    frame.declare ("decompose_halftime", "h", Check::positive (),
-                   Attribute::OptionalConst,
-                   "How fast the chemical is being decomposed in the soil.\n\
-You must specify it with either 'decompose_rate' or 'decompose_halftime'.");
-
+    Rate::declare (frame, "decompose", "\
+How fast the chemical is being decomposed in the soil.");
     frame.declare ("decompose_conc_factor", "g/cm^3 H2O", Attribute::None (),
                    Attribute::Const,
                    "Concentration development factor on decomposition.");
@@ -2863,7 +2833,7 @@ static struct ChemicalNutrientSyntax : public DeclareModel
     frame.set ("crop_uptake_reflection_factor", 1.0); // Specific uptake code.
     Rate::set_rate (frame, "canopy_dissipation", 0.0);
     frame.set ("canopy_washoff_coefficient", 1.0);
-    frame.set ("decompose_rate", 0.0);
+    Rate::set_rate (frame, "decompose", 0.0);
   }
   ChemicalNutrientSyntax ()
     : DeclareModel (Chemical::component, "nutrient", "base", "\
@@ -2971,7 +2941,7 @@ Nitrate-N.")
     frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
 		     "hendry2003geochemical");
     // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
-    frame.set ("litter_diffusion_rate", 1.5); 
+    Rate::set_rate (frame, "litter_diffusion_rate", 1.5); 
   }
 } ChemicalDON_syntax;
 
@@ -2996,7 +2966,7 @@ Nitrate-N.")
     frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
 		     "hendry2003geochemical");
     // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
-    frame.set ("litter_diffusion_rate", 1.5); 
+    Rate::set_rate (frame, "litter_diffusion", 1.5); 
   }
 } ChemicalDOC_syntax;
 
