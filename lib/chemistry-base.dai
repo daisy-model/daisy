@@ -3,11 +3,11 @@
 (defchemical solid default
   "Non-dissolvable chemicals"
   (crop_uptake_reflection_factor 1 [])
-  (canopy_dissipation_rate 0 [h^-1])
+  (canopy_dissipation rate 0 [h^-1])
   (canopy_washoff_coefficient 1 [])
   (diffusion_coefficient 1 [cm^2/s])
   (adsorption full)
-  (decompose_rate 0 [h^-1]))
+  (decompose rate 0 [h^-1]))
   
 (defchemical classic default
   "For chemicals where we know no better."
@@ -20,7 +20,7 @@
                           ( -35 [cm] 0.5 [])
                           ( -25 [cm] 1.0 []) ;FOCUS lim 30 cm
                           (   0 [cm] 1.0 []))
-  (canopy_dissipation_rate 0.0083 [h^-1]) ;Source?
+  (canopy_dissipation rate 0.0083 [h^-1]) ;Source?
   (canopy_washoff_coefficient 1.0 [])
   (crop_uptake_reflection_factor 1 [])
   (diffusion_coefficient 4.6e-6 [cm^2/s]) ; Source?
@@ -43,31 +43,31 @@
 
 (defchemical Tracer default
 "No adsorption, plante uptake or degredation"
-  (canopy_dissipation_rate 0.00 [h^-1])       
+  (canopy_dissipation rate 0.00 [h^-1])       
   (canopy_washoff_coefficient 1.0)            
   (crop_uptake_reflection_factor 1.0)         
-  (decompose_rate 0 [h^-1])                   
+  (decompose rate 0 [h^-1])                   
   (diffusion_coefficient 1.8e-5 [cm^2/s]) ; For bromide at 20°C (Leistra & Boesten, 2010)
   (adsorption none))     			
 
 ; source: Leistram, M. & Boesten, J (2010): Measurement and computation of movement of bromide ions and carbofuran in ridged humic-sandy soil. Arch Environ Contam Toxicol. 59(1),39-48. doi: 10.1007/s00244-009-9442-4
 
  ;; defining colloid 
- (defchemical colloid default ; must be named colloid to use the log made for colloids called "Colloids"
+(defchemical colloid default ; must be named colloid to use the log made for colloids called "Colloids"
    "Mobile colloids."
-   (canopy_dissipation_rate 0.00 [h^-1])   ; must be specified, even though colloids is formed on the soil surface
+   (canopy_dissipation rate 0.00 [h^-1])   ; must be specified, even though colloids is formed on the soil surface
    (canopy_washoff_coefficient 1.0)  ; must be specified
    (diffusion_coefficient 1.0e-12 [cm^2/s]) ; Calculated using 0.1 µm as particle size (Laegdsmand et al, 2006).
-   (decompose_rate 0 [h^-1]))
+   (decompose rate 0 [h^-1]))
  
- (defreaction colloid-filter filter_velocity
+(defreaction colloid-filter filter_velocity
    "Filtration of colloids in the soil matrix." ; Since matrix domain in Daisy is divided into two domains, 80 and 40 was chosen to stay near 50m^-1 used in Jarvis99 (Hansen et al, 2012).
    (fc_primary 80 [m^-1])              ;Filter coefficient in primary domain.
    (fc_secondary 40 [m^-1])            ;Filter coefficient in secondary domain. 
    (mobile "colloid"))		       
    
  ;; colloid generation model
- (defreaction colloid-generation colgen_Jarvis99 
+(defreaction colloid-generation colgen_Jarvis99 
    "Release of colloids in soil surface from heavy rain. Simulated with Jarvis99. Does not take vegetation into account"
    (kd 15 [g/J])                        ;Detachment rate coefficient (Jarvis & Ulén, 2008)
    (kr 0.1 [g/m^2/h]) 			;Replenishment rate coefficient (Jarvis & Ulén, 2008)

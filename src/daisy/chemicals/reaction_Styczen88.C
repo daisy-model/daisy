@@ -80,7 +80,8 @@ struct ReactionStyczen88 : public ReactionColgen
   // Create and Destroy.
   void initialize (const Geometry& geo,
                    const Soil& soil, const SoilWater&, const SoilHeat&, 
-                   const OrganicMatter&, const Surface&, Treelog&);
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog&);
   ReactionStyczen88 (const BlockModel& al);
 };
 
@@ -269,7 +270,7 @@ void
 ReactionStyczen88::initialize (const Geometry& geo, 
 			       const Soil& soil,
 			       const SoilWater&, const SoilHeat&, 
-			       const OrganicMatter&,
+			       const OrganicMatter&, const Chemistry&,
 			       const Surface& surface, Treelog&)
 { surface_soil = find_surface_soil (geo, soil, surface); }
 

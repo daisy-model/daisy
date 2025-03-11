@@ -1671,8 +1671,6 @@ Fraction of sky covered by clouds, 1 = clear sky.");
 		   "Atmospheric CO2 pressure.");
     frame.declare ("sunrise", "h", Attribute::LogOnly,
                    "Time of sunrise.");
-    frame.declare ("sunrise", "h", Attribute::LogOnly,
-                   "Time of sunrise.");
     frame.declare ("sunset", "h", Attribute::LogOnly,
                    "Time of sunset.");
     frame.declare ("day_length", "h", Attribute::LogOnly,

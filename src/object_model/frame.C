@@ -38,7 +38,7 @@
 #include "object_model/treelog.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
-#include "util/function.h"
+#include "object_model/function.h"
 #include <vector>
 #include <set>
 #include <sstream>
@@ -103,6 +103,8 @@ Frame::Implementation::counter = 0;
 void
 Frame::Implementation::declare_type (const symbol key, const Type* type)
 {
+  if (types.find (key) != types.end ())
+    Assertion::warning ("Duplicate declaration '" + key + "'");
   types[key].reset (type);
 }
 

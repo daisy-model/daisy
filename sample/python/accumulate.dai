@@ -1,0 +1,18 @@
+; Example illustrating how state is kept over repeated calls to a python function from Daisy
+; See the definition of the python function in accumulate.py
+(deffunction f Python
+  "Call Python function that accumulates values."
+  (module "accumulate")
+  (name "accumulate")
+  (domain [])
+  (range []))
+
+(defprogram print_it write
+  "Write specific value"
+  (declare v1 Number [] "V1")
+  (declare v2 Number [] "V2")
+  (v1 (apply f 5 []))
+  (v2 (apply f 3 []))
+  (what "f(5) = ${v1}, f(3) = ${v2}"))
+  
+(run print_it)

@@ -85,7 +85,8 @@ struct ReactionJarvis99 : public ReactionColgen
   // Create and Destroy.
   void initialize (const Geometry& geo,
                    const Soil& soil, const SoilWater&, const SoilHeat&, 
-                   const OrganicMatter&, const Surface&, Treelog&);
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog&);
   bool check (const Geometry& geo,
               const Soil&, const SoilWater&, const SoilHeat&,
 	      const OrganicMatter&, const Chemistry& chemistry,
@@ -178,6 +179,7 @@ void
 ReactionJarvis99::initialize (const Geometry& geo,
                               const Soil& soil, const SoilWater&, 
                               const SoilHeat&, const OrganicMatter&,
+			      const Chemistry&,
 			      const Surface& surface, 
                               Treelog& msg)
 {  

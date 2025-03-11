@@ -23,6 +23,7 @@
 
 #include "daisy/soil/soil.h"
 #include "daisy/soil/horizon.h"
+#include "daisy/soil/texture.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/hydraulic.h"
 #include "daisy/soil/tortuosity.h"
@@ -409,6 +410,10 @@ double
 Soil::texture_below (size_t i, double size) const
 { return horizon (i).texture_below (size); }
 
+double /* [um] */
+Soil::texture_fractile (size_t i, double fraction /* [] */) const
+{ return horizon (i).texture ().fractile (fraction); }
+
 double 
 Soil::humus (size_t i) const
 { return horizon (i).humus (); }
@@ -501,10 +506,10 @@ Soil::output (Log& log) const
 
 void 
 Soil::nitrification (const size_t i,
-                     const double M, const double C, 
+                     const double M, const double C, const double Theta,
                      const double h, const double T,
                      double& NH4, double& N2O, double& NO3) const
-{ horizon (i).nitrification (M, C, h,  T, NH4, N2O, NO3); }
+{ horizon (i).nitrification (M, C, Theta, h,  T, NH4, N2O, NO3); }
 
 double
 Soil::MaxRootingHeight () const

@@ -1,7 +1,9 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
+  reaction_Python.C
   denprod_Parton1996.C
   denprod.C
   adsorption.C
+  adsorption_Python.C
   adsorption_freundlich.C
   adsorption_langmuir.C
   adsorption_linear.C

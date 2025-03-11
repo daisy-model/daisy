@@ -70,7 +70,7 @@ public:
                                Treelog& msg) const = 0;
 
 public:
-  virtual void update_C (const Soil&, const SoilWater&) = 0;
+  virtual void update_C (const Soil&, const SoilWater&, const SoilHeat&) = 0;
   virtual void mass_balance (const Geometry&, const SoilWater&) const = 0;
   void deposit (const IM& im, Treelog&);
   virtual void deposit (symbol chem, double flux /* [g/m^2/h] */,
@@ -84,9 +84,11 @@ public:
   virtual void dissipate_surface (symbol chem, double amount /* [g/m^2] */, 
                                   Treelog&) = 0;
   virtual void harvest (double removed, double surface) = 0;
-  virtual void mix (const Geometry&, const Soil&, const SoilWater&, 
+  virtual void mix (const Geometry&, const Soil&, const SoilWater&,
+		    const SoilHeat&,
                     double from, double to, double penetration) = 0;
   virtual void swap (const Geometry&, const Soil&, const SoilWater&,
+		     const SoilHeat&,
                      double from, double middle, double to) = 0;
   void incorporate (const Geometry& geo, const IM& im, 
 		    const double from, const double to, Treelog& msg);
@@ -140,7 +142,8 @@ public:
 public:
   virtual void initialize (const Scope&, const Geometry& geo,
                            const Soil&, const SoilWater&, const SoilHeat&,
-			   const OrganicMatter&, const Surface&, Treelog&) = 0;
+			   const OrganicMatter&, const Chemistry&,
+			   const Surface&, Treelog&) = 0;
   virtual bool check (const Scope&, const Geometry&,
 		      const Soil&, const SoilWater&, const SoilHeat&,
 		      const OrganicMatter&, const Chemistry&,

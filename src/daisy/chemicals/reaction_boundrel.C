@@ -96,7 +96,7 @@ struct ReactionBoundrel : public Reaction
   }
   void initialize (const Geometry&, const Soil&, 
                    const SoilWater&, const SoilHeat&, const OrganicMatter&,
-		   const Surface&, Treelog&)
+		   const Chemistry&, const Surface&, Treelog&)
   { }
   explicit ReactionBoundrel (const BlockModel& al)
     : Reaction (al),

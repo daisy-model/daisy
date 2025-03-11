@@ -80,7 +80,8 @@ struct ReactionDenit : public Reaction
 	      Treelog& msg) const;
   void initialize (const Geometry&, 
                    const Soil&, const SoilWater&, const SoilHeat&,
-                   const OrganicMatter&, const Surface&, Treelog&);
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog&);
   explicit ReactionDenit (const BlockModel& al);
 };
 
@@ -173,6 +174,7 @@ void
 ReactionDenit::initialize (const Geometry& geo,
                            const Soil& soil, const SoilWater&,
                            const SoilHeat&, const OrganicMatter&,
+			   const Chemistry&,
 			   const Surface&, Treelog&)
 {
   denprod->initialize (geo);

@@ -451,7 +451,8 @@ ColumnStandard::mix_it (const double from, const double to,
     = soil_water->mix (geometry, *soil, *soil_heat, from, to, msg);
   overflow (extra, msg);
   soil_heat->set_energy (geometry, *soil, *soil_water, from, to, energy);
-  chemistry->mix (geometry, *soil, *soil_water, from, to, penetration);
+  chemistry->mix (geometry, *soil, *soil_water, *soil_heat,
+		  from, to, penetration);
   organic_matter->mix (geometry, *soil, *soil_water, from, to, penetration);
   // Reset tillage age.
   for (size_t i = 0; i < tillage_age.size (); i++)
@@ -475,7 +476,7 @@ ColumnStandard::swap (const double from, const double middle, const double to,
     = soil_water->swap (geometry, *soil, *soil_heat, from, middle, to, msg);
   overflow (extra, msg);
   soil_heat->swap (geometry, from, middle, to);
-  chemistry->swap (geometry, *soil, *soil_water, from, middle, to);
+  chemistry->swap (geometry, *soil, *soil_water, *soil_heat, from, middle, to);
   organic_matter->swap (geometry, *soil, *soil_water, from, middle, to);
 }
 
@@ -496,7 +497,7 @@ ColumnStandard::set_porosity (const double at, const double Theta, Treelog& msg)
       soil->set_porosity (i, Theta); 
   const double extra = soil_water->overflow (geometry, *soil, *soil_heat, msg);
   overflow (extra, msg);
-  chemistry->update_C (*soil, *soil_water);
+  chemistry->update_C (*soil, *soil_water, *soil_heat);
 }
 
 void
@@ -850,7 +851,7 @@ ColumnStandard::tick_move (const Metalib& metalib,
       overflow (extra, msg);
       chemistry->mass_balance (geometry, *soil_water);
     }
-  chemistry->update_C (*soil, *soil_water);
+  chemistry->update_C (*soil, *soil_water, *soil_heat);
   chemistry->mass_balance (geometry, *soil_water);
 }
 
@@ -1146,7 +1147,7 @@ ColumnStandard::initialize (const Metalib& metalib,
   
   // Solutes depends on water and heat.
   chemistry->initialize (scope, geometry, *soil, *soil_water, *soil_heat, 
-                         *organic_matter, *surface, msg);
+                         *organic_matter, *chemistry, *surface, msg);
 
   // Movement depends on soil, soil_water, and groundwater
   if (!movement->initialize (units, *soil, *soil_water, *groundwater,

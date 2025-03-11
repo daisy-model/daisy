@@ -41,15 +41,22 @@ public:
   virtual bool full () const;
   virtual void output (Log&) const;
 private:
-  virtual double C_to_M (const Soil&, double Theta, int i, double C, double sf) const = 0;
-  virtual double M_to_C (const Soil&, double Theta, int i, double M, double sf) const = 0;
+  virtual double C_to_M (const Soil&, double Theta, double T,
+			 int i, double C, double sf) const = 0;
+  virtual double M_to_C (const Soil&, double Theta, double T,
+			 int i, double M, double sf) const = 0;
+protected:
+  double M_to_C_bisect (const Soil&, double Theta, double T,
+			int i, double M, double sf,
+			double C_lower, double C_upper) const;
 public:
-  double C_to_M_total (const Soil&, double Theta, int i, double C) const;
-  double M_to_C_total (const Soil&, double Theta, int i, double M) const;
-  double C_to_M1 (const Soil&, double Theta, int i, double C) const;
-  double M_to_C1 (const Soil&, double Theta, int i, double M) const;
-  double C_to_M2 (const Soil&, double Theta, int i, double C) const;
-  double M_to_C2 (const Soil&, double Theta, int i, double M) const;
+  double C_to_M_total (const Soil&, double Theta, double T,
+		       int i, double C) const;
+  double M_to_C_total (const Soil&, double Theta, double T, int i, double M) const;
+  double C_to_M1 (const Soil&, double Theta, double T, int i, double C) const;
+  double M_to_C1 (const Soil&, double Theta, double T, int i, double M) const;
+  double C_to_M2 (const Soil&, double Theta, double T, int i, double C) const;
+  double M_to_C2 (const Soil&, double Theta, double T, int i, double M) const;
 
   // Create and Destroy.
 public:
@@ -59,14 +66,6 @@ protected:
   Adsorption (const BlockModel& al);
 public:
   ~Adsorption ();
-};
-
-// Linear adsorption is treated specially in some solute transport models.
-struct AdsorptionLinear : public Adsorption
-{
-  virtual double K (const Soil& soil, size_t c) const = 0;
-protected:
-  AdsorptionLinear (const BlockModel&);
 };
 
 #endif // ADSORPTION_H

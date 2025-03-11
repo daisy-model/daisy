@@ -275,7 +275,8 @@ struct ReactionSorption : public Reaction
   }
   void initialize (const Geometry& geo, const Soil&, 
                    const SoilWater&, const SoilHeat&,
-                   const OrganicMatter&, const Surface&, Treelog& msg)
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog& msg)
   { 
     TREELOG_MODEL (msg);
     const size_t cell_size = geo.cell_size ();

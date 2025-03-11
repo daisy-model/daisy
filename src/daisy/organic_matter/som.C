@@ -24,6 +24,7 @@
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
+#include "object_model/rate.h"
 
 const char *const SOM::component = "SOM";
 
@@ -65,7 +66,7 @@ Slow SOM pool parameterization by Sander Bruun.")
   void load_frame (Frame& frame) const
   {
     frame.set_strings ("cite", "daisy-somnew");
-    frame.set ("turnover_rate", 4.3e-5 / 24.0 /* 1.7916667e-6 */);
+    Rate::set_rate (frame, "turnover", 4.3e-5 / 24.0 /* 1.7916667e-6 */);
     std::vector<double> efficiency;
     efficiency.push_back (0.40); // SMB1
     efficiency.push_back (0.40); // SMB2
@@ -89,7 +90,7 @@ Original parameterization of the slow SOM pool.")
   void load_frame (Frame& frame) const
   {
     frame.set_strings ("cite", "mueller-smb");
-    frame.set ("turnover_rate", 2.7e-6 / 24.0 /* 1.125e-7 */);
+    Rate::set_rate (frame, "turnover", 2.7e-6 / 24.0 /* 1.125e-7 */);
   }
 } SOMSlowOld_syntax;
 
@@ -102,7 +103,7 @@ Fast SOM pool parameterization by Sander Bruun.")
   void load_frame (Frame& frame) const
   {
     frame.set_strings ("cite", "daisy-somnew");
-    frame.set ("turnover_rate", 1.4e-4 / 24.0 /* 5.83333333333e-6 */);
+    Rate::set_rate (frame, "turnover", 1.4e-4 / 24.0 /* 5.83333333333e-6 */);
     std::vector<double> efficiency;
     efficiency.push_back (0.50); // SMB1
     efficiency.push_back (0.50); // SMB2
@@ -144,7 +145,7 @@ Inert SOM pool parameterization.")
   { }
   void load_frame (Frame& frame) const
   {
-    frame.set ("turnover_rate", 0.0);
+    Rate::set_rate (frame, "turnover", 0.0);
     std::vector<double> efficiency;
     efficiency.push_back (0.50); // SMB1
     efficiency.push_back (0.50); // SMB2

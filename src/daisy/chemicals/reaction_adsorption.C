@@ -29,6 +29,7 @@
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/soil.h"
 #include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil_heat.h"
 #include "util/scope_soil.h"
 #include "object_model/units.h"
 #include "daisy/output/log.h"
@@ -69,12 +70,14 @@ struct ReactionAdsorption : public Reaction
     for (size_t c = 0; c < cell_size; c++)
       { 
 	scope.set_cell (c);
+	const double T = soil_heat.T (c);
 	const double Theta_old = soil_water.Theta_old (c);
 	const double Theta_new = soil_water.Theta (c);
 	const double has_solute = solute.C_primary (c) * Theta_old;
 	const double has_sorbed = sorbed.M_primary (c);
 	const double has_M = has_solute + has_sorbed;
-	const double want_C = equilibrium->M_to_C1 (soil, Theta_new, c, has_M);
+	const double want_C
+	  = equilibrium->M_to_C1 (soil, Theta_new, T, c, has_M);
 	const double want_solute = want_C * Theta_new;
 	const double want_sorbed = has_M - want_solute;
 
@@ -144,7 +147,8 @@ struct ReactionAdsorption : public Reaction
   void initialize (const Geometry& geo, 
                    const Soil& soil, const SoilWater& soil_water, 
                    const SoilHeat& soil_heat,
-		   const OrganicMatter&, const Surface&, Treelog& msg)
+		   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog& msg)
   { 
     adsorption_source.insert (adsorption_source.begin (), soil.size (), 0.0);
     daisy_assert (adsorption_source.size () == soil.size ());

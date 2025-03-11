@@ -30,11 +30,11 @@ jobs:
       
     - name: Install macOS dependencies
       if: ${{ startsWith(matrix.os, 'macos') }}
-      run: brew install cmake boost suite-sparse
+      run: brew install cmake boost@1.85 suite-sparse pybind11
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
-      run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev
+      run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev python3-pybind11
 
     - name: Set reusable strings
       id: strings

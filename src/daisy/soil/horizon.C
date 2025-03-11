@@ -334,10 +334,10 @@ Horizon::append_attributes (std::set<symbol>& all) const
 }
 
 void 
-Horizon::nitrification (const double M, const double C, 
+Horizon::nitrification (const double M, const double C, const double Theta,
                         const double h, const double T,
                         double& NH4, double& N2O, double& NO3) const
-{ impl->nitrification->tick (M, C, h,  T, NH4, N2O, NO3); }
+{ impl->nitrification->tick (M, C, Theta, h,  T, NH4, N2O, NO3); }
 
 
 void 

@@ -80,7 +80,8 @@ struct ReactionDOM : public Reaction
 	      const OrganicMatter&, const Chemistry&, Treelog& msg) const;
   void initialize (const Geometry&, 
                    const Soil&, const SoilWater&, const SoilHeat&, 
-                   const OrganicMatter&, const Surface&, Treelog&);
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog&);
   explicit ReactionDOM (const BlockModel& al);
 };
 
@@ -260,7 +261,8 @@ void
 ReactionDOM::initialize (const Geometry& geo,
 			 const Soil&, 
 			 const SoilWater&, const SoilHeat&,
-			 const OrganicMatter&, const Surface&, Treelog&)
+			 const OrganicMatter&, const Chemistry&,
+			 const Surface&, Treelog&)
 {
   const size_t cell_size = geo.cell_size ();
 

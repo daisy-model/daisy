@@ -34,6 +34,7 @@
 #include "util/assertion.h"
 #include "object_model/treelog.h"
 #include "object_model/block_model.h"
+#include "object_model/rate.h"
 #include <sstream>
 #include <numeric>
 
@@ -324,20 +325,6 @@ static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
 {
   bool ok = true;
 
-  if (!al.check ("turnover_rate") && !al.check ("turnover_halftime"))
-    {
-      err.entry ("\
-You must specify 'turnover_rate' or 'turnover_halftime'");
-      ok = false;
-	
-    }
-  if (al.check ("turnover_rate") && al.check ("turnover_halftime"))
-    {
-      err.entry ("\
-You may not specify both 'turnover_rate' and 'turnover_halftime'");
-      ok = false;
-    }
-
   if (al.check ("C") && al.check ("C_per_N"))
     {
       const std::vector<double>& C = al.number_sequence ("C");
@@ -389,14 +376,8 @@ OM::load_syntax (Frame& frame, const std::string& frac_desc)
   frame.declare ("N", "g N/cm^3", Check::non_negative (),
 	      Attribute::OptionalState, Attribute::SoilCells,
 	      "Nitrogen in each soil interval.");
-  frame.declare ("turnover_rate", "h^-1", Check::fraction (), 
-	      Attribute::OptionalConst,
-	      "Fraction converted to other pools each hour.\n\
-You must specify either this or 'turnover_halftime'.");
-  frame.declare ("turnover_halftime", "h", Check::positive (), 
-	      Attribute::OptionalConst,
-	      "Time until half had been converted to other pools.\n\
-You must specify either this or 'turnover_rate'.");
+  Rate::declare (frame, "turnover", "\n\
+Fraction converted to other pools each hour.");
   frame.declare_fraction ("efficiency", Attribute::Const, Attribute::Variable, "\
 The efficiency this pool can be digested by each of the SMB pools.");
   frame.declare_fraction ("fractions", Attribute::Const, Attribute::Variable, "\
@@ -455,9 +436,7 @@ OM::initialize (size_t size)
 OM::OM (const BlockModel& al)
   : ModelFramed (al),
     initial_C_per_N (get_initial_C_per_N (al.frame ())),
-    turnover_rate (al.check ("turnover_rate")
-		   ? al.number ("turnover_rate")
-		   : halftime_to_rate (al.number ("turnover_halftime"))),
+    turnover_rate (Rate::value (al,"turnover")),
     efficiency (al.number_sequence ("efficiency")),
     fractions (al.number_sequence ("fractions"))
 { 

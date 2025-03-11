@@ -97,7 +97,7 @@ struct ReactionShoot : public Reaction
   // Create.
   void initialize (const Geometry&, 
                    const Soil&, const SoilWater&,
-                   const SoilHeat&, const OrganicMatter&,
+                   const SoilHeat&, const OrganicMatter&, const Chemistry&,
 		   const Surface&, Treelog&)
   { }
 
@@ -238,7 +238,7 @@ struct ReactionShoot2 : public Reaction
   // Create.
   void initialize (const Geometry&, 
                    const Soil&, const SoilWater&,
-                   const SoilHeat&, const OrganicMatter&,
+                   const SoilHeat&, const OrganicMatter&, const Chemistry&,
 		   const Surface&, Treelog&)
   { }
 

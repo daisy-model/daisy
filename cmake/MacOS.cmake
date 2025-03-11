@@ -3,13 +3,6 @@ set(DAISY_SAMPLE_DESTINATION "${DAISY_PACKAGE_INSTALL_DIRECTORY}/sample")
 set(DAISY_LIB_DESTINATION "${DAISY_PACKAGE_INSTALL_DIRECTORY}/lib")
 set(DAISY_CORE_NAME ${DAISY_BIN_NAME})
 
-if(DEFINED ENV{HOMEBREW_PREFIX}) 
-  set(HOMEBREW_PREFIX $ENV{HOMEBREW_PREFIX})
-else()
-  message("HOMEBREW_PREFIX not set in environment. Defaulting to /usr/local")
-  set(HOMEBREW_PREFIX /usr/local)
-endif()
-
 target_include_directories(${DAISY_BIN_NAME} PUBLIC include)
 target_compile_options(${DAISY_BIN_NAME} PRIVATE ${COMPILE_OPTIONS})
 target_link_options(${DAISY_BIN_NAME} PRIVATE ${LINKER_OPTIONS})
@@ -36,12 +29,14 @@ install(DIRECTORY
 # handle symlinks. Then install all the files we just copied.
 # We put them in bin/lib, then we dont need to update the rpath of the shared library files
 # because they look in @loader_path/../lib, which becomes lib/
+set(_boost_path_prefix "opt/boost@1.85/")
 set(_dylib_target_dir "${CMAKE_CURRENT_BINARY_DIR}/bin/lib")
 file(INSTALL
   "${HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
   "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
-  "${HOMEBREW_PREFIX}/lib/libboost_filesystem-mt.dylib"
-  "${HOMEBREW_PREFIX}/lib/libboost_atomic-mt.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem-mt.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_system-mt.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic-mt.dylib"
   "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
   DESTINATION ${_dylib_target_dir}
   FOLLOW_SYMLINK_CHAIN
@@ -65,10 +60,12 @@ set_target_properties(daisy
 
 # Then update the id of dylibs
 # This is brittle. Would be nice to get the dir path dynamically.
+set(_boost_id_prefix "boost@1.85/")
 set(_dylibs_rel_path
   "suite-sparse/lib/libcxsparse.4.dylib"
-  "boost/lib/libboost_filesystem-mt.dylib"
-  "boost/lib/libboost_atomic-mt.dylib"
+  "${_boost_id_prefix}lib/libboost_filesystem-mt.dylib"
+  "${_boost_id_prefix}lib/libboost_system-mt.dylib"
+  "${_boost_id_prefix}lib/libboost_atomic-mt.dylib"
 )
 foreach(_dylib_rel_path ${_dylibs_rel_path})
   set(_old_lib_id "${HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")

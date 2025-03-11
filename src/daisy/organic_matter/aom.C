@@ -31,6 +31,7 @@
 #include "daisy/soil/transport/geometry.h"
 #include "util/mathlib.h"
 #include "object_model/block_model.h"
+#include "object_model/rate.h"
 
 const char *const AOM::component = "AOM";
 
@@ -342,7 +343,7 @@ Slow AOM pool parameterization by Sander Bruun.")
     efficiency1.push_back (0.50);
     efficiency1.push_back (0.50);
     frame.set ("efficiency", efficiency1);
-    frame.set ("turnover_rate", 2.0e-4);
+    Rate::set_rate (frame, "turnover", 2.0e-4);
     std::vector<double> fractions1;
     fractions1.push_back (0.00);
     fractions1.push_back (1.00);
@@ -381,7 +382,7 @@ Fast AOM pool parameterization by Sander Bruun.")
     efficiency2.push_back (0.50);
     efficiency2.push_back (0.50);
     frame.set ("efficiency", efficiency2);
-    frame.set ("turnover_rate", 2.0e-3);
+    Rate::set_rate (frame, "turnover", 2.0e-3);
     std::vector<double> fractions2;
     fractions2.push_back (0.00);
     fractions2.push_back (1.00);
@@ -401,7 +402,7 @@ Third AOM pool of already decomposed material.")
     std::vector<double> efficiency1;
     efficiency1.push_back (1.00);
     frame.set ("efficiency", efficiency1);
-    frame.set ("turnover_rate", 1.0);
+    Rate::set_rate (frame, "turnover", 1.0);
     std::vector<double> fractions1;
     fractions1.push_back (0.00);
     fractions1.push_back (0.00);
@@ -421,7 +422,7 @@ Parameterization used for slow pool of some crop residuals.")
     std::vector<double> CN;
     CN.push_back (100.0);
     frame.set ("C_per_N", CN);
-    frame.set ("turnover_rate", 2.917E-0004);
+    Rate::set_rate (frame, "turnover", 2.917E-0004);
   }
 } AOMSlowCrop_syntax;
 
@@ -433,7 +434,7 @@ Parameterization used for fast pool of some crop residuals.")
   { }
   void load_frame (Frame& frame) const
   {
-    frame.set ("turnover_rate", 2.917E-0003);
+    Rate::set_rate (frame, "turnover", 2.917E-0003);
   }
 } AOMFastCrop_syntax;
 

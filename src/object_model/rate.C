@@ -61,6 +61,14 @@ Rate::declare (Frame& frame, const symbol name, const symbol description)
 }
 
 void
+Rate::declare_optional (Frame& frame, const symbol name, const symbol description)
+{
+  frame.declare_object (name, component,
+			Attribute::OptionalConst, Attribute::Singleton,
+			description);
+}
+
+void
 Rate::set_rate (Frame& frame, const symbol name, const double value)
 {
   const symbol model = "rate";
@@ -84,12 +92,31 @@ Rate::set_halftime (Frame& frame, const symbol name, const double value)
   frame.set (name, child);
 }
 
+void
+Rate::set_halftime_cited (Frame& frame, const symbol name, const double value,
+			  symbol desc, symbol citation)
+{
+  const symbol model = "halftime";
+  const Intrinsics& intrinsics = Librarian::intrinsics ();
+  intrinsics.instantiate (component, model);
+  const FrameModel& old = intrinsics.library (component).model (model);
+  boost::shared_ptr<FrameModel> child (&old.clone ());
+  child->set_cited ("halftime", value, desc, citation);
+  frame.set (name, child);
+}
+
 double
 Rate::value (const BlockModel& al, const symbol name)
 {
   const std::unique_ptr<Rate> model (Librarian::build_item<Rate> (al, name));
   const double result = model->find_rate ();
   return result;
+}
+
+double
+Rate::value (const BlockModel& al, const symbol name, double default_value)
+{
+  return al.check (name) ? value (al, name) : default_value;
 }
 
 // The 'rate' model.

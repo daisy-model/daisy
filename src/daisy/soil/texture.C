@@ -34,6 +34,13 @@ double
 Texture::fraction_of_minerals_smaller_than (double size /* [um] */) const
 { return accumulated (log (size)); }
 
+double /* [um] */
+Texture::fractile (double fraction /* [] */) const
+{
+  PLF inverse = accumulated.inverse ();
+  return std::exp (inverse (fraction));
+}
+
 double 
 Texture::mineral () const      // Fraction of minerals in dry soil [].
 { return 1.0 - humus - chalk; }

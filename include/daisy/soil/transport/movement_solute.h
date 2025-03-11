@@ -48,6 +48,7 @@ private:
                               Treelog& msg);
   static void secondary_transport (const Geometry&,
                                    const Soil&, const SoilWater&,
+				   const SoilHeat&,
                                    const std::map<size_t, double>& J_forced,
                                    const std::map<size_t, double>& C_border,
                                    Chemical& solute, 
@@ -56,6 +57,7 @@ private:
                                    const Scope& scope, Treelog& msg);
   static void primary_transport (const Geometry& geo,
                                  const Soil& soil, const SoilWater& soil_water,
+				 const SoilHeat&,
                                  const Transport&, 
                                  const bool sink_sorbed,
                                  const size_t transport_iteration,
@@ -81,7 +83,7 @@ private:
                         std::map<size_t, double>& J_primary,
                         std::map<size_t, double>& J_secondary,
                         std::map<size_t, double>& J_tertiary);
-  void solute (const Soil& soil, const SoilWater& soil_water,
+  void solute (const Soil& soil, const SoilWater& soil_water, const SoilHeat&,
                double J_above, Chemical&, 
 	       double dt, const Scope&, Treelog&);
   void element (const Soil& soil, const SoilWater& soil_water,

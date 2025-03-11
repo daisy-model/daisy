@@ -95,6 +95,7 @@ struct ReactionStandard : public Reaction
   void initialize (const Geometry& geo, 
                    const Soil& soil, const SoilWater& soil_water,
                    const SoilHeat& soil_heat, const OrganicMatter&,
+		   const Chemistry&,
 		   const Surface&, Treelog& msg)
   { 
     transform->initialize (units, geo, soil, soil_water, soil_heat, msg); 

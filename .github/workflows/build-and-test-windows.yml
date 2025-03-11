@@ -31,6 +31,7 @@ jobs:
             mingw-w64-${{matrix.env}}-ninja
             mingw-w64-${{matrix.env}}-suitesparse
             mingw-w64-${{matrix.env}}-boost
+            mingw-w64-${{matrix.env}}-pybind11
             mingw-w64-${{matrix.env}}-python
             mingw-w64-${{matrix.env}}-python-pip
             mingw-w64-${{matrix.env}}-python-pandas

@@ -88,6 +88,7 @@ public:
   double dry_bulk_density (size_t i) const;
   double clay (size_t i) const;
   double texture_below (size_t i, double size /* [um] */) const;
+  double /* [um] */ texture_fractile (size_t i, double fraction /* [] */) const;
   double humus (size_t i) const;	      // []
   double humus_C (size_t i) const;	      // [g C/cm^3]
   const std::vector<double>& SOM_fractions (size_t i) const;
@@ -113,7 +114,7 @@ public:
 public:
   void output (Log&) const;
   void nitrification (const size_t i,
-                      const double M, const double C, 
+                      const double M, const double C, const double Theta,
                       const double h, const double T,
                       double& NH4, double& N2O, double& NO3) const;
 

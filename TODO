@@ -1,5 +1,29 @@
 -TODO ---things that needs to be done with Daisy -*- outline -*-
 
+* Root diffusion
+
+** Make 2D test file
+
+*** 1 m x 1m domain
+
+*** 10 cm x 10 cm grid
+
+*** Sow 2 row at 25 and 75 cm
+
+*** Log "L"
+
+*** Make 2D plot 
+
+** Make "root system" a component
+
+*** Put "uptake" code in shared part
+
+*** Put old code in "default"
+
+*** New "diffusion" model
+
+*** Require sow depth?
+
 * N2O denit
 
 ** Make PLF gnuplots in ref manual work on windows

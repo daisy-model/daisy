@@ -24,9 +24,10 @@
 #include "daisy/organic_matter/dom.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
-#include "util/assertion.h"
+#include "object_model/rate.h"
 #include "object_model/check.h"
 #include "util/mathlib.h"
+#include "util/assertion.h"
 #include "object_model/block_model.h"
 
 const char *const SMB::component = "SMB";
@@ -169,7 +170,7 @@ Slow SMB pool parameterization.")
     std::vector<double> SMB1_C_per_N;
     SMB1_C_per_N.push_back (6.7);
     frame.set ("C_per_N", SMB1_C_per_N);
-    frame.set ("turnover_rate", 7.708e-6);
+    Rate::set_rate (frame, "turnover", 7.708e-6);
     std::vector<double> SMB1_efficiency;
     SMB1_efficiency.push_back (0.60);
     SMB1_efficiency.push_back (0.60);
@@ -196,7 +197,7 @@ Fast SMB pool parameterization.")
     std::vector<double> SMB2_C_per_N;
     SMB2_C_per_N.push_back (6.7);
     frame.set ("C_per_N", SMB2_C_per_N);
-    frame.set ("turnover_rate", 4.16666666667e-4);
+    Rate::set_rate (frame, "turnover", 4.16666666667e-4);
     std::vector<double> SMB2_efficiency;
     SMB2_efficiency.push_back (0.60);
     SMB2_efficiency.push_back (0.60);

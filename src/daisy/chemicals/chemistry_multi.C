@@ -60,7 +60,7 @@ struct ChemistryMulti : public Chemistry
   
   // Management.
   void check_ignore (const symbol chem, Treelog& msg);
-  void update_C (const Soil&, const SoilWater&);
+  void update_C (const Soil&, const SoilWater&, const SoilHeat&);
   void mass_balance (const Geometry& geo, 
                      const SoilWater& soil_water) const;
   void deposit (symbol chem, double flux, Treelog&);
@@ -68,9 +68,9 @@ struct ChemistryMulti : public Chemistry
   void spray_surface (symbol chem, double amount, Treelog&);
   void dissipate_surface (symbol chem, double amount, Treelog&);
   void harvest (double removed, double surface);
-  void mix (const Geometry&, const Soil&, const SoilWater&, 
+  void mix (const Geometry&, const Soil&, const SoilWater&, const SoilHeat&,
             double from, double to, double penetration);
-  void swap (const Geometry&, const Soil&, const SoilWater&,
+  void swap (const Geometry&, const Soil&, const SoilWater&, const SoilHeat&,
 	     double from, double middle, double to);
   void incorporate (const Geometry& geo,
 		    const symbol chem, const double amount,
@@ -116,7 +116,8 @@ struct ChemistryMulti : public Chemistry
   // Create & Destroy.
   void initialize (const Scope&, const Geometry&,
                    const Soil&, const SoilWater&, const SoilHeat&, 
-                   const OrganicMatter&, const Surface&, Treelog&);
+                   const OrganicMatter&, const Chemistry&,
+		   const Surface&, Treelog&);
   bool check (const Scope&, const Geometry&, 
 	      const Soil&, const SoilWater&, const SoilHeat&,
 	      const OrganicMatter&, const Chemistry&,
@@ -192,10 +193,11 @@ ChemistryMulti::check_ignore (const symbol chem, Treelog& msg)
 }
 
 void 
-ChemistryMulti::update_C (const Soil& soil, const SoilWater& soil_water)
+ChemistryMulti::update_C (const Soil& soil, const SoilWater& soil_water,
+			  const SoilHeat& soil_heat)
 {
   for (size_t c = 0; c < combine.size (); c++)
-    combine[c]->update_C (soil, soil_water); 
+    combine[c]->update_C (soil, soil_water, soil_heat); 
 }
 
 void 
@@ -306,22 +308,23 @@ ChemistryMulti::harvest (const double removed, const double surface)
 
 void 
 ChemistryMulti::mix (const Geometry& geo, const Soil& soil, 
-                     const SoilWater& soil_water,
+                     const SoilWater& soil_water, const SoilHeat& soil_heat,
                      const double from, const double to, 
                      const double penetration)
 {
   for (size_t c = 0; c < combine.size (); c++)
-    combine[c]->mix (geo, soil, soil_water, from, to, penetration); 
+    combine[c]->mix (geo, soil, soil_water, soil_heat, from, to, penetration); 
 }
 
 void 
 ChemistryMulti::swap (const Geometry& geo,
                       const Soil& soil, const SoilWater& soil_water,
+		      const SoilHeat& soil_heat,
                       const double from, const double middle,
                       const double to)
 { 
   for (size_t c = 0; c < combine.size (); c++)
-    combine[c]->swap (geo, soil, soil_water, from, middle, to); 
+    combine[c]->swap (geo, soil, soil_water, soil_heat, from, middle, to); 
 }
 
 void 
@@ -507,11 +510,12 @@ ChemistryMulti::initialize (const Scope& scope,
 			    const SoilWater& soil_water,
 			    const SoilHeat& soil_heat,
 			    const OrganicMatter& organic,
+			    const Chemistry& chemistry, 
 			    const Surface& surface, Treelog& msg)
 {
   for (size_t c = 0; c < combine.size (); c++)
     combine[c]->initialize (scope, geo, soil, soil_water, soil_heat,
-			    organic, surface, msg);
+			    organic, chemistry, surface, msg);
 }
 
 bool 
