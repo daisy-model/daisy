@@ -22,6 +22,7 @@
 #include "daisy/soil/transport/movement_solute.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/soil_water.h"
+#include "daisy/soil/soil.h"
 #include "daisy/soil/transport/transport.h"
 #include "daisy/chemicals/chemical.h"
 #include "daisy/chemicals/adsorption.h"
@@ -361,19 +362,6 @@ MovementSolute::primary_transport (const Geometry& geo, const Soil& soil,
                                    const Scope& scope, Treelog& msg)
 { 
   
-  // Edges.
-  const size_t edge_size = geo.edge_size ();
-
-  std::vector<double> q (edge_size); // Water flux [cm].
-  std::vector<double> J (edge_size); // Flux delivered by flow.
-
-  for (size_t e = 0; e < edge_size; e++)
-    {
-      q[e] = soil_water.q_primary (e);
-      daisy_assert (std::isfinite (q[e]));
-      J[e] = 0.0;
-    }
-
   // Cells.
   const size_t cell_size = geo.cell_size ();
 
@@ -382,13 +370,27 @@ MovementSolute::primary_transport (const Geometry& geo, const Soil& soil,
   std::vector<double> C (cell_size); // Concentration given to flow.
   std::vector<double> A (cell_size); // Sorbed mass not given to flow.
   std::vector<double> S (cell_size); // Source given to flow.
+  std::vector<double> Air_old (cell_size); // Air content at start...
+  std::vector<double> Air_new (cell_size); // ...and end of timestep.
+  std::vector<double> tortuosity_cell (cell_size);
+  std::vector<double> dispersivity (cell_size);
+  std::vector<double> dispersivity_transversal (cell_size);
 
+  
+  
   for (size_t c = 0; c < cell_size; c++)
     {
       Theta_old[c] = soil_water.Theta_primary_old (c);
       daisy_assert (Theta_old[c] > 0.0);
       Theta_new[c] = soil_water.Theta_primary (c);
       daisy_assert (Theta_new[c] > 0.0);
+      const double Theta_sat = soil.Theta_sat (c);
+      Air_old[c] = Theta_sat - Theta_old[c];
+      Air_new[c] = Theta_sat - Theta_new[c];
+      const double Theta_cell_avg = 0.5 * (Theta_old[c] + Theta_new[c]);
+      tortuosity_cell[c] = soil.tortuosity_factor (c, Theta_cell_avg);
+      dispersivity[c] = soil.dispersivity (c);
+      dispersivity_transversal[c] = soil.dispersivity_transversal (c);
       C[c] = solute.C_primary (c);
       daisy_assert (C[c] >= 0.0);
       const double M = solute.M_primary (c);
@@ -416,8 +418,52 @@ MovementSolute::primary_transport (const Geometry& geo, const Soil& soil,
       daisy_assert (std::isfinite (S[c]));
     }
   
-  // Flow.
-  transport.flow (geo, soil, Theta_old, Theta_new, q, solute.objid, 
+  // Edges.
+  const size_t edge_size = geo.edge_size ();
+
+  std::vector<double> q (edge_size); // Water flux [cm/h].
+  std::vector<double> J (edge_size); // Flux delivered by flow.
+  std::vector<double> qa (edge_size); // Air flow [g/h].
+  std::vector<double> Ja (edge_size); // Gas transport in air [g/h].
+  std::vector<double> tortuosity_edge (edge_size);
+  
+  for (size_t e = 0; e < edge_size; e++)
+    {
+      q[e] = soil_water.q_primary (e);
+      daisy_assert (std::isfinite (q[e]));
+      J[e] = 0.0;
+      qa[e] = 0.0;
+      Ja[e] = 0.0; 
+      // Middle Theta in space and time.
+      const int from = geo.edge_from (e);
+      const int to = geo.edge_to (e);
+      double Theta = 0.0;
+      double count = 0.0;
+      int cell = Geometry::cell_error;
+      
+      if (geo.cell_is_internal (to))
+	{
+	  Theta += Theta_old[to] + Theta_new[to];
+	  count += 2.0;
+	  cell = to;
+	}
+      if (geo.cell_is_internal (from))
+	{
+	  Theta += Theta_old[from] + Theta_new[from];
+	  count += 2.0;
+	  cell = from;		// We use "from" for internal edges.
+	}
+      daisy_assert (count > 0.0);
+      daisy_assert (geo.cell_is_internal (cell));
+      Theta /= count;
+      tortuosity_edge[e] = soil.tortuosity_factor (cell, Theta);
+    }
+
+  // Flow in water.
+  transport.flow (geo,
+		  tortuosity_edge, tortuosity_cell,
+		  dispersivity, dispersivity_transversal,
+		  Theta_old, Theta_new, q, solute.objid, 
                   S, J_forced, C_border, C, J, 
                   solute.diffusion_coefficient (), 
                   dt, msg);
@@ -426,6 +472,40 @@ MovementSolute::primary_transport (const Geometry& geo, const Soil& soil,
   for (size_t e = 0; e < edge_size; e++)
     daisy_assert (std::isfinite (J[e]));
 
+  // Flow in air.
+  const double gas_diffusion_coefficient = solute.gas_diffusion_coefficient ();
+  if (gas_diffusion_coefficient > 0.0)
+    {
+      // TODO: Fix tortuosity_edge, tortuosity_cell, dispersivity,
+      // dispersivity_transversal to work for gasses.
+
+      // TODO: Fix Hansen to accept upper boundary for concentration.
+      std::map<size_t, double> Ca_border;
+      std::map<size_t, double> Ja_forced;
+      for (auto edge : geo.cell_edges (Geometry::cell_below))
+	Ca_border[edge] = 0.0;
+      for (auto edge : geo.cell_edges (Geometry::cell_above))
+	Ja_forced[edge] = 0.0;
+
+      std::vector<double> Ca (cell_size); // Concentration in air
+      for (size_t c = 0; c < cell_size; c++)
+	Ca[c] = (Air_old[c] > 0.0)
+	  ? A[c] / Air_old[c]
+	  : 0.0;
+	  
+      transport.flow (geo,
+		      tortuosity_edge, tortuosity_cell,
+		      dispersivity, dispersivity_transversal,
+		      Air_old, Air_new, qa, solute.objid, 
+		      S, Ja_forced, Ca_border, Ca, Ja, 
+		      gas_diffusion_coefficient, 
+		      dt, msg);
+
+      for (size_t c = 0; c < cell_size; c++)
+	A[c] = (Air_new[c] > 0.0)
+	  ? Ca[c] / Air_new[c]
+	  : 0.0;
+    }
 
   // Update with new content.
   std::vector<double> M (cell_size);
@@ -473,6 +553,7 @@ MovementSolute::primary_transport (const Geometry& geo, const Soil& soil,
         }
     }
 
+  // TODO: Ja
   solute.set_primary (soil, soil_water, soil_heat, M, J);
 }
 

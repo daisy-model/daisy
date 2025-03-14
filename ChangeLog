@@ -1,3 +1,8 @@
+2025-03-13  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/chemicals/adsorption_air.C: New model.
+	* src/daisy/chemicals/CMakeLists.txt: Add it.
+
 2025-03-04  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* include/daisy/chemicals/adsorption.h: 

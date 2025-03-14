@@ -56,7 +56,10 @@ public:
   void element (const Geometry&, const Soil&, const SoilWater&,
                 DOE&, const double diffusion_coefficient, double dt, Treelog&);
   virtual void flow (const Geometry& geo, 
-                     const Soil& soil, 
+		     const std::vector<double>& tortuosity_edge,
+		     const std::vector<double>& tortuosity_cell,
+		     const std::vector<double>& dispersivity,
+		     const std::vector<double>& dispersivity_transversal,
                      const std::vector<double>& Theta_old,
                      const std::vector<double>& Theta_new,
                      const std::vector<double>& q,

@@ -27,6 +27,7 @@
 #include "daisy/chemicals/adsorption.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "util/assertion.h"
 #include "daisy/soil/soil_water.h"
 #include "daisy/soil/soil.h"
 
@@ -45,23 +46,57 @@ Transport::element (const Geometry& geo,
                        DOE& element, const double diffusion_coefficient, 
                        const double dt, Treelog& msg)
 {
-  // Edges.
-  const size_t edge_size = geo.edge_size ();
-  std::vector<double> q (edge_size); // Water flux [cm].
-  for (size_t e = 0; e < edge_size; e++)
-    q[e] = soil_water.q_primary (e);
-
-  // Cells.
+ // Cells.
   const size_t cell_size = geo.cell_size ();
   std::vector<double> Theta_old (cell_size); // Water content at start...
   std::vector<double> Theta_new (cell_size); // ...and end of timestep.
+  std::vector<double> tortuosity_cell (cell_size);
+  std::vector<double> dispersivity (cell_size);
+  std::vector<double> dispersivity_transversal (cell_size);
   for (size_t c = 0; c < cell_size; c++)
     {
       Theta_old[c] = soil_water.Theta_primary_old (c);
       Theta_new[c] = soil_water.Theta_primary (c);
+      const double Theta_cell_avg = 0.5 * (Theta_old[c] + Theta_new[c]);
+      tortuosity_cell[c] = soil.tortuosity_factor (c, Theta_cell_avg);
+      dispersivity[c] = soil.dispersivity (c);
+      dispersivity_transversal[c] = soil.dispersivity_transversal (c);
     }
 
-  // Upper border.
+  // Edges.
+  const size_t edge_size = geo.edge_size ();
+  std::vector<double> q (edge_size); // Water flux [cm].
+  std::vector<double> tortuosity_edge (edge_size);
+  for (size_t e = 0; e < edge_size; e++)
+    {
+      q[e] = soil_water.q_primary (e);
+
+      // Middle Theta in space and time.
+      const int from = geo.edge_from (e);
+      const int to = geo.edge_to (e);
+      double Theta = 0.0;
+      double count = 0.0;
+      int cell = Geometry::cell_error;
+      
+      if (geo.cell_is_internal (to))
+	{
+	  Theta += Theta_old[to] + Theta_new[to];
+	  count += 2.0;
+	  cell = to;
+	}
+      if (geo.cell_is_internal (from))
+	{
+	  Theta += Theta_old[from] + Theta_new[from];
+	  count += 2.0;
+	  cell = from;		// We use "from" for internal edges.
+	}
+      daisy_assert (count > 0.0);
+      daisy_assert (geo.cell_is_internal (cell));
+      Theta /= count;
+      tortuosity_edge[e] = soil.tortuosity_factor (cell, Theta);
+    }
+
+   // Upper border.
   std::map<size_t, double> J_forced;
   const std::vector<size_t>& edge_above = geo.cell_edges (Geometry::cell_above);
   const size_t edge_above_size = edge_above.size ();
@@ -83,7 +118,10 @@ Transport::element (const Geometry& geo,
 
   element.tick (cell_size, soil_water, dt);
   static const symbol DOM_name ("DOM");
-  flow (geo, soil, Theta_old, Theta_new, q, DOM_name, 
+  flow (geo,
+	tortuosity_edge, tortuosity_cell,
+	dispersivity, dispersivity_transversal,
+	Theta_old, Theta_new, q, DOM_name, 
         element.S, J_forced, C_border, element.C, element.J_matrix, 
         diffusion_coefficient, dt, msg);
   for (size_t c = 0; c < cell_size; c++)

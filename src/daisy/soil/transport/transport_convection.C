@@ -21,7 +21,6 @@
 #define BUILD_DLL
 #include "daisy/soil/transport/transport.h"
 #include "daisy/soil/transport/geometry.h"
-#include "daisy/soil/soil.h"
 #include "daisy/chemicals/adsorption.h"
 #include "object_model/submodeler.h"
 #include "util/memutils.h"
@@ -34,7 +33,10 @@ struct TransportConvection : public Transport
 {
   // Solute.
   void flow (const Geometry& geo, 
-             const Soil& soil, 
+	     const std::vector<double>& tortuosity_edge,
+	     const std::vector<double>& tortuosity_cell,
+	     const std::vector<double>& dispersivity,
+	     const std::vector<double>& dispersivity_transversal,
              const std::vector<double>& Theta_old,
              const std::vector<double>& Theta_new,
              const std::vector<double>& q,
@@ -54,7 +56,10 @@ struct TransportConvection : public Transport
 
 void
 TransportConvection::flow (const Geometry& geo, 
-                              const Soil& soil, 
+			   const std::vector<double>& tortuosity_edge,
+			   const std::vector<double>& tortuosity_cell,
+			   const std::vector<double>& dispersivity,
+			   const std::vector<double>& dispersivity_transversal,
                               const std::vector<double>& Theta_old,
                               const std::vector<double>& Theta_new,
                               const std::vector<double>& q,

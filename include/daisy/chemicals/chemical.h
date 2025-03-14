@@ -75,6 +75,7 @@ public:
 public:
   virtual const Adsorption& adsorption () const = 0;
   virtual double diffusion_coefficient () const = 0; // [cm^2/h] in free solute
+  virtual double gas_diffusion_coefficient () const = 0; // [cm^2/h] in air
 
   virtual double molar_mass () const = 0; // [g/mol], negative = unknown
 

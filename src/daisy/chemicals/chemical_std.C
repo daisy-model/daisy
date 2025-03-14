@@ -68,6 +68,7 @@ struct ChemicalBase : public Chemical
   const double litter_washoff_coefficient;
   const double litter_diffusion_rate;
   const double diffusion_coefficient_; 
+  const double gas_diffusion_coefficient_; 
   const double decompose_rate;
   const PLF decompose_conc_factor;
   const PLF decompose_lag_increment;
@@ -181,6 +182,7 @@ struct ChemicalBase : public Chemical
   // Solute.
   const Adsorption& adsorption () const;
   double diffusion_coefficient () const;
+  double gas_diffusion_coefficient () const;
 
   double molar_mass () const
   { return molar_mass_; }
@@ -374,6 +376,10 @@ ChemicalBase::adsorption () const
 double
 ChemicalBase::diffusion_coefficient () const
 { return diffusion_coefficient_; }
+
+double
+ChemicalBase::gas_diffusion_coefficient () const
+{ return gas_diffusion_coefficient_; }
 
 double
 ChemicalBase::surface_release_fraction () const
@@ -2095,6 +2101,8 @@ ChemicalBase::ChemicalBase (const BlockModel& al)
     litter_washoff_coefficient (al.number ("litter_washoff_coefficient")),
     litter_diffusion_rate (al.number ("litter_diffusion_rate")),
     diffusion_coefficient_ (al.number ("diffusion_coefficient") * 3600.0),
+    gas_diffusion_coefficient_ (al.number ("gas_diffusion_coefficient",
+					   -42.42e42) * 3600.0),
     decompose_rate (al.check ("decompose_rate")
                     ? al.number ("decompose_rate")
                     : halftime_to_rate (al.number ("decompose_halftime"))),
@@ -2402,6 +2410,12 @@ You must specify it with either 'litter_decompose_halftime' or\n\
     // Soil parameters.
     frame.declare ("diffusion_coefficient", "cm^2/s", Check::non_negative (),
                    Attribute::Const, "Diffusion coefficient.");
+    frame.declare ("gas_diffusion_coefficient", "cm^2/s",
+		   Check::none (), Attribute::OptionalConst, "\
+Gas diffusion coefficient.\n\
+This parameter determine if adsorbed mass is stationary (sorbed to soil)\n\
+or mobile (in the air).\n\
+Set it to negative or leave it out if it is sorbed to soil.");
     frame.declare ("decompose_rate", "h^-1", Check::fraction (),
                    Attribute::OptionalConst,
                    "How fast the chemical is being decomposed in the soil.\n\

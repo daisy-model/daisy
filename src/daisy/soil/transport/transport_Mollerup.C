@@ -21,7 +21,6 @@
 #define BUILD_DLL
 #include "daisy/soil/transport/transport.h"
 #include "daisy/soil/transport/geometry_rect.h"
-#include "daisy/soil/soil.h"
 #include "util/solver.h"
 #include "daisy/output/log.h"
 #include "object_model/frame.h"
@@ -101,7 +100,9 @@ struct TransportMollerup : public Transport
                                    const double Dzz);
 
   static void diffusion_tensor (const Geometry& geo, 
-                                const Soil& soil, 
+				const std::vector<double>& tortuosity_cell,
+				const std::vector<double>& dispersivity,
+				const std::vector<double>& dispersivity_transversal,
                                 const ublas::vector<double>& q_edge, 
                                 const ublas::vector<double>& Theta,
                                 const double diffusion_coefficient,
@@ -182,7 +183,10 @@ struct TransportMollerup : public Transport
                ublas::vector<double>& dJ) const; 
   // Solute.
   void flow (const Geometry& geo, 
-             const Soil& soil, 
+	     const std::vector<double>& /* tortuosity_edge */,
+	     const std::vector<double>& tortuosity_cell,
+	     const std::vector<double>& dispersivity,
+	     const std::vector<double>& dispersivity_transversal,
              const std::vector<double>& Theta_old,
              const std::vector<double>& Theta_new,
              const std::vector<double>& q,
@@ -324,7 +328,9 @@ TransportMollerup::anisotropy_factor (const Geometry& geo, size_t edge,
 
 void
 TransportMollerup::diffusion_tensor (const Geometry& geo, 
-                                        const Soil& soil, 
+				     const std::vector<double>& tortuosity_cell,
+				     const std::vector<double>& dispersivity,
+				     const std::vector<double>& dispersivity_transversal,
                                         const ublas::vector<double>& q_edge,
                                         const ublas::vector<double>& Theta,
                                         const double diffusion_coefficient,
@@ -348,9 +354,9 @@ TransportMollerup::diffusion_tensor (const Geometry& geo,
       const double qx = qx_cell (c);
       const double qz = qz_cell (c);
       const double q = sqrt (sqr (qx) + sqr (qz));
-      const double tau = soil.tortuosity_factor (c, Theta_cell);
-      const double alpha_L = soil.dispersivity (c);
-      const double alpha_T = soil.dispersivity_transversal (c);
+      const double tau = tortuosity_cell[c];
+      const double alpha_L = dispersivity[c];
+      const double alpha_T = dispersivity_transversal[c];
       
       if (q > 0)
         {
@@ -989,7 +995,10 @@ TransportMollerup::fluxes (const GeometryRect& geo,
 
 void
 TransportMollerup::flow (const Geometry& geo_base, 
-                            const Soil& soil, 
+			 const std::vector<double>& /* tortuosity_edge */,
+			 const std::vector<double>& tortuosity_cell,
+			 const std::vector<double>& dispersivity,
+			 const std::vector<double>& dispersivity_transversal,
                             const std::vector<double>& Theta_old,
                             const std::vector<double>& Theta_new,
                             const std::vector<double>& q,
@@ -1044,7 +1053,9 @@ TransportMollerup::flow (const Geometry& geo_base,
   ublas::vector<double> Dxz_cell (cell_size);
   
   //Calculate cell based diffusion based on average water content
-  diffusion_tensor (geo, soil, q_edge, Theta_cell_avg, diffusion_coefficient,
+  diffusion_tensor (geo, tortuosity_cell,
+		    dispersivity, dispersivity_transversal,
+		    q_edge, Theta_cell_avg, diffusion_coefficient,
                     Dxx_cell, Dzz_cell, Dxz_cell, msg);
   
   ublas::vector<double> ThetaD_xx_zz_avg (edge_size); 

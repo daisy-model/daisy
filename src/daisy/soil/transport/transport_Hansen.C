@@ -25,7 +25,6 @@
 #include "daisy/soil/transport/transport.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry1d.h"
-#include "daisy/soil/soil.h"
 #include "daisy/chemicals/adsorption.h"
 #include "daisy/output/log.h"
 #include "util/mathlib.h"
@@ -37,7 +36,10 @@ struct TransportHansen : public Transport
 {
   // Simulation.
   void flow (const Geometry& geo, 
-             const Soil& soil, 
+	     const std::vector<double>& tortuosity_edge,
+	     const std::vector<double>& tortuosity_cell,
+	     const std::vector<double>& dispersivity,
+	     const std::vector<double>& dispersivity_transversal,
              const std::vector<double>& Theta_old,
              const std::vector<double>& Theta_new,
              const std::vector<double>& q,
@@ -60,7 +62,10 @@ struct TransportHansen : public Transport
 
 void 
 TransportHansen::flow (const Geometry& geo_base, 
-                           const Soil& soil, 
+		     const std::vector<double>& tortuosity_edge,
+		     const std::vector<double>& tortuosity_cell,
+		     const std::vector<double>& dispersivity,
+		     const std::vector<double>& dispersivity_transversal,
                            const std::vector<double>& Theta_begin,
                            const std::vector<double>& Theta_end,
                            const std::vector<double>& q_primary,
@@ -100,7 +105,7 @@ TransportHansen::flow (const Geometry& geo_base,
   for (unsigned int j = 1; j < size; j++)
     {
       // Dispersion length [cm]
-      const double lambda = soil.dispersivity (j);
+      const double lambda = dispersivity[j];
 
       // Water flux [cm³ /cm² / h]
       const double q = q_primary[j];
@@ -110,7 +115,7 @@ TransportHansen::flow (const Geometry& geo_base,
                             + Theta_end[j] + Theta_end[j-1]) / 4.0;
       // From equation 7-39:
       D[j] = (lambda * fabs (-q / Theta)
-	      + soil.tortuosity_factor (j, Theta)
+	      + tortuosity_edge[j]
 	      * diffusion_coefficient)
 	* Theta;
 
@@ -120,7 +125,7 @@ TransportHansen::flow (const Geometry& geo_base,
   // Lower boundary.
   {
     // Dispersion length [cm]
-    const double lambda = soil.dispersivity (size-1);
+    const double lambda = dispersivity[size-1];
 
     // Water flux [cm³ /cm² / h]
     const double q = q_primary[size];
@@ -129,7 +134,7 @@ TransportHansen::flow (const Geometry& geo_base,
     const double Theta = (Theta_end[size - 1] + Theta_begin[size  - 1]) / 2.0;
     // From equation 7-39:
     D[size] = (lambda * fabs (-q / Theta)
-	       + soil.tortuosity_factor (size-1, Theta) 
+	       + tortuosity_edge[size-1]
  	       * diffusion_coefficient)
       * Theta;
 

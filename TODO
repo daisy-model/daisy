@@ -1,5 +1,23 @@
 -TODO ---things that needs to be done with Daisy -*- outline -*-
 
+* Gas transport
+
+** defchemical CO2
+
+** adsorption gas
+
+** source_gas
+
+** organic_matter -> source gas CO2 sink gas O2
+
+** log gas
+
+** transport gas
+
+*** none
+
+*** diffusion
+
 * N2O denit
 
 ** Make PLF gnuplots in ref manual work on windows
