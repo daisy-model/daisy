@@ -9,7 +9,6 @@ target_link_options(${DAISY_BIN_NAME} PRIVATE ${LINKER_OPTIONS})
 target_link_libraries(${DAISY_BIN_NAME} PUBLIC
   cxsparse
   Boost::filesystem
-  Boost::process
 )
 
 install(TARGETS ${DAISY_BIN_NAME} RUNTIME DESTINATION bin)
