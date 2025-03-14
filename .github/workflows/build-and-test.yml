@@ -30,7 +30,7 @@ jobs:
       
     - name: Install macOS dependencies
       if: ${{ startsWith(matrix.os, 'macos') }}
-      run: brew install cmake boost@1.85 suite-sparse pybind11
+      run: brew install cmake boost suite-sparse pybind11
       
     - name: Install ubuntu dependencies
       if: ${{ startsWith(matrix.os, 'ubuntu') }}
