@@ -57,12 +57,12 @@ TODO: Need to figure out static linking vs specifying depends in the package. Th
 
 ### MacOS
 #### Note on python suppport
-At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the on-click installer from python.org.
+At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the installer from python.org.
 
 
 Install dependencies
 
-    brew install cmake boost@1.85 suite-sparse pybind11
+    brew install cmake boost suite-sparse pybind11
 
 Download the source code and setup a build dir
 

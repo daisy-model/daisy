@@ -9,7 +9,6 @@ target_link_options(${DAISY_BIN_NAME} PRIVATE ${LINKER_OPTIONS})
 target_link_libraries(${DAISY_BIN_NAME} PUBLIC
   cxsparse
   Boost::filesystem
-  Boost::process
 )
 target_link_directories(${DAISY_BIN_NAME} PRIVATE ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
 
@@ -30,15 +29,14 @@ install(DIRECTORY
 # handle symlinks. Then install all the files we just copied.
 # We put them in bin/lib, then we dont need to update the rpath of the shared library files
 # because they look in @loader_path/../lib, which becomes lib/
-set(_boost_path_prefix "opt/boost@1.85/")
+set(_boost_path_prefix "")
 set(_dylib_target_dir "${CMAKE_CURRENT_BINARY_DIR}/bin/lib")
 file(INSTALL
   "${HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
   "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem-mt.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_system-mt.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic-mt.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_process.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_system.dylib"
+  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic.dylib"
   "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
   DESTINATION ${_dylib_target_dir}
   FOLLOW_SYMLINK_CHAIN
