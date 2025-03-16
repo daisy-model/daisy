@@ -62,7 +62,7 @@ At the moment we rely on users manually installing python from python.org. The c
 
 Install dependencies
 
-    brew install cmake boost@1.85 suite-sparse pybind11
+    brew install cmake boost suite-sparse pybind11
 
 Download the source code and setup a build dir
 
