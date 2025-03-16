@@ -57,12 +57,12 @@ TODO: Need to figure out static linking vs specifying depends in the package. Th
 
 ### MacOS
 #### Note on python suppport
-At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the installer from python.org.
+At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the on-click installer from python.org.
 
 
 Install dependencies
 
-    brew install cmake boost suite-sparse pybind11
+    brew install cmake boost@1.85 suite-sparse pybind11
 
 Download the source code and setup a build dir
 
@@ -90,7 +90,7 @@ Install [MSYS2](https://www.msys2.org/).
 
 Install build environment
 
-    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-x86_64-ninja
+    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja
 
 Install daisy dependencies
     
@@ -104,7 +104,7 @@ Download the source code and setup a build dir
     cd daisy/build/release
 
 
-Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/<python-release-name>`. Then update `Python_ROOT_DIR` in `cmake/MinGW.cmake` to point to the directory you just unpacked.
+Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/<python-release-name>`. Then update `Python_ROOT_DIR` in `cmake/python.cmake` to point to the directory you just unpacked.
     
 Build it
 
@@ -145,7 +145,16 @@ If you use `MSYS2` you need to install `python`, `pip` and `pandas`. Installing 
     pacman -S mingw-w64-ucrt-x86_64-python-pip
     pacman -S mingw-w64-ucrt-x86_64-python-pandas
 
+Then you need to setup a virtual environment.
+
+    python -m venv ~/.venvs/daisy --system-site-packages
+
+and activate it
+
+    source ~/.venvs/daisy/bin/activate
+
 Then you can use `pip` to install `daispy-test`
+
 
 ## Code coverage
 To get code coverage you need to set the build type to `Coverage`. This will disable some optimizations.
