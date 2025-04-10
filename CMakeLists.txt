@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
-  VERSION 7.0.7
+  VERSION 7.0.8
   DESCRIPTION "Mechanistic simulation of agricultural fields"
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
