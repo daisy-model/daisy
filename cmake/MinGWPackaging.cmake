@@ -16,15 +16,3 @@
 add_definitions( -DWINDOWS_INSTALL_LOCATION_REG_KEY="Software\\\\${CPACK_PACKAGE_VENDOR}\\\\${CMAKE_PROJECT_NAME} ${CMAKE_PROJECT_VERSION}")
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_GENERATOR NSIS)
-
-# Add a path to the python directory, so the python dlls and executable can be found.
-# Note that this only works when running daisy with the start command, not when running directly from a cmd shell
-# So you should do something like
-# start /b /wait daisy.exe <daisy-parameters>
-set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-WriteRegStr HKCU 'Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\App Paths\\\\daisy.exe' '' '$INSTDIR\\\\bin\\\\daisy.exe'
-WriteRegStr HKCU 'Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\App Paths\\\\daisy.exe' 'Path' '$INSTDIR\\\\python'
-")
-SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-  DeleteRegKey HKCU 'Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\App Paths\\\\daisy.exe'
-")
