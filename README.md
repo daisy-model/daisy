@@ -2,6 +2,9 @@
 
 Refactor of Daisy from https://github.com/perabrahamsen/daisy-model
 
+## Guides
+See [doc](doc)
+
 ## Building
 There are presets defined in `CMakePresets.json` for building on different platforms.
 
@@ -178,7 +181,7 @@ Use https://gcovr.com/en/stable/ to summarize coverage
     cd <coverage-build-dir>
     gcovr -r ../../ . --html ../../test/coverage.html
 
-## Documentation
+## Building documentation
 Documentation can be built by running
 
     cmake ../../ --preset <preset-name -DBUILD_DOC=ON
