@@ -12,7 +12,10 @@ target_link_libraries(${DAISY_CORE_NAME} PUBLIC
   Boost::filesystem
 )
 target_link_options(${DAISY_CORE_NAME} PRIVATE ${LINKER_OPTIONS})
+
 add_library(windows SHARED)
+target_include_directories(windows PUBLIC include)
+target_link_options(windows PRIVATE ${LINKER_OPTIONS})
 add_subdirectory(src/windows)
 target_link_libraries(${DAISY_CORE_NAME} PUBLIC
   windows
@@ -35,4 +38,25 @@ install(FILES
   $ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
   TYPE BIN
   COMPONENT runtime
+)
+
+# Also copy stuff to the build dir so we can run daisy from there
+file(INSTALL
+  $ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
+  $ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
+  $ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
+  $ENV{MINGW_PREFIX}/bin/libgomp-1.dll
+  $ENV{MINGW_PREFIX}/bin/libcxsparse.dll
+  $ENV{MINGW_PREFIX}/bin/libsuitesparseconfig.dll
+  $ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)
+file(INSTALL
+  ${CMAKE_SOURCE_DIR}/sample
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+file(INSTALL
+  ${CMAKE_SOURCE_DIR}/lib
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
