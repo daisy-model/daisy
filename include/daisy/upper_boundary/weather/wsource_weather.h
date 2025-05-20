@@ -107,6 +107,7 @@ public:
 public:
   const Time& middle () const;
   double extraterrestrial_radiation () const; // [W/m2]
+  double daily_extraterrestrial_radiation () const;
   double sin_solar_elevation_angle () const; // []
 protected:
 

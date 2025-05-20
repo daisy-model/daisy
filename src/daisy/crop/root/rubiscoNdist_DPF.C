@@ -65,12 +65,20 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
   daisy_assert (std::isfinite (cropN));
   daisy_assert (cropN >= 0.0);
   
+  double kn_LAI;
+  if (LAI < 0.01) {
+    kn_LAI = kn / 0.01;
+  }
+  else {
+    kn_LAI = kn / LAI;
+  }
+
   // Crop N in top of the canopy:
-  const double divisor = 1. - exp(-LAI * kn);
+  const double divisor = 1. - exp(-kn);
   daisy_assert(divisor > 0.0);
   daisy_assert (std::isnormal(divisor));
 
-  double cropN0 = kn * cropN / divisor; // [g/mÂ² leaf]
+  double cropN0 = kn_LAI * cropN / divisor; // [g/mÂ² leaf]
   cropN0 = cropN0 / Mw;  // [mol/mÂ² leaf]
   daisy_assert (cropN0 >= 0.0);
 
@@ -79,7 +87,7 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
 
   const double dLAI = (LAI /(No + 0.0));
   for (int i = 0; i < No; i++)
-     rubiscoNdist[i] = cropN0 * (exp(-kn * dLAI *(i+0.5))); //[mol/mÂ² leaf]
+     rubiscoNdist[i] = cropN0 * (exp(-kn_LAI * dLAI *(i+0.5))); //[mol/mÂ² leaf]
 
 
 }

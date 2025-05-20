@@ -255,7 +255,7 @@ PhotoFarquhar::assimilate (const Units& units,
 	  PAR_ += dPAR * dCAI * 3600.0; //mol/m²area/h/fraction
 
 	  // Photosynthetic rubisco capacity 
-	  const double vmax25 = crop_Vm_total[i]*fraction[i];//[mol/m²leaf/s/fracti.]
+	  const double vmax25 = crop_Vm_total[i];//[mol/m²leaf/s]
 	  daisy_assert (vmax25 >= 0.0);
 
 	  // leaf respiration
@@ -337,8 +337,8 @@ PhotoFarquhar::assimilate (const Units& units,
 	  // Leaf brutto photosynthesis [gCO2/m2/h] 
 	  /*const*/ double pn_ = (pn+rd) * molWeightCO2 * 3600.0;//mol CO2/m²leaf/s->g CO2/m²leaf/h
 	  const double rd_ = (rd) * molWeightCO2 * 3600.0;   //mol CO2/m²/s->g CO2/m²/h
-	  const double Vm_ = V_m(vmax25, Tl); //[mol/m² leaf/s/fraction]
-	  const double Jm_ = J_m(vmax25, Tl); //[mol/m² leaf/s/fraction]
+	  const double Vm_ = V_m(vmax25, Tl); //[mol/m² leaf/s]
+	  const double Jm_ = J_m(vmax25, Tl); //[mol/m² leaf/s]
 
 	  if (pn_ < 0.0)
             {
@@ -353,12 +353,12 @@ PhotoFarquhar::assimilate (const Units& units,
               msg.error (tmp.str ());
               pn_ = 0.0;
             }
-	  Ass_ += LA * pn_; // [g/m²area/h] 
-	  Res += LA * rd_;  // [g/m²area/h] 
+	  Ass_ += LA * fraction[i] * pn_; // [g/m²area/h] 
+	  Res += LA * fraction [i] * rd_;  // [g/m²area/h] 
 	  daisy_assert (Ass_ >= 0.0);
 
 	  //log variables:
-	  Ass_vector[i]+= pn_* (molWeightCH2O / molWeightCO2) * LA;//[g CH2O/m²area/h]
+	  Ass_vector[i]+= pn_* (molWeightCH2O / molWeightCO2) * LA * fraction[i] ;//[g CH2O/m²area/h]
 	  Nleaf_vector[i]+= rubisco_Ndist[i] * LA * fraction[i]; //[mol N/m²area]OK
 	  gs_vector[i]+= gsw /* * LA * fraction[i] */;     //[mol/m² area/s]
 	  ci_vector[i]+= ci /* * fraction[i] */;  //[Pa] OK
@@ -368,7 +368,7 @@ PhotoFarquhar::assimilate (const Units& units,
 	  
 	  ci_middel += ci * fraction[i]/(No + 0.0);// [Pa]   OK
 	  gs += LA * gsw * fraction[i]; 
-	  Ass += LA * pn_ * (molWeightCH2O / molWeightCO2);//[g CH2O/m2 area/h] OK
+	  Ass += LA * fraction[i] * pn_ * (molWeightCH2O / molWeightCO2);//[g CH2O/m2 area/h] OK
 	  LAI += LA * fraction[i];//OK
 	  Vmax += 1000.0 * LA * fraction[i] * Vm_;   //[mmol/m² area/s]
 	  jm += 1000.0 * LA * fraction[i] * Jm_;     //[mmol/m² area/s]

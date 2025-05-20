@@ -4,6 +4,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   bioclimate_std.C
   cloudiness.C
   difrad.C
+  difrad_BRL.C
   difrad_DPF.C
   difrad_weather.C
   fao.C
