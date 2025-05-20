@@ -22,7 +22,7 @@
 
 #include "util/path.h"
 #include "util/assertion.h"
-#include "windows/w32reg.h"
+#include "windows/windows_util.h"
 #include "object_model/version.h"
 
 // Get chdir.
@@ -97,24 +97,18 @@ Path::get_daisy_home ()
 	}
       else
 	{
-	  // Check MS Windows registry
 #if defined (_WIN32) || defined (__CYGWIN32__)
-	  const std::string key = WINDOWS_INSTALL_LOCATION_REG_KEY;
-	  char *const daisy_w32_reg 
-	    = read_w32_registry_string (NULL, key.c_str (), "");
-	  if (daisy_w32_reg)
-	    {
-	      Assertion::debug ("Has '" + key + "' registry entry.");
-	      symbol result = daisy_w32_reg;
-	      free (daisy_w32_reg);
-	      daisy_home = result;
-	    }
-	  else
-	    {
-	      Assertion::debug ("'" + key + "' not found.");
-	      Assertion::debug ("Using standard MS Windows home.");
-	      daisy_home = "C:/daisy";
-	    }
+  // Get the path from location of the exe
+  auto exe_path = get_exe_path();
+  Assertion::debug ("Trying to get DAISYHOME from '" + exe_path + "'");
+  auto result = get_daisy_home_from_exe_path();
+  if (result.length() > 0) {
+    daisy_home = result;
+  } else {
+    Assertion::debug("Could not get DAISHOME from exe path");
+    Assertion::debug("Using standard MS Windows home.");
+    daisy_home = "C:/daisy";
+  }
 #else // !MS WINDOWS
 #ifdef __APPLE__
 	  Assertion::debug ("OSX conventional home.");

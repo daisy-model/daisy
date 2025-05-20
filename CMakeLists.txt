@@ -9,6 +9,10 @@ project(
 include(cmake/AddCoverageBuildType.cmake)
 include(cmake/python.cmake)
 
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${CMAKE_BINARY_DIR}/daisy-${CMAKE_PROJECT_VERSION}")
+endif()
+
 
 # Make Daisy version available to version.C
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
@@ -33,7 +37,7 @@ add_compile_options(
 )
 
 if (${OS} STREQUAL "macos")
-  if(DEFINED ENV{HOMEBREW_PREFIX}) 
+  if(DEFINED ENV{HOMEBREW_PREFIX})
     set(HOMEBREW_PREFIX $ENV{HOMEBREW_PREFIX})
   else()
     message("HOMEBREW_PREFIX not set in environment. Defaulting to /usr/local")
@@ -41,7 +45,7 @@ if (${OS} STREQUAL "macos")
   endif()
   message("Using HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}")
 endif()
- 
+
 find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
 message(STATUS "Boost version: ${Boost_VERSION}")
 
