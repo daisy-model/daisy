@@ -1,4 +1,5 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
+  function_Python.C
   anystate.C
   assertion.C
   complex_functions.C

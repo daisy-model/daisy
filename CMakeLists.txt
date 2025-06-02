@@ -10,6 +10,12 @@ include(cmake/AddCoverageBuildType.cmake)
 include(cmake/python.cmake)
 
 
+# Python interface
+set(PYBIND11_FINDPYTHON ON)
+find_package(pybind11 REQUIRED)
+
+link_libraries(pybind11::embed)
+
 # Make Daisy version available to version.C
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 
