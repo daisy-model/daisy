@@ -10,9 +10,9 @@
 4. [CommandPrompt or PowerShell](#commandprompt-or-powershell)
 	* 4.1. [Set default terminal](#set-default-terminal)
 5. [Example configurations](#example-configurations)
-	* 5.1. [`settings.json`](#settings.json)
-	* 5.2. [`tasks.json`](#tasks.json)
-	* 5.3. [`keybindings.json`](#keybindings.json)
+	* 5.1. [`settings.json`](#settingsjson)
+	* 5.2. [`tasks.json`](#tasksjson)
+	* 5.3. [`keybindings.json`](#keybindingsjson)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
