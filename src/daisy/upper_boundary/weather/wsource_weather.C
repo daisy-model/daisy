@@ -1484,6 +1484,10 @@ WSourceWeather::extraterrestrial_radiation () const // [W/m2]
 { return impl->my_extraterrestrial_radiation; }
 
 double
+WSourceWeather::daily_extraterrestrial_radiation () const // [W/m2]
+{ return impl->my_daily_extraterrestrial_radiation; }
+
+double
 WSourceWeather::sin_solar_elevation_angle () const // []
 { return impl->my_sin_solar_elevation_angle; }
 

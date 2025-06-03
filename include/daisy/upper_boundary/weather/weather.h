@@ -98,6 +98,7 @@ public:
 public:
   
   virtual double extraterrestrial_radiation () const = 0; // [W/m2]
+  virtual double daily_extraterrestrial_radiation () const = 0; // [W/m2]
   virtual double sin_solar_elevation_angle () const = 0; // []
 
   // Create and Destroy.

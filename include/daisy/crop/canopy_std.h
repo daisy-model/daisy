@@ -37,9 +37,11 @@ private:
   const double SpSOrgAI;	// Specific storage organ area index
   const PLF& SOrgAIMod;		// Specific storage organ area index modifier
   const double SOrgPhotEff;	// Relative photosynt. effiency of stor. org.
+  const PLF& SOrgEffvsDS; // SOrg photosynthetic efficiency as fun. of DS.
   const double SpStemAI;	// Specific stem area index
   const PLF& StemAIMod;		// Specific stem area index modifier
   const double StemPhotEff;	// Relative photosynthetic effiency of stem.
+  const PLF& StemEffvsDS; // Stem photosynthetic efficiency as fun. of DS.
   const PLF& HvsDS;		// Crop height as function of DS
   const PLF& HvsWStem;		// Relative Crop height as fun. of stem weight
   const std::vector<double>& LAIDist0; // Relative CAI distribution at DS=0
@@ -63,6 +65,8 @@ public:
   double specific_LAI (double DS);
   double CropHeight (double WStem, double DS) const;
   double DS_at_height (double height) const;
+  double PhotSOrg (double DS);
+  double PhotStem (double DS);
 public:
   void CropCAI (double WLeaf, double WSOrg, double WStem, double DS);
   double corresponding_WLeaf (const double DS) const;

@@ -32,6 +32,14 @@ CanopyStandard::specific_LAI (const double DS)
 { return SpLAI * LeafAIMod (DS); }
 
 double
+CanopyStandard::PhotSOrg (const double DS)
+{ return SOrgPhotEff * SOrgEffvsDS (DS); }
+
+double
+CanopyStandard::PhotStem (const double DS)
+{ return StemPhotEff * StemEffvsDS (DS); }
+
+double
 CanopyStandard::CropHeight (double WStem, double DS) const
 {
   const double H1 = HvsDS (DS) + Offset;
@@ -57,7 +65,7 @@ CanopyStandard::CropCAI (double WLeaf, double WSOrg, double WStem, double DS)
   SOrgAI = SpSOrgAI * SOrgAIMod (DS) * WSOrg;
   StemAI = SpStemAI * StemAIMod (DS) * WStem;
 
-  CAI = LeafAI + StemPhotEff * StemAI + SOrgPhotEff * SOrgAI;
+  CAI = LeafAI + StemPhotEff * StemEffvsDS (DS) * StemAI + SOrgPhotEff * SOrgEffvsDS (DS) * SOrgAI;
 }
 
 double 
@@ -237,6 +245,9 @@ Used only after the intital phase.");
 	      "Relative photosynthetic efficiency of storage organ.\n\
 Used only after the intital phase.");
   frame.set ("SOrgPhotEff", 1.0);
+  frame.declare ("SOrgEffvsDS", "DS", Attribute::None (), Attribute::Const,
+        "SOrg photosynthetic efficiency as function of DS.");
+  frame.set ("SOrgEffvsDS", PLF::always_1 ());
   frame.declare ("SpStemAI", "(m^2/m^2)/(g DM/m^2)", Attribute::Const,
 	      "Specific stem weight.\n\
 Used only after the intital phase.");
@@ -249,6 +260,9 @@ Used only after the intital phase.");
 	      "Relative photosynthetic efficiency of stem.\n\
 Used only after the intital phase.");
   frame.set ("StemPhotEff", 1.0);
+  frame.declare ("StemEffvsDS", "DS", Attribute::None (), Attribute::Const,
+        "Stem photosynthetic efficiency as function of DS.");
+  frame.set ("StemEffvsDS", PLF::always_1 ());
   frame.declare ("HvsDS", "DS", "cm", Attribute::Const,
 	      "Crop height as function of DS.");
   PLF HvsStem;
@@ -296,9 +310,11 @@ CanopyStandard::CanopyStandard (const BlockSubmodel& vl)
     SpSOrgAI (vl.number ("SpSOrgAI")),
     SOrgAIMod (vl.plf ("SOrgAIMod")),
     SOrgPhotEff (vl.number ("SOrgPhotEff")),
+    SOrgEffvsDS (vl.plf ("SOrgEffvsDS")),
     SpStemAI (vl.number ("SpStemAI")),
     StemAIMod (vl.plf ("StemAIMod")),
     StemPhotEff (vl.number ("StemPhotEff")),
+    StemEffvsDS (vl.plf ("StemEffvsDS")),
     HvsDS (vl.plf ("HvsDS")),
     HvsWStem (vl.plf ("HvsWStem")),
     LAIDist0 (vl.number_sequence ("LAIDist0")),

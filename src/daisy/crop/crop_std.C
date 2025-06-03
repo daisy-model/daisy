@@ -403,13 +403,19 @@ CropStandard::find_stomata_conductance (const Time& time,
   // non-functional is considered structural N, and not used in
   // photosynthesis.  N content above critical is considered
   // luxury, and also not used in photosynthesis.
-  const double N_at_Nf 
-    = canopy->corresponding_WLeaf (DS) * nitrogen->NfLeafCnc (DS);
-  const double N_at_Cr
-    = canopy->corresponding_WLeaf (DS) * nitrogen->CrLeafCnc (DS);
-  const double N_at_Pt
-    = canopy->corresponding_WLeaf (DS) * nitrogen->PtLeafCnc (DS);
-  const double rubisco_N = rubiscoN->value (total_LAI, production.NLeaf,
+  const double Nphot = production.NLeaf
+                    + canopy->PhotSOrg(DS) * production.NSOrg
+                    + canopy->PhotStem(DS) * production.NStem;
+  const double N_at_Nf = production.WLeaf * nitrogen->NfLeafCnc (DS)
+                    + canopy->PhotSOrg(DS) * production.WSOrg * nitrogen->NfSOrgCnc (DS)
+                    + canopy->PhotStem(DS) * production.WStem * nitrogen->NfStemCnc (DS);
+  const double N_at_Cr = production.WLeaf * nitrogen->CrLeafCnc (DS)
+                    + canopy->PhotSOrg(DS) * production.WSOrg * nitrogen->CrSOrgCnc (DS)
+                    + canopy->PhotStem(DS) * production.WStem * nitrogen->CrStemCnc (DS);
+  const double N_at_Pt = production.WLeaf * nitrogen->PtLeafCnc (DS)
+                    + canopy->PhotSOrg(DS) * production.WSOrg * nitrogen->PtSOrgCnc (DS)
+                    + canopy->PhotStem(DS) * production.WStem * nitrogen->PtStemCnc (DS);
+  const double rubisco_N = rubiscoN->value (total_LAI, Nphot,
 					    N_at_Nf, N_at_Cr, N_at_Pt);
   daisy_assert (rubisco_N >= 0.0);
       

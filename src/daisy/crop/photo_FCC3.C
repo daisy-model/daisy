@@ -199,7 +199,7 @@ PhotoFCC3::CxModel (const double CO2_atm,
       if (wc < we) 
         dp = Vm * (Kcl+Gamma)/((ci+Kcl)*(ci+Kcl));//[mol/m² leaf/s/Pa]
       else 
-        dp = 3.0 * J *(Gamma/((ci+2. * Gamma)*(ci+2.* Gamma))); //[mol/m² leaf/s/Pa]
+        dp = (3.0/4.0) * J *(Gamma/((ci+2. * Gamma)*(ci+2.* Gamma))); //[mol/m² leaf/s/Pa]
       return dp;
     }
     

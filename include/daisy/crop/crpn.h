@@ -42,15 +42,14 @@ public:
   const PLF& PtLeafCnc;		// Upper limit for N-conc in leaves
   const PLF& CrLeafCnc;		// Critical lim f. N-conc in leaves
   const PLF& NfLeafCnc;		// Non-func lim f. N-conc in leaves
-private:
   const PLF& PtStemCnc;		// Upper limit for N-conc in stems
   const PLF& CrStemCnc;		// Critical lim f. N-conc in stems
   const PLF& NfStemCnc;		// Non-func lim f. N-conc in stems
+private:
   const PLF& PtRootCnc;		// Upper limit for N-conc in roots
   const PLF& CrRootCnc;		// Critical lim f. N-conc in roots
 public:
   const PLF& NfRootCnc;		// Non-func lim f. N-conc in roots
-private:
   const PLF& PtSOrgCnc;		// Upper limit for N-conc in stor org
   const PLF& CrSOrgCnc;		// Critical lim f. N-conc in stor org
   const PLF& NfSOrgCnc;		// Non-func lim f. N-conc in stor org

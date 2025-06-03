@@ -57,6 +57,7 @@ struct SVAT_SSOC : public SVAT
   const double epsilon_soil;   // Soil emmisivity long wave rad. []
   const PLF epsilon_soil_SWE;  // Effect of soil water on emmisivity [pF] -> []
   const double epsilon_leaf;   // Leaf emmisivity long wave rad. []
+  const double b_SSOC;         // Stomatal intercept [mol m^-2 s^-1]
 
   // Driving variables.
   // - Upper boundary
@@ -575,7 +576,8 @@ SVAT_SSOC::calculate_conductances (const double g_s_shadow /* stomc. [m/s]*/,
       const double gbf_leaf_H2O = Resistance::gbf_shadow(gbf_H2O, LAI);
       // Water conductance from leaves to canopy point
       // - sum of boundary and stomata
-      const double r_W_leaf_c = 1./(gbu_leaf_H2O + gbf_leaf_H2O); 
+      const double r_W_leaf_c = 1./(gbu_leaf_H2O + gbf_leaf_H2O)
+                            + 1./Resistance::molly2ms (T_a - TK, Ptot, b_SSOC); 
       g_W_leaf_c = 1./r_W_leaf_c;
     }
   
@@ -1089,6 +1091,7 @@ SVAT_SSOC::SVAT_SSOC (const BlockModel& al)
     epsilon_soil (al.number ("epsilon_soil")),
     epsilon_soil_SWE (al.plf ("epsilon_soil_SWE")),
     epsilon_leaf (al.number ("epsilon_leaf")),
+    b_SSOC (al.number ("b_SSOC")),
     Ptot (-42.42e42),
     T_a (-42.42e42),
     z_r (-42.42e42),
@@ -1194,6 +1197,9 @@ Soil emmisivity for long wave radiation.");
 		   "pF", Attribute::None (), Attribute::Const, "\
 Effect of soil water on epsilon_soil.");
     frame.set ("epsilon_soil_SWE", PLF::always_1 ());
+    frame.declare ("b_SSOC", "mol/m^2/s", Attribute::Const, "\
+Stomatal intercept, also defined in Stomatacon component.");
+    frame.set ("b_SSOC", 0.01);
 
     // For log.
     frame.declare ("lambda", "J/kg", Attribute::LogOnly, "Latent heat of vaporization in atmosphere.");
