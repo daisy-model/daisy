@@ -1,8 +1,8 @@
 dlf-0.0 -- Chemical Content (defined in 'log.dai').
 
-VERSION: 7.0.0
+VERSION: 7.0.13
 LOGFILE: content_colloid.dlf
-RUN: Tue Feb  4 11:36:06 2025
+RUN: Tue Jun  3 14:08:49 2025
 
 COLUMN: *
 CHEMICAL: colloid

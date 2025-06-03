@@ -1,8 +1,8 @@
 dlf-0.0 -- Field water (defined in 'log-std.dai').
 
-VERSION: 7.0.0
+VERSION: 7.0.13
 LOGFILE: field_water.dlf
-RUN: Wed Aug 28 10:53:19 2024
+RUN: Tue Jun  3 14:08:12 2025
 
 COLUMN: *
 INTERVAL: box none

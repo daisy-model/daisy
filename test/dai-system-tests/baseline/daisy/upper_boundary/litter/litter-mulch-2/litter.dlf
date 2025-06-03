@@ -1,15 +1,15 @@
-dlf-0.0 -- Litter (defined in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-mulch-2.dai').
+dlf-0.0 -- Litter (defined in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/litter/test-litter-mulch-2.dai').
 
-VERSION: 7.0.0
+VERSION: 7.0.13
 LOGFILE: litter.dlf
-RUN: Mon Apr 29 15:02:08 2024
+RUN: Tue Jun  3 14:08:29 2025
 
 COLUMN: *
 INTERVAL: box none
 
 LOG: Log litter
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/test-litter-mulch-2.dai
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/upper_boundary/litter/test-litter-mulch-2.dai
 SIM: Test litter mulch with exp retention curve
 
 --------------------
