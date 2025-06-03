@@ -3190,6 +3190,7 @@ Turnover rate above which pools will contribute to 'CO2_fast'.");
     frame.declare_object ("smb", SMB::component, Attribute::State, Attribute::Variable, "\
 Soil MicroBiomass pools.\n\
 Initial value will be estimated based on equilibrium with AM and SOM pools.");
+    frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST");
     frame.declare_object ("som", SOM::component, Attribute::State, Attribute::Variable,
                       "Soil Organic Matter pools.");
     frame.set_strings ("som", "SOM-SLOW", "SOM-FAST", "SOM-INERT");
