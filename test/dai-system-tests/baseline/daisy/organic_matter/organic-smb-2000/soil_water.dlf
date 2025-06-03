@@ -1,8 +1,8 @@
 dlf-0.0 -- Soil water (defined in 'log-std.dai').
 
-VERSION: 7.0.0
+VERSION: 7.0.13
 LOGFILE: soil_water.dlf
-RUN: Mon Feb 10 11:16:36 2025
+RUN: Tue Jun  3 14:07:07 2025
 
 COLUMN: *
 INTERVAL: box none
@@ -15,8 +15,8 @@ LOG: considered external to the system.  The balances provided by the
 LOG: log will work on any subset of the soil that matches the
 LOG: discretization.
 
-SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/organic_matter/test-organic-smb2000.dai
-SIM: Test organic SMB-2000
+SIMFILE: /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/daisy/organic_matter/test-organic-smb-2000.dai
+SIM: Test organic SOM2000
 
 --------------------
 year	month	mday	hour	Matrix infiltration	Matrix percolation	Biopore infiltration	Biopore percolation	Subsoil irrigation	Matrix direct drain flow	Matrix indirect drain flow	Biopore drain flow	Root extraction	Freezing	Tillage	Matrix to biopores	Biopores to matrix	Matrix water	Biopore water
