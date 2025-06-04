@@ -46,8 +46,10 @@ class Production
   // Remobilization.
 private:
   const double ShldResC;	// Capacity of Shielded Reserves
+  const double ReMobilEff;      // Remobilization efficiency
   const double ReMobilDS;	// Remobilization, Initial DS
   const double ReMobilRt;	// Remobilization, release rate
+  const PLF& ReMobil_Mod;	// Remobilization, release rate modifier
   double StemRes;		// Shielded Reserves in Stems
   double remobilization (const double DS, const double dt);
 
@@ -60,6 +62,7 @@ public:
   const double E_Stem;		// Conversion efficiency, stem
   const double E_SOrg;		// Conversion efficiency, stor. org.
 private:
+  const PLF& MaintResp_DS;      // Maint. resp. reduction due to senescence
   const double r_Root;		// Maint. resp. coeff., root
   const double r_Leaf;		// Maint. resp. coeff., leaf
   const double r_Stem;		// Maint. resp. coeff., stem
