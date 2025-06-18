@@ -7,12 +7,10 @@
 	* 3.1. [Configure a launcher to run Daisy when pressing `F5`](#configure-a-launcher-to-run-daisy-when-pressing-f5)
 	* 3.2. [Configure tasks to run Daisy when a user defined keyboard shortcut is pressed](#configure-tasks-to-run-daisy-when-a-user-defined-keyboard-shortcut-is-pressed)
 	* 3.3. [Switching between multiple Daisy installations](#switching-between-multiple-daisy-installations)
-4. [CommandPrompt or PowerShell](#commandprompt-or-powershell)
-	* 4.1. [Set default terminal](#set-default-terminal)
-5. [Example configurations](#example-configurations)
-	* 5.1. [`settings.json`](#settingsjson)
-	* 5.2. [`tasks.json`](#tasksjson)
-	* 5.3. [`keybindings.json`](#keybindingsjson)
+4. [Example configurations](#example-configurations)
+	* 4.1. [`settings.json`](#settingsjson)
+	* 4.2. [`tasks.json`](#tasksjson)
+	* 4.3. [`keybindings.json`](#keybindingsjson)
 
 <!-- vscode-markdown-toc-config
 	numbering=true
@@ -50,6 +48,15 @@ There are two different approaches that complement each other
 The first option is the most relevant if you just want to run a single version of Daisy. The second option is more relevant if you want to be able to choose between multiple versions of Daisy.
 
 ### Configure a launcher to run Daisy when pressing `F5`
+There are several ways of running a program from VSCode. In order for the Daisy spawn program to work correctly, it is important that "CommandPrompt" (cmd.exe) is used. 
+
+#### Set default terminal
+1. Press `F1`or `Ctrl + Shift + p` to bring up the "Command Palette"
+2. Start typing "Terminal: Select Default Profile" and select it when it appears in the menu
+3. Choose "Command Prompt".
+
+#### Configure the launcher
+
 1. Open your settings file
     1. Press `F1` or `Ctrl + Shift + p` to bring up the "Command Palette"
     2. Start typing the commannd "Preferences: Open User settings (JSON)" and select it when it appears in the menu.
@@ -66,10 +73,7 @@ The first option is the most relevant if you just want to run a single version o
                 "request": "launch",
                 "type": "node-terminal",
                 "cwd" : "${workspaceFolder}",
-                // Uncomment below line if you use PowerShell
-                // "command": "C:/'Program Files'/'daisy 7.0.7'/bin/daisy.exe \"${file}\""
-                // Or uncomment below line if you use CommandPrompt
-                //"command": "\"C:/Program Files/daisy 7.0.7/bin/daisy.exe\" \"${file}\""
+                "command": "\"C:/Program Files/daisy 7.0.7/bin/daisy.exe\" \"${file}\""
             }
         ]
     }
@@ -81,7 +85,7 @@ Notice that you have to choose between a PowerShell version and a CommandPrompt 
 ### Configure tasks to run Daisy when a user defined keyboard shortcut is pressed
 1. Open the tasks file
     1. Press `F1` or `Ctrl + Shift + p` to bring up the "Command Palette"
-    2. Start typing the comma1nd "Tasks: Configure Task" and select it when it appears in the menu
+    2. Start typing the command "Tasks: Configure Task" and select it when it appears in the menu
     3. Select "Create tasks.json file from template" (others).
     4. This should open the file `tasks.json`
 2. Add a new task under "tasks"
@@ -122,27 +126,6 @@ Notice that you have to choose between a PowerShell version and a CommandPrompt 
 ### Switching between multiple Daisy installations
 You can easily switch between Daisy version by adding another entry to the tasks and keybinding files. Just remember to have unique names for the tasks
 
-## CommandPrompt or PowerShell
-There are several ways of running a program from VSCode. Here we focus on CommandPrompt (`cmd.exe`) and PowerShell. The most important difference is how they handle paths with spaces. For example, the path
-
-```{json}
-    "C:/Program Files/daisy 7.0.7/bin/daisy.exe"
-```
-
-Needs to be quoted like this for PowerShell
-```{json}
-    "C:/'Program Files'/'daisy 7.0.7'/bin/daisy.exe" // For PowerShell
-```
-
-and like this for CommandPrompt
-```{json}
-    "\"C:/Program Files/daisy 7.0.7/bin/daisy.exe\"" // For CommandPrompt
-```
-
-### Set default terminal
-1. Press `F1`or `Ctrl + Shift + p` to bring up the "Command Palette"
-2. Start typing "Terminal: Select Default Profile" and select it when it appears in the menu
-3. Choose the terminal that you want to use by default.
 
 ## Example configurations
 ### `settings.json`
