@@ -37,8 +37,9 @@ If you open a Daisy setup file with a file name suffix of ".dai" with TextPad, y
 2. Open the "Configure" menu.
 3. Select "Preferences..."
 4. Click on "Tools" (the name, not the small box with a beside it).
-5. Click on "Add" and choose "Command Prompt..." from the drop down menu.
-6. Write "Daisy" and press "Apply".
+5. Click on "Add" and choose "Program..." from the drop down menu.
+6. Find and select the "daisy.exe" file. It is normally located in the "bin" subfolder of the folder where you installed Daisy.
+6. Press "Apply".
 7. Click the box next to "Tools" to view the available tools.
 8. Select "Daisy".
 9. Copy the string "start /b /wait daisy.exe $File" into the text field names "Parameters"
