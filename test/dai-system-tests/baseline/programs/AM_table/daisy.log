@@ -1,21 +1,22 @@
 Has DAISYHOME environment variable
-Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable'
-Daisy crop/soil simulation version 7.0.0. (May  7 2024)
+Using '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../..' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests'
+Daisy crop/soil simulation version 7.0.13. (Jun  3 2025)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-Changing directory to 'tmp' success
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
-Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai-unit-tests/tests/test-AM_table.dai'
-* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai-unit-tests/tests/test-AM_table.dai'
+Changing directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/AM_table' success
+Interpreting '.' in path as /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common
+In directory '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/AM_table':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-AM_table.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-AM_table.dai'
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+In directory '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/AM_table':
 Looking for file 'fertilizer.dai'
-Trying 'tmp/fertilizer.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/fertilizer.dai' success!
-Command line: ./daisy -d tmp /home/silas/Projects/daisy-model/daisy/test/dai-unit-tests/tests/test-AM_table.dai
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
-Program started Wed May  8 08:06:48 2024., 0 seconds ago.
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/fertilizer.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../../lib/fertilizer.dai' success!
+Command line: ../../build/portable-7.0.13/daisy -d /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/AM_table -D /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-AM_table.dai
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/AM_table'
+Program started Tue Jun  3 14:40:29 2025., 0 seconds ago.
 Name	Super	File	NH4	NO3	volatilization	N	C	DM
 component	<none>	<none>						
 base	component	<none>						

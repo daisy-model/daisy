@@ -3,9 +3,9 @@
 (input file "test_base.dai")
 
 (defcolumn test-column JB6med
-  (OrganicMatter "default" (init
-                            (input 4000 [kg C/ha/y])
-                            (root 1000 [kg C/ha/y]))))
+  (OrganicMatter SOM2025 (init
+                         (input 4000 [kg C/ha/y])
+                         (root 1000 [kg C/ha/y]))))
 
 (defprogram test Base "Test organic new default smb"
             (column test-column))

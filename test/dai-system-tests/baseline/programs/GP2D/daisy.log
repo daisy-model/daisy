@@ -1,14 +1,15 @@
 Has DAISYHOME environment variable
-Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable'
-Daisy crop/soil simulation version 7.0.0. (May  7 2024)
+Using '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../..' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests'
+Daisy crop/soil simulation version 7.0.13. (Jun  3 2025)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-Changing directory to 'tmp' success
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
-Opening absolute file name '../../../test/dai-system-tests/tests/programs/test-GP2D.dai'
-Command line: ./daisy -d tmp ../../../test/dai-system-tests/tests/programs/test-GP2D.dai
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
-Program started Tue May  7 14:55:07 2024., 0 seconds ago.
+Changing directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/GP2D' success
+Interpreting '.' in path as /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common
+In directory '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/GP2D':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-GP2D.dai'
+Command line: ../../build/portable-7.0.13/daisy -d /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/GP2D -D /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-GP2D.dai
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/GP2D'
+Program started Tue Jun  3 14:40:29 2025., 0 seconds ago.
 * rootdens: GP2D set_density
 R =	70	cm	Row distance
 M_r =	0.015	g/cm^2	Root dry matter per area
@@ -25,7 +26,7 @@ D =	0.1		Minimum root length as fraction of total root length
 Q_max =	-2		The function g has a local maximum at -2
 D_max =	0.541341		There is no solution when D is above the value at Q_max
 Q =	-5.8279		Solution to 'g (Q) = 0'
-g_Q =	-2.77556e-17		g (Q)
+g_Q =	-1.38778e-17		g (Q)
 a_z =	0.0388527	cm^-1	Vertical decrease
 a_x =	0.0777053	cm^-1	Horisontal decrease
 L00 =	15.85	cm/cm^3	Density at (0, 0)	

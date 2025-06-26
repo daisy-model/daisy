@@ -3,11 +3,11 @@
 (input file "test_base.dai")
 
 (defcolumn test-column JB6med
-  (OrganicMatter "SMB-2000" (init
+  (OrganicMatter "SOM2000" (init
                             (input 4000 [kg C/ha/y])
                             (root 1000 [kg C/ha/y]))))
 
-(defprogram test Base "Test organic SMB-2000"
+(defprogram test Base "Test organic SOM2000"
             (column test-column))
 
 (run test)
