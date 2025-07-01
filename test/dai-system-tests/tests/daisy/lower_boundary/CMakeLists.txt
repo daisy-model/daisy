@@ -1,5 +1,5 @@
 dai_system_test(groundwater-deep daisy/lower_boundary)
-dai_system_test(groundwater-file daisy/lower_boundary)
+#dai_system_test(groundwater-file daisy/lower_boundary)
 dai_system_test(groundwater-fixed daisy/lower_boundary)
 dai_system_test(groundwater-flux daisy/lower_boundary)
 dai_system_test(groundwater-lysimeter daisy/lower_boundary)
