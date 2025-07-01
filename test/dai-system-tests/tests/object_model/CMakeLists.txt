@@ -1,0 +1,1 @@
+dai_system_test(python object_model)

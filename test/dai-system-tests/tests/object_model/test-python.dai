@@ -1,0 +1,19 @@
+;;; test-python.dai -- Call Python from Daisy.
+
+(deffunction my_T_min Python
+  "Call Python function to find temperature dependency."
+  (module "test_T_min")
+  (name "T_min")
+  (domain [dg C])
+  (range []))
+
+(defprogram print_it write
+  "Write specific value"
+  (declare new_value Number [] "New temperature effect.")
+  (new_value (apply my_T_min 5 [dg C]))
+  (where "temp-effect.txt")
+  (what "my_T_min (5 [dg C]) = ${new_value}"))
+  
+(run print_it)
+
+;;; test-python.dai ends here.

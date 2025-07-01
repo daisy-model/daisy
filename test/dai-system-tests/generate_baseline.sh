@@ -14,7 +14,7 @@ baseline_dir=$base_dir/baseline/${test_dir}/${test_name}
 test_file=${base_dir}/tests/${test_dir}/test-${test_name}.dai
 
 mkdir -p ${baseline_dir}
-DAISYHOME=$daisy_home $daisy_path -d $baseline_dir -D $common_dir $test_file
+DAISYHOME=$daisy_home PYTHONPATH=$daisy_home/sample/python $daisy_path -d $baseline_dir -D $common_dir $test_file
 if [ "$4" = "1" ]
 then
     rm $baseline_dir/daisy.log

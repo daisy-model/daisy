@@ -10,6 +10,8 @@ function(dai_system_test name dir)
   )
   set_property(TEST dai_system_test.${dir}.${name}
     PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
+  set_property(TEST dai_system_test.${dir}.${name}
+  PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/sample/python")
 endfunction()
 
 add_subdirectory(tests)
