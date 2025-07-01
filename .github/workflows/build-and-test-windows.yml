@@ -35,7 +35,7 @@ jobs:
             mingw-w64-${{matrix.env}}-python
             mingw-w64-${{matrix.env}}-python-pip
             mingw-w64-${{matrix.env}}-python-pandas
-            mingw-w64-${{matrix.env}}-unzip
+            unzip
 
       - name: Install python dependencies
         run: pip install pint daisypy-test@git+https://github.com/daisy-model/daisypy-test

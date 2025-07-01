@@ -8,10 +8,12 @@ function(dai_system_test name dir)
     ${CMAKE_SOURCE_DIR}/test/dai-system-tests/errors/${dir}/${name}
     --path ${CMAKE_SOURCE_DIR}/test/dai-system-tests/tests/common
   )
-  set_property(TEST dai_system_test.${dir}.${name}
-    PROPERTY ENVIRONMENT "DAISYHOME=${CMAKE_SOURCE_DIR}")
-  set_property(TEST dai_system_test.${dir}.${name}
-  PROPERTY ENVIRONMENT "PYTHONPATH=${CMAKE_SOURCE_DIR}/sample/python")
+  set_tests_properties(
+    dai_system_test.${dir}.${name}
+    PROPERTIES
+    ENVIRONMENT_MODIFICATION
+    "DAISYHOME=set:${CMAKE_SOURCE_DIR};PYTHONPATH=string_prepend:${CMAKE_SOURCE_DIR}/sample/python"
+  )
 endfunction()
 
 add_subdirectory(tests)
