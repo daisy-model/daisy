@@ -35,10 +35,16 @@ jobs:
             mingw-w64-${{matrix.env}}-python
             mingw-w64-${{matrix.env}}-python-pip
             mingw-w64-${{matrix.env}}-python-pandas
+            mingw-w64-${{matrix.env}}-unzip
 
       - name: Install python dependencies
         run: pip install pint daisypy-test@git+https://github.com/daisy-model/daisypy-test
             
+      - name: Get embeddable python
+        run: wget https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip -O python/python.zip 
+             unzip python/python.zip -d python/python
+             cp python/python/python312.dll python/python/libpython3.12.dll
+
       - uses: actions/checkout@v4
       
       - name: Configure CMake

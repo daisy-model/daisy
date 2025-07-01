@@ -60,7 +60,7 @@ TODO: Need to figure out static linking vs specifying depends in the package. Th
 
 ### MacOS
 #### Note on python suppport
-At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the on-click installer from python.org.
+At the moment we rely on users manually installing python from python.org. The current version is python 3.13.2, which should be downloaded from https://www.python.org/downloads/release/python-3132/ and installed before building. Other dependencies are installed with brew. The reason we do not use brew to install python, is because it would then require that users also used brew to install python and we prefer the one-click installer from python.org.
 
 
 Install dependencies
@@ -107,14 +107,19 @@ Download the source code and setup a build dir
     cd daisy/build/release
 
 
-Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/<python-release-name>`. Then update `Python_ROOT_DIR` in `cmake/python.cmake` to point to the directory you just unpacked.
+Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/python`. For example,
+
+```{bash}
+wget https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip -O python/python.zip
+unzip python/python.zip -d python/python
+```
 
 Build it
 
     cmake ../../ --preset mingw-gcc-native
     cmake --build .
 
-At time of writing, it was not possible to use the latest python (3.13.2) because the development module was not found. Version 3.12.9 works fine.
+At time of writing, it was not possible to use the latest python (3.13.2) because the development module was not found. Version 3.12.10 works fine.
 
 For some reason Daisy ends up looking for `libpython3.12.dll`, but the embeddable python distribution contains `python312.dll`. A workaround for now is to make a copy of `python312.dll` called `libpython3.12.dll` and place it in the `daisy/python/<python-release-name>` directory. We cannot just rename, because "Find_Python" looks for "python312.dll`.
 
