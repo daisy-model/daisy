@@ -2,6 +2,11 @@
 
 Refactor of Daisy from https://github.com/perabrahamsen/daisy-model
 
+## Getting started
+* Linux
+* MacOS
+* Windows
+
 ## Guides
 See [doc](doc)
 
