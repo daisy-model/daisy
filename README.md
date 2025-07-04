@@ -1,14 +1,19 @@
 # Daisy
+Daisy is a mechanistic simulation of agricultural fields developed by the Agrohydrology group at the University of Copenhagen.
 
-Refactor of Daisy from https://github.com/perabrahamsen/daisy-model
+Daisy keeps track of water, nitrogen, carbon, and pesticides in the bioactive zone near the soil surface (roughly top of canopy to the bottom of the (historic) root zone).
+
+* Optimize crop yields.
+* Minimize nutrient losses.
+* Avoid pesticide pollution.
+* And much more!
+
+See [https://daisy.ku.dk/](https://daisy.ku.dk/) for more information.
 
 ## Getting started
-* Linux
-* MacOS
-* Windows
+* [MacOS](doc/getting-started-macos.md)
+* [Windows](doc/getting-started-windows.md)
 
-## Guides
-See [doc](doc)
 
 ## Building
 There are presets defined in `CMakePresets.json` for building on different platforms.
