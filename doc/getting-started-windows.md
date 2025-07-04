@@ -10,7 +10,7 @@ In the following we will refer to `<daisy-dir>`. This is the folder where you in
 
 
 ## Setting up an environment for running Daisy
-You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](doc/setup-vscode.md) or [TextPad](doc/setup-textpad.md).
+You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](setup-vscode.md) or [TextPad](setup-textpad.md).
 
 
 ## Running your first Daisy program
