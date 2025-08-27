@@ -12,4 +12,4 @@
 
 - [Parallel execution of Daisy](spawn-usage.md)
 - [Parameter optimization](https://github.com/daisy-model/daisypy-optim)
-- [Working with daisy log files (`.dlf`) in `R`](https://github.com/daisy-model/daisyrVis)
+- [Working with Daisy log files (`.dlf`) in `R`](https://github.com/daisy-model/daisyrVis)

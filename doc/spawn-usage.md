@@ -26,7 +26,7 @@ This means that you can start the same spawn program on multiple computers shari
 
 A longer example is found as [test-spawn.dai](../sample/test-spawn.dai) in the [sample](../sample) folder.
 
-Some more parameters you usually won't need:
+Some more parameters (you usually won't need):
 
 ```{lisp}
 (parallel 4)
@@ -46,14 +46,14 @@ Name of the subfolders to run the programs.  By default, the same as the names o
 ```{lisp}
 (file "setup-p1.dai" "setup-p2.dai")
 ```
-names of setup files where the programs are found.  By default, it will look in the same setup file as the main program.
+Names of setup files where the programs are found.  By default, it will look in the same setup file as the main program.
 
 ```{lisp}
 (input_directory "..")
 ```
 Where to look for input files, instead of the current directory ("."). The default value is "..", meaning the parent directory, which is where the main program is found.
 
-[^1]: In theory... some network file systems allows multiple computers to create the same directory at the same time, in that case output will be garbage.
+[^1]: In theory... some network file systems allow multiple computers to create the same directory at the same time, in that case output will be garbage.
 
 
 ## Daisy `nwaps`
