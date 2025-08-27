@@ -7,7 +7,6 @@ project(
   LANGUAGES CXX C
 )
 include(cmake/AddCoverageBuildType.cmake)
-include(cmake/python.cmake)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${CMAKE_BINARY_DIR}/daisy-${CMAKE_PROJECT_VERSION}")
@@ -20,10 +19,18 @@ add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+option(BUILD_PYTHON "Set to ON to build python support" ON)
 option(BUILD_DOC "Set to ON to build documentation" OFF)
 option(BUILD_CXX_TESTS "Set to ON to build C++ tests" OFF)
 option(USE_PROFILE "Set to ON to build for profiling" OFF)
 option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
+
+if (${BUILD_PYTHON})
+  add_definitions( -DBUILD_PYTHON )
+  include(cmake/python.cmake)
+else()
+  set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}-no-python")
+endif()
 
 if (NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Release

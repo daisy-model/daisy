@@ -44,12 +44,15 @@
 
 #include <boost/noncopyable.hpp>
 
+#ifdef BUILD_PYTHON
 #include <pybind11/embed.h>
+#endif 
 
 struct Toplevel::Implementation : boost::noncopyable
 {
+#ifdef BUILD_PYTHON
   pybind11::scoped_interpreter guard;
-  
+#endif
   const symbol preferred_ui;
   const std::string program_name;
   std::unique_ptr<Program> program;
