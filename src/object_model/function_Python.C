@@ -17,7 +17,7 @@
 // You should have received a copy of the GNU Lesser Public License
 // along with Daisy; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+#ifdef BUILD_PYTHON
 #define BUILD_DLL
 
 #include "object_model/function.h"
@@ -123,3 +123,4 @@ Function range.");
 } FunctionPython_syntax;
 
 // function_Python.C ends here.
+#endif
