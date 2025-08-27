@@ -8,9 +8,10 @@ The R package [`daisyrVis`](https://github.com/daisy-model/daisyrVis) is an alte
 ## Daisy `spawn`
 If you want to run two simulations `p1` and `p2` defined with `defprogram`, write:
 
+```{lisp}
   (defprogram main spawn (program p1 p2))
   (run main)
-
+```
 This works for any number of programs.
 
 This is intended for situations where you need to run many simulations, such as scenario analysis or Monte-Carlo simulations.
@@ -23,7 +24,7 @@ This is intended for situations where you need to run many simulations, such as 
 
 This means that you can start the same spawn program on multiple computers sharing a network drive, and the computers will automatically distribute the work between them (only one computer will successfully create the directory[^1] and run the program, the rest will skip it).
 
-A longer example is found as [test-spawn.dai](../sample/test-spawn.dai) in the sample folder.
+A longer example is found as [test-spawn.dai](../sample/test-spawn.dai) in the [sample](../sample) folder.
 
 Some more parameters you usually won't need:
 
