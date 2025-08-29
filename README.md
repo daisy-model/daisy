@@ -94,6 +94,23 @@ Build a portable binary
     cmake ../../ --preset macos-clang-portable
     cmake --build . -j <number-of-concurrent-jobs>
 
+Check that dynamic library paths have been updated to relative paths
+
+	otool -L ./daisy
+
+Should yield something similar to
+
+	./daisy:
+	@rpath/lib/libcxsparse.4.dylib (compatibility version 4.0.0, current version 4.4.1)
+	@rpath/lib/libboost_filesystem.dylib (compatibility version 0.0.0, current version 0.0.0)
+	@rpath/lib/libboost_atomic.dylib (compatibility version 0.0.0, current version 0.0.0)
+	@rpath/lib/libboost_system.dylib (compatibility version 0.0.0, current version 0.0.0)
+	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 1900.180.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1351.0.0)
+
+If cxsparse or boost libs have paths that do not start with @rpath, then you need to update cmake/MacOS.cmake and rerun both cmake steps.
+
+
 Make an installer
 
     cpack
