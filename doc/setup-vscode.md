@@ -44,14 +44,15 @@ When you have multiple entries in your "Daisy.executable" settings, you will be 
 ```{json}
 {
     "Daisy.executable": [
-    {
-        "name": "daisy-v7.1.0",
-        "path": "C:/Program Files/daisy 7.1.0/bin/daisy.exe"
-    },
-    {
-        "name": "daisy-v7.1.0_no-python",
-        "path": "C:/Program Files/daisy 7.1.0_no-python/bin/daisy.exe"
-    }
+        {
+            "name": "daisy-v7.1.0",
+            "path": "C:/Program Files/daisy 7.1.0/bin/daisy.exe"
+        },
+        {
+            "name": "daisy-v7.1.0_no-python",
+            "path": "C:/Program Files/daisy 7.1.0_no-python/bin/daisy.exe"
+        }
+    ],
     "Daisy.home": "C:/Program Files/daisy 7.1.0"
 }
 ```
