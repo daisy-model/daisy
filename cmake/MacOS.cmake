@@ -60,12 +60,12 @@ set_target_properties(daisy
 
 # Then update the id of dylibs
 # This is brittle. Would be nice to get the dir path dynamically.
-set(_boost_id_prefix "boost@1.85/")
+set(_boost_id_prefix "boost/")
 set(_dylibs_rel_path
   "suite-sparse/lib/libcxsparse.4.dylib"
-  "${_boost_id_prefix}lib/libboost_filesystem-mt.dylib"
-  "${_boost_id_prefix}lib/libboost_system-mt.dylib"
-  "${_boost_id_prefix}lib/libboost_atomic-mt.dylib"
+  "${_boost_id_prefix}lib/libboost_filesystem.dylib"
+  "${_boost_id_prefix}lib/libboost_system.dylib"
+  "${_boost_id_prefix}lib/libboost_atomic.dylib"
   "${_boost_id_prefix}lib/libboost_process.dylib"
 )
 foreach(_dylib_rel_path ${_dylibs_rel_path})

@@ -1,7 +1,15 @@
-# Guides for setting up your daisy environment
+# Daisy setup and usage
 
-- [Getting started on MacOS](getting-started-macos.md)
+## Guides for setting up your daisy environment
+
 - [Getting started on Windows](getting-started-windows.md)
-- [Setup python](setup-python.md)
+- [Getting started on MacOS](getting-started-macos.md)
 - [Setup Visual Studio Code](setup-vscode.md)
-- [Setp Textpad](setup-textpad.md)
+- [Setup Textpad](setup-textpad.md)
+- [Setup python](install-python-with-uv.md)
+
+## Guides for using Daisy
+
+- [Parallel execution of Daisy](spawn-usage.md)
+- [Parameter optimization](https://github.com/daisy-model/daisypy-optim)
+- [Working with Daisy log files (`.dlf`) in `R`](https://github.com/daisy-model/daisyrVis)
