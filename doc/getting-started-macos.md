@@ -11,7 +11,7 @@ To use python with Daisy on MacOS it is necesary to install python manually. The
 
 
 ## Setting up an environment for running Daisy
-You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](https://code.visualstudio.com) or [TextMate](https://macromates.com/). See [instructions for setting up VSCode](setup-vscode.md). The Daisy distribution includes a support file for TextMate, `Daisy.tmbundle`. This file is located in the folder `TextMate` under `<daisy-dir>`.
+You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](https://code.visualstudio.com). See [instructions for setting up VSCode](setup-vscode.md).
 
 
 ## Running your first Daisy program
