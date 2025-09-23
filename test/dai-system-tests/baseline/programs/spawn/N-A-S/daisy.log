@@ -1,0 +1,552 @@
+Has DAISYHOME environment variable
+Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
+Daisy crop/soil simulation version 7.1.1. (Sep 23 2025)
+Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
+Changing directory to 'N-A-S' success
+Interpreting '.' in path as ..
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'dk-soil.dai'
+Trying '../dk-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'tillage.dai'
+Trying '../tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'fertilizer.dai'
+Trying '../fertilizer.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fertilizer.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'crop.dai'
+Trying '../crop.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/crop.dai' success!
+** Parsing file: 'crop.dai'
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'maize.dai'
+Trying '../maize.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/maize.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'pea.dai'
+Trying '../pea.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/pea.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'potato.dai'
+Trying '../potato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/potato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'rye.dai'
+Trying '../rye.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/rye.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'sbarley.dai'
+Trying '../sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'sugarbeet.dai'
+Trying '../sugarbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sugarbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'fodderbeet.dai'
+Trying '../fodderbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fodderbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'srape.dai'
+Trying '../srape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/srape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'swheat.dai'
+Trying '../swheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/swheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'wbarley.dai'
+Trying '../wbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'wrape.dai'
+Trying '../wrape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wrape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'wwheat.dai'
+Trying '../wwheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wwheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'grass.dai'
+Trying '../grass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/grass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'ryegrass.dai'
+Trying '../ryegrass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/ryegrass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'wclover.dai'
+Trying '../wclover.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wclover.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'beetroot.dai'
+Trying '../beetroot.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/beetroot.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'broccoli.dai'
+Trying '../broccoli.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/broccoli.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'brusselssprouts.dai'
+Trying '../brusselssprouts.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/brusselssprouts.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'celeriac.dai'
+Trying '../celeriac.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/celeriac.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'earlypotato.dai'
+Trying '../earlypotato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlypotato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'whitecabbage.dai'
+Trying '../whitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/whitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'earlywhitecabbage.dai'
+Trying '../earlywhitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlywhitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'onion.dai'
+Trying '../onion.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'onion_plantingofsets.dai'
+Trying '../onion_plantingofsets.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion_plantingofsets.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'dk-management.dai'
+Trying '../dk-management.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-management.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'log-std.dai'
+Trying '../log-std.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S'
+* Running 'N-A-S' from command line
+** dk-taastrup.dwf: initializing at 1979-01-01T00:00:00
+*** source_initialize
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/N-A-S':
+Looking for file 'dk-taastrup.dwf'
+Trying '../dk-taastrup.dwf' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-taastrup.dwf' success!
+** column: Askov initialize
+*** Soil
+**** Horizons
+***** horizon: Askov Ap initialize_base
+(CEC 14.6389 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.607752 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.392	7.52	0
+-1	0	0.390692	1.86726	0.00156596
+-10	1	0.373747	0.356963	0.00188801
+-100	2	0.285921	0.00602332	0.000504663
+-1000	3	0.181071	2.21152e-05	3.77521e-05
+-15848.9	4.2	0.10128	2.07975e-08	1.34778e-06
+***** horizon: Askov B initialize_base
+(CEC 14.9176 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.544673 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.445	14.5	0
+-1	0	0.434715	0.492272	0.0104738
+-10	1	0.377755	0.0154283	0.00381334
+-100	2	0.285736	9.77405e-05	0.000376437
+-1000	3	0.209958	4.61495e-07	2.82931e-05
+-15848.9	4.2	0.144618	7.24524e-10	1.23175e-06
+***** horizon: Askov C initialize_base
+(CEC 15.397 [cmolc/kg]) ; Estimated from clay and humus.
+(quartz 0.536683 []) ; Estimated from texture.
+h	h	Theta	K	Cw2
+cm	pF		cm/h	cm^-1
+0		0.401	5	0
+-1	0	0.39922	0.498016	0.00197103
+-10	1	0.38174	0.0652063	0.00173131
+-100	2	0.314448	0.00100008	0.000361443
+-1000	3	0.235835	5.42683e-06	3.05785e-05
+-15848.9	4.2	0.1644	8.84214e-09	1.35824e-06
+**** Geometry
+(zplus -2.5 -5 -10 -18 -27 -34 -42 -49 -57 -64 -72 -80 -88 -96 -104 -112 -120 -128 -136 -144 -152 -160 -168 -176 -184 -192 -201 -209 -217 -225 -233 -241 -250); 33 cells.
+*** bioclimate: default initialize
+Pet choosen: weather
+Difrad choosen: DPF
+*** tertiary: old initialize
+Adding macropores to -150 cm
+*** movement: vertical initialize_derived
+Bottom heat delay = -0.956909
+*** OrganicStandard
+lay	humus	humus	input	input	AOM	SMB1	SMB2	SOM1	SOM2	SOM3	dSMB1	dSMB1	dSMB2	dSMB2	dSOM1	dSOM1	dSOM2	dSOM2	dSOM3	dSOM3
+	kg C/ha/cm	%	kg C/ha/cm/y	%	%	%	%	%	%	%	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1
+0	2365.61	2.6	162.88	6.88533	1.79944	1.28265	0.741364	68.1319	28.0446	0	0	0	0	0	-9.13178	-0.00566581	0	0	-0	-nan	Above SOM1 limit
+0	2365.61	2.6	162.88	6.88533	1.79944	1.29543	0.741404	67.3146	28.8491	0	0	0	0	0	-8.77245	-0.00550895	-0.581092	-0.000851469	-0	-nan
+1	2365.61	2.6	127.162	5.37544	1.40484	1.19171	0.579388	74.8067	22.0174	0	0	0	0	0	-11.9475	-0.00675141	0	0	-0	-nan	Above SOM1 limit
+1	2365.61	2.6	127.162	5.37544	1.40484	1.30282	0.579737	67.6988	29.0138	1.53995e-13	0	0	0	0	-8.82252	-0.00550894	-5.05365	-0.00736304	-0	-0
+2	2365.61	2.6	87.7184	3.70807	0.969083	1.09127	0.400518	82.1776	15.3615	0	0	0	0	0	-15.057	-0.00774534	0	0	-0	-nan	Above SOM1 limit
+2	2365.61	2.6	87.7184	3.70807	0.969083	1.31099	0.401208	68.1231	29.1956	1.61328e-13	0	0	0	0	-8.87781	-0.00550894	-9.99269	-0.0144684	-0	-0
+3	2365.61	2.6	46.0854	1.94814	0.509135	0.985265	0.211718	89.9578	8.33612	0	0	0	0	0	-18.339	-0.00861775	0	0	-0	-nan	Above SOM1 limit
+3	2365.61	2.6	46.0854	1.94814	0.509135	1.31961	0.212769	68.5709	29.3875	-3.0799e-13	0	0	0	0	-8.93618	-0.00550895	-15.2059	-0.0218729	-0	0
+4	2365.61	2.6	19.8622	0.839621	0.21943	0.918494	0.0927998	94.8582	3.91108	0	0	0	0	0	-20.4062	-0.00909379	0	0	-0	-nan	Above SOM1 limit
+4	2365.61	2.6	19.8622	0.839621	0.21943	1.32504	0.0940776	68.853	29.5084	2.78657e-13	0	0	0	0	-8.97294	-0.00550894	-18.4895	-0.0264872	-0	-0
+5	434.38	0.5	8.99482	2.07073	0.541173	0.404916	0.22262	11.931	12.2151	74.6851	0	0	0	0	0	0	0	0	-0	-0
+6	434.38	0.5	4.28016	0.98535	0.257516	0.192678	0.105933	5.67736	5.81253	87.954	0	0	0	0	0	0	0	0	-0	-0
+7	434.38	0.5	2.0367	0.468876	0.122538	0.0916854	0.0504081	2.70156	2.76588	94.2679	0	0	0	0	0	0	0	0	-0	-0
+8	434.38	0.5	0.969161	0.223114	0.0583095	0.0436283	0.0239866	1.28553	1.31614	97.2724	0	0	0	0	0	0	0	0	-0	-0
+9	434.38	0.5	0.461173	0.106168	0.0277464	0.0207604	0.011414	0.611716	0.62628	98.7021	0	0	0	0	0	0	0	0	-0	-0
+10	434.38	0.5	0.219448	0.0505198	0.0132031	0.00987879	0.0054313	0.291083	0.298014	99.3824	0	0	0	0	0	0	0	0	-0	-0
+11	434.38	0.5	0.0993796	0.0228785	0.00597917	0.00447373	0.00245963	0.131821	0.134959	99.7203	0	0	0	0	0	0	0	0	-0	-0
+12	460.795	0.5	0.0450052	0.00976687	0.00255252	0.00197698	0.00105002	0.0582528	0.0596398	99.8765	0	0	0	0	0	0	0	0	-0	-0
+13	460.795	0.5	0.0203812	0.00442304	0.00115594	0.000895301	0.000475514	0.0263805	0.0270086	99.9441	0	0	0	0	0	0	0	0	-0	-0
+14	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+15	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+16	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+17	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+18	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+19	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+20	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+21	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+22	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+23	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+24	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+25	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+26	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+27	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+28	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+29	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+30	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+31	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+32	460.795	0.5	0	0	0	-0	-0	-0	-0	100	0	-nan	0	-nan	0	-nan	0	-nan	-0	-0
+**** Total soil summary
+Expected humus change: -592.726 [kg C/ha/y], -4.09509e-07 [y^-1].
+Expected background mineralization: 53.8841 [kg N/ha/y].
+**** Top soil summary
+	SOM1	SOM2	SOM3	SMB1	SMB2	AOM1	AOM2	total
+kg C/ha	43678.5	18719.3	8.75168e-11	840.567	185.884	357.757	89.4394	63871.5
+kg N/ha	3949.48	1692.63	7.90617e-12	125.458	27.7438	3.97508	7.20484	5806.5
+
+Depth	27	cm
+T	7.8	dg C
+h	-100	cm
+clay	11.3	%
+Specified input	not specified	kg C/ha/y
+Specified background mineralization	not specified	kg N/ha/y
+Zone input	1711.14	kg C/ha/y
+Zone background mineralization	0	kg C/ha/y
+Zone humus change	0	kg C/ha/y
+Time	Tue Sep 23 10:28:01 2025
+
+** Running
+*** 1979-01-01T00:00:00
+Begin simulation
+*** 1979-01-10T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1979-01-24T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1979-02-08T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1979-03-05T08:00:00
+Fertilizing 115 kg N25S-N/ha
+*** 1979-03-17T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1979-04-05T08:00:00
+Sowing Spring Barley
+**** Askov
+***** sow
+****** Spring Barley
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+***** crop: Spring Barley initialize
+init 2d
+init 1d
+*** 1979-04-28T00:00:00
+**** crop: Spring Barley tick
+Emerging
+*** 1979-05-14T07:00:00
+**** crop: Spring Barley tick
+Luxury nitrogen uptake initiated
+*** 1979-06-04T15:00:00
+**** crop: Spring Barley tick
+Crop affected by nitrogen stress
+*** 1979-06-12T00:00:00
+**** crop: Spring Barley tick
+Luxury nitrogen uptake initiated
+*** 1979-06-22T00:00:00
+**** crop: Spring Barley tick
+Flowering
+*** 1979-07-05T08:00:00
+Sowing Grass
+**** Askov
+***** sow
+****** Grass
+Water stress calculated from energy balance
+Nitrogen stress handled by crop nitrogen module
+***** crop: Grass initialize
+init 2d
+init 1d
+*** 1979-07-16T00:00:00
+**** crop: Grass tick
+Emerging
+*** 1979-08-03T22:00:00
+**** crop: Grass tick
+Luxury nitrogen uptake initiated
+*** 1979-08-15T00:00:00
+**** crop: Spring Barley tick
+Ripe
+*** 1979-08-15T01:00:00
+Harvesting Spring Barley, removing 3.28991 + 3.78477 Mg DM/ha
+*** 1979-08-15T21:00:00
+**** crop: Grass tick
+Crop affected by nitrogen stress
+*** 1979-11-09T04:00:00
+**** crop: Grass tick
+Luxury nitrogen uptake initiated
+*** 1979-12-11T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1980-01-01T01:00:00
+Start logging
+*** 1980-01-31T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1980-02-01T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1980-02-11T23:00:00
+**** bioclimate: default tick
+***** bioclimate: default WaterDistribution
+Fresh snow made snow pack white again
+*** 1980-04-27T00:00:00
+**** crop: Grass tick
+Flowering
+*** 1980-07-20T00:00:00
+**** crop: Grass tick
+Ripe
+*** 1980-12-31T23:00:00
+End simulation
+** Summary
+*** log: Field water summarize
+LOGFILE: field_water.dlf
+VOLUME: box none
+TIME: 1980-01-01T01:00:00 to 1981-01-01T00:00:00
+**** summary: Field water balance summarize
+Water balance for the complete system.
+
+                  Precipitation = 672.7 [mm]
+                     Irrigation =   0.0 [mm]
+                                  -----
+                    Total input = 672.7 [mm]
+
+      Actual evapotranspiration = 339.3 [mm]
+             Matrix percolation = 276.7 [mm]
+            Biopore percolation =   0.0 [mm]
+              Matrix drain flow =   0.0 [mm]
+             Biopore drain flow =   0.0 [mm]
+                         Runoff =   0.0 [mm]
+                                  -----
+                   Total output = 616.0 [mm]
+
+     Soil matrix water increase =  57.9 [mm]
+         Biopore water increase =   0.0 [mm]
+         Surface water increase =  -1.2 [mm]
+                                  -----
+      Total increase in content =  56.7 [mm]
+
+                                  -----
+Balance (= In - Out - Increase) =  -0.0 [mm]
+                                  =====
+*** log: Field nitrogen summarize
+LOGFILE: field_nitrogen.dlf
+VOLUME: box none
+TIME: 1980-01-01T01:00:00 to 1981-01-01T00:00:00
+**** summary: Field nitrogen balance summarize
+Nitrogen balance for the complete system.
+
+         Min-Surface-Fertilizer =   0.000 [kg N/ha]
+            Min-Soil-Fertilizer =   0.000 [kg N/ha]
+                 Org-Fertilizer =   0.000 [kg N/ha]
+                     Deposition =  13.397 [kg N/ha]
+                        Fixated =   0.000 [kg N/ha]
+                           Seed =   0.000 [kg N/ha]
+                                  -------
+                    Total input =  13.397 [kg N/ha]
+
+              N2O-Nitrification =   1.907 [kg N/ha]
+            NO3-Denitrification =  62.334 [kg N/ha]
+                Matrix-Leaching =  12.764 [kg N/ha]
+               Biopore-Leaching =   0.000 [kg N/ha]
+                     Soil-Drain =   0.000 [kg N/ha]
+                  Biopore-Drain =   0.000 [kg N/ha]
+                   Surface-Loss =   0.000 [kg N/ha]
+                        Harvest =   0.000 [kg N/ha]
+                                  -------
+                   Total output =  77.005 [kg N/ha]
+
+           Min-Surface increase =  -0.027 [kg N/ha]
+              Min-Soil increase =  12.588 [kg N/ha]
+          Min-Biopores increase =   0.000 [kg N/ha]
+           Org-Surface increase =  -0.385 [kg N/ha]
+              Org-Soil increase = -82.552 [kg N/ha]
+                  Crop increase =   6.768 [kg N/ha]
+                                  -------
+      Total increase in content = -63.608 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+                                  =======
+**** summary: Field mineral nitrogen balance summarize
+Mineral balance for the complete system.
+
+         Min-Surface-Fertilizer =   0.000 [kg N/ha]
+            Min-Soil-Fertilizer =   0.000 [kg N/ha]
+                     Deposition =  13.397 [kg N/ha]
+                 Mineralization =  89.087 [kg N/ha]
+                                  -------
+                    Total input = 102.484 [kg N/ha]
+
+                 Immobilization =   4.113 [kg N/ha]
+                Matrix-Leaching =  12.764 [kg N/ha]
+               Biopore-Leaching =   0.000 [kg N/ha]
+                     Soil-Drain =   0.000 [kg N/ha]
+                  Biopore-Drain =   0.000 [kg N/ha]
+                   Surface-Loss =   0.000 [kg N/ha]
+                    Crop-Uptake =   8.805 [kg N/ha]
+              N2O-Nitrification =   1.907 [kg N/ha]
+            NO3-Denitrification =  62.334 [kg N/ha]
+                                  -------
+                   Total output =  89.923 [kg N/ha]
+
+           Min-Surface increase =  -0.027 [kg N/ha]
+              Min-Soil increase =  12.588 [kg N/ha]
+          Min-Biopores increase =   0.000 [kg N/ha]
+                                  -------
+      Total increase in content =  12.561 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+                                  =======
+**** summary: Field organic nitrogen balance summarize
+Organic nitrogen balance for the complete system.
+
+              Residuals-Surface =   2.034 [kg N/ha]
+                 Residuals-Soil =   0.003 [kg N/ha]
+                 Org-Fertilizer =   0.000 [kg N/ha]
+                 Immobilization =   4.113 [kg N/ha]
+                                  -------
+                    Total input =   6.150 [kg N/ha]
+
+                 Mineralization =  89.087 [kg N/ha]
+                                  -------
+                   Total output =  89.087 [kg N/ha]
+
+           Org-Surface increase =  -0.385 [kg N/ha]
+              Org-Soil increase = -82.552 [kg N/ha]
+                                  -------
+      Total increase in content = -82.937 [kg N/ha]
+
+                                  -------
+Balance (= In - Out - Increase) =   0.000 [kg N/ha]
+                                  =======
+**** summary: Field crop nitrogen balance summarize
+Crop nitrogen balance for the complete system.
+
+                           Seed =  0.000 [kg N/ha]
+                        Fixated =  0.000 [kg N/ha]
+                    Crop-Uptake =  8.805 [kg N/ha]
+                                  ------
+                    Total input =  8.805 [kg N/ha]
+
+                        Harvest =  0.000 [kg N/ha]
+              Residuals-Surface =  2.034 [kg N/ha]
+                 Residuals-Soil =  0.003 [kg N/ha]
+                                  ------
+                   Total output =  2.037 [kg N/ha]
+
+                  Crop increase =  6.768 [kg N/ha]
+                                  ------
+      Total increase in content =  6.768 [kg N/ha]
+
+                                  ------
+Balance (= In - Out - Increase) = -0.000 [kg N/ha]
+                                  ======
+Command line: /home/silas/Projects/daisy-model/daisy/build/portable/daisy -d N-A-S -D .. -q /home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai -p N-A-S
