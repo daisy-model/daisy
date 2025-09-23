@@ -40,7 +40,7 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/object_model/vcheck.C
     ${CMAKE_SOURCE_DIR}/src/util/assertion.C
     ${CMAKE_SOURCE_DIR}/src/util/filepos.C
-    ${CMAKE_SOURCE_DIR}/src/util/function.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/function.C
     ${CMAKE_SOURCE_DIR}/src/util/mathlib.C
     ${CMAKE_SOURCE_DIR}/src/util/path.C
     ${CMAKE_SOURCE_DIR}/src/util/scope.C
