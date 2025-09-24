@@ -1,3 +1,8 @@
+2025-09-10  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/bioclimate/svat_none.C
+	(SVAT_NoneSyntax): Fix description (thanks sfs).
+
 2025-06-24  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* txt/daisy.bib (Constanza2019x,Brusseau2021x,Jakobsen2025x)

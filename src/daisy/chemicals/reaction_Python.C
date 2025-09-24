@@ -39,6 +39,7 @@
 #include <pybind11/embed.h>
 #include <pybind11/stl.h>
 
+#include <sstream>
 
 struct ReactionPython : public Reaction
 {
@@ -259,7 +260,7 @@ struct ReactionPython : public Reaction
 	catch (...)
 	  {
 	    Assertion::message ("Could not find Python module '"
-				+ pmodule + ".");
+				+ pmodule + "'.");
 	    state = state_t::error;
 	    return;
 	  }

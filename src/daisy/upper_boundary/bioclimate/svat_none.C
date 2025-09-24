@@ -94,9 +94,13 @@ static struct SVAT_NoneSyntax : public DeclareModel
   Model* make (const BlockModel& al) const
   { return new SVAT_none (al); }
   SVAT_NoneSyntax ()
-    : DeclareModel (SVAT::component, "none", "No SVAT in effect.")
+    : DeclareModel (SVAT::component, "none", "\
+Decoupling surface energy and water balance.\n\
+Done using reference values and crop factors.")
   { }
   void load_frame (Frame& frame) const
   {
   }
 } SVAT_none_syntax;
+
+// svat_none.C ends here.

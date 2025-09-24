@@ -32,6 +32,8 @@
 #include "object_model/intrinsics.h"
 #include "object_model/library.h"
 
+#include <sstream>
+
 class NitrificationSoil : public Nitrification
 {
   // Parameters.
@@ -67,6 +69,13 @@ NitrificationSoil::tick (const double M, const double /* C */,
     : water_factor (h);
 
   const double rate = k_10 * w_factor * T_factor * M / (k + M);
+#if 0
+  std::ostringstream tmp;
+  tmp << "std rate, w_factor (h), T_factor (T),  k_10,  NH4_M, k, T, h\n"
+      << rate << ", " << w_factor << ", " << T_factor << ", "
+      <<  k_10 << ", " <<  M << ", " << k << ", " << T << ", " << h;
+  Assertion::message (tmp.str ());
+#endif
   daisy_assert (rate >= 0.0);
   const double M_new = rate;
   if (M_new > 0.0)
