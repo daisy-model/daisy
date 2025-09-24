@@ -12,7 +12,7 @@
   (time 1979 1 1)
   (stop 1981 1 1)
   (activate_output (after 1980 1 1))
-  (output "harvest" "Field water" "Field nitrogen"))
+  (output "Field water" "Field nitrogen"))
 
 ;; We test two different climates.
 
