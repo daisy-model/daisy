@@ -39,8 +39,32 @@
 #include <memory>
 #include <thread>
 #include <fstream>
+#include <utility>
 
 #include "util/run_cmd.h"
+
+namespace {
+  void handle_success(const std::string &name, Treelog &msg) {
+    std::ostringstream tmp;
+    tmp << "'" + name + "' finished sucessfully";
+    std::ofstream success(name + "/SUCCESS");
+#ifdef CPP23
+    if (!success) {
+      tmp << "... twice? Possible race condition, check results";
+      std::ofstream toomuchwin (name + "/SUCCESS_FAILED");
+    }
+#endif
+    msg.message(tmp.str());
+  }
+
+  void handle_failure(int status, const std::string &name, Treelog &msg) {
+    std::ostringstream tmp;
+    tmp << "'" + name + "' failed with exit code " << status;
+    std::ofstream file (name + "/FAILED");
+    file << "Exit code " << status;
+    msg.message(tmp.str());
+  }
+}
 
 struct ProgramSpawn : public Program {
   // Content.
@@ -106,13 +130,19 @@ struct ProgramSpawn : public Program {
   void run_cmds(Treelog& msg) {
     using namespace std::chrono_literals;
     int running = 0;
-    std::list<std::future<std::string>> progs;
+    std::list<std::future<std::pair<int, std::string>>> progs;
     for (int idx = 0; idx < cmds.size(); ++idx) {
       // If parallel > 0, then we only start that many tasks simultaneously
       while (parallel > 0  && running >= parallel) {
         for (auto it = progs.begin(); it != progs.end();) {
           if (it->wait_for(0.1s) == std::future_status::ready) {
-            msg.message(it->get() + " done");
+            auto [status, name] = it->get();
+            if (status == 0) {
+              handle_success(name, msg);
+            }
+            else {
+              handle_failure(status, name, msg);
+            }
             it = progs.erase(it);
             --running;
           } else {
@@ -127,6 +157,13 @@ struct ProgramSpawn : public Program {
     // Wait for all tasks to finish
     for (auto it = progs.begin(); it != progs.end();) {
       it->wait();
+      auto [status, name] = it->get();
+      if (status == 0) {
+        handle_success(name, msg);
+      }
+      else {
+        handle_failure(status, name, msg);
+      }
       it = progs.erase(it);
     }
   }

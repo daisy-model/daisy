@@ -1,0 +1,205 @@
+Has DAISYHOME environment variable
+Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
+Daisy crop/soil simulation version 7.1.1. (Sep 23 2025)
+Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
+* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/dk-soil.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-soil.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'tillage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/tillage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'fertilizer.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/fertilizer.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fertilizer.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'crop.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/crop.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/crop.dai' success!
+** Parsing file: 'crop.dai'
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'maize.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/maize.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/maize.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'pea.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/pea.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/pea.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'potato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/potato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/potato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'rye.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/rye.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/rye.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'sbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/sbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'sugarbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/sugarbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/sugarbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'fodderbeet.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/fodderbeet.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/fodderbeet.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'srape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/srape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/srape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'swheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/swheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/swheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wbarley.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/wbarley.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wbarley.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wrape.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/wrape.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wrape.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wwheat.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/wwheat.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wwheat.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'grass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/grass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/grass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'ryegrass.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/ryegrass.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/ryegrass.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'wclover.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/wclover.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/wclover.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'beetroot.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/beetroot.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/beetroot.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'broccoli.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/broccoli.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/broccoli.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'brusselssprouts.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/brusselssprouts.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/brusselssprouts.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'celeriac.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/celeriac.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/celeriac.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'earlypotato.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/earlypotato.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlypotato.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'whitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/whitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/whitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'earlywhitecabbage.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/earlywhitecabbage.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/earlywhitecabbage.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'onion.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/onion.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion.dai' success!
+*** input
+**** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'onion_plantingofsets.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/onion_plantingofsets.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/onion_plantingofsets.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/dk-management.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-management.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-management.dai' success!
+** input
+*** file
+In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp':
+Looking for file 'log-std.dai'
+Trying '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/log-std.dai' (cwd)
+Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
+Command line: ../daisy /home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai
+Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
+Program started Tue Sep 23 10:28:00 2025., 0 seconds ago.
+* program: all run
+Executable '/home/silas/Projects/daisy-model/daisy/build/portable/daisy'
+Spawning at most 8 programs in parallel
+Prepare cmds
+Run cmds
+Running N-A-S
+Running W-A-S
+'N-A-S' finished sucessfully
+'W-A-S' finished sucessfully
+Done
+Program finished after 4 seconds.
