@@ -13,7 +13,6 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   frame_model.C
   frame_submodel.C
   function.C
-  function_Python.C
   intrinsics.C
   librarian.C
   library.C
@@ -46,3 +45,8 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   version.C
   xref.C
 )
+if (${BUILD_PYTHON})
+  target_sources(${DAISY_CORE_NAME} PRIVATE
+    function_Python.C
+  )
+endif()

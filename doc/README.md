@@ -2,11 +2,11 @@
 
 ## Guides for setting up your daisy environment
 
-- [Getting started on Windows](getting-started-windows.md)
 - [Getting started on MacOS](getting-started-macos.md)
-- [Setup Visual Studio Code](setup-vscode.md)
+- [Getting started on Windows](getting-started-windows.md)
+- [Setup python](setup-python.md)
+- [Setup Visual Studio Code on Windows](setup-vscode.md)
 - [Setup Textpad](setup-textpad.md)
-- [Setup python](install-python-with-uv.md)
 
 ## Guides for using Daisy
 

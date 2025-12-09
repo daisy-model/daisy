@@ -17,11 +17,15 @@ install(TARGETS ${DAISY_BIN_NAME}
   COMPONENT runtime
 )
 
-install(DIRECTORY
-  ${CMAKE_CURRENT_SOURCE_DIR}/assets/Daisy.tmbundle
-  DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/TextMate
-  COMPONENT TextMateSupport
-)
+if (${BUILD_PYTHON})
+  # Install the wrapper script that ensures python is present
+  install(PROGRAMS # Ensure executable permission
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
+    DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
+    RENAME daisy
+    COMPONENT runtime
+  )
+endif()
 
 # When making an installer we want to be able to redistribute the dylibs and find them.
 #
@@ -52,7 +56,7 @@ install(DIRECTORY ${_dylib_target_dir}
 #  <prefix/bin
 # which contain lib/ with shared libraries.
 # For the build binary we use @executable_path/bin because the binary is not moved to the bin dir
-set_target_properties(daisy
+set_target_properties(${DAISY_BIN_NAME}
   PROPERTIES
   INSTALL_RPATH "@executable_path"
   BUILD_RPATH "@executable_path/bin"
@@ -74,7 +78,7 @@ foreach(_dylib_rel_path ${_dylibs_rel_path})
   set(_new_lib_id "@rpath/lib/${_dylib}")
 
   message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
-  add_custom_command(TARGET daisy
+  add_custom_command(TARGET ${DAISY_BIN_NAME}
     POST_BUILD
     COMMAND "install_name_tool"
     ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
@@ -87,9 +91,25 @@ set(_old_lib_id "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib")
 set(_new_lib_id "@rpath/libomp.dylib")
 set(_suitesparseconfig "bin/lib/libsuitesparseconfig.7.dylib")
 message("-- In ${_suitesparseconfig}: Change ${_old_lib_id} -> ${_new_lib_id}")
-add_custom_command(TARGET daisy
+add_custom_command(TARGET ${DAISY_BIN_NAME}
   POST_BUILD
   COMMAND "install_name_tool"
   ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
   "${_suitesparseconfig}"
 )
+
+if (${BUILD_PYTHON})
+  # We also need to update path of python dylib so we can symlink it
+  # Note that we dont redistribute python. The user have to install python themselves
+  set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
+  set(_old_lib_id "${Python_LIBRARIES}")
+  cmake_path(GET _old_lib_id FILENAME _python_so_name)
+  set(_new_lib_id "@rpath/lib/python/lib/${_python_so_name}")
+  message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
+  add_custom_command(TARGET ${DAISY_BIN_NAME}
+    POST_BUILD
+    COMMAND "install_name_tool"
+    ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
+    "${DAISY_BIN_NAME}"
+  )
+endif()
