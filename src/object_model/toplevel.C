@@ -46,7 +46,7 @@
 
 #ifdef BUILD_PYTHON
 #include <pybind11/embed.h>
-#endif 
+#endif
 
 struct Toplevel::Implementation : boost::noncopyable
 {
