@@ -69,7 +69,7 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-if (${OS} STREQUAL "macos")
+if (${OS} STREQUAL "macos" AND ${BUILD_PYTHON})
   set(DAISY_BIN_NAME daisy-bin)
 else()
   set(DAISY_BIN_NAME daisy)
