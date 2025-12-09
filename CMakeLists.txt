@@ -62,7 +62,11 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-set(DAISY_BIN_NAME daisy)
+if (${OS} STREQUAL "macos")
+  set(DAISY_BIN_NAME daisy-bin)
+else()
+  set(DAISY_BIN_NAME daisy)
+endif()
 add_executable(${DAISY_BIN_NAME})
 if (${OS} STREQUAL "mingw")
   include(cmake/MinGW.cmake)
