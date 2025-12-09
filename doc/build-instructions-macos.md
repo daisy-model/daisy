@@ -1,4 +1,5 @@
 # Build Daisy on MacOS
+The guide assumes that Daisy is built with Python support. If this is not the case, then ignore all the python related things.
 
 ## Prerequisites
 
@@ -11,7 +12,7 @@ Install dependencies with brew
 
     brew install cmake boost suite-sparse pybind11
 
-install python with uv
+Install python with uv
 
 	uv install python 3.13
 

@@ -17,13 +17,15 @@ install(TARGETS ${DAISY_BIN_NAME}
   COMPONENT runtime
 )
 
-# Install the wrapper script that ensures python is present
-install(PROGRAMS # Ensure executable permission
-  ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
-  DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
-  RENAME daisy
-  COMPONENT runtime
-)
+if (${BUILD_PYTHON})
+  # Install the wrapper script that ensures python is present
+  install(PROGRAMS # Ensure executable permission
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
+    DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
+    RENAME daisy
+    COMPONENT runtime
+  )
+endif()
 
 # When making an installer we want to be able to redistribute the dylibs and find them.
 #
@@ -96,16 +98,18 @@ add_custom_command(TARGET ${DAISY_BIN_NAME}
   "${_suitesparseconfig}"
 )
 
-# We also need to update path of python dylib so we can symlink it
-# Note that we dont redistribute python. The user have to install python themselves
-set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
-set(_old_lib_id "${Python_LIBRARIES}")
-cmake_path(GET _old_lib_id FILENAME _python_so_name)
-set(_new_lib_id "@rpath/lib/python/lib/${_python_so_name}")
-message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
-add_custom_command(TARGET ${DAISY_BIN_NAME}
-  POST_BUILD
-  COMMAND "install_name_tool"
-  ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
-  "${DAISY_BIN_NAME}"
-)
+if (${BUILD_PYTHON})
+  # We also need to update path of python dylib so we can symlink it
+  # Note that we dont redistribute python. The user have to install python themselves
+  set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
+  set(_old_lib_id "${Python_LIBRARIES}")
+  cmake_path(GET _old_lib_id FILENAME _python_so_name)
+  set(_new_lib_id "@rpath/lib/python/lib/${_python_so_name}")
+  message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
+  add_custom_command(TARGET ${DAISY_BIN_NAME}
+    POST_BUILD
+    COMMAND "install_name_tool"
+    ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
+    "${DAISY_BIN_NAME}"
+  )
+endif()

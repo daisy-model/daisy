@@ -1,20 +1,18 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
-  adsorption_guo2020.C
-  awi.C
-  reaction_Python.C
-  denprod_Parton1996.C
-  denprod.C
   adsorption.C
-  adsorption_Python.C
   adsorption_freundlich.C
+  adsorption_guo2020.C
   adsorption_langmuir.C
   adsorption_linear.C
   adsorption_vS_S.C
+  awi.C
   chemical.C
   chemical_std.C
   chemistry.C
   chemistry_multi.C
   chemistry_std.C
+  denprod.C
+  denprod_Parton1996.C
   equil.C
   equil_goal.C
   equil_langmuir.C
@@ -44,3 +42,9 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   transform.C
   transform_equil.C
 )
+if (${BUILD_PYTHON})
+  target_sources(${DAISY_CORE_NAME} PRIVATE
+    adsorption_Python.C
+    reaction_Python.C
+  )
+endif()
