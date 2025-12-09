@@ -1,13 +1,21 @@
 # Getting started on MacOS
 Download the latest release of Daisy from [https://github.com/daisy-model/daisy/releases/latest](https://github.com/daisy-model/daisy/releases/latest). Note that there are two versions, the standard version that includes python support and a version without python support. Pick the latter if you do not want python support and want to avoid installing a python runtime on your machine.
 
-Run the installer you just downloaded.
-
-In the following we will refer to `<daisy-dir>`. This is the folder where you install Daisy, which is most likely `/Applications/Daisy`.
+Unzip the archive you just downloaded and place it somewhere you can remember. In the following we will refer to this location as `<daisy-dir>`.
 
 
 ## Setup Python on MacOS
-To use python with Daisy on MacOS it is necesary to install python manually. There are several options for installing python on MacOS. We recommend you use the package manager [uv]() to manage your python installation. See [instructions for installing python with uv](install-python-with-uv.md).
+To use python with Daisy on MacOS it is necesary to install python manually. There are several options for installing python on MacOS. We recommend you use the package manager `uv` to manage your python installation. See [instructions for installing python with uv](install-python-with-uv.md). The requried python version can be seen from the installer name, e.g. `daisy-7.1.3-Darwin-python3.13.pkg` requires python 3.13.
+
+The first time you run Daisy you will be prompted for the path to your python installation, like this
+
+	Please provide path to python root directory:
+
+You should then enter the full path. If you have used `uv` to install python 3.13 it might look like
+
+	/Users/user-name/.local/share/uv/python/cpython-3.13.11-macos-x86_64-none
+
+where `user-name` is your user name.
 
 
 ## Setting up an environment for running Daisy

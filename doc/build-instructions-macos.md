@@ -2,10 +2,10 @@
 
 ## Prerequisites
 
-* [https://brew.sh](brew)
-* [https://docs.astral.sh/uv/getting-started/installation/](uv)
+* [brew](https://brew.sh)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-## Depedencies
+## Dependencies
 
 Install dependencies with brew
 
