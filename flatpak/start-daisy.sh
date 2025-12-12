@@ -22,7 +22,14 @@ elif [[ "$1" == "--pip-uninstall" ]]; then
         python -m pip uninstall "${@:2}"
     fi
 else
-    DAISYHOME="$DATA_DIR" exec /app/bin/daisy "$@"    
+    # Ensure paths are absolute
+    params=()
+    for arg in "$@"; do
+        if [ -f "$arg" ]; then
+            params+=($(realpath "$arg"))
+        else
+            params+=("$arg")
+        fi
+    done
+    DAISYHOME="$DATA_DIR" exec /app/bin/daisy "${params[@]}"
 fi
-
-
