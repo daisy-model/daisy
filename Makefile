@@ -1,8 +1,11 @@
 uv_python_root = <path-to-python-root>
 
+.PHONY: flatpak
 flatpak:
 	cd flatpak && \
-	flatpak-builder --force-clean --install-deps-from=flathub2 --repo=repo build dk.ku.daisy.yml
+	flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml && \
+	flatpak build-bundle repo daisy.flatpak dk.ku.daisy
+
 
 macos: macos-python macos-no-python
 
