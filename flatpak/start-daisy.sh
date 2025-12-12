@@ -12,17 +12,21 @@ if [ ! -d "$DATA_DIR/lib" ]; then
     cp -r /app/share/daisy/sample "$DATA_DIR"
 fi
 
-if [[ "$1" == "--pip-install" ]]; then
+if [[ "$1" == "--version" ]]; then
+    # Print version of Daisy and python
+    DAISYHOME="$DATA_DIR" /app/bin/daisy -v 2>&1 | head -n 1 && rm daisy.log
+    python --version
+
+elif [[ "$1" == "--pip" ]]; then
+    # Manage python environment
     python -m ensurepip
     if [ $# -ge 2 ]; then
-        python -m pip install "${@:2}"
+        python -m pip "${@:2}"
     fi
-elif [[ "$1" == "--pip-uninstall" ]]; then
-    if [ $# -ge 2 ]; then
-        python -m pip uninstall "${@:2}"
-    fi
+
 else
-    # Ensure paths are absolute
+    # Run Daisy
+    # First ensure paths are absolute
     params=()
     for arg in "$@"; do
         if [ -f "$arg" ]; then
