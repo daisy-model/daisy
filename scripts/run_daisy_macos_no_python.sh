@@ -1,9 +1,8 @@
 #!/bin/zsh
-# Run Daisy with PYTHONHOME and DAISYHOME set
+# Run Daisy with DAISYHOME set
 reldir=$(dirname -- "$0")
 absdir=$(cd -- "$reldir" && pwd)
 daisy="$absdir/daisy-bin"
-pythonhome="$absdir/../python"
 
 # Check if user already set DAISYHOME, otherwise set it relative to the script
 if [[ -v DAISYHOME ]]; then
@@ -13,8 +12,8 @@ else
 fi
 
 if [[ "$1" == "--version" ]]; then
-    PYTHONHOME="$pythonhome" "$daisy" -v 2>&1 | head -n 1 && rm daisy.log
-    "$absdir"/python --version
+    "$daisy" -v 2>&1 | head -n 1 && rm daisy.log
+    echo "No python"
 else
-    PYTHONHOME="$pythonhome" DAISYHOME="$daisyhome" "$daisy" "$@"
+    DAISYHOME="$daisyhome" "$daisy" "$@"
 fi

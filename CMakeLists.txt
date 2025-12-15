@@ -28,8 +28,6 @@ option(MAKE_PORTABLE "Set to ON to make a generic build" OFF)
 if (${BUILD_PYTHON})
   add_definitions( -DBUILD_PYTHON )
   include(cmake/python.cmake)
-else()
-  set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}-no-python")
 endif()
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -69,10 +67,8 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-if (${OS} STREQUAL "macos" AND ${BUILD_PYTHON})
+if (${OS} STREQUAL "macos")
   set(DAISY_BIN_NAME daisy-bin)
-else()
-  set(DAISY_BIN_NAME daisy)
 endif()
 add_executable(${DAISY_BIN_NAME})
 if (${OS} STREQUAL "mingw")
