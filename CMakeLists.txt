@@ -82,10 +82,6 @@ endif()
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
 
-# Test
-include(CTest)
-add_subdirectory(test)
-
 # Packaging
 # lib/ and sample/ contain .dai files that define functionality that should be installed
 add_subdirectory(lib)
@@ -109,3 +105,8 @@ include(CPack)
 
 # Documentation
 include(cmake/Doc.cmake)
+
+# Test
+# We do it last so we have access to variables set during build and packaging
+include(CTest)
+add_subdirectory(test)
