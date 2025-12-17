@@ -17,5 +17,5 @@ if [[ "$1" == "--info" ]]; then
     echo "No python"
     echo "Sample dir: $sampledir"
 else
-    DAISYHOME="$daisyhome" "$daisy" "$@"
+    DAISYHOME="$daisyhome" exec "$daisy" "$@"
 fi

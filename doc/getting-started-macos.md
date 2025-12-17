@@ -19,6 +19,31 @@ Sample dir: <sample-dir>
 ```
 where `<sample-dir>` will be a directory containing sample files illustrating the use of Daisy.
 
+## Managing Daisy's python environment
+Daisy comes with a python environment that allows you to extend Daisy with functions implemented in python. If you need to run Daisy's python interpreter, for example to debug scripts, you can start it using
+```
+daisy --python
+```
+
+You can install additional packages into the environment by calling daisy with `--pip`. To install `numpy`
+```
+daisy --pip install numpy
+```
+
+Anything after `--pip` is passed to `pip`, so to upgrade `numpy`
+```
+daisy --pip install --upgrade numpy
+```
+
+To uninstall `numpy`
+```
+daisy --pip uninstall numpy
+```
+
+If you want to inspect the python environment it is stored under `<daisy-dir>/Daisy/python`.
+
+
+
 ## Setting up an environment for running Daisy
 You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](https://code.visualstudio.com). See [instructions for setting up VSCode](setup-vscode.md).
 

@@ -122,12 +122,6 @@ if (${BUILD_PYTHON})
     "${DAISY_BIN_NAME}"
   )
 
-  # Make a symlink to pip so it is easy to install new packages
-  file(CREATE_LINK "../python/bin/pip" "${_staging_dir}/bin/pip" SYMBOLIC)
-
-  # Make a symlink to python so it is easy to test things in the specific interpreter
-  file(CREATE_LINK "../python/bin/python" "${_staging_dir}/bin/python" SYMBOLIC)
-
   # Install the wrapper script that calls daisy with python
   install(PROGRAMS # Ensure executable permission
     ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
