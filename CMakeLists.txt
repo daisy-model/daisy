@@ -51,7 +51,11 @@ if (${OS} STREQUAL "macos")
   message("Using HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}")
 endif()
 
-find_package(Boost 1.74 REQUIRED CONFIG COMPONENTS filesystem system)
+if (${OS} STREQUAL "macos")
+  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem)
+else()
+  find_package(Boost 1.83 REQUIRED CONFIG COMPONENTS filesystem system)
+endif()
 message(STATUS "Boost version: ${Boost_VERSION}")
 
 SET(COMPILE_OPTIONS
