@@ -1,0 +1,85 @@
+id: dk.ku.daisy
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: start-daisy.sh
+modules:
+  - name: pybind11
+    buildsystem: cmake
+    config-opts:
+      - -DPYBIND11_TEST=OFF
+    cleanup:
+      - '*'
+    sources:
+      - type: archive
+        url: https://github.com/pybind/pybind11/archive/refs/tags/v3.0.1.tar.gz
+        sha256: 741633da746b7c738bb71f1854f957b9da660bcd2dce68d71949037f0969d0ca
+        x-checker-data:
+          type: anitya
+          project-id: 13384
+          stable-only: true
+          url-template: https://github.com/pybind/pybind11/archive/refs/tags/v${major}.${minor}.${patch}.tar.gz
+          
+  - name: Boost
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app --with-libraries=filesystem
+      - ./b2 install link=static runtime-link=static cxxflags="-fPIC" -j $FLATPAK_BUILDER_N_JOBS
+    cleanup:
+      - '*'
+    sources:
+      - type: archive
+        url: https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.bz2
+        sha256: 49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305
+        x-checker-data:
+          type: anitya
+          project-id: 6845
+          stable-only: true
+          url-template: https://archives.boost.io/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
+
+  - name: openblas
+    buildsystem: autotools
+    no-autogen: true
+    make-install-args:
+      - PREFIX=/app
+    cleanup:
+      - '*'
+    sources:
+      - type: git
+        url: https://github.com/OpenMathLib/OpenBLAS.git
+        tag: v0.3.30
+          
+  - name: cxsparse
+    buildsystem: cmake
+    config-opts:
+      - -DSUITESPARSE_ENABLE_PROJECTS=cxsparse;suitesparse_config
+      - -DBUILD_SHARED_LIBS=ON  # Cant get it to work with static linkage against cxsparse
+      - -DBUILD_STATIC_LIBS=OFF
+    cleanup:
+      - '/include'
+    sources:
+      - type: git
+        url: https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+        tag: v7.12.1
+        
+  - name: daisy
+    buildsystem: cmake
+    config-opts:
+      - --preset linux-gcc-portable
+      - -DBoost_USE_STATIC_RUNTIME=ON
+    sources:
+      - type: git
+        url: https://github.com/daisy-model/daisy.git
+        branch: main
+
+  - name: launcher
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 start-daisy.sh /app/bin/start-daisy.sh
+    sources:
+      - type: file
+        path: start-daisy.sh
+        
+finish-args:
+  - --filesystem=home
+  - --share=network # To enable pip install through start_daisy.sh

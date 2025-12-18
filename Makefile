@@ -1,6 +1,12 @@
 uv_python_root = $(shell scripts/find_python_root_dir.sh)
 script_dir = $(shell pwd)/scripts
 
+.PHONY: flatpak
+flatpak:
+	cd flatpak && \
+	flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml && \
+	flatpak build-bundle repo daisy-7.1.3.flatpak dk.ku.daisy
+
 # MacOS
 MACOS_BUILD_DIR=build/macos-portable
 MACOS_NO_PYTHON_BUILD_DIR=build/macos-portable-no-python
