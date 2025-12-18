@@ -34,7 +34,7 @@ jobs:
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -S ${{ github.workspace }}
-	-DUV_INSTALLED_PYTHON_ROOT_DIR=${{ steps.strings.outputs.python-root-dir }}
+        -DUV_INSTALLED_PYTHON_ROOT_DIR=${{ steps.strings.outputs.python-root-dir }}
         --preset macos-clang-portable
 
     - name: Build
