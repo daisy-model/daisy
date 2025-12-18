@@ -20,7 +20,7 @@ jobs:
         version: "0.9.18"
 
     - name: Install python
-      run: uv install python 3.13
+      run: uv python install 3.13
 
     - name: Set reusable strings
       id: strings

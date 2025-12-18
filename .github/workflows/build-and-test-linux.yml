@@ -1,0 +1,54 @@
+name: Build daisy and run tests on linux
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    python-version: ["3.13"]
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install build dependencies
+      run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+      
+    - name: Set up Python ${{ matrix.python-version }} for building
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}        
+
+    - name: Install uv for testing
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: "0.9.18"
+        
+    - name: Install python for testing
+      run: uv python install 3.13       
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -S ${{ github.workspace }}
+        --preset linux-gcc-portable
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --output-on-failure -j 4
+
+    - name: Upload test log
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-ubuntu
+        path: build/Testing
