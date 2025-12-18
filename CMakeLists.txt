@@ -69,7 +69,10 @@ SET(LINKER_OPTIONS
 
 if (${OS} STREQUAL "macos")
   set(DAISY_BIN_NAME daisy-bin)
+else()
+  set(DAISY_BIN_NAME daisy)
 endif()
+
 add_executable(${DAISY_BIN_NAME})
 if (${OS} STREQUAL "mingw")
   include(cmake/MinGW.cmake)
