@@ -1,0 +1,61 @@
+name: Build daisy and run tests on MacOS
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install build dependencies using brew
+      if: ${{ startsWith(matrix.os, 'macos') }}
+      run: brew install cmake boost suite-sparse pybind11
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: "0.9.18"
+
+    - name: Install python
+      run: uv install python 3.13
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "python-root-dir=`${{ github.workspace }}/scripts/find_python_root_dir.sh`" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -S ${{ github.workspace }}
+        -DUV_INSTALLED_PYTHON_ROOT_DIR=${{ steps.strings.outputs.python-root-dir }}
+        --preset macos-clang-portable
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
+
+    - name: Pack
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: cpack
+
+    - name: Install
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      shell: bash
+      run: unzip `${{ github.workspace }}/scripts/find_macos_package_archive.sh`
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --output-on-failure
+
+    - name: Upload test log
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-macos
+        path: build/Testing
