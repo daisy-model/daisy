@@ -1,43 +1,50 @@
 # Getting started on MacOS
-Download the latest release of Daisy from [https://github.com/daisy-model/daisy/releases/latest](https://github.com/daisy-model/daisy/releases/latest). Note that there are two versions, the standard version that includes python support and a version without python support. Pick the latter if you do not want python support and want to avoid installing a python runtime on your machine.
+Download the latest release of Daisy from [https://github.com/daisy-model/daisy/releases/latest](https://github.com/daisy-model/daisy/releases/latest). Note that there are two versions, the standard version that includes python support and a version without python support. Pick the latter if you do not want python support.
 
 Unzip the archive you just downloaded and place it somewhere you can remember. In the following we will refer to this location as `<daisy-dir>`.
 
+## Test that it works
+Open a terminal and execute the following, remember to replace `<daisy-dir>` with the path from above
+```
+cd <daisy-dir>/Daisy
+bin/daisy --version
+```
+that should display something similar to
 
-## Setup Python on MacOS
-To use python with Daisy on MacOS it is necesary to install python manually. There are several options for installing python on MacOS. We recommend you use the package manager `uv` to manage your python installation. See [instructions for installing python with uv](install-python-with-uv.md). The requried python version can be seen from the installer name, e.g. `daisy-7.1.3-Darwin-python3.13.pkg` requires python 3.13.
+```
+Daisy % bin/daisy --info
+Daisy crop/soil simulation version 7.1.3. (Dec 15 2025)
+Python 3.13.11
+Sample dir: <sample-dir>
+```
+where `<sample-dir>` will be a directory containing sample files illustrating the use of Daisy.
 
-The first time you run Daisy you will be prompted for the path to your python installation, like this
+## Managing Daisy's python environment
+Daisy comes with a python environment that allows you to extend Daisy with functions implemented in python. If you need to run Daisy's python interpreter, for example to debug scripts, you can start it using
+```
+daisy --python
+```
 
-	Please provide path to python root directory:
+You can install additional packages into the environment by calling daisy with `--pip`. To install `numpy`
+```
+daisy --pip install numpy
+```
 
-You should then enter the full path. If you have used `uv` to install python 3.13 it might look like
+Anything after `--pip` is passed to `pip`, so to upgrade `numpy`
+```
+daisy --pip install --upgrade numpy
+```
 
-	/Users/user-name/.local/share/uv/python/cpython-3.13.11-macos-x86_64-none
+To uninstall `numpy`
+```
+daisy --pip uninstall numpy
+```
 
-where `user-name` is your user name.
+If you want to inspect the python environment it is stored under `<daisy-dir>/Daisy/python`.
+
 
 
 ## Setting up an environment for running Daisy
 You can run Daisy from the commandline, but we recommend that you use an editor like [VSCode](https://code.visualstudio.com). See [instructions for setting up VSCode](setup-vscode.md).
 
-
-## Running your first Daisy program
-Several sample programs are included in the Daisy distribution. These are located in the folder `sample` under `<daisy-dir>`.
-
-1. Create a new folder named `daisy` on your Desktop
-2. Copy the file `test.dai` from the `sample` folder to the newly created `daisy` folder
-3. Open the `test.dai` file from the `daisy` folder in your editor
-4. Run the `test.dai` file. This should produce the following files in the `daisy` folder
-   - `checkpoint-1987-8-7+6.dai`.
-      the state of the simulation. Can be used to hot start the simulation.
-   - `daisy.log`
-      Log of the simulation that was just run
-   - `field_nitrogen.dlf`
-   - `field_water.dlf`
-   - `harvest.dlf`
-   - `sbarley.dlf`
-   - `soil_nitrogen.dlf`
-   - `soil_water.dlf`
-
-The `.dlf` files are the output of the simulation. These are tab separated files with a custom header that can be read into spreadsheet applications or with you favorite programming language. We recommend using RStudio with the [daisyrVis](https://github.com/daisy-model/daisyrVis) package or Python with the [daispy-vis](https://github.com/daisy-model/daisypy-vis) package.
+Once you have set up an editor you can try [running your first daisy program](running-your-first-daisy-program.md).

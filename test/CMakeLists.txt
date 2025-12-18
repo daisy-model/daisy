@@ -1,3 +1,8 @@
+if (${OS} STREQUAL "macos")
+  set(_daisy_test_exe "${CMAKE_BINARY_DIR}/${DAISY_PACKAGE_FILE_NAME}/Daisy/bin/daisy")
+else()
+  set(_daisy_test_exe "${CMAKE_BINARY_DIR}/daisy")
+endif()
 add_subdirectory(cxx-unit-tests)
 add_subdirectory(dai-unit-tests)
 add_subdirectory(dai-system-tests)

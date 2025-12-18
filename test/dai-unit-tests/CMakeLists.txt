@@ -1,8 +1,8 @@
 function(dai_unit_test name)
   add_test(NAME dai_unit_test.${name}
     COMMAND
-    check_daisy
-    ${CMAKE_BINARY_DIR}/daisy
+    ${CMAKE_SOURCE_DIR}/scripts/run_dai_unit_test.sh
+    ${_daisy_test_exe}
     ${CMAKE_SOURCE_DIR}/test/dai-unit-tests/tests/test-${name}.dai
     --path ${CMAKE_SOURCE_DIR}/test/dai-unit-tests/tests/common
   )
