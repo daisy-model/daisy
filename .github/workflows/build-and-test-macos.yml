@@ -48,6 +48,12 @@ jobs:
       shell: bash
       run: unzip `${{ github.workspace }}/scripts/find_macos_package_archive.sh`
 
+    - name: Test environment
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: |
+        uv venv
+        uv pip install git+https://github.com/daisy-model/daisypy-test
+
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --output-on-failure

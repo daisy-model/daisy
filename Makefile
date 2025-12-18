@@ -43,7 +43,10 @@ flatpak:
 $(LINUX_BUILD_DIR)/daisy: linux-build
 
 linux-test: $(LINUX_BUILD_DIR)/daisy
-	cd $(LINUX_BUILD_DIR) && ctest -j 20
+	cd $(LINUX_BUILD_DIR) && \
+	uv venv --allow-existing && \
+	uv pip install git+https://github.com/daisy-model/daisypy-test && \
+	ctest -j 20
 
 ## Linux test using coverage build
 .PHONY: $(LINUX_COVERAGE_BUILD_DIR)/daisy
@@ -51,7 +54,10 @@ $(LINUX_COVERAGE_BUILD_DIR)/daisy: linux-coverage-build
 
 linux-coverage: $(LINUX_COVERAGE_BUILD_DIR)/daisy
 # The test suite will most likely fail some cases so we ignore the output
-#	- cd $(LINUX_COVERAGE_BUILD_DIR) && ctest -j 20
+	- cd $(LINUX_COVERAGE_BUILD_DIR) && \
+	uv venv --allow-existing && \
+	uv pip install git+https://github.com/daisy-model/daisypy-test && \
+	ctest -j 20
 ifndef has_gcovr
 	@echo "\ngcovr is not available, no coverage report generated\nInstall gcovr with\n  pip install gcovr"
 else
@@ -92,4 +98,6 @@ macos-no-python:
 macos-test:
 	cd ${MACOS_BUILD_DIR} && \
 	unzip -qq `ls | grep -e "daisy.*Darwin-python.*zip"` && \
+	uv venv --allow-existing && \
+	uv pip install git+https://github.com/daisy-model/daisypy-test && \
 	ctest --output-on-failure
