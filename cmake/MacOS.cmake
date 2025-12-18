@@ -30,7 +30,6 @@ file(INSTALL
   "${HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
   "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
   "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_system.dylib"
   "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic.dylib"
   "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
   DESTINATION ${_dylib_target_dir}
@@ -55,9 +54,7 @@ set(_boost_id_prefix "boost/")
 set(_dylibs_rel_path
   "suite-sparse/lib/libcxsparse.4.dylib"
   "${_boost_id_prefix}lib/libboost_filesystem.dylib"
-  "${_boost_id_prefix}lib/libboost_system.dylib"
   "${_boost_id_prefix}lib/libboost_atomic.dylib"
-  "${_boost_id_prefix}lib/libboost_process.dylib"
 )
 foreach(_dylib_rel_path ${_dylibs_rel_path})
   set(_old_lib_id "${HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")
