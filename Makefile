@@ -66,6 +66,11 @@ else
 endif
 
 
+## Linux: Documentation
+.PHONY: linux-doc
+linux-doc:
+	cmake -B $(LINUX_BUILD_DIR) --preset linux-gcc-portable -DBUILD_DOC=ON
+	cmake --build $(LINUX_BUILD_DIR) --target docs
 
 # MacOS
 ## MacOS: Standard build with python support
