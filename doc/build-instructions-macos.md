@@ -1,6 +1,8 @@
 # Build Daisy on MacOS
 The guide assumes that Daisy is built with Python support. If this is not the case, then ignore all the python related things.
 
+The [Makefile](../Makefile) provides convenience targets for building, packing and testing.
+
 ## Prerequisites
 
 * [brew](https://brew.sh)

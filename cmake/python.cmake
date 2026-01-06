@@ -1,11 +1,4 @@
-if (${OS} STREQUAL "mingw")
-  # This needs to be set such that it matches the location of the downloaded python distribution
-  set(Python_ROOT_DIR "${CMAKE_SOURCE_DIR}/python/python")
-  install(DIRECTORY ${Python_ROOT_DIR}/ TYPE BIN COMPONENT python)
-  file(INSTALL ${Python_ROOT_DIR}/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif()
-
-if (${OS} STREQUAL "macos")
+if (${OS} STREQUAL "mingw" OR ${OS} STREQUAL "macos")
   if (NOT DEFINED UV_INSTALLED_PYTHON_ROOT_DIR)
     message(FATAL_ERROR "You must set UV_INSTALLED_PYTHON_ROOT_DIR to ensure building against specific python version")
   endif()

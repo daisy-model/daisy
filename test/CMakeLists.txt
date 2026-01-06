@@ -1,5 +1,7 @@
 if (${OS} STREQUAL "macos")
   set(_daisy_test_exe "${CMAKE_BINARY_DIR}/${DAISY_PACKAGE_FILE_NAME}/Daisy/bin/daisy")
+elseif(${OS} STREQUAL "mingw")
+  set(_daisy_test_exe "${CMAKE_BINARY_DIR}/${DAISY_PACKAGE_FILE_NAME}/bin/daisy")
 else()
   set(_daisy_test_exe "${CMAKE_BINARY_DIR}/daisy")
 endif()

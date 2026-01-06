@@ -3,6 +3,55 @@ version := $(shell scripts/get_version_from_cmake.sh)
 current_dir := $(shell pwd)
 has_gcovr := $(shell command -v gcovr 2> /dev/null)
 
+# Windows
+## Windows: Default build installer and zip
+WINDOWS_BUILD_DIR=build/mingw-gcc-portable
+.PHONY: windows
+windows: windows-installer windows-zip
+
+## Windows: Python
+.PHONY: windows-python
+windows-python: python/python/libpython3.12.dll
+
+python/python/libpython3.12.dll: python/python/python312.dll
+	cp python/python/python312.dll python/python/libpython3.12.dll
+
+python/python/python312.dll: python/python.zip
+	unzip python/python.zip -d python/python
+
+python/python.zip:
+	mkdir -p python/python
+	wget "https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip" -O python/python.zip
+
+## Windows: Standard build
+.PHONY: windows-build
+windows-build: windows-python
+	mkdir -p ${WINDOWS_BUILD_DIR}
+	cmake . -B ${WINDOWS_BUILD_DIR} --preset mingw-gcc-portable
+	cmake --build ${WINDOWS_BUILD_DIR}
+
+## Windows: Installer
+.PHONY: windows-installer
+windows-installer: windows-build
+	cd ${WINDOWS_BUILD_DIR} && \
+	cpack -G NSIS
+
+## Windows: Zip
+.PHONY: windows-zip
+windows-zip: windows-build
+	cd ${WINDOWS_BUILD_DIR} && \
+	cpack -G ZIP
+
+## Windows: Test
+.PHONY: windows-test
+windows-test:
+	cd ${WINDOWS_BUILD_DIR} && \
+	unzip -qq `ls | grep -e "Windows-python3.*zip"` && \
+	uv venv --allow-existing && \
+	uv pip install git+https://github.com/daisy-model/daisypy-test && \
+	ctest --output-on-failure
+
+
 # Linux
 ## Linux: Default build both debian and flatpak
 LINUX_BUILD_DIR=build/linux-gcc-portable

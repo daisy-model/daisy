@@ -1,8 +1,12 @@
 # Build Daisy on Windows
 
+The [Makefile](../Makefile) provides convenience targets for building, packing and testing.
+
 ## Prerequisites
 
 * [MSYS2](https://www.msys2.org/).
+
+All commands below are executed from an MSYS2 shell.
 
 ## Dependencies
 Install build environment
@@ -11,32 +15,47 @@ Install build environment
 
 Install daisy dependencies
 
-    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost mingw-w64-ucrt-x86_64-pybind11 mingw-w64-ucrt-x86_64-python
+    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost mingw-w64-ucrt-x86_64-pybind11 mingw-w64-ucrt-x86_64-uv
 
 
-Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/python`. For example,
+Install python with uv
+
+	uv python install 3.13
+
+Find the path to the installed python.
+
+	uv python list
+
+Should produce something similar to
 
 ```{bash}
-wget https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip -O python/python.zip
-unzip python/python.zip -d python/python
+... <snip>
+cpython-3.13.11-windows-x86_64-none                  C:\Users\<user-name>\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\python.exe
+... <snip>
 ```
 
-At time of writing, it was not possible to use the latest python (3.13.2) because the development module was not found. Version 3.12.10 works fine.
-
-For some reason Daisy ends up looking for `libpython3.12.dll`, but the embeddable python distribution contains `python312.dll`. A workaround for now is to make a copy of `python312.dll` called `libpython3.12.dll` and place it in the `daisy/python/python` directory. We cannot just rename, because "Find_Python" looks for "python312.dll`.
+Record the path to your python 3.13 installation directory. We will refer to this as `<python-dir>` in the following. In this case
+```
+C:/Users/<user-name>/AppData/Roaming/uv/python/cpython-3.13.11-windows-x86_64-none
+```
+where `\` have been replaced with `/`.
 
 ## Build Daisy
 
 Download the source code and setup a build dir
 
     git clone git@github.com:daisy-model/daisy.git
-    mkdir -p daisy/build/portable
-    cd daisy/build/portable
+    mkdir -p daisy/build/mingw-gcc-portable
+    cd daisy/build/mingw-gcc-portable
 
 
-Convifure with cmake
+Configure with cmake. Remember to substitute your `<python-dir>`.
 
-    cmake ../../ --preset mingw-gcc-portable
+    cmake ../../ --preset mingw-gcc-portable -DUV_INSTALLED_PYTHON_ROOT_DIR=<python-dir>
+
+If everything went well, build with cmake
+
+    cmake --build .
 
 
 ## Make an installer
@@ -46,9 +65,8 @@ Install dependencies
 
 Make the installer
 
-	cpack
+	cpack -G NSIS
 
 Make a zip file that does not require installation
 
     cpack -G ZIP
-´
