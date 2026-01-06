@@ -14,7 +14,7 @@ Install dependencies with brew
 
 Install python with uv
 
-	uv install python 3.13
+	uv python install 3.13
 
 Find the path to the installed python.
 
