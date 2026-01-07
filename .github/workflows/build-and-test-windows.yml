@@ -40,7 +40,7 @@ jobs:
         working-directory: ci-build
         run: >
           cmake ..
-          -DUV_INSTALLED_PYTHON_ROOT_DIR==$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
+          -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
           --preset mingw-gcc-portable
 
       - name: Build
