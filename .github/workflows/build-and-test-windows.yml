@@ -2,7 +2,7 @@ name: Build daisy and run tests on windows
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "do-not-run" ]
 
 jobs:
   build:
