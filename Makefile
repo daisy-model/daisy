@@ -3,10 +3,7 @@ current_dir := $(shell pwd)
 has_gcovr := $(shell command -v gcovr 2> /dev/null)
 python_version = 3.13
 python_root := $(shell scripts/find_python_root_dir.sh ${PYTHON_VERSION})
-nproc := $(shell nproc)
-
-dummy:
-	@echo ${nproc}
+nproc := 6
 
 # Python
 .PHONY: uv-python
@@ -43,7 +40,7 @@ windows-test:
 	cd ${windows_build_dir} && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
-	unzip -q $( ls | grep -e "daisy-.*-Windows-python.*zip" ) && \
+	unzip -qo `ls | grep -e "daisy-.*-Windows-python.*zip"` && \
 	ctest --output-on-failure
 
 # Linux
@@ -118,6 +115,7 @@ linux-doc:
 # MacOS
 ## MacOS: Standard build with python support
 macos_build_dir=build/macos-clang-portable
+.PHONY: macos
 macos:
 	mkdir -p ${macos_build_dir} && \
 	cd ${macos_build_dir} && \
@@ -131,6 +129,7 @@ macos:
 
 ## MacOS: Build without python support
 macos_no_python_build_dir=build/macos-clang-portable-no-python
+.PHONY: macos-no-python
 macos-no-python:
 	mkdir -p ${macos_no_python_build_dir} && \
 	cd ${macos_no_python_build_dir} && \
@@ -143,9 +142,14 @@ macos-no-python:
 	cpack
 
 ## MacOS test. We only use version with python
-macos-test:
+.PHONY: macos-test
+macos-test: macos
 	cd ${macos_build_dir} && \
-	unzip -qq `ls | grep -e "daisy.*Darwin-python.*zip"` && \
+	unzip -qo `ls | grep -e "daisy.*Darwin-python.*zip"` && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
 	ctest --output-on-failure
+
+dummy:
+	cd ${macos_build_dir} && \
+	unzip -qo `ls | grep -e "daisy.*Darwin-python.*zip"`
