@@ -29,7 +29,6 @@ jobs:
             mingw-w64-${{ env.env }}-suitesparse
             mingw-w64-${{ env.env }}-boost
             mingw-w64-${{ env.env }}-pybind11
-            mingw-w64-${{ env.env }}-uv
             unzip
 
       - uses: actions/checkout@v5
@@ -44,8 +43,9 @@ jobs:
 
       - name: Set reusable strings
         id: strings
+        shell: bash
         run: |
-          echo "python-root-dir=`${{ github.workspace }}/scripts/find_python_root_dir.sh`" >> "$GITHUB_OUTPUT"
+          echo "python-root-dir=`ls ${{ env.UV_PYTHON_INSTALL_DIR }} | grep 3.13`" >> "$GITHUB_OUTPUT"
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - name: Configure CMake
@@ -53,10 +53,10 @@ jobs:
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -S ${{ github.workspace }}
           -DUV_INSTALLED_PYTHON_ROOT_DIR=${{ steps.strings.outputs.python-root-dir }}
-          --preset macos-clang-portable
+          --preset mingw-gcc-portable
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Pack
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
