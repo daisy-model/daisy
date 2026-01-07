@@ -1,8 +1,7 @@
 # Build Daisy on Linux
 Daisy can either be built with [CMake](#cmake) or [Flatpak](#flatpak).
 
-## CMake
-### Dependencies
+## Dependencies
 Install dependencies
 * cmake
 * boost (filesystem)
@@ -14,7 +13,7 @@ Using apt
 
     apt install g++ cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
 
-#### Flatpak dependencies
+### Flatpak dependencies
 Install dependencies
 
 * flatpak
@@ -25,13 +24,13 @@ Using apt
     apt install flatpak flatpak-builder
 
 
-### Build Daisy
+## Build Daisy
 Download the source code and change to to repository root directory
 
     git clone git@github.com:daisy-model/daisy.git
     cd daisy
 
-#### Default build for release
+### Default build for release
 The Makefile defines some convenience targets
 
     make debian
@@ -58,7 +57,7 @@ Will run the test suite.
 
 Will make a build for coverage analysis, run the test suite and, if `gcovr` is installed, create a coverage report in html format.
 
-#### Non-standard builds
+### Non-standard builds
 [CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using clang
 
     mkdir -p build/linux-clang-native
