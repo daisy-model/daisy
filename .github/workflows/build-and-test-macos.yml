@@ -2,7 +2,7 @@ name: Build daisy and run tests on MacOS
 
 on:
   pull_request:
-    branches: [ "do-not-run" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
 
     - name: Build
       working-directory: ci-build
-      run: cmake --build .
+      run: cmake --build . -j 4
 
     - name: Pack
       working-directory: ci-build
