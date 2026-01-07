@@ -4154,7 +4154,7 @@ Bug fixes.
 
 ** Organic fertilizer water no longer ignored.
 
-The water content of organic fertilizer is no longer discared, but
+The water content of organic fertilizer is no longer discarded, but
 counted as irrigation, either surface or subsoil.
 
 * 3.50
