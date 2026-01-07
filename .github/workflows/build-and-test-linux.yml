@@ -2,7 +2,7 @@ name: Build daisy and run tests on linux
 
 on:
   pull_request:
-    branches: [ "do-not-run" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -14,45 +14,37 @@ jobs:
     - name: Install build dependencies
       run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
 
-    - name: Set up Python  for building
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.13
-
     - name: Install uv for testing
       uses: astral-sh/setup-uv@v7
       with:
         version: "0.9.18"
 
-    - name: Install python for testing
+    - name: Install python
       run: uv python install 3.13
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
-      run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Create build dir
+      run: mkdir ci-build
 
     - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -S ${{ github.workspace }}
-        --preset linux-gcc-portable
+      working-directory: ci-build
+      run: cmake .. --preset linux-gcc-portable
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -j 4
+      working-directory: ci-build
+      run: cmake --build . -j 4
 
     - name: Test environment
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      working-directory: ci-build
       run: |
         uv venv
         uv pip install git+https://github.com/daisy-model/daisypy-test
 
     - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --output-on-failure -j 4
+      working-directory: ci-build
+      run: ctest --output-on-failure
 
     - name: Upload test log
+      if: ${{ !cancelled() }}
       uses: actions/upload-artifact@v4
       with:
         name: test-output-ubuntu
