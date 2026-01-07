@@ -11,7 +11,7 @@ All commands below are executed from an MSYS2 shell.
 ## Dependencies
 Install build environment
 
-    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja unzip
+    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-nsis unzip
 
 Install daisy dependencies
 
@@ -22,51 +22,44 @@ Install python with uv
 
 	uv python install 3.13
 
-Find the path to the installed python.
-
-	uv python list
-
-Should produce something similar to
-
-```{bash}
-... <snip>
-cpython-3.13.11-windows-x86_64-none                  C:\Users\<user-name>\AppData\Roaming\uv\python\cpython-3.13.11-windows-x86_64-none\python.exe
-... <snip>
-```
-
-Record the path to your python 3.13 installation directory. We will refer to this as `<python-dir>` in the following. In this case
-```
-C:/Users/<user-name>/AppData/Roaming/uv/python/cpython-3.13.11-windows-x86_64-none
-```
-where `\` have been replaced with `/`.
-
 ## Build Daisy
-
-Download the source code and setup a build dir
+Download the source code
 
     git clone git@github.com:daisy-model/daisy.git
-    mkdir -p daisy/build/mingw-gcc-portable
-    cd daisy/build/mingw-gcc-portable
+    cd daisy
+
+### Default build for release
+The Makefile defines some convenience targets
+
+    make windows-nsis
+
+Will build daisy in `build/mingw-gcc-portable` and make an installer.
 
 
-Configure with cmake. Remember to substitute your `<python-dir>`.
+    make windows-zip
 
-    cmake ../../ --preset mingw-gcc-portable -DUV_INSTALLED_PYTHON_ROOT_DIR=<python-dir>
-
-If everything went well, build with cmake
-
-    cmake --build .
+Will build daisy in `build/mingw-gcc-portable` and make a zip archive.
 
 
-## Make an installer
-Install dependencies
+    make windows
 
-    pacman -S mingw-w64-ucrt-x86_64-nsis
+Will build both installer and zip archive.
 
-Make the installer
 
-	cpack -G NSIS
+    make windows-test
 
-Make a zip file that does not require installation
+Will build the zip archive and run the test suite.
 
+
+### Non-standard builds
+[CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using clang
+
+    mkdir -p build/mingw-clang-native
+    cmake . -B build/mingw-clang-native --preset mingw-clang-native -DUV_INSTALLED_PYTHON_ROOT_DIR=$( scripts/find_python_root_dir.sh 3.13 )
+    cmake --build build/mingw-clang-native
+    cd build/mingw-clang-native
     cpack -G ZIP
+
+To see a list of presets
+
+    cmake --list-presets

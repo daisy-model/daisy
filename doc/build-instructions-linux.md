@@ -36,7 +36,7 @@ The Makefile defines some convenience targets
 
     make debian
 
-Will build daisy in `build/linux-portable` and make a `deb` package.
+Will build daisy in `build/linux-gcc-portable` and make a `deb` package.
 
 
     make flatpak
