@@ -11,7 +11,7 @@ All commands below are executed from an MSYS2 shell.
 ## Dependencies
 Install build environment
 
-    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-nsis unzip
+    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-nsis unzip make
 
 Install daisy dependencies
 

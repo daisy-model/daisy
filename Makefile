@@ -19,7 +19,7 @@ windows: windows-nsis windows-zip
 
 ## Windows: Standard build
 .PHONY: windows-build
-windows-build: windows-python
+windows-build: uv-python
 	mkdir -p ${windows_build_dir}
 	cmake .	-B ${windows_build_dir} --preset mingw-gcc-portable -DUV_INSTALLED_PYTHON_ROOT_DIR=${python_root}
 	cmake --build ${windows_build_dir}
@@ -36,7 +36,7 @@ windows-zip: windows-build
 
 ## Windows: Test
 .PHONY: windows-test
-windows-test:
+windows-test: windows-zip
 	cd ${windows_build_dir} && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
@@ -116,7 +116,7 @@ linux-doc:
 ## MacOS: Standard build with python support
 macos_build_dir=build/macos-clang-portable
 .PHONY: macos
-macos:
+macos: uv-python
 	mkdir -p ${macos_build_dir} && \
 	cd ${macos_build_dir} && \
 	rm -f daisy-bin && \
@@ -149,7 +149,3 @@ macos-test: macos
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
 	ctest --output-on-failure
-
-dummy:
-	cd ${macos_build_dir} && \
-	unzip -qo `ls | grep -e "daisy.*Darwin-python.*zip"`
