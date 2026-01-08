@@ -52,11 +52,9 @@ if (${OS} STREQUAL "macos")
 endif()
 
 if (${OS} STREQUAL "linux" AND NOT DEFINED DAISY_FLATPAK)
-  find_package(Boost 1.83 REQUIRED CONFIG COMPONENTS filesystem system)
-elseif(${OS} STREQUAL "mingw")
-  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem process)
+  find_package(Boost 1.83 REQUIRED CONFIG COMPONENTS filesystem system process)
 else()
-  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem)
+  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem process)
 endif()
 message(STATUS "Boost version: ${Boost_VERSION}")
 

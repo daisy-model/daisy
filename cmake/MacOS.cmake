@@ -9,6 +9,7 @@ target_link_options(${DAISY_BIN_NAME} PRIVATE ${LINKER_OPTIONS})
 target_link_libraries(${DAISY_BIN_NAME} PUBLIC
   cxsparse
   Boost::filesystem
+  Boost::process
 )
 target_link_directories(${DAISY_BIN_NAME} PRIVATE ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
 
