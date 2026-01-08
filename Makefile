@@ -85,7 +85,7 @@ linux-test: $(linux_build_dir)/daisy
 	cd $(linux_build_dir) && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
-	ctest -j 20
+	ctest --output-on-failure
 
 ## Linux test using coverage build
 $(linux_coverage_build_dir)/daisy: linux-coverage-build
