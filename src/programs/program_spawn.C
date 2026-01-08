@@ -30,6 +30,8 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/dll.hpp>
+#include <boost/asio.hpp>
+#include <boost/process/v2/process.hpp>
 
 #include <chrono>
 #include <future>
@@ -40,8 +42,6 @@
 #include <thread>
 #include <fstream>
 #include <utility>
-
-#include "util/run_cmd.h"
 
 namespace {
   void handle_success(const std::string &name, Treelog &msg) {
@@ -64,6 +64,12 @@ namespace {
     file << "Exit code " << status;
     msg.message(tmp.str());
   }
+
+  struct Job {
+    std::string name;
+    std::vector<std::string> args;
+  };
+
 }
 
 struct ProgramSpawn : public Program {
@@ -77,8 +83,7 @@ struct ProgramSpawn : public Program {
   const int length;
 
   // State.
-  std::vector<std::string> cmds;
-  std::vector<std::string> names;
+  std::list<Job> jobs;
 
   void prepare_cmds(Treelog& msg) {
     for (int i = 0; i < length; ++i) {
@@ -117,55 +122,65 @@ struct ProgramSpawn : public Program {
 	    msg.message (tmp.str ());
 	    return;
     }
-	  std::string cmd = " -d " + quote_if_unquoted(directory_one.name())
-                    + " -D " + quote_if_unquoted(input_directory.name())
-			              + " -q " + quote_if_unquoted(file_one.name());
+    std::vector<std::string> args{
+      "-d", directory_one.name(),
+      "-D", input_directory.name(),
+      "-q",
+      file_one.name()};
     if (program_one != Attribute::None()) {
-      cmd += " -p " + quote_if_unquoted(program_one.name());
+      args.push_back("-p");
+      args.push_back(program_one.name());
     }
-    cmds.push_back(cmd);
-    names.push_back(directory_one.name());
+    jobs.push_back({directory_one.name(), args});
   }
 
   void run_cmds(Treelog& msg) {
     using namespace std::chrono_literals;
+    namespace bp = boost::process::v2;
+    namespace ba = boost::asio;
+
+    ba::thread_pool pool;
+    auto exec = pool.get_executor();
+    ba::strand<decltype(exec)> strand(exec);
+
     int running = 0;
-    std::list<std::future<std::pair<int, std::string>>> progs;
-    for (int idx = 0; idx < cmds.size(); ++idx) {
-      // If parallel > 0, then we only start that many tasks simultaneously
-      while (parallel > 0  && running >= parallel) {
-        for (auto it = progs.begin(); it != progs.end();) {
-          if (it->wait_for(0.1s) == std::future_status::ready) {
-            auto [status, name] = it->get();
-            if (status == 0) {
-              handle_success(name, msg);
-            }
-            else {
-              handle_failure(status, name, msg);
-            }
-            it = progs.erase(it);
-            --running;
-          } else {
-            ++it;
-          }
+    std::function<void()> start_next;
+
+    // Function that recursively starts processes
+    start_next = [&]() {
+      ba::dispatch(strand, [&]() {
+        if ((parallel > 0 && running >= parallel) || jobs.empty()) {
+          // We are at the limit or done
+          return;
         }
-      }
-      msg.message("Running " + names[idx]);
-      progs.push_back(std::async(std::launch::async, run_cmd, exe.name(), cmds[idx], names[idx]));
-      ++running;
-    }
-    // Wait for all tasks to finish
-    for (auto it = progs.begin(); it != progs.end();) {
-      it->wait();
-      auto [status, name] = it->get();
-      if (status == 0) {
-        handle_success(name, msg);
-      }
-      else {
-        handle_failure(status, name, msg);
-      }
-      it = progs.erase(it);
-    }
+
+        auto job = jobs.front();
+        jobs.pop_front();
+        auto name = job.name;
+        msg.message("Running " + name);
+        ++running;
+
+        auto proc = std::make_shared<bp::process>(exec, exe.name(), job.args);
+
+        // Capturing proc by value keeps the pointer alive until we are done
+        proc->async_wait([&, proc, name](boost::system::error_code ec, int exit_code) {
+          ba::dispatch(strand, [&]() {
+            --running;
+            // Try to start a new one
+            start_next();
+          });
+          if (!ec) {
+            handle_success(name, msg);
+          }
+          else {
+            handle_failure(exit_code, name, msg);
+          }
+        });
+        start_next(); // Recursively start more until we hit the limit or are done
+      });
+    };
+    start_next();
+    pool.join(); // Wait until everything is done.
   }
 
   // Use.
@@ -229,8 +244,7 @@ struct ProgramSpawn : public Program {
       length (std::max ({ program.size (),
 			  directory.size (),
 			  file.size ()})),
-      cmds(),
-      names()
+      jobs()
   { }
   ~ProgramSpawn ()
   {  }
