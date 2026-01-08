@@ -169,7 +169,7 @@ struct ProgramSpawn : public Program {
             // Try to start a new one
             start_next();
           });
-          if (!ec) {
+          if (!ec && exit_code == 0) {
             handle_success(name, msg);
           }
           else {
