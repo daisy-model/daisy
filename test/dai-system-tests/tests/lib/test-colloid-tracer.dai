@@ -13,8 +13,8 @@
 	   (spray Tracer 1 [kg/ha]))
   (time 1986 12 1 1)
   (stop 1987 12 1 1)
-  (output ("Chemical Content" (chemical Tracer) (when monthly) (unit "ppm dry soil"))
-	  ("Chemical Content" (chemical colloid) (when monthly) (unit "ppm dry soil"))
+  (output ("Chemical Content" (chemical Tracer) (when monthly))
+	  ("Chemical Content" (chemical colloid) (when monthly))
 	  ("Field chemical" (chemical Tracer) (when monthly))
 	  ("Field chemical" (chemical colloid) (when monthly))
 	  ("Colloids" (when monthly)))) ;; tracking			      

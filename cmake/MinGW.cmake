@@ -2,6 +2,8 @@ set(DAISY_SAMPLE_DESTINATION "sample")
 set(DAISY_LIB_DESTINATION "lib")
 set(DAISY_CORE_NAME core)
 
+set(_staging_dir "${CMAKE_CURRENT_BINARY_DIR}/_staging")
+
 target_include_directories(${DAISY_BIN_NAME} PUBLIC include)
 
 # On Windows we build everything except main as a shared library (core)
@@ -40,23 +42,20 @@ install(FILES
   COMPONENT runtime
 )
 
-# Also copy stuff to the build dir so we can run daisy from there
-file(INSTALL
-  $ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
-  $ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
-  $ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
-  $ENV{MINGW_PREFIX}/bin/libgomp-1.dll
-  $ENV{MINGW_PREFIX}/bin/libcxsparse.dll
-  $ENV{MINGW_PREFIX}/bin/libsuitesparseconfig.dll
-  $ENV{MINGW_PREFIX}/bin/libboost_filesystem-mt.dll
-  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-)
-file(INSTALL
-  ${CMAKE_SOURCE_DIR}/sample
-  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-)
+# We add python version to distribution name, so people can see the version they get
+set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
 
-file(INSTALL
-  ${CMAKE_SOURCE_DIR}/lib
-  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+# Copy python installation to build tree
+set(_python_dir "${_staging_dir}/python")
+file(COPY ${UV_INSTALLED_PYTHON_ROOT_DIR}/
+  DESTINATION ${_python_dir}
+  PATTERN "EXTERNALLY-MANAGED" EXCLUDE  # The environment is no longer uv maintained
+  PATTERN "include" EXCLUDE             # We dont need header files
+  PATTERN "Scripts" EXCLUDE
+  PATTERN "tcl" EXCLUDE
+  PATTERN "LICENSE" EXCLUDE
+  PATTERN "BUILD" EXCLUDE
+  PATTERN "pythonw.exe" EXCLUDE
 )
+# and install it
+install(DIRECTORY ${_python_dir}/ TYPE BIN COMPONENT runtime)

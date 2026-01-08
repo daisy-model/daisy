@@ -13,6 +13,7 @@ See [https://daisy.ku.dk/](https://daisy.ku.dk/) for more information.
 ## Getting started
 * [MacOS](doc/getting-started-macos.md)
 * [Windows](doc/getting-started-windows.md)
+* [Linux](doc/getting-started-linux.md)
 
 ## Building
 [doc/build-daisy.md](doc/build-daisy.md)

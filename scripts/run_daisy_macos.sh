@@ -1,29 +1,39 @@
-#!/bin/sh
-# Run Daisy with PYTHONHOME set
-# This requries that there is a symlink in <daisydir>/bin/lib/python to a python installation
-# If it is not present, then we prompt the user for a path
-# Once we have the path we create the symlink and then run daisy
-
-reldir=$(dirname -- "${BASH_SOURCE[0]}")
+#!/bin/zsh
+# Run Daisy with PYTHONHOME and DAISYHOME set
+reldir=$(dirname -- "$0")
 absdir=$(cd -- "$reldir" && pwd)
-daisy="$absdir"/daisy-bin
-libdir=lib
+sampledir=$(cd -- "$reldir/../sample" && pwd)
+daisy="$absdir/daisy-bin"
+pythonhome="$absdir/../python"
 
-# This script is intended for use with an installed daisy
-# If you want to run daisy directly from the build directory, you should uncomment the following line
-# libdir=bin/lib
+# Check if user already set DAISYHOME, otherwise set it relative to the script
+if [[ -v DAISYHOME ]]; then
+    daisyhome="$DAISYHOME"
+else
+    daisyhome="$absdir/.."
+fi
 
-pythonhome="$absdir"/"$libdir"/python
+if [[ "$1" == "--info" ]]; then
+    # Print Daisy and python info
+    PYTHONHOME="$pythonhome" "$daisy" -v 2>&1 | head -n 1 && rm daisy.log
+    "$absdir"/python --version
+    echo "Sample dir: $sampledir"
 
-while [[ ! -f "$pythonhome"/bin/python ]]
-do
-    read -e -p "Please provide path to python root directory: " python_dir
-    if [[ -f "$python_dir/bin/python" &&  -d "$python_dir/lib" ]]
-    then
-	cd ${absdir}/"$libdir" && rm -f python && ln -s ${python_dir} python
-	cd ${absdir}
-    else
-	echo "Could not locate python binary and/or library"
+elif [[ "$1" == "--pip" ]]; then
+    # Manage python environment
+    "$absdir/python" -m ensurepip
+    if [ $# -ge 2 ]; then
+	if [[ "$2" == "install" ]]; then
+            exec "$absdir/python" -m pip "${@:2}" --no-warn-script-location
+	else
+	    exec "$absdir/python" -m pip "${@:2}"
+	fi
     fi
-done
-PYTHONHOME="$pythonhome" "$daisy" "$@"
+
+elif [[ "$1" == "--python" ]]; then
+    # Run the python interpreter
+    exec "$absdir/python" "${@:2}"
+
+else
+    PYTHONHOME="$pythonhome" DAISYHOME="$daisyhome" exec "$daisy" "$@"
+fi

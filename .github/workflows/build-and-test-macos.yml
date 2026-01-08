@@ -1,0 +1,62 @@
+name: Build daisy and run tests on MacOS
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install build dependencies using brew
+      run: brew install cmake boost suite-sparse pybind11
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: "0.9.18"
+
+    - name: Install python
+      run: uv python install 3.13
+
+    - name: Create build dir
+      run: mkdir ci-build
+
+    - name: Configure CMake
+      working-directory: ci-build
+      run: >
+        cmake ..
+        -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir )/* | grep 3.13 )
+        --preset macos-clang-portable
+
+    - name: Build
+      working-directory: ci-build
+      run: cmake --build . -j 4
+
+    - name: Pack
+      working-directory: ci-build
+      run: cpack -G ZIP
+
+    - name: Install
+      working-directory: ci-build
+      run: unzip $( ls | grep -e "daisy.*Darwin-python.*zip" )
+
+    - name: Setup test environment
+      working-directory: ci-build
+      run: |
+        uv venv
+        uv pip install git+https://github.com/daisy-model/daisypy-test
+
+    - name: Test
+      working-directory: ci-build
+      run: ctest --output-on-failure
+
+    - name: Upload test log
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-macos
+        path: ci-build/Testing
