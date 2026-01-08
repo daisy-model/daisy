@@ -67,14 +67,14 @@ linux-coverage-build:
 ## Linux: Debian package
 .PHONY: debian
 debian: linux-build
-	cd ${linux_build_dir} && pack -G DEB
+	cd ${linux_build_dir} && cpack -G DEB
 
 ## Linux: Flatpak package
 .PHONY: flatpak
 flatpak:
 	cd flatpak && \
 	flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml && \
-	flatpak build-bundle repo daisy-$(version).flatpak dk.ku.daisy
+	flatpak build-bundle repo daisy-$(daisy_version).flatpak dk.ku.daisy
 
 
 ## Linux test using standard build
