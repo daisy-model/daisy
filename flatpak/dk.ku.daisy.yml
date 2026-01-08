@@ -23,7 +23,7 @@ modules:
   - name: Boost
     buildsystem: simple
     build-commands:
-      - ./bootstrap.sh --prefix=/app --with-libraries=filesystem,system
+      - ./bootstrap.sh --prefix=/app --with-libraries=filesystem
       - ./b2 install link=static runtime-link=static cxxflags="-fPIC" -j $FLATPAK_BUILDER_N_JOBS
     cleanup:
       - '*'
@@ -67,6 +67,7 @@ modules:
     config-opts:
       - --preset linux-gcc-portable
       - -DBoost_USE_STATIC_RUNTIME=ON
+      - -DDAISY_FLATPAK=ON
     sources:
       - type: git
         url: https://github.com/daisy-model/daisy.git

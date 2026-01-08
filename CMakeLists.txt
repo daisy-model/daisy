@@ -51,10 +51,10 @@ if (${OS} STREQUAL "macos")
   message("Using HOMEBREW_PREFIX = ${HOMEBREW_PREFIX}")
 endif()
 
-if (${OS} STREQUAL "macos")
-  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem)
-else()
+if (${OS} STREQUAL "linux" AND NOT DEFINED DAISY_FLATPAK)
   find_package(Boost 1.83 REQUIRED CONFIG COMPONENTS filesystem system)
+else()
+  find_package(Boost 1.90 REQUIRED CONFIG COMPONENTS filesystem)
 endif()
 message(STATUS "Boost version: ${Boost_VERSION}")
 
