@@ -67,14 +67,14 @@ linux-coverage-build:
 ## Linux: Debian package
 .PHONY: debian
 debian: linux-build
-	cd ${linux_build_dir} && pack -G DEB
+	cd ${linux_build_dir} && cpack -G DEB
 
 ## Linux: Flatpak package
 .PHONY: flatpak
 flatpak:
 	cd flatpak && \
 	flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml && \
-	flatpak build-bundle repo daisy-$(version).flatpak dk.ku.daisy
+	flatpak build-bundle repo daisy-$(daisy_version).flatpak dk.ku.daisy
 
 
 ## Linux test using standard build
@@ -85,7 +85,7 @@ linux-test: $(linux_build_dir)/daisy
 	cd $(linux_build_dir) && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
-	ctest -j 20
+	ctest --output-on-failure
 
 ## Linux test using coverage build
 $(linux_coverage_build_dir)/daisy: linux-coverage-build

@@ -12,6 +12,7 @@ target_include_directories(${DAISY_CORE_NAME} PUBLIC include)
 target_link_libraries(${DAISY_CORE_NAME} PUBLIC
   cxsparse
   Boost::filesystem
+  Boost::process
 )
 target_link_options(${DAISY_CORE_NAME} PRIVATE ${LINKER_OPTIONS})
 

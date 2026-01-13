@@ -35,6 +35,5 @@ std::basic_string<TChar> GetStringFromWindowsApi( TStringGetterFunc stringGetter
 
 std::basic_string<TCHAR> get_exe_path();
 std::basic_string<TCHAR> get_daisy_home_from_exe_path();
-//std::basic_string<TCHAR> run_cmd(std::basic_string<TCHAR> exe, std::basic_string<TCHAR> args, std::basic_string<TCHAR> name);
 #endif
 #endif
