@@ -5,6 +5,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   adsorption_langmuir.C
   adsorption_linear.C
   adsorption_vS_S.C
+  adsorption_air.C
   awi.C
   chemical.C
   chemical_std.C
