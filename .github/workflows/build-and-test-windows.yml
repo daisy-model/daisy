@@ -3,66 +3,71 @@ name: Build daisy and run tests on windows
 on:
   pull_request:
     branches: [ "main" ]
-    
+
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
 
-    strategy:
-      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations.
-      # Consider changing this to true when your workflow is stable.
-      fail-fast: false
-      matrix:
-        os: [windows-latest]
-        include:
-          - { sys: ucrt64,  env: ucrt-x86_64 }
     defaults:
       run:
         shell: msys2 {0}
+
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: ${{matrix.sys}}
+          msystem: UCRT64
           update: true
           install: >-
             git
-            mingw-w64-${{matrix.env}}-cmake
-            mingw-w64-${{matrix.env}}-gcc
-            mingw-w64-${{matrix.env}}-ninja
-            mingw-w64-${{matrix.env}}-suitesparse
-            mingw-w64-${{matrix.env}}-boost
-            mingw-w64-${{matrix.env}}-pybind11
-            mingw-w64-${{matrix.env}}-python
-            mingw-w64-${{matrix.env}}-python-pip
-            mingw-w64-${{matrix.env}}-python-pandas
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-suitesparse
+            mingw-w64-ucrt-x86_64-boost
+            mingw-w64-ucrt-x86_64-pybind11
+            mingw-w64-ucrt-x86_64-uv
             unzip
 
-      - name: Install python dependencies
-        run: pip install pint daisypy-test@git+https://github.com/daisy-model/daisypy-test
+      - uses: actions/checkout@v5
 
-      - uses: actions/checkout@v4
+      - name: Install python
+        run: uv python install 3.13
 
-      - name: Get embeddable python
-        run: mkdir -p python/python &&
-             wget https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip -O python/python.zip &&
-             unzip python/python.zip -d python/python &&
-             cp python/python/python312.dll python/python/libpython3.12.dll
-      
+      - name: Create build dir
+        run: mkdir ci-build
+
       - name: Configure CMake
+        working-directory: ci-build
         run: >
-          cmake -B build --preset mingw-gcc-portable
+          cmake ..
+          -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
+          --preset mingw-gcc-portable
 
       - name: Build
-        run: cmake --build build
-        
-      - name: Test
-        working-directory: build 
+        working-directory: ci-build
+        run: cmake --build .
+
+      - name: Pack
+        working-directory: ci-build
+        run: cpack -G ZIP
+
+      - name: Install
+        working-directory: ci-build
+        run: unzip $( ls | grep -e "daisy-.*-Windows-python.*zip" )
+
+      - name: Setup test environment
+        working-directory: ci-build
         run: |
-          ctest --output-on-failure
+          uv venv
+          uv pip install git+https://github.com/daisy-model/daisypy-test
+
+      - name: Test
+        working-directory: ci-build
+        run: ctest --output-on-failure
 
       - name: Upload test logs
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-output-win
-          path: build/Testing
+          name: test-output-windows
+          path: ci-build/Testing

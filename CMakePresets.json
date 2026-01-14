@@ -21,7 +21,7 @@
             "generator" : "Unix Makefiles",
             "cacheVariables" : {
                 "__comment" : "Homebrew uses different locations for library symlinks depending on hardware. '/usr/local/lib' on Intel and '/opt/homebrew/lib on Apple'",
-		"EXTRA_SYSTEM_INCLUDE_DIRECTORIES" : "/usr/local/lib;/opt/homebrew/lib",
+                "EXTRA_SYSTEM_INCLUDE_DIRECTORIES" : "/usr/local/lib;/opt/homebrew/lib",
                 "OS_OPTIONS" : "-D__unix",
                 "OS" : "macos"
             }
@@ -127,18 +127,34 @@
             "name" : "mingw-gcc-native",
             "inherits" : [ "gcc", "mingw", "release" ]
         },
-	{
+        {
             "name" : "mingw-gcc-portable",
             "inherits" : [ "gcc", "mingw", "release", "portable" ]
+        },
+        {
+            "name" : "mingw-clang-native",
+            "inherits" : [ "clang", "mingw", "release" ]
+        },
+        {
+            "name" : "mingw-clang-portable",
+            "inherits" : [ "clang", "mingw", "release", "portable" ]
         },
 
         {
             "name" : "macos-clang-native",
             "inherits" : [ "clang", "macos", "release" ]
         },
-	{
+        {
             "name" : "macos-clang-portable",
             "inherits" : [ "clang", "macos", "release", "portable" ]
+        },
+        {
+            "name" : "macos-gcc-native",
+            "inherits" : [ "gcc", "macos", "release" ]
+        },
+        {
+            "name" : "macos-gcc-portable",
+            "inherits" : [ "gcc", "macos", "release", "portable" ]
         }
     ]
 }

@@ -9,6 +9,7 @@ target_link_options(${DAISY_BIN_NAME} PRIVATE ${LINKER_OPTIONS})
 target_link_libraries(${DAISY_BIN_NAME} PUBLIC
   cxsparse
   Boost::filesystem
+  Boost::process
 )
 target_link_directories(${DAISY_BIN_NAME} PRIVATE ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
 
@@ -17,37 +18,23 @@ install(TARGETS ${DAISY_BIN_NAME}
   COMPONENT runtime
 )
 
-if (${BUILD_PYTHON})
-  # Install the wrapper script that ensures python is present
-  install(PROGRAMS # Ensure executable permission
-    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
-    DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
-    RENAME daisy
-    COMPONENT runtime
-  )
-endif()
-
 # When making an installer we want to be able to redistribute the dylibs and find them.
 #
 # Copy dylibs so we can redistribute. First copy to a directory in the build tree. CMake will
 # handle symlinks. Then install all the files we just copied.
 # We put them in bin/lib, then we dont need to update the rpath of the shared library files
 # because they look in @loader_path/../lib, which becomes lib/
+set(_staging_dir "${CMAKE_CURRENT_BINARY_DIR}/_staging")
 set(_boost_path_prefix "")
-set(_dylib_target_dir "${CMAKE_CURRENT_BINARY_DIR}/bin/lib")
+set(_dylib_target_dir "${_staging_dir}/bin/lib")
 file(INSTALL
   "${HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
   "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
   "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_system.dylib"
   "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic.dylib"
   "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
   DESTINATION ${_dylib_target_dir}
   FOLLOW_SYMLINK_CHAIN
-)
-install(DIRECTORY ${_dylib_target_dir}
-  DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
-  COMPONENT runtime
 )
 
 # Update daisy binary so it knows to look in @executable_path for dylibs
@@ -68,9 +55,7 @@ set(_boost_id_prefix "boost/")
 set(_dylibs_rel_path
   "suite-sparse/lib/libcxsparse.4.dylib"
   "${_boost_id_prefix}lib/libboost_filesystem.dylib"
-  "${_boost_id_prefix}lib/libboost_system.dylib"
   "${_boost_id_prefix}lib/libboost_atomic.dylib"
-  "${_boost_id_prefix}lib/libboost_process.dylib"
 )
 foreach(_dylib_rel_path ${_dylibs_rel_path})
   set(_old_lib_id "${HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")
@@ -89,7 +74,7 @@ endforeach()
 # We also need to update the path of libomp in libsuitesparseconfig
 set(_old_lib_id "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib")
 set(_new_lib_id "@rpath/libomp.dylib")
-set(_suitesparseconfig "bin/lib/libsuitesparseconfig.7.dylib")
+set(_suitesparseconfig "${_dylib_target_dir}/libsuitesparseconfig.7.dylib")
 message("-- In ${_suitesparseconfig}: Change ${_old_lib_id} -> ${_new_lib_id}")
 add_custom_command(TARGET ${DAISY_BIN_NAME}
   POST_BUILD
@@ -99,12 +84,34 @@ add_custom_command(TARGET ${DAISY_BIN_NAME}
 )
 
 if (${BUILD_PYTHON})
-  # We also need to update path of python dylib so we can symlink it
-  # Note that we dont redistribute python. The user have to install python themselves
+  # We add python version to distribution name, so people can see the version they get
   set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
+
+  # Get the old libpython id and filename
   set(_old_lib_id "${Python_LIBRARIES}")
-  cmake_path(GET _old_lib_id FILENAME _python_so_name)
-  set(_new_lib_id "@rpath/lib/python/lib/${_python_so_name}")
+  cmake_path(GET _old_lib_id FILENAME _python_dylib_name)
+
+  # Copy python installation to build tree
+  set(_python_dir "${_staging_dir}/python")
+  file(COPY ${UV_INSTALLED_PYTHON_ROOT_DIR}/
+    DESTINATION ${_python_dir}
+    PATTERN "EXTERNALLY-MANAGED" EXCLUDE  # The environment is no longer uv maintained
+    PATTERN "include" EXCLUDE             # We dont need header files
+  )
+
+  # Replace the id of the python dylib to avoid leaking info about build
+  # Not necesary for running, because we will never link new objects against
+  # the dylib.
+  set(_python_dylib_relpath "${_staging_dir}/python/lib/${_python_dylib_name}")
+  message("-- In ${_python_dylib_relpath}: Change id to ${_python_dylib_name}")
+  add_custom_command(TARGET ${DAISY_BIN_NAME}
+    POST_BUILD
+    COMMAND "install_name_tool"
+    ARGS "-id" "${_python_dylib_name}" "${_python_dylib_relpath}"
+  )
+
+  # Update the python dylib path in daisy binary
+  set(_new_lib_id "@executable_path/../python/lib/${_python_dylib_name}")
   message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
   add_custom_command(TARGET ${DAISY_BIN_NAME}
     POST_BUILD
@@ -112,4 +119,28 @@ if (${BUILD_PYTHON})
     ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
     "${DAISY_BIN_NAME}"
   )
+
+  # Install the wrapper script that calls daisy with python
+  install(PROGRAMS # Ensure executable permission
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos.sh
+    DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
+    RENAME daisy
+    COMPONENT runtime
+  )
+else()
+  # Install the wrapper script that calls daisy without python
+  install(PROGRAMS # Ensure executable permission
+    ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_macos_no_python.sh
+    DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}/bin
+    RENAME daisy
+    COMPONENT runtime
+  )
 endif()
+
+
+# Install the staged stuff
+install(DIRECTORY ${_staging_dir}/
+  DESTINATION ${DAISY_PACKAGE_INSTALL_DIRECTORY}
+  USE_SOURCE_PERMISSIONS
+  COMPONENT runtime
+)

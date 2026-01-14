@@ -1,54 +1,65 @@
 # Build Daisy on Windows
 
+The [Makefile](../Makefile) provides convenience targets for building, packing and testing.
+
 ## Prerequisites
 
 * [MSYS2](https://www.msys2.org/).
 
+All commands below are executed from an MSYS2 shell.
+
 ## Dependencies
 Install build environment
 
-    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja unzip
+    pacman -S git mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-nsis unzip make
 
 Install daisy dependencies
 
-    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost mingw-w64-ucrt-x86_64-pybind11 mingw-w64-ucrt-x86_64-python
+    pacman -S mingw-w64-ucrt-x86_64-suitesparse mingw-w64-ucrt-x86_64-boost mingw-w64-ucrt-x86_64-pybind11 mingw-w64-ucrt-x86_64-uv
 
 
-Download a python distribution from https://www.python.org/downloads/windows/ and unpack to `daisy/python/python`. For example,
+Install python with uv
 
-```{bash}
-wget https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip -O python/python.zip
-unzip python/python.zip -d python/python
-```
-
-At time of writing, it was not possible to use the latest python (3.13.2) because the development module was not found. Version 3.12.10 works fine.
-
-For some reason Daisy ends up looking for `libpython3.12.dll`, but the embeddable python distribution contains `python312.dll`. A workaround for now is to make a copy of `python312.dll` called `libpython3.12.dll` and place it in the `daisy/python/python` directory. We cannot just rename, because "Find_Python" looks for "python312.dll`.
+	uv python install 3.13
 
 ## Build Daisy
-
-Download the source code and setup a build dir
+Download the source code
 
     git clone git@github.com:daisy-model/daisy.git
-    mkdir -p daisy/build/portable
-    cd daisy/build/portable
+    cd daisy
+
+### Default build for release
+The Makefile defines some convenience targets
+
+    make windows-nsis
+
+Will build daisy in `build/mingw-gcc-portable` and make an installer.
 
 
-Convifure with cmake
+    make windows-zip
 
-    cmake ../../ --preset mingw-gcc-portable
+Will build daisy in `build/mingw-gcc-portable` and make a zip archive.
 
 
-## Make an installer
-Install dependencies
+    make windows
 
-    pacman -S mingw-w64-ucrt-x86_64-nsis
+Will build both installer and zip archive.
 
-Make the installer
 
-	cpack
+    make windows-test
 
-Make a zip file that does not require installation
+Will build the zip archive and run the test suite.
 
+
+### Non-standard builds
+[CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using clang
+
+    mkdir -p build/mingw-clang-native
+    cmake . -B build/mingw-clang-native --preset mingw-clang-native -DUV_INSTALLED_PYTHON_ROOT_DIR=$( scripts/find_python_root_dir.sh 3.13 )
+    cmake --build build/mingw-clang-native
+    cd build/mingw-clang-native
     cpack -G ZIP
-´
+
+To see a list of presets
+
+    cmake --list-presets

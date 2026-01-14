@@ -21,6 +21,13 @@ Download and install VSCode from https://code.visualstudio.com/
 ## Install Daisy extension
 Follow the instructions at https://marketplace.visualstudio.com/items?itemName=daisy-model.daisy
 
+## Running Daisy with flatpak
+flatpak cannot find user installed packages when run from VSCode. To solve this, you must add
+```
+"Daisy.env" : { "XDG_DATA_HOME": "" }
+```
+to your `settings.json` file.
+
 ### Basic usage
 
 1. Open the `sample.dai` file from the `sample` directory in your Daisy installation.

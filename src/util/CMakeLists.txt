@@ -18,7 +18,6 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   nrutil.C
   path.C
   point.C
-  run_cmd.C
   scope.C
   scope_exchange.C
   scope_id.C

@@ -1,49 +1,70 @@
 # Build Daisy on Linux
+Daisy can either be built with [CMake](#cmake) or [Flatpak](#flatpak).
 
 ## Dependencies
 Install dependencies
 * cmake
-* boost (filesystem and system)
+* boost (filesystem)
 * suitesparse
 * g++
 * pybind11
 
 Using apt
 
-    apt install g++ cmake libsuitesparse-dev libboost-filesystem-dev libboost-system-dev python3-pybind11
+    apt install g++ cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+
+### Flatpak dependencies
+Install dependencies
+
+* flatpak
+* flatpak-builder
+
+Using apt
+
+    apt install flatpak flatpak-builder
+
 
 ## Build Daisy
-[CMakePresets.json](CMakePresets.json) define setups for building with gcc and clang on linux.
-
-Download the source code and setup a build dir
+Download the source code and change to to repository root directory
 
     git clone git@github.com:daisy-model/daisy.git
-    mkdir -p daisy/build/release
-    cd daisy/build/release
+    cd daisy
 
-To build with gcc using release options
+### Default build for release
+The Makefile defines some convenience targets
 
-    cmake ../../ --preset linux-gcc-native
+    make debian
+
+Will build daisy in `build/linux-gcc-portable` and make a `deb` package.
+
+
+    make flatpak
+
+Will build daisy in `./flatpak`  and make a `flatpak` package. Note that this will take some time on first run because dependencies have to be downloaded and built. The flatpak build is controlled from `flatpak/dk.ku.daisy.yml`.
+
+
+    make linux
+
+Will build both `deb` and `flatpak` packages.
+
+
+    make linux-test
+
+Will run the test suite.
+
+
+    make linux-coverage
+
+Will make a build for coverage analysis, run the test suite and, if `gcovr` is installed, create a coverage report in html format.
+
+### Non-standard builds
+[CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using clang
+
+    mkdir -p build/linux-clang-native
+    cd build/linux-clang-native
+    cmake ../../ --preset linux-clang-native
     cmake --build . -j <number-of-concurrent-jobs>-
 
-### Build for distribution
-To build a portable binary for distribution
+To see a list of presets
 
-    cmake ../../ --preset linux-gcc-portable
-    cmake --build . -j <number-of-concurrent-jobs>
-
-
-## Make an installer
-To build .deb package
-
-    cpack -G DEB
-
-To build a generic linux installer
-
-    cpack -G STGZ
-
-For the generic linux installer it is necesary to set the environment variable `DAISYHOME` to the install directory. For example, if daisy was installed in `/home/user-name/daisy`, you would do
-
-    export DAISYHOME=/home/user-name/daisy
-
-TODO: Need to figure out static linking vs specifying depends in the package. The deb package and similar should probably be dynamically linked with depends, and the generic installer should probably be statically linked.
+    cmake --list-presets
