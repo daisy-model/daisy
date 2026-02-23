@@ -6,6 +6,15 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.3
+** New packaging on all platforms.
+*** A full python runtime is bundled on all platforms
+*** Daisy is now distributed as a zip file on MacOS
+*** Daisy is now distributed as a deb and a flatpak on linux
+*** Daisy is now distributed as a zip and an installer on Windows
+
+** Fix bug in spawn program on MacOS that caused sequential execution
+
 * 7.1.1
 
 ** Minor corrections to PFAS sorption numbers.
