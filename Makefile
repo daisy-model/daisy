@@ -134,7 +134,7 @@ macos-no-python:
 	mkdir -p ${macos_no_python_build_dir} && \
 	cd ${macos_no_python_build_dir} && \
 	rm -f daisy-bin && \
-	rm -r _staging && \
+	rm -rf _staging && \
 	cmake ../.. --preset macos-clang-portable -DBUILD_PYTHON=OFF && \
 	cmake --build . -j ${nproc} && \
 	otool -L daisy-bin && \

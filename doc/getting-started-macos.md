@@ -7,7 +7,7 @@ Unzip the archive you just downloaded and place it somewhere you can remember. I
 Open a terminal and execute the following, remember to replace `<daisy-dir>` with the path from above
 ```
 cd <daisy-dir>/Daisy
-bin/daisy --version
+bin/daisy --info
 ```
 that should display something similar to
 
