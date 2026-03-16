@@ -60,3 +60,11 @@ file(COPY ${UV_INSTALLED_PYTHON_ROOT_DIR}/
 )
 # and install it
 install(DIRECTORY ${_python_dir}/ TYPE BIN COMPONENT runtime)
+
+# Install the wrapper script that calls daisy with python
+install(PROGRAMS # Ensure executable permission
+  ${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_daisy_windows.cmd
+  TYPE BIN
+  RENAME daisy.cmd
+  COMPONENT runtime
+)

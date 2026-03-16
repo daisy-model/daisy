@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
-  VERSION 7.1.3
+  VERSION 7.1.4
   DESCRIPTION "Mechanistic simulation of agricultural fields"
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
@@ -71,7 +71,7 @@ SET(LINKER_OPTIONS
   "$<$<BOOL:${MAKE_PORTABLE}>:${LINKER_OPTIONS_PORTABLE}>"
 )
 
-if (${OS} STREQUAL "macos")
+if (${OS} STREQUAL "macos" OR ${OS} STREQUAL "mingw")
   set(DAISY_BIN_NAME daisy-bin)
 else()
   set(DAISY_BIN_NAME daisy)
