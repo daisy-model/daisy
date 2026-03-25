@@ -66,10 +66,11 @@ struct AdsorptionPython : public Adsorption
 	  {
 	    py_module = pybind11::module::import (pmodule.name ().c_str ());
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Could not find Python module '"
 				+ pmodule + ".");
+        Assertion::message (e.what());
 	    state = state_t::error;
 	    return;
 	  }
@@ -79,10 +80,11 @@ struct AdsorptionPython : public Adsorption
 	  {
 	    py_C_to_M = py_module.attr(pC_to_M.name ().c_str ());
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Can't find Python function '"
 				+ pC_to_M + "' in '" + pmodule + "'.");
+        Assertion::message (e.what());
 	    state = state_t::error;
 	    return;
 	  }
@@ -93,10 +95,11 @@ struct AdsorptionPython : public Adsorption
 	    {
 	      py_M_to_C = py_module.attr(pM_to_C.name ().c_str ());
 	    }
-	  catch (...)
+	  catch (std::exception &e)
 	    {
 	      Assertion::message ("Can't find Python function '"
 				  + pM_to_C + "' in '" + pmodule + "'.");
+          Assertion::message (e.what());
 	      state = state_t::error;
 	      return;
 	    }
@@ -141,10 +144,11 @@ public:
 	pybind11::object py_object = py_C_to_M (**kwargs);
 	return py_object.cast<double> ();
       }
-    catch (...)
+    catch (std::exception &e)
       {
 	Assertion::message ("Call to Python function '"
 			    + pC_to_M + "' in '" + pmodule + "' failed");
+    Assertion::message (e.what());
 	const double Theta_sat = soil.Theta_sat (i);	// [cm^3 W/cm^3 Sp]
 	const double rho_b = soil.dry_bulk_density (i); // [g/cm^3 Sp]
 	const double f_OC = soil.humus (i) * c_fraction_in_humus; // [g/g]
@@ -204,10 +208,11 @@ public:
 	pybind11::object py_object = py_M_to_C (**kwargs);
 	return py_object.cast<double> ();
       }
-    catch (...)
+    catch (std::exception &e)
       {
 	Assertion::message ("Call to Python function '"
 			    + pM_to_C + "' in '" + pmodule + "' failed");
+    Assertion::message (e.what());
 	const double Theta_sat = soil.Theta_sat (i);	// [cm^3 W/cm^3 Sp]
 	const double rho_b = soil.dry_bulk_density (i); // [g/cm^3 Sp]
 	const double f_OC = soil.humus (i) * c_fraction_in_humus; // [g/g]

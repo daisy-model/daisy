@@ -53,10 +53,11 @@ struct FunctionPython : public Function
 	  {
 	    py_module = pybind11::module::import (pmodule.name ().c_str ());
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Could not find Python module '"
 				+ pmodule + ".");
+        Assertion::message (e.what());
 	    break;
 	  }
 
@@ -65,10 +66,11 @@ struct FunctionPython : public Function
 	  {
 	    py_function = py_module.attr(pname.name ().c_str ());
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Can't find Python function '"
 				+ pname + "' in '" + pmodule + "'.");
+        Assertion::message (e.what());
 	    break;
 	  }
 	state = state_t::working;
@@ -79,10 +81,11 @@ struct FunctionPython : public Function
 	    pybind11::object py_object = py_function (arg);
 	    return py_object.cast<double> ();
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Call to Python function '"
 				+ pname + "' in '" + pmodule + "' failed.");
+        Assertion::message (e.what());
 	  }
       }
     state = state_t::error;
