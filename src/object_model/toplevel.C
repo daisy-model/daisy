@@ -51,6 +51,7 @@
 struct Toplevel::Implementation : boost::noncopyable
 {
 #ifdef BUILD_PYTHON
+  // Start python interpreter
   pybind11::scoped_interpreter guard;
 #endif
   const symbol preferred_ui;
@@ -506,6 +507,14 @@ Toplevel::command_line (int& argc, char**& argv)
     }
 #endif // _WIN32
 
+#ifdef BUILD_PYTHON
+  // Add any extra input directories to the python path
+  // This makes it possible for spawn programs that run in a subdirectory to access python files in
+  // the current directory.
+  pybind11::module_ sys = pybind11::module_::import("sys");
+  pybind11::list path = sys.attr("path");
+#endif
+
   // Loop over all arguments.
   bool options_finished = false; // "--" ends command line options.
 
@@ -527,6 +536,11 @@ Toplevel::command_line (int& argc, char**& argv)
 	      {
 		const std::string dir = get_arg (argc, argv);
 		impl->metalib.path ().set_input_directory (dir);
+#ifdef BUILD_PYTHON
+        // Add input directory to python path
+        path.append(dir);
+        msg().message ("Adding '" + dir + "' to pythonpath");
+# endif
 	      }
 	      break;
 	    case 'd':
