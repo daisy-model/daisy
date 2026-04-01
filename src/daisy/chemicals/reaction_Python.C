@@ -142,6 +142,8 @@ struct ReactionPython : public Reaction
 	  kwargs["T"] = soil_heat.T (i);
 	if (extra.find ("SMB_C") != extra.end ())
 	  kwargs["SMB_C"] = organic_matter.get_smb_c_at (i);
+	if (extra.find ("ORG_C") != extra.end ())
+	  kwargs["ORG_C"] = organic_matter.get_org_c_at (i);
 
 	try
 	  {
@@ -484,7 +486,9 @@ Options include:\n\
   T [dg C]: Temperature.\n\
   CO2_C [g C/cm^3 V/h]: CO2 production rate per system volume.\n\
   CO2_C_fast [g C/cm^3 V/]: Fast CO2 production rate per system volume.\n\
-  SMB_C [g C/cm^3 V]: Fast pool SMB carbon per system volume.");
+  SMB_C [g C/cm^3 V]: Fast pool SMB carbon per system volume.\n\
+  ORG_C [g C/cm^3 V]: Stationary carbon per system volume.\n\
+");
     static struct ExtraCheck : public VCheck::Enum
     {
       ExtraCheck ()
@@ -501,6 +505,7 @@ Options include:\n\
 	add ("CO2_C");
 	add ("CO2_C_fast");
 	add ("SMB_C");
+	add ("ORG_C");
       }
     } extra_check;
     frame.set_check ("extra", extra_check);

@@ -6,6 +6,10 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.6
+
+** You can now transfer ORG_C in Python reaction.
+
 * 7.1.3
 ** New packaging on all platforms.
 *** A full python runtime is bundled on all platforms

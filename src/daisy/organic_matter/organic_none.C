@@ -89,6 +89,8 @@ struct OrganicNone : public OrganicMatter
   // Communication with external model.
   double get_smb_c_at (size_t) const // [g C/cm³]
   { return 0.0; }
+  double get_org_c_at (size_t) const // [g C/cm³]
+  { return 0.0; }
 
   // Create and Destroy.
   int som_pools () const

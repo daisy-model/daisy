@@ -1,3 +1,15 @@
+2026-04-01  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/organic_matter/organic_std.C (reset_logs): New function.
+	(tick, initialize): Call it.
+
+2026-03-23  Per Abrahamsen  <pa@plen.ku.dk>
+
+
+	* src/daisy/organic_matter/organic_none.C (get_org_c_at): 
+	* src/daisy/organic_matter/organic_std.C (get_org_c_at): 
+	* include/daisy/organic_matter/organic.h: New function.
+
 2025-09-10  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/upper_boundary/bioclimate/svat_none.C

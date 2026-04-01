@@ -85,6 +85,7 @@ public:
 
   // Communication with external model.
   virtual double get_smb_c_at (size_t i) const = 0; // [g C/cm³]
+  virtual double get_org_c_at (size_t i) const = 0; // [g C/cm³]
   virtual void add_to_buffer (const Geometry& geo,
 			      const double from /* [cm] */,
 			      const double to /* [cm] */,

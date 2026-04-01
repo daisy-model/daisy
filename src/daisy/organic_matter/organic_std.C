@@ -180,10 +180,12 @@ struct OrganicStandard : public OrganicMatter
   double tillage_C_top;
   std::vector<double> tillage_N_soil;
   std::vector<double> tillage_C_soil;
+  std::vector<double> total_N;
+  std::vector<double> total_C;
 
   // Utilities.
-  double total_N (const Geometry& ) const;
-  double total_C (const Geometry& ) const;
+  double profile_N (const Geometry& ) const;
+  double profile_C (const Geometry& ) const;
   template<class DAOM>
   const double* find_abiotic (const DAOM& om, // AOM & DOM
                               const Soil& soil,
@@ -251,6 +253,7 @@ struct OrganicStandard : public OrganicMatter
              const SoilWater&, const SoilHeat&, 
              const std::vector<double>& tillage_age,
 	     Chemistry&, double dt, Treelog& msg);
+  void reset_logs (const Geometry&);
   void transport (const Units&,  const Geometry&,
                   const Soil&, const SoilWater&, const SoilHeat&, Treelog&);
   const std::vector<DOM*>& fetch_dom () const;
@@ -311,6 +314,7 @@ struct OrganicStandard : public OrganicMatter
 
   // Communication with external model.
   double get_smb_c_at (size_t i) const; // [g C/cm³]
+  double get_org_c_at (size_t i) const; // [g C/cm³]
   void add_to_buffer (const Geometry& geo,
 		      const double from /* [cm] */,
 		      const double to /* [cm] */,
@@ -734,7 +738,7 @@ OrganicStandard::Initialization::~Initialization ()
 { }
 
 double 
-OrganicStandard::total_N (const Geometry& geo) const
+OrganicStandard::profile_N (const Geometry& geo) const
 {
   double result = geo.total_soil (buffer.N);
 
@@ -751,7 +755,7 @@ OrganicStandard::total_N (const Geometry& geo) const
 }
 
 double 
-OrganicStandard::total_C (const Geometry& geo) const
+OrganicStandard::profile_C (const Geometry& geo) const
 {
   double result = geo.total_soil (buffer.C);
 
@@ -827,54 +831,16 @@ OrganicStandard::output (Log& log) const
   output_value (CO2_fast_, "CO2_fast", log);
   output_variable (top_CO2, log);
   output_lazy (top_DM (), "top_DM", log);
-  static const symbol total_N_symbol ("total_N");
-  static const symbol total_C_symbol ("total_C");
+  output_variable (total_C, log);
+  output_variable (total_N, log);
   static const symbol humus_symbol ("humus");
-  if (log.check_leaf (total_N_symbol)
-      || log.check_leaf (total_C_symbol)
-      || log.check_leaf (humus_symbol))
+  if (log.check_leaf (humus_symbol))
     {
-      daisy_assert (log_geo);
-      const Geometry& geo = *log_geo;
-      const int size = geo.cell_size ();
-
-      std::vector<double> total_N (size, 0.0);
-      std::vector<double> total_C (size, 0.0);
-      for (int i = 0; i < size; i++)
-	{
-	  for (size_t j = 0; j < smb.size (); j++)
-	    {
-	      total_C[i] += smb[j]->C[i];
-	      total_N[i] += smb[j]->N[i];
-	    }
-	  for (size_t j = 0; j < som.size (); j++)
-	    {
-	      total_C[i] += som[j]->C[i];
-	      total_N[i] += som[j]->N[i];
-	    }
-	  for (size_t j = 0; j < dom.size (); j++)
-	    {
-	      total_C[i] += dom[j]->C_at (i);
-	      total_N[i] += dom[j]->N_at (i);
-	    }
-	  for (size_t j = 0; j < am.size (); j++)
-	    {
-	      total_C[i] += am[j]->C_at (i);
-	      total_N[i] += am[j]->N_at (i);
-	    }
-	  total_C[i] += buffer.C[i];
-	  total_N[i] += buffer.N[i];
-	}
-      output_variable (total_N, log);
-      output_variable (total_C, log);
-      if (log.check_leaf (humus_symbol))
-        {
-          static const double c_fraction_in_humus = 0.587;
-          std::vector<double> humus;
-          for (size_t i = 0; i < total_C.size (); i++)
-            humus.push_back (total_C[i] / c_fraction_in_humus);
-          output_variable (humus, log);
-        }
+      static const double c_fraction_in_humus = 0.587;
+      std::vector<double> humus;
+      for (size_t i = 0; i < total_C.size (); i++)
+	humus.push_back (total_C[i] / c_fraction_in_humus);
+      output_variable (humus, log);
     }
   output_variable (abiotic_factor, log);
   static const symbol am_symbol ("am");
@@ -1199,8 +1165,8 @@ OrganicStandard::tick (const Geometry& geo,
     }
 
   // Prepare mass balance.
-  const double old_N = total_N (geo);
-  const double old_C = total_C (geo);
+  const double old_N = profile_N (geo);
+  const double old_C = profile_C (geo);
 
   // Create an array of all AM pools, sorted by their C_per_N.
   validate_am (am);
@@ -1355,7 +1321,7 @@ OrganicStandard::tick (const Geometry& geo,
   double N_to_DOM = 0.0;
   for (size_t j = 0; j < dom.size (); j++)
     N_to_DOM += dom[j]->N_source (geo) * dt;
-  const double new_N = total_N (geo) + N_to_DOM;
+  const double new_N = profile_N (geo) + N_to_DOM;
   const double delta_N = old_N - new_N;
   const double N_source = geo.total_soil (NO3_source) 
     + geo.total_soil (NH4_source);
@@ -1375,7 +1341,7 @@ OrganicStandard::tick (const Geometry& geo,
   double C_to_DOM = 0.0;
   for (size_t j = 0; j < dom.size (); j++)
     C_to_DOM += dom[j]->C_source (geo) * dt;
-  const double new_C = total_C (geo) + C_to_DOM;
+  const double new_C = profile_C (geo) + C_to_DOM;
   const double delta_C = old_C - new_C;
   const double C_source 
     = geo.total_soil (CO2_slow_) + geo.total_soil (CO2_fast_)
@@ -1391,6 +1357,44 @@ OrganicStandard::tick (const Geometry& geo,
           << geo.total_soil (CO2_fast_) * dt << " + "
           << top_CO2 * geo.surface_area () * dt;
       msg.error (tmp.str ());
+    }
+  reset_logs (geo);
+}
+
+void
+OrganicStandard::reset_logs (const Geometry& geo)
+{
+  const size_t cell_size = geo.cell_size ();
+
+  daisy_assert (total_C.size () == cell_size);
+  daisy_assert (total_N.size () == cell_size);
+  std::fill (total_N.begin (), total_N.end (), 0.0);
+  std::fill (total_C.begin (), total_C.end (), 0.0);
+
+  for (int i = 0; i < cell_size; i++)
+    {
+      for (size_t j = 0; j < smb.size (); j++)
+	{
+	  total_C[i] += smb[j]->C[i];
+	  total_N[i] += smb[j]->N[i];
+	}
+      for (size_t j = 0; j < som.size (); j++)
+	{
+	  total_C[i] += som[j]->C[i];
+	  total_N[i] += som[j]->N[i];
+	}
+      for (size_t j = 0; j < dom.size (); j++)
+	{
+	  total_C[i] += dom[j]->C_at (i);
+	  total_N[i] += dom[j]->N_at (i);
+	}
+      for (size_t j = 0; j < am.size (); j++)
+	{
+	  total_C[i] += am[j]->C_at (i);
+	  total_N[i] += am[j]->N_at (i);
+	}
+      total_C[i] += buffer.C[i];
+      total_N[i] += buffer.N[i];
     }
 }
       
@@ -1473,6 +1477,12 @@ OrganicStandard::get_smb_c_at (size_t i) const // [g C/cm³]
         total += smb[j]->C[i];
     }
   return total;
+}
+
+double 
+OrganicStandard::get_org_c_at (size_t i) const // [g C/cm³]
+{
+  return total_C[i];
 }
 
 void 
@@ -2603,7 +2613,7 @@ Using equilibrium for remaining entries");
 Using initial C per N for remaining entries");
     }
 
-  std::vector<double> total_C (cell_size, 0.0);
+  std::vector<double> full_C (cell_size, 0.0);
   double first_humus = 0.0;
 
   // Initialize C from layers, when available.
@@ -2628,7 +2638,7 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
 	      i = layers.size ();
 	    }
 	  const double C = weight * 1000.0 / (100.0 * 100.0); // g C / cm²
-	  geo.add_surface (total_C, last, end, C);
+	  geo.add_surface (full_C, last, end, C);
 	  last = end;
 	}
       first_humus = last;
@@ -2638,7 +2648,7 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
   {
     for (size_t lay = 0; lay < cell_size; lay++)
       if (geo.cell_z (lay) < first_humus)
-        total_C[lay] = soil.humus_C (lay);
+        full_C[lay] = soil.humus_C (lay);
   }
   // Partitioning.
   Initialization init (al.submodel ("init"),
@@ -2673,7 +2683,7 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
         double delta_C;
         double delta_N;
         partition (am_input, total_input, init.T, init.h, soilph.pH (lay),
-                   lay, total_C[lay], init.variable_pool, init.variable_pool_2,
+                   lay, full_C[lay], init.variable_pool, init.variable_pool_2,
                    background_mineralization, top_soil,
                    soil.SOM_fractions (lay), 
                    soil.SOM_C_per_N (lay),
@@ -2719,7 +2729,7 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
     total << "Expected humus change: " 
           << total_delta_C * g_per_cm2_per_h_to_kg_per_ha_per_y 
           << " [kg C/ha/y], ";
-    const double all_C = this->total_C (geo);
+    const double all_C = this->profile_C (geo);
     if (std::isnormal (all_C))
       total << total_delta_C / all_C << " [y^-1]";
     else
@@ -2756,6 +2766,9 @@ An 'initial_SOM' layer in OrganicStandard ends below the last cell");
   // Log variable.
   tillage_N_soil.insert (tillage_N_soil.end (), cell_size, 0.0);
   tillage_C_soil.insert (tillage_C_soil.end (), cell_size, 0.0);
+  total_N.insert (total_N.end (), cell_size, 0.0);
+  total_C.insert (total_C.end (), cell_size, 0.0);
+  reset_logs (geo);
 }
 
 OrganicStandard::OrganicStandard (const BlockModel& al)
