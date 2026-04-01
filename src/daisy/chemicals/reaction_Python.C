@@ -171,10 +171,11 @@ struct ReactionPython : public Reaction
 		array[i] = value;
 	      }
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    msg.error ("Call to Python function '"
 		       + psoil + "' in '" + pmodule + "' failed");
+        msg.error (e.what());
 	    state = state_t::error;
 	    break;
 	  }
@@ -203,10 +204,11 @@ struct ReactionPython : public Reaction
       {
 	pybind11::object py_object = py_top ();
       }
-    catch (...)
+    catch (std::exception &e)
       {
 	msg.error ("Call to Python function '"
 		   + ptop + "' in '" + pmodule + "' failed");
+    msg.error (e.what());
 	state = state_t::error;
       }
     return;
@@ -253,15 +255,15 @@ struct ReactionPython : public Reaction
       case state_t::working:
 	return;
       case state_t::uninitialized:
-	// Find module.
 	try
 	  {
 	    py_module = pybind11::module::import (pmodule.name ().c_str ());
 	  }
-	catch (...)
+	catch (std::exception &e)
 	  {
 	    Assertion::message ("Could not find Python module '"
 				+ pmodule + "'.");
+        Assertion::message (e.what());
 	    state = state_t::error;
 	    return;
 	  }
@@ -272,10 +274,11 @@ struct ReactionPython : public Reaction
 	    {
 	      py_soil = py_module.attr(psoil.name ().c_str ());
 	    }
-	  catch (...)
+	  catch (std::exception &e)
 	    {
 	      Assertion::message ("Can't find Python function '"
 				  + psoil + "' in '" + pmodule + "'.");
+          Assertion::message (e.what());
 	      state = state_t::error;
 	      return;
 	    }
@@ -286,10 +289,11 @@ struct ReactionPython : public Reaction
 	    {
 	      py_top = py_module.attr(ptop.name ().c_str ());
 	    }
-	  catch (...)
+	  catch (std::exception &e)
 	    {
 	      Assertion::message ("Can't find Python function '"
 				  + ptop + "' in '" + pmodule + "'.");
+          Assertion::message (e.what());
 	      state = state_t::error;
 	      return;
 	    }
