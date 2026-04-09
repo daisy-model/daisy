@@ -158,6 +158,8 @@ public:
              const double RR0, const Time&, Treelog&);
   void store_SOM (Treelog& msg);
   void restore_SOM (Treelog& msg);
+  void remove_litter (Treelog&);
+  double litter_DM () const;		       // [Mg/ha]
   void set_porosity (double at, double Theta, Treelog& msg);
   void overflow (const double extra, Treelog& msg);
   void spray_overhead (symbol chemical, double amount, Treelog&); // [g/ha]
@@ -490,6 +492,38 @@ ColumnStandard::store_SOM (Treelog&)
 void
 ColumnStandard::restore_SOM (Treelog&)
 { organic_matter->restore_SOM (); }
+
+void
+ColumnStandard::remove_litter (Treelog&)
+{
+  static const double cm2_per_m2 = 100.0 * 100.0;	// [cm^2/m^2]
+  double DM = 0.0;              // [g DM/m^2]
+  double C = 0.0;		// [g C/m^2]
+  double N = 0.0;		// [g N/m^2]
+    
+  const std::vector <AM*>& am = organic_matter->get_am ();
+  for (auto pool: am)
+    {
+      DM += pool->top_DM () * cm2_per_m2;
+      C += pool->top_C () * cm2_per_m2;
+      N += pool->top_N ()* cm2_per_m2;
+      pool->multiply_top (0.0);
+    }
+
+  harvest_DM += DM;
+  harvest_N += N;
+  harvest_C += C;
+  residuals_DM -= DM;
+  residuals_N_top -= N;
+  residuals_C_top -= C;
+}
+
+double
+ColumnStandard::litter_DM () const		       // [Mg/ha]
+{
+  const double DM = organic_matter->top_DM (); // [kg DM/m^2]
+  return DM * 10.0 /* kg/m^2 -> Mg/ha */;
+}
 
 void 
 ColumnStandard::set_porosity (const double at, const double Theta, Treelog& msg)

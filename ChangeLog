@@ -1,3 +1,11 @@
+2026-04-08  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/manager/action_tillage.C (remove_litter): New action.
+	* include/daisy/column.h:
+	* src/daisy/column_std.C:
+	* include/daisy/field.h:
+	* src/daisy/field.C (remove_litter, litter_DM): New functions.
+
 2026-04-01  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/organic_matter/organic_std.C (reset_logs): New function.
@@ -6,8 +14,8 @@
 2026-03-23  Per Abrahamsen  <pa@plen.ku.dk>
 
 
-	* src/daisy/organic_matter/organic_none.C (get_org_c_at): 
-	* src/daisy/organic_matter/organic_std.C (get_org_c_at): 
+	* src/daisy/organic_matter/organic_none.C (get_org_c_at):
+	* src/daisy/organic_matter/organic_std.C (get_org_c_at):
 	* include/daisy/organic_matter/organic.h: New function.
 
 2025-09-10  Per Abrahamsen  <pa@plen.ku.dk>

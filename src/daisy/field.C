@@ -91,6 +91,8 @@ struct Field::Implementation
              const double RR0, const Time&, Treelog&);
   void store_SOM (Treelog& msg);
   void restore_SOM (Treelog& msg);
+  void remove_litter (Treelog&);
+  double litter_DM () const;		       // [Mg/ha]
   void set_porosity (double at, double Theta, Treelog& msg);
   void set_heat_source (double at, double value);
   void spray_overhead (symbol chemical, double amount, Treelog&); // [g/ha]
@@ -430,9 +432,6 @@ Field::Implementation::swap (const double from, const double middle,
     }
 }
 
-  void store_SOM (Treelog& msg);
-  void restore_SOM (Treelog& msg);
-
 void 
 Field::Implementation::store_SOM (Treelog& msg)
 {
@@ -453,6 +452,28 @@ Field::Implementation::restore_SOM (Treelog& msg)
 	    i != columns.end ();
 	    i++)
          (*i)->restore_SOM (msg);
+}
+
+void 
+Field::Implementation::remove_litter (Treelog& msg)
+{
+  if (selected)
+    selected->remove_litter (msg);
+  else for (ColumnList::iterator i = columns.begin ();
+	    i != columns.end ();
+	    i++)
+         (*i)->remove_litter (msg);
+}
+
+double
+Field::Implementation::litter_DM () const // [Mg/ha]
+{
+  double DM = 0.0;		// [Mg/ha]
+  if (selected)
+    DM += selected->litter_DM ();
+  else for (auto c : columns)
+         DM += c->litter_DM ();
+  return DM;
 }
 
 void 
@@ -1007,6 +1028,14 @@ Field::store_SOM (Treelog& msg)
 void 
 Field::restore_SOM (Treelog& msg)
 { impl->restore_SOM (msg); }
+
+void 
+Field::remove_litter (Treelog& msg)
+{ impl->remove_litter (msg); }
+
+double 
+Field::litter_DM () const
+{ return impl->litter_DM (); }
 
 void 
 Field::set_porosity (const double at, const double Theta, Treelog& msg)

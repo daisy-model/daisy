@@ -105,6 +105,8 @@ public:
              const Time&, Treelog&);
   void store_SOM (Treelog& msg);
   void restore_SOM (Treelog& msg);
+  void remove_litter (Treelog&);
+  double litter_DM () const; 	// [Mg DM/ha]
   void set_porosity (double at, double Theta, Treelog& msg);
   void spray_overhead (symbol chemical, double amount, Treelog&); // [g/ha]
   void spray_surface (symbol chemical, double amount, Treelog&); // [g/ha]

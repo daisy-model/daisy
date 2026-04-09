@@ -212,6 +212,41 @@ A point in the horizon to modify.");
   }
 } ActionSetPorosity_syntax;
 
+struct ActionRemoveLitter : public Action
+{
+  // Simulation.
+  void doIt (Daisy& daisy, const Scope&, Treelog& msg)
+  {
+    const double DM = daisy.field ().litter_DM ();	
+    daisy.field ().remove_litter (msg);
+    msg.message ("Removing " + std::to_string (DM) + " Mg DM/ha litter.");
+  }
+
+  void tick (const Daisy&, const Scope&, Treelog&)
+  { }
+  void initialize (const Daisy&, const Scope&, Treelog&)
+  { }
+  bool check (const Daisy&, const Scope&, Treelog& err) const
+  { return true; }
+
+  ActionRemoveLitter (const BlockModel& al)
+    : Action (al)
+  { }
+};
+
+static struct ActionRemoveLitterSyntax : DeclareModel
+{
+  Model* make (const BlockModel& al) const
+  { return new ActionRemoveLitter (al); }
+
+  ActionRemoveLitterSyntax ()
+    : DeclareModel (Action::component, "remove_litter", "\
+Remove organic matter from soil surface.")
+  { }
+  void load_frame (Frame& frame) const
+  { }
+} ActionRemoveLitter_syntax;
+
 struct ActionStoreSOM : public Action
 {
   // Simulation.
@@ -251,7 +286,7 @@ struct ActionRestoreSOM : public Action
   // Simulation.
   void doIt (Daisy& daisy, const Scope&, Treelog& msg)
   {
-    msg.message ("Storing SOM pools.");
+    msg.message ("Restoring SOM pools.");
     daisy.field ().restore_SOM (msg);
   }
 
