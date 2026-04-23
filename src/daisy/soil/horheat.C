@@ -119,10 +119,11 @@ HorHeat::initialize (const Hydraulic& hydraulic, const Texture& texture,
   C_soil = HeatCapacity ();
 
   // We calculate for water between Theta_res and Theta_sat.
-  daisy_assert (hydraulic.Theta_res >= 0.0);
+  const double Theta_res = hydraulic.Theta_min ();
+  daisy_assert (Theta_res >= 0.0);
   daisy_assert (hydraulic.Theta_sat > 0.0);
-  daisy_assert (hydraulic.Theta_res < hydraulic.Theta_sat);
-  const int from = double2int (floor (intervals * hydraulic.Theta_res));
+  daisy_assert (Theta_res < hydraulic.Theta_sat);
+  const int from = double2int (floor (intervals * Theta_res));
   const int to = double2int (ceil (intervals * hydraulic.Theta_sat));
   
   daisy_assert (0 <= from);

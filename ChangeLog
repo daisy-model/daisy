@@ -1,3 +1,12 @@
+2026-04-23  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/soil/hydraulic.C, include/daisy/soil/soil/hydraulic.h:
+	(Theta_min): New function.
+	* src/daisy/soil/horheat.C (initialize): Use it.
+	* src/daisy/soil/soil.C (Theta_res): Ditto.
+	* src/daisy/soil/hydraulic_linear.C (initialize): Ditto.
+	(hysteresis): Ditto.
+
 2026-04-08  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/manager/action_tillage.C (remove_litter): New action.

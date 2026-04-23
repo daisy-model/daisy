@@ -96,7 +96,7 @@ HydraulicLinear::hysteresis (const double /* [h] */,
       const double K_dry = dry->KT (h_tp, T);
 
       // Dry extreme is (h=-inf, Theta=Theta_res, K=0).
-      const double Theta_res = dry->Theta_res;
+      const double Theta_res = dry->Theta_min ();
       daisy_assert (Theta_dry > Theta_res);
       
       // Scale retention curve.
@@ -221,7 +221,7 @@ HydraulicLinear::initialize (const Texture& texture,
   wet->initialize (texture, rho_b, top_soil, CEC, center_z, msg);
   dry->initialize (texture, rho_b, top_soil, CEC, center_z, msg);
   Theta_sat = std::max (wet->Theta_sat, dry->Theta_sat);
-  Theta_res = std::min (wet->Theta_res, dry->Theta_res);
+  Theta_res = std::min (wet->Theta_min (), dry->Theta_min ());
 }
 
 HydraulicLinear::HydraulicLinear (const BlockModel& al)

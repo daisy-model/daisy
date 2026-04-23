@@ -50,7 +50,10 @@ protected:
   // Standard parameters.
 public:
   double Theta_sat;
+protected:
   /*const*/ double Theta_res;
+public:
+  virtual double Theta_min () const;
   /*const*/ double K_sat;
   inline double porosity () const
   { return Theta_sat; }

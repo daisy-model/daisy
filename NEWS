@@ -6,6 +6,10 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.8
+
+** Fix bug with hyprop exfiltration.
+
 * 7.1.7
 
 ** New 'remove_litter' action.

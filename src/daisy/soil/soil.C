@@ -331,7 +331,7 @@ double Soil::Theta (size_t i, double h, double h_ice) const
 
 double 
 Soil::Theta_res (size_t i) const
-{ return hydraulic (i).Theta_res; }
+{ return hydraulic (i).Theta_min (); }
 
 double 
 Soil::Theta_sat (size_t i) const

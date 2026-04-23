@@ -232,6 +232,10 @@ class HydraulicHyprop : public Hydraulic
     
   
   // Interface.
+
+  double Theta_min () const
+  { return 0.0; }
+
   double Theta (const double h) const // Eq 1.
   {
     if (h >= 0.0)

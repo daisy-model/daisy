@@ -74,6 +74,10 @@ struct Hydraulic::K_at_h
   { }
 };
 
+double
+Hydraulic::Theta_min () const
+{ return Theta_res; }
+
 void 
 Hydraulic::set_porosity (double Theta)
 { 
