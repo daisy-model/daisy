@@ -1,3 +1,21 @@
+2026-04-27  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/surface/surface_std.C
+	(FORCED_BOUNDARY): Removed.
+	(max_exfiltration): New parameter.
+	(ME): New log variable.
+
+	* include/daisy/upper_boundary/weather/weather.h:
+	* include/daisy/upper_boundary/weather/wsource_weather.h:
+	* src/daisy/upper_boundary/weather/wsource_weather.C:
+	(WSourceWeather::h_atm): New function.
+
+2026-04-26  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/upper_boundary/surface/max_exfiltration.h:
+	* src/daisy/upper_boundary/surface/max_exfiltration.C
+	(max_exfiltration): New component.
+
 2026-04-23  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/soil/hydraulic.C, include/daisy/soil/soil/hydraulic.h:

@@ -727,24 +727,6 @@ SoilWater::output (Log& log) const
 }
 
 double
-SoilWater::MaxExfiltration (const Geometry& geo, const size_t edge,
-                            const Soil& soil, const double T) const
-{
-  const size_t n = geo.edge_other (edge, Geometry::cell_above);
-  const double h0 = h (n);
-  const double K0 = soil.K (n, h0, h_ice (n), T);
-  if (max_exfiltration_gradient > 0.0)
-    return K0 * max_exfiltration_gradient;
-  const double Cw2 = soil.Cw2 (n, h0);
-  const double Theta0 = Theta (n);
-  const double Theta_surf = soil.Theta_res (n);
-  const double delta_Theta = Theta0 - Theta_surf;
-  const double z0 = geo.cell_z (n);
-  // Darcy formulated for Theta between middle of node and soil surface.
-  return - (K0 / Cw2) * (delta_Theta / z0);
-}
-
-double
 SoilWater::infiltration (const Geometry& geo) const
 {
   const size_t edge_size = geo.edge_size ();
@@ -821,11 +803,6 @@ The depth will be added to the pressure.\n\
 By default, this will be based on either distance to groundwater\n\
 or field capacy (pF 2), whichever is lower.");
   
-  frame.declare ("max_exfiltration_gradient", "cm/cm", Check::positive (), 
-                 Attribute::OptionalConst,
-                 "Maximal pressure gradient for calculating exfiltration.\n\
-The gradient is assumed from center of top node to surface of top node.\n\
-By default, there is no maximum.");
   frame.declare ("max_sink_change", Attribute::None (), Check::positive (), 
                  Attribute::Const,
                  "Largest change to available water within a timestep.\n\

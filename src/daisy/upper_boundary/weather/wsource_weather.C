@@ -1403,6 +1403,23 @@ WSourceWeather::daily_vapor_pressure () const
 { return impl->my_daily_vapor_pressure; }
 
 double
+WSourceWeather::h_atm () const
+{
+  const double T = air_temperature ();
+  const double T_K = T + 273.15;
+  const double RH = vapor_pressure () / FAO::SaturationVapourPressure (T);
+
+  const double R = 8.314462618e7;  // Universal gas constant [erg mol⁻¹ K⁻¹]
+  const double rho_w = 1.0;        // Density of water [g cm⁻³]
+  const double g = 981.0;          // Gravitational acceleration [cm s⁻²]
+
+  // Kelvin equation
+  double h = (R * T_K) / (rho_w * g) * std::log(RH);
+
+  return h;
+}
+
+double
 WSourceWeather::wind () const
 { return has_wind () ? impl->my_wind : NAN; }
 
@@ -1551,6 +1568,7 @@ WSourceWeather::output (Log& log) const
   output_value (vapor_pressure (), "vapor_pressure", log);
   if (std::isfinite (impl->my_relative_humidity))
     output_value (impl->my_relative_humidity, "relative_humidity", log);
+  output_value (h_atm (), "h_atm", log);
   output_value (air_pressure (), "air_pressure", log);
   output_value (diffuse_radiation (), "diffuse_radiation", log);
   output_value (ground_heat_flux (), "ground_heat_flux", log);
@@ -1669,6 +1687,7 @@ Fraction of sky covered by clouds, 1 = clear sky.");
     frame.declare ("vapor_pressure", "Pa", Attribute::LogOnly, "Humidity.");
     frame.declare ("relative_humidity", Attribute::Fraction (), 
                    Attribute::LogOnly, "Relative humidity.");
+    frame.declare ("h_atm", "cm", Attribute::LogOnly, "Pressure head.");
     frame.declare ("air_pressure", "Pa", Attribute::LogOnly, "Air pressure.");
     frame.declare ("wind", "m/s", Attribute::LogOnly, "Wind speed.");
     frame.declare ("co2", "Pa", Attribute::LogOnly,

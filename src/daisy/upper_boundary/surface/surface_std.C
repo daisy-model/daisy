@@ -25,6 +25,7 @@
 // The 'default' model.
 
 #include "daisy/upper_boundary/surface/surface.h"
+#include "daisy/upper_boundary/surface/max_exfiltration.h"
 #include "daisy/soil/transport/geometry1d.h"
 #include "daisy/soil/soil.h"
 #include "daisy/soil/soil_water.h"
@@ -49,12 +50,6 @@ struct SurfaceStandard : public Surface
   double EpFactor_current;	// []
   const double albedo_wet;
   const double albedo_dry;
-#ifdef FORCED_BOUNDARY
-  const bool use_forced_pressure;
-  const double forced_pressure_value;
-  const bool use_forced_flux;
-  const double forced_flux_value;
-#endif // FORCED_FLUX_VALUE
   typedef std::map<size_t, size_t> pond_map;
   pond_map pond_edge;
   double pond_average;          // [mm]
@@ -70,6 +65,8 @@ struct SurfaceStandard : public Surface
   double runoff_rate_;          // [h^-1]
   const double R_mixing;
   const double z_mixing;
+  const std::unique_ptr<MaxExfiltration> max_exfiltration;
+  double ME;			// [cm/h]
 
 public:
   // Communication with soil water.
@@ -97,6 +94,7 @@ public:
              double temp /* [dg C] */, const Geometry& geo,
              const Soil&, const SoilWater&,
              double soil_T /* [dg C] */,
+	     double h_atm /* [cm] */,
 	     Treelog&);
 
   // Communication with bioclimate.
@@ -120,13 +118,6 @@ public:
 Surface::top_t 
 SurfaceStandard::top_type (const Geometry& geo, size_t edge) const
 {
-#ifdef FORCED_BOUNDARY
-  if (use_forced_flux)
-    return forced_flux;
-
-  if (use_forced_pressure)
-    return forced_pressure;
-#endif // FORCED_BOUNDARY  
   daisy_assert (geo.edge_to (edge) == Geometry::cell_above);
   pond_map::const_iterator i = pond_edge.find (edge);
   daisy_assert (i != pond_edge.end ());
@@ -141,14 +132,6 @@ double
 SurfaceStandard::q_top (const Geometry& geo, const size_t edge,
 			const double dt) const
 {
-#ifdef FORCED_BOUNDARY
-  if (use_forced_pressure)
-    return -forced_pressure_value * 0.1 / 1.0; // mm -> cm/h.
-
-  if (use_forced_flux)
-    return forced_flux_value * 0.1; // mm/h -> cm/h.
-#endif // FORCED_BOUNDARY
-  
   daisy_assert (geo.edge_to (edge) == Geometry::cell_above);
   pond_map::const_iterator i = pond_edge.find (edge);
   daisy_assert (i != pond_edge.end ());
@@ -170,11 +153,6 @@ SurfaceStandard::accept_top (double water /* [cm] */,
 			     const Geometry& geo, size_t edge,
 			     double dt, Treelog& msg)
 { 
-#ifdef FORCED_BOUNDARY
-  if (use_forced_pressure)
-    return;
-#endif // FORCED_BOUNDARY
-
   water *= 10.0;		// [cm] -> [mm]
 
   daisy_assert (geo.edge_to (edge) == Geometry::cell_above);
@@ -241,7 +219,7 @@ SurfaceStandard::tick (const Time&, const double dt,
 		       const double flux_in, const double temp,
 		       const Geometry& geo,
 		       const Soil& soil, const SoilWater& soil_water,
-		       const double soil_T,
+		       const double soil_T, const double h_atm,
 		       Treelog& msg)
 {
   // Runoff out of field.
@@ -355,17 +333,21 @@ SurfaceStandard::tick (const Time&, const double dt,
   // Update pond above each top cell.
   const std::vector<size_t>& top_edges = geo.cell_edges (Geometry::cell_above);
   const size_t top_edges_size = top_edges.size ();
+  ME = 0.0;
+  double top_area = 0.0;
   for (size_t i = 0; i < top_edges_size; i++)
     {
       const size_t edge = top_edges[i];
       const size_t c = pond_edge[edge];
       const double area = geo.edge_area (edge); // [cm^2]
-
+      top_area += area;
+      const double ME_edge
+	= max_exfiltration->value (geo, edge, soil, soil_water,
+				   soil_T, h_atm) * 10.0;
+      ME += ME_edge;
       // Exfiltration.
       const double MaxExfiltration // [mm/h]
-        = bound (0.0, 
-                 soil_water.MaxExfiltration (geo, edge, soil, soil_T) * 10.0,
-                 PotSoilEvaporationDry); 
+        = bound (0.0, ME_edge, PotSoilEvaporationDry); 
 
       const double epond = pond_section[c]; // [mm]
 
@@ -383,6 +365,8 @@ SurfaceStandard::tick (const Time&, const double dt,
       daisy_assert (pond_section[c] > -1000.0);
       daisy_assert (evap < 1000.0);
     }
+  daisy_assert (top_area > 0.0);
+  ME /= top_area;
   EvapSoilSurface = EvapSoilTotal / geo.surface_area (); // [mm/h]
   update_pond_average (geo);
 
@@ -471,6 +455,8 @@ SurfaceStandard::output (Log& log) const
   output_variable (EvapSoilSurface, log);
   output_variable (Eps, log);
   output_variable (runoff, log);
+  if (std::isfinite (ME))
+    output_variable (ME, log);
 }
 
 double
@@ -550,12 +536,6 @@ SurfaceStandard::SurfaceStandard (const BlockModel& al)
     EpFactor_current (EpFactor_),
     albedo_wet (al.number ("albedo_wet")),
     albedo_dry (al.number ("albedo_dry")),
-#ifdef FORCED_BOUNDARY
-    use_forced_pressure (al.check ("forced_pressure")),
-    forced_pressure_value (al.number ("forced_pressure", -42.42e42)),
-    use_forced_flux (al.check ("forced_flux")),
-    forced_flux_value (al.number ("forced_flux", -42.42e42)),
-#endif // FORCED_BOUNDARY
     pond_average (NAN),
     pond_section (al.check ("pond_section")
                   ? al.number_sequence ("pond_section")
@@ -569,7 +549,10 @@ SurfaceStandard::SurfaceStandard (const BlockModel& al)
     runoff (0.0),
     runoff_rate_ (0.0),
     R_mixing (al.number ("R_mixing")),
-    z_mixing (al.number ("z_mixing"))
+    z_mixing (al.number ("z_mixing")),
+    max_exfiltration
+    /**/ (Librarian::build_item<MaxExfiltration> (al, "max_exfiltration")),
+    ME (NAN)
 { }
 
 SurfaceStandard::~SurfaceStandard ()
@@ -593,13 +576,6 @@ Keep track of soil surface.")
   {
     bool ok = true;
 
-#ifdef FORCED_BOUNDARY
-    if (al.check ("forced_flux") && al.check ("forced_pressure"))
-      {
-	msg.error ("Can't have both 'forced_pressure' and 'forced_flux'");
-	ok = false;
-      }
-#endif // FORCED_BOUNDARY
     return ok;
   }
 
@@ -639,12 +615,6 @@ Effect of soil water on EpFactor.");
 		   Attribute::Const,
 		   "Albedo of wet soil (pf <= 1.7)");
     frame.set ("albedo_wet", 0.08);
-#ifdef FORCED_BOUNDARY
-    frame.declare ("forced_pressure", "mm", Attribute::OptionalConst, "\
-Set this to force a permanent pressure top.");
-    frame.declare ("forced_flux", "mm/h", Attribute::OptionalConst, "\
-Set this to force a permanent flux top.  Positive upwards (exfiltration).");
-#endif // FORCED_BOUNDARY
     frame.declare ("pond", "mm", Attribute::LogOnly, "\
 Amount of ponding on the surface.\n\
 Negative numbers indicate soil exfiltration.");
@@ -684,6 +654,11 @@ and the surface, especially in connection with intense rainfall.");
     frame.declare ("R_mixing", "h/mm", Check::non_negative (), Attribute::Const, "\
 Resistance to mixing inorganic compounds between soil and ponding.");
     frame.set ("R_mixing", 1.0e9);
+    frame.declare_object ("max_exfiltration", MaxExfiltration::component,
+			  "Soil limited exfiltration.");
+    frame.set ("max_exfiltration", "Hansen");
+    frame.declare ("ME", "mm/h", Attribute::LogOnly, "\
+Soil limit on exfiltration rate.");
   }
 } SurfaceStandard_syntax;
 

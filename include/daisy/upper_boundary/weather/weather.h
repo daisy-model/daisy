@@ -59,6 +59,7 @@ public:
   virtual double cloudiness_index () const = 0; // [0-1], 1 = clear sky
   virtual double vapor_pressure () const = 0; // [Pa]
   virtual double daily_vapor_pressure () const = 0; // [Pa]
+  virtual double h_atm () const = 0; // [Pa]
   virtual double wind () const = 0;	// [m/s]
   virtual double daily_wind () const = 0;	// [m/s]
   virtual double CO2 () const = 0; //[Pa]

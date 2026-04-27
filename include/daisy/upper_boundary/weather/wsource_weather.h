@@ -69,6 +69,7 @@ public:
   double cloudiness_index () const; // [0-1]
   double vapor_pressure () const; // [Pa]
   double daily_vapor_pressure () const; // [Pa]
+  double h_atm () const; // [Pa]
   double wind () const;	// [m/s]
   double daily_wind () const;	// [m/s]
   double CO2 () const; //[Pa]

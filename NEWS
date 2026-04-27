@@ -6,6 +6,43 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.9
+
+** You can now specify max_exfiltration model in surface.
+
+The three main options are
+
+  (Surface original (max_exfiltration Hansen))
+  (Surface original (max_exfiltration Theta))
+  (Surface original (max_exfiltration Theta (h_crit 6 [pF])))
+
+All three uses Darcy formulated on Theta for estimation.  The
+difference is the water content at surface.  Hansen assume only
+residual water (Theta_res), or zero for hydraulic models with no
+residual water. The Theta model assume water content corrresponding to
+h_crit, or by default h_atm.
+
+You can now log h_atm in the weather module and max exfiltration (ME)
+in the default surface model:
+
+(deflog "HAtm" column
+  (where "${colfid}h_atm.dlf")
+  (when hourly)
+  (entries (number (path weather "*" h_atm)
+                   (spec weather weather h_atm))
+	   (number (path weather "*" air_temperature)
+                   (spec weather weather air_temperature))
+	   (number (path weather "*" vapor_pressure)
+                   (spec weather weather vapor_pressure))
+	   (number (path weather "*" relative_humidity)
+                   (spec weather weather relative_humidity))
+	   (number (path column "${column}" Surface default ME)
+                   (spec surface default ME))))
+
+** The 'max_exfiltration_gradient' SoilWater parameter removed.
+
+Instead, it can be found in the 'gradient' max_exfiltration model.
+
 * 7.1.8
 
 ** Fix bug with hyprop exfiltration.

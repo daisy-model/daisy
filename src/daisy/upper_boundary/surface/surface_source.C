@@ -64,12 +64,12 @@ struct SurfaceSourceFlux : public SurfaceSimple
              double flux_in /* [mm/h] */,
              double temp /* [dg C] */, const Geometry& geo,
              const Soil& soil, const SoilWater& soil_water,
-             double soil_T /* [dg C] */,
+             double soil_T /* [dg C] */, double h_atm /* [cm] */,
 	     Treelog& msg)
   {
     SurfaceSimple::tick (time, dt, PotSoilEvaporationDry, PotSoilEvaporationWet,
 			 flux_in, temp, geo, soil, soil_water,
-			 soil_T, msg);
+			 soil_T, h_atm, msg);
     tick_source (time, msg);
   }
 

@@ -1095,7 +1095,7 @@ BioclimateStandard::WaterDistribution (const Time& time, Surface& surface,
 		pond_ep + litter_potential_up,
 		below_canopy_ep_dry + litter_potential_up, 
                 pond_in, pond_in_temperature, 
-                geo, soil, soil_water, soil_T, msg);
+                geo, soil, soil_water, soil_T, weather.h_atm (), msg);
 
   // 5.5 Intermission: Divide upward between pond, soil, litter, and ea
   const double pond_up = surface.evap_pond (dt, msg); // [mm/h]

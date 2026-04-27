@@ -65,7 +65,8 @@ public:
 		     double flux_in /* [mm/h] */,
 		     double temp /* [dg C] */, const Geometry& geo,
 		     const Soil&, const SoilWater&,
-		     double soil_T /* [dg C] */, Treelog&) = 0;
+		     double soil_T /* [dg C] */,
+		     double h_atm /* [cm] */, Treelog&) = 0;
 
   // Communication with bioclimate.
   virtual double ponding_average () const = 0; // [mm]

@@ -1,5 +1,31 @@
 -TODO ---things that needs to be done with Daisy -*- outline -*-
 
+* Root diffusion
+
+** Make root system a component
+
+** diffusion_coefficient
+
+*** DS_factor
+
+*** T_factor
+
+*** h_factor
+
+*** chemical_factor [NO3, NH4] ???
+
+*** permabilty_factor
+
+calculate permabity
+
+*** anisotropi
+
+** death_rate [from production?]
+
+*** factors?
+
+** diffusion
+
 * Read time series
 
 ** Data
