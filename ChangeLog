@@ -1,3 +1,8 @@
+2026-04-28  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/upper_boundary/surface/max_exfiltration.C
+	(steady-state): New model.
+
 2026-04-27  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/upper_boundary/surface/surface_std.C

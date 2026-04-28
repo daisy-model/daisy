@@ -85,7 +85,7 @@ public:
 
   // Tools for derived classes.
 protected:
-  void K_to_M (PLF&, int) const;
+  void K_to_M (PLF&, int, double h0) const;
 
   // Create and Destroy.
 public:

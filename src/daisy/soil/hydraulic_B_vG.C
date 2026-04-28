@@ -101,7 +101,7 @@ double
 HydraulicB_vG::M (double h) const
 {
   if (M_.size () == 0)
-    K_to_M (M_, 500);
+    K_to_M (M_, 500, -20000.0);
 
   return M_ (h);
 }

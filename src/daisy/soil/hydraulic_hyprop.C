@@ -54,7 +54,9 @@ class HydraulicHyprop : public Hydraulic
   const symbol vapor_conductivity; // 'false', 'true' or 'only'.
   const double a;		// [] Slope of the log-log scale.
   const double tau;		// [] Capillary conductivity parameter.
-  
+
+  const int M_intervals;        // Number of numerical intervals for M.
+  const double M_start;		// [cm] Start of M function.
   mutable PLF M_;
 
   // Adsorptive saturation function
@@ -362,7 +364,7 @@ double
 HydraulicHyprop::M (double h) const
 {
   if (M_.size () == 0)
-    K_to_M (M_, 500);
+    K_to_M (M_, M_intervals, M_start);
 
   return M_ (h);
 }
@@ -430,8 +432,9 @@ HydraulicHyprop::HydraulicHyprop (const BlockModel& al)
     omega (al.number ("omega")),
     vapor_conductivity (al.name ("vapor_conductivity")),
     a (al.number ("a")),
-    tau (al.number ("tau"))
-	   
+    tau (al.number ("tau")),
+    M_intervals (al.integer ("M_intervals")),
+    M_start (al.number ("M_start", h0))
 {
   daisy_assert (modes > 0);
   daisy_assert (w.size () == modes);
@@ -516,6 +519,15 @@ Slope on the log-log scale.");
     frame.set_cited ("a", -1.5, "Fixed value.", "peters2013");
     frame.declare ("tau", Attribute::None (), Attribute::Const, "\
 Capillary conductivity parameter.");
+    frame.declare_integer ("M_intervals", Attribute::Const,
+			   "Number of intervals for numeric integration of K.");
+    frame.set ("M_intervals", 500);
+    frame.declare ("M_start", "cm", Attribute::OptionalConst, "\
+Start point of numeric intergration of K.\n\
+\n\
+Must be below wilting point, and below h_surf for steady state exfiltration.\n\
+\n\
+By default same as h0.");
   }
 } hydraulicHyprop_syntax;
 

@@ -6,6 +6,21 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.10
+
+** New 'steady-state' max_exfiltration model.
+
+This assumes steady state flow from top node to surface.
+
+q = -(M (h_surf) - M (h0)) / L
+
+where h0 is the pressure in the top node, and h_surf is either h_crit,
+or if not set, h_atm, and L is the distance from top node center to
+surface.  M is integrated version of hydraulic conductivity (K).
+
+This model only makes sense if your hydraulic function includes vapor
+flow, such as hyprop.
+
 * 7.1.9
 
 ** You can now specify max_exfiltration model in surface.

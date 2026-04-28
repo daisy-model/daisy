@@ -36,10 +36,12 @@
 class HydraulicTable : public Hydraulic
 {
   double h0;			// h corresponding to lowest pF.
+  double h_min;			// h corresponding to highest pF.
   PLF Theta_pF;
   PLF pF_Theta;
   PLF Cw2_pF;
   PLF K_pF;
+  const int M_intervals;        // Number of numerical intervals for M.
   mutable PLF M_;
 
 public:
@@ -71,7 +73,7 @@ public:
   double M (double h) const
   {
     if (M_.size () == 0)
-      K_to_M (M_, 500);
+      K_to_M (M_, M_intervals, h_min);
     
     return M_ (h);
   }
@@ -86,12 +88,12 @@ public:
 };
 
 HydraulicTable::HydraulicTable (const BlockModel& al)
-  : Hydraulic (al)
+  : Hydraulic (al),
+    M_intervals (al.integer ("M_intervals"))
 {
   Treelog& msg = al.msg ();
   const Units& units = al.units ();
   LexerTable lex (al);
-  //  const int M_intervals = al.integer ("M_intervals");
   
   if (!lex.read_header (msg))
     throw "hyd table init err1";
@@ -202,6 +204,8 @@ HydraulicTable::HydraulicTable (const BlockModel& al)
   {
     const double pF0 = Theta_pF.x (0);
     h0 = pF2h (pF0);
+    const double pF_min = Theta_pF.x (Theta_pF.size () - 1);
+    h_min = pF2h (pF_min);
   }
 
   if (K_sat < 0.0)

@@ -115,9 +115,8 @@ Hydraulic::output (Log& log) const
 }
 
 void
-Hydraulic::K_to_M (PLF& plf, const int intervals) const
+Hydraulic::K_to_M (PLF& plf, const int intervals, const double h0) const
 {
-  static const double h0 = -20000.0;
   const double Ksat = KT20 (0.0);
   const double max_change = pow (Ksat / KT20 (h0), 1.0 / intervals);
   double step = (0 - h0) / 4.0;

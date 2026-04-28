@@ -163,7 +163,7 @@ HydraulicOld2::HydraulicOld2 (const BlockModel& al)
   hm_ = Thetam_.inverse ();
 
   PLF myM;
-  K_to_M (myM, M_intervals);
+  K_to_M (myM, M_intervals, -20000.0);
 
   for (int i = 0; i <= 500; i++)
     M_[i] = myM (pF2h (i * inc));

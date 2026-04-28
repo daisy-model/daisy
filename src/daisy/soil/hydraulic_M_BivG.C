@@ -119,7 +119,7 @@ double
 HydraulicM_BivG::M (double h) const
 {
   if (M_.size () == 0)
-    K_to_M (M_, 500);
+    K_to_M (M_, 500, pF2h (6.0));
 
   return M_ (h);
 }

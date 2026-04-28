@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(
   daisy
-  VERSION 7.1.9
+  VERSION 7.1.10
   DESCRIPTION "Mechanistic simulation of agricultural fields"
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
@@ -15,6 +15,11 @@ endif()
 
 # Make Daisy version available to version.C
 add_definitions( -DDAISY_VERSION="${CMAKE_PROJECT_VERSION}" )
+#set_source_files_properties(
+#    src/object_model/version.C
+#    PROPERTIES
+#        COMPILE_DEFINITIONS DAISY_VERSION="${CMAKE_PROJECT_VERSION}"
+#)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)

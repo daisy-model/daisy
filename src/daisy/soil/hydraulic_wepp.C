@@ -501,7 +501,7 @@ HydraulicWEPP::initialize (const Texture& texture,
     p_t = p_c;
   hypres ();
   M_.clear ();
-  K_to_M (M_, 500);
+  K_to_M (M_, 500, -20000.0);
 }
 
 void

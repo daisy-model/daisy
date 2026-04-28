@@ -87,7 +87,7 @@ double
 HydraulicYolo::M (double h) const
 {
   if (M_.size () == 0)
-    K_to_M (M_, M_intervals);
+    K_to_M (M_, M_intervals, -20000.0);
 
   return M_ (h);
 }

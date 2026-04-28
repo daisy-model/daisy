@@ -180,4 +180,52 @@ If positive, use atmospheric potential (Kelvin's equation).");
   }
 } MaxExfiltrationTheta_syntax;
 
+// The 'steady-state' model.
+
+struct MaxExfiltrationSteadyState : public MaxExfiltration
+{
+  const double h_crit;		// [cm]
+  
+  // Simulation.
+  double value (const Geometry& geo, const size_t edge,
+		const Soil& soil, const SoilWater& soil_water,
+		const double T, const double h_atm) const
+  {
+    const double L = geo.edge_length (edge);
+    const size_t n = geo.edge_other (edge, Geometry::cell_above);
+    const double h0 = soil_water.h (n);
+    const double M0 = soil.M (n, h0);
+    const double h_surf = (h_crit < 0)
+      ? h_crit
+      : h_atm;
+    const double M_surf = soil.M (n, h_surf);
+    // Steady state flow solution ignoring gravity.
+    const double q = - (M_surf - M0) / L;
+    return q;
+  }
+
+  // Create.
+  MaxExfiltrationSteadyState (const BlockModel& al)
+    : MaxExfiltration (al),
+      h_crit (al.number ("h_crit", 42.42e42))
+  { }
+};
+
+static struct MaxExfiltrationSteadyStateSyntax : public DeclareModel
+{
+  Model* make (const BlockModel& al) const
+  { return new MaxExfiltrationSteadyState (al); }
+  MaxExfiltrationSteadyStateSyntax ()
+    : DeclareModel (MaxExfiltration::component, "steady-state", "\
+Steady state flow from top cell to surface.")
+  { }
+  void load_frame (Frame& frame) const
+  {
+    frame.declare ("h_crit", "cm",
+		   Check::none (), Attribute::OptionalConst,
+		   "Surface potential for soil limited evaporation.\n\
+If positive, use atmospheric potential (Kelvin's equation).");
+  }
+} MaxExfiltrationSteadyState_syntax;
+
 // max_exfiltration.C ends here.
