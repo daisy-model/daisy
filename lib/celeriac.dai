@@ -35,7 +35,7 @@
         (HvsWStem (0 0.1) (50 1))
         (HvsDS (0.0 0.0) (0.5 45.0) (2.0 45.0)))
         
-   (Root (DptEmr 5)
+   (Root original (DptEmr 5)
         (PenPar1 0.038)						 
         (PenPar2 5.0)						 
         (MaxPen 48) 						 
@@ -101,7 +101,7 @@
          (WRoot 2.50)          ;[g DM/m2] 
          (WStem 0.75))         ;[g DM/m2] 
  
-   (Root (Depth 7.0))          ;[cm] Root depth
+   (Root original (Depth 7.0))          ;[cm] Root depth
    
    (Harvest (production_delay 21 [d])) ;3 weeks!
 )

@@ -24,7 +24,7 @@
       (EPext    0.50)
       (HvsDS   (0.00   1) (1.00  100) (2.00  100))
     )
-  (Root (DptEmr     10)
+  (Root original (DptEmr     10)
       (PenPar1    0.25)
       (PenPar2     4.0)
       (MaxPen      120)

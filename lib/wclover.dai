@@ -45,7 +45,7 @@
 	  (IntcpCap 0.5)
 	 	  )
         
-  (Root (DptEmr 2)
+  (Root original (DptEmr 2)
 	(PenPar1 0.25)
 	(PenPar2 4.0)
 	(MaxPen 100)    ; se Høgh-Jensen og Schjoerring 1997          

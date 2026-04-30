@@ -367,7 +367,7 @@ CropSimple::output (Log& log) const
   output_submodule (*canopy, "Canopy", log);
   output_variable (T_sum, log);
   output_variable (day, log);
-  output_submodule (*root_system, "Root", log);
+  output_derived (root_system, "Root", log);
   output_variable (N_demand, log);
   output_variable (N_actual, log);
 }
@@ -460,7 +460,7 @@ CropSimple::CropSimple (const BlockModel& al)
     spring_mm (al.integer_sequence ("spring")[0]),
     spring_dd (al.integer_sequence ("spring")[1]),
     spring_LAI (al.number ("spring_LAI")),
-    root_system (submodel<RootSystem> (al, "Root")),
+    root_system (Librarian::build_item<RootSystem> (al, "Root")),
     WRoot (al.number ("root_DM") * 100.0), // [Mg DM / ha] -> [g DM / m^2]
     NRoot (al.number ("root_N") * 0.1),	// [kg N / ha] -> [g N / m^2]
     root_am (al.model_sequence ("root_am")),
@@ -550,8 +550,8 @@ Minimum LAI, automatically cleared when exceeded by 'LAIvsTS'.");
     frame.declare ("spring_LAI", "m^2/m^2", Check::non_negative (), Attribute::Const, 
 		"Set 'forced_LAI' to this after spring clearence of 'T_sum'.");
     frame.set ("spring_LAI", 0.1);
-    frame.declare_submodule("Root", Attribute::State, "Root system.",
-			 RootSystem::load_syntax);
+    frame.declare_object ("Root", RootSystem::component, "Root system.");
+    frame.set ("Root", "classic");
     frame.declare ("root_DM", "Mg DM/ha", Check::non_negative (), Attribute::Const, 
 		"Fully developed root drymatter.");
     frame.set ("root_DM", 2.0);

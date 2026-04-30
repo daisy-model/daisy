@@ -22,6 +22,7 @@
 #ifndef ROOT_SYSTEM_H
 #define ROOT_SYSTEM_H
 
+#include "object_model/model_derived.h"
 #include "object_model/plf.h"
 #include "daisy/crop/root/rootdens.h"
 #include <vector>
@@ -41,9 +42,16 @@ class Rootdens;
 class ABAProd;
 class Solupt;
 class Treelog;
-class RootSystem
+
+class RootSystem : public ModelDerived
 {
+ // Content.
+public:
+  static const char *const component;
+  symbol library_id () const;
+
   const Metalib& metalib;
+
   // Components.
 private:
   std::unique_ptr<Rootdens> rootdens; // Root density calculation.
@@ -157,7 +165,7 @@ public:
 		   Treelog& msg);
   bool check (const Geometry& geo, Treelog& msg) const;
   static void load_syntax (Frame&);
-  RootSystem (const Block& al);
+  RootSystem (const BlockModel& al);
   ~RootSystem ();
 };
 

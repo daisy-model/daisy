@@ -831,7 +831,7 @@ void
 CropStandard::output (Log& log) const
 {
   output_derived (seed, "Seed", log);
-  output_submodule (*root_system, "Root", log);
+  output_derived (root_system, "Root", log);
   output_submodule (*canopy, "Canopy", log);
   output_submodule (*harvesting, "Harvest", log);
   static const symbol Prod_symbol ("Prod");
@@ -880,7 +880,7 @@ CropStandard::CropStandard (const BlockModel& al)
   : Crop (al),
     metalib (al.metalib ()),
     seed (Librarian::build_item<Seed> (al, "Seed")),
-    root_system (submodel<RootSystem> (al, "Root")),
+    root_system (Librarian::build_item<RootSystem> (al, "Root")),
     canopy (submodel<CanopyStandard> (al, "Canopy")),
     harvesting (submodel<Harvesting> (al, "Harvest")),
     production (al.submodel ("Prod")),
@@ -938,8 +938,8 @@ static struct CropStandardSyntax : public DeclareModel
     frame.declare_object ("Seed", Seed::component, 
                        "Initial crop growth.");
     frame.set ("Seed", "LAI");
-    frame.declare_submodule ("Root", Attribute::State, 
-                          "Root system.", RootSystem::load_syntax);
+    frame.declare_object ("Root", RootSystem::component, "Root system.");
+    frame.set ("Root", "classic");
     frame.declare_submodule ("Canopy", Attribute::State,
                           "Canopy.", CanopyStandard::load_syntax);
     frame.declare_submodule ("Harvest", Attribute::State,

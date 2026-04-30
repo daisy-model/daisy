@@ -36,7 +36,7 @@
         (HvsWStem (0 1) (1 2))
         (HvsDS (0.0 0.0) (0.5 35.0) (2.0 35.0)))
         
-   (Root (DptEmr 10)
+   (Root original (DptEmr 10)
         (PenPar1 0.16)						 
         (PenPar2 6.0)						 
         (MaxPen 180) 						 

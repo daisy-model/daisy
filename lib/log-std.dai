@@ -97,8 +97,8 @@ Height of crop."))
                    (documentation "\
 Leaf area index."))
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root Depth)
-                   (spec fixed RootSystem Depth)
+                         Root component Depth)
+                   (spec root component Depth)
                    (negate true)
                    (dimension "cm")
                    (documentation "\
@@ -171,8 +171,8 @@ Nitrogen content of the storage organ (grain or tubber)."))
                    (documentation "\
 Nitrogen content of the roots."))
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root water_stress)
-                   (spec fixed RootSystem water_stress)
+                         Root component water_stress)
+                   (spec root component water_stress)
 		   (dimension [])
                    (handle max)
                    (documentation "\

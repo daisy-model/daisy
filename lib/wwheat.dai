@@ -27,7 +27,7 @@
       (EPext    0.50)
       (HvsDS   (0.00    1)    (1.00  80)    (2.00 100)))
 
-  (Root (DptEmr     10)
+  (Root original (DptEmr     10)
       (PenPar1    0.25)
       (PenPar2     4.0)
       (MaxPen      120)
@@ -209,7 +209,7 @@
         (rate 0.4 [d^-1])
 )
 
-(Root    
+(Root original
         (PenPar1 1.0 [mm/dg C/d]) 
 	(PenPar2 0.0 [dg C])
         (MaxPen 175 [cm])

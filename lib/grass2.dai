@@ -36,7 +36,7 @@
       (HvsDS
             (0.00    1)    (1.00   40)    (2.00   40)          )
     )
-  (Root (DptEmr     10)
+  (Root original (DptEmr     10)
       (PenPar1    0.20)
       (PenPar2     4.0)
       (MaxPen       70)

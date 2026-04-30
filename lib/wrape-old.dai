@@ -29,7 +29,7 @@
 	  (PARref 0.06)
 	  (PARext 0.60)
 	  (EPext 0.50))
-  (Root (DptEmr 04)
+  (Root original (DptEmr 04)
 	(PenPar1 0.20)
 	(PenPar2 2.0)
 	(MaxPen 130)

@@ -43,6 +43,38 @@
 #include "object_model/metalib.h"
 #include <sstream>
 
+// The 'root' component.
+
+const char *const RootSystem::component = "root";
+
+symbol
+RootSystem::library_id () const
+{
+  static const symbol id (component);
+  return id;
+}
+
+static struct RootSystemInit : public DeclareComponent 
+{
+  static bool
+  check_alist (const Metalib&, const Frame& al, Treelog& msg)
+  {
+    bool ok = true;
+    return ok;
+  }
+
+  void load_frame (Frame& frame) const
+  {
+    RootSystem::load_syntax (frame);
+  }
+
+  RootSystemInit ()
+    : DeclareComponent (RootSystem::component, "\
+Root processes.")
+  { }
+} RootSystem_init;
+
+
 double 
 RootSystem::crown_potential () const
 { return h_x; }
@@ -628,8 +660,9 @@ get_PotRtDpt (const Block& al)
   return al.number ("DptEmr");
 }
 
-RootSystem::RootSystem (const Block& al)
-  : metalib (al.metalib ()),
+RootSystem::RootSystem (const BlockModel& al)
+  : ModelDerived (al.type_name ()),
+    metalib (al.metalib ()),
     rootdens (al.check ("rootdens") 
               ? Librarian::build_item<Rootdens> (al, "rootdens")
               : NULL),
@@ -674,8 +707,39 @@ RootSystem::RootSystem (const Block& al)
 RootSystem::~RootSystem ()
 { }
 
-static DeclareSubmodel 
-root_system_submodel (RootSystem::load_syntax, "RootSystem", "\
-Standard root system model.");
+// The 'classic' model.
+
+struct RootClassic : public RootSystem
+{
+ RootClassic (const BlockModel& al)
+   : RootSystem (al)
+  { }
+  ~RootClassic ()
+  { }
+};
+
+static struct RootClassicSyntax : DeclareModel
+{
+  static bool
+  check_alist (const Metalib&, const Frame& al, Treelog& msg)
+  {
+    bool ok = true;
+    return ok;
+  }
+
+  void load_frame (Frame& frame) const
+  { }
+
+  bool used_to_be_a_submodel () const
+  { return true; }
+
+  Model* make (const BlockModel& al) const
+  { return new RootClassic (al); }
+
+  RootClassicSyntax () 
+    : DeclareModel (RootSystem::component, "classic", "\
+Classic root system model.")
+  { }
+} RootClassic_syntax;
 
 // root_system.C ends here.

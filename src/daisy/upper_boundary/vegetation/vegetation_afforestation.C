@@ -391,7 +391,7 @@ VegetationAfforestation::output (Log& log) const
   output_variable (N_uptake, log);
   output_variable (N_litter, log);
   output_variable (N_rhizo, log);
-  output_submodule (*root_system, "Root", log);
+  output_derived (root_system, "Root", log);
 }
 
 void
@@ -464,7 +464,7 @@ VegetationAfforestation::VegetationAfforestation (const BlockModel& al)
     N_rhizo (0.0),
     litter_am (al.model_sequence ("litter_am")),
     root_am (al.model_sequence ("root_am")),
-    root_system (submodel<RootSystem> (al, "Root")),
+    root_system (Librarian::build_item<RootSystem> (al, "Root")),
     WRoot (al.number ("root_DM") * 100.0), // [Mg DM / ha] -> [g DM / m^2]
     albedo_ (al.number ("Albedo"))
 { }
@@ -572,8 +572,8 @@ Litter AOM parameters.");
 Rhizodeposition AOM parameters.");
     frame.set_check ("root_am", AM::check_om_pools ());
     frame.set ("root_am", AM::default_AM ());
-    frame.declare_submodule("Root", Attribute::State, "Root system.",
-                            RootSystem::load_syntax);
+    frame.declare_object ("Root", RootSystem::component, "Root system.");
+    frame.set ("Root", "classic");
     frame.declare ("root_DM", "Mg DM/ha", Check::positive (), Attribute::Const, 
                    "Afforestation root drymatter.");
     frame.set ("root_DM", 2.0);

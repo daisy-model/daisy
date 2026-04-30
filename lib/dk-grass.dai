@@ -34,7 +34,7 @@ Skabt af Christian Thirup for Daisy standardiseringsprojektet."
 	  (PARext 0.60)
 	  (EPext 0.50)
 	  (IntcpCap 0.5))
-  (Root (DptEmr 10)
+  (Root original (DptEmr 10)
 	(PenPar1 0.20)
 	(PenPar2 4.0)
 	(MaxPen 60)
@@ -121,7 +121,7 @@ Skabt af Christian Thirup for Daisy standardiseringsprojektet."  (Devel original
 (Canopy     (SpLAI 0.022));oprindelig 0.025		   
 		   
 		   
-  (Root (MxNH4Up 1.2e-7) ;oprindelig:	(MxNH4Up 2.5e-7)
+  (Root original (MxNH4Up 1.2e-7) ;oprindelig:	(MxNH4Up 2.5e-7)
 	(MxNO3Up 1.2e-8)));oprindelig:	(MxNO3Up 2.5e-8))
 
 (defcrop "Red fescue" "Froegraes"       ;Rødsvingel.

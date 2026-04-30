@@ -1047,7 +1047,7 @@ sum of all chemicals will be logged."
                    (dimension "none")
                    (factor 1.0))        ;Leaf Area Index [0:inf]
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root Depth)
+                         Root component Depth)
                    (dimension "cm")
                    (factor 1.0))        ;cm [-inf:0]
            (number (path column "${column}" Vegetation crops crops "${crop}"
@@ -1095,10 +1095,10 @@ sum of all chemicals will be logged."
                    (dimension "kg N/ha")
                    (factor 10.0))
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root water_stress)
+                         Root component water_stress)
                    (handle max))
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root water_stress_days))
+                         Root component water_stress_days))
            (number (path column "${column}" Vegetation crops crops "${crop}"
                          CrpN nitrogen_stress))
            (number (path column "${column}" Vegetation crops crops "${crop}"
@@ -1201,7 +1201,7 @@ sum of all chemicals will be logged."
                    (dimension "none")
                    (factor 1.0))        ;Leaf Area Index [0:inf]
            (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root Depth)
+                         Root component Depth)
                    (dimension "cm")
                    (factor 1.0))        ;cm [-inf:0]
            (number (path column "${column}"
@@ -1213,7 +1213,7 @@ sum of all chemicals will be logged."
                    (dimension "kg N/ha")
                    (factor 10.0))
            (number (path column "${column}" Vegetation crops crops "${crop}" 
-                         Root water_stress))))
+                         Root component water_stress))))
 
 (deflog "Old Crop Production" column
   (where "${colfid}old_crop_prod.dlf")
@@ -1315,8 +1315,8 @@ sum of all chemicals will be logged."
   (when daily)
   (entries (array (tag "")
 		  (path column "${column}" Vegetation crops crops "${crop}" 
-                        Root Density)
-                  (spec fixed RootSystem Density))))
+                        Root component Density)
+                  (spec root component Density))))
 
 (deflog "Root form parameter" crop
   (where "${colfid}${cropfid2}rootform.dlf")
@@ -1328,30 +1328,30 @@ sum of all chemicals will be logged."
                          Phenology DS)
                    (spec phenology default DS))
            (number (path column "${column}" Vegetation crops crops "${crop}" 
-                         Root Depth)
-                   (spec fixed RootSystem Depth))
+                         Root component Depth)
+                   (spec root component Depth))
            (number (path column "${column}" Vegetation crops crops "${crop}" 
-                         Root rootdens "*" a)
+                         Root component rootdens "*" a)
                    (spec rootdens GP1D a))
            (number (path column "${column}" Vegetation crops crops "${crop}" 
-                         Root rootdens "*" L0)
+                         Root component rootdens "*" L0)
                    (spec rootdens GP1D L0))
            (number (path column "${column}" Vegetation crops crops "${crop}" 
-                         Root rootdens "*" k)
+                         Root component rootdens "*" k)
                    (spec rootdens GP1D k))
 	   (content (path column "${column}" Vegetation crops crops "${crop}" 
-			  Root Density)
-		    (spec fixed RootSystem Density)
+			  Root component Density)
+		    (spec root component Density)
 		    (tag "10 cm")
 		    (height -10 [cm]))
 	   (content (path column "${column}" Vegetation crops crops "${crop}" 
-			  Root Density)
-		    (spec fixed RootSystem Density)
+			  Root component Density)
+		    (spec root component Density)
 		    (tag "50 cm")
 		    (height -50 [cm]))
 	   (interval (path column "${column}" Vegetation crops crops "${crop}" 
-			   Root Density)
-		     (spec fixed RootSystem Density)
+			   Root component Density)
+		     (spec root component Density)
 		     (tag "0-1 m")
 		     (from  0 [cm])
 		     (to -100 [cm]))))
@@ -3215,12 +3215,12 @@ parameter in the 'default' bioclimate model.  By default, 30."))
                   (handle current))
            (number (dimension "ng/cm^3")
 		   (path column "${column}" 
-			 Vegetation crops crops "${crop}" Root ABAConc)
-		   (spec fixed RootSystem ABAConc)
+			 Vegetation crops crops "${crop}" Root component ABAConc)
+		   (spec root component ABAConc)
                    (handle current))
            (number (path column "${column}" 
-			 Vegetation crops crops "${crop}" Root h_x)
-		   (spec fixed RootSystem h_x)
+			 Vegetation crops crops "${crop}" Root component h_x)
+		   (spec root component h_x)
                    (handle current))
            (number (path column "${column}" Vegetation crops crops "${crop}"
                          "${fraction}" "*" ABA_effect)
@@ -3419,34 +3419,34 @@ parameter in the 'default' bioclimate model.  By default, 30."))
   (unit "kg N/ha")
   (when daily)
   (entries (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root H2OUpt)
+                         Root component H2OUpt)
 		   (handle sum)
 		   (dimension "mm")
-                   (spec fixed RootSystem H2OUpt))
+                   (spec root component H2OUpt))
 	   (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root NH4Upt)
+                         Root component NH4Upt)
 		   (handle sum)
 		   (dimension "${unit}")
-                   (spec fixed RootSystem NO3Upt))
+                   (spec root component NO3Upt))
 	   (number (path column "${column}" Vegetation crops crops "${crop}"
-                         Root NO3Upt)
+                         Root component NO3Upt)
 		   (handle sum)
 		   (dimension "${unit}")
-                   (spec fixed RootSystem NH4Upt))
+                   (spec root component NH4Upt))
 	   (interval (path column "${column}" Vegetation crops crops "${crop}"
-			   Root H2OExtraction)
+			   Root component H2OExtraction)
 		     (handle sum)
 		     (dimension "mm")
-		     (spec fixed RootSystem H2OExtraction))
+		     (spec root component H2OExtraction))
 	   (interval (path column "${column}" Vegetation crops crops "${crop}"
-			   Root NH4Extraction)
+			   Root component NH4Extraction)
 		     (handle sum)
 		     (dimension "${unit}")
-		     (spec fixed RootSystem NH4Extraction))
+		     (spec root component NH4Extraction))
 	   (interval (path column "${column}" Vegetation crops crops "${crop}"
-			   Root NO3Extraction)
+			   Root component NO3Extraction)
 		     (handle sum)
 		     (dimension "${unit}")
-		     (spec fixed RootSystem NO3Extraction))))
+		     (spec root component NO3Extraction))))
 
 ;;; log.dai ends here
