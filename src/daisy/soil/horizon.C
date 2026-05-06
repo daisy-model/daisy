@@ -438,37 +438,28 @@ Horizon::initialize_base (const bool top_soil,
           << 100.0 * impl->primary_sorption_fraction
           << " % of the available sorption sites\n";
     }
-  tmp << "h\th\tTheta\tK\tCw2\n"
-      << "cm\tpF\t\tcm/h\tcm^-1\n";
+  tmp << "h\th\tTheta\tK\tCw2\tM\n"
+      << "cm\tpF\t\tcm/h\tcm^-1\tcm^2/h\n";
+  auto print_line = [&](const double h)
+  {
+    const double Theta = hydraulic->Theta (h);
+    tmp << h;
+    if (h < 0.0)
+      tmp << "\t" << h2pF (h);
+    else
+      tmp << "\t";
+    tmp << "\t" << Theta
+	<< "\t" << hydraulic->KT20 (h)
+	<< "\t" << hydraulic->Cw2 (h)
+	<< "\t" << hydraulic->M (h) << "\n";
+    
+    const double h_Theta = hydraulic->h (Theta);
+    daisy_approximate (h_Theta, h);
+  };
   const double h_Sat = 0;
-  tmp << h_Sat << "\t" << "\t" << hydraulic->Theta (h_Sat) 
-      << "\t" << hydraulic->KT20 (h_Sat)
-      << "\t" << hydraulic->Cw2 (h_Sat) << "\n";
-  const double pF_Zero = 0;
-  const double h_Zero = pF2h (pF_Zero);
-  tmp << h_Zero << "\t" << pF_Zero << "\t" << hydraulic->Theta (h_Zero) 
-      << "\t" << hydraulic->KT20 (h_Zero)
-      << "\t" << hydraulic->Cw2 (h_Zero) << "\n";
-  const double pF_One = 1;
-  const double h_One = pF2h (pF_One);
-  tmp << h_One << "\t" << pF_One << "\t" << hydraulic->Theta (h_One) 
-      << "\t" << hydraulic->KT20 (h_One)
-      << "\t" << hydraulic->Cw2 (h_One) << "\n";
-  const double pF_FC = 2.0;
-  const double h_FC = pF2h (pF_FC);
-  tmp << h_FC << "\t" << pF_FC << "\t" << hydraulic->Theta (h_FC) 
-      << "\t" << hydraulic->KT20 (h_FC)
-      << "\t" << hydraulic->Cw2 (h_FC) << "\n";
-  const double pF_Three = 3;
-  const double h_Three = pF2h (pF_Three);
-  tmp << h_Three << "\t" << pF_Three << "\t" << hydraulic->Theta (h_Three) 
-      << "\t" << hydraulic->KT20 (h_Three)
-      << "\t" << hydraulic->Cw2 (h_Three) << "\n";
-  const double pF_WP = 4.2;
-  const double h_WP = pF2h (pF_WP);
-  tmp << h_WP << "\t" << pF_WP << "\t" << hydraulic->Theta (h_WP) 
-      << "\t" << hydraulic->KT20 (h_WP)
-      << "\t" << hydraulic->Cw2 (h_WP);
+  print_line (h_Sat);
+  for (double pF: { 0.0, 1.0, 2.0, 3.0, 4.2, 5.0, 6.0, 7.0})
+    print_line (pF2h (pF));
   msg.debug (tmp.str ());
 }
   

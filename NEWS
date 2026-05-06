@@ -6,6 +6,20 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.11
+
+** New root component replaces RootSystem submodule
+
+*** Changes in crop definitions
+
+Write "(Root original" to avoid warning
+
+*** Changes in log defintions
+
+ (number (path column "${column}" Vegetation crops crops "${crop}" 
+               Root component Depth)
+         (spec root component Depth))
+
 * 7.1.10
 
 ** New 'steady-state' max_exfiltration model.
