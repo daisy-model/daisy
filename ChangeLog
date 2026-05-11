@@ -1,3 +1,13 @@
+2026-05-11  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/windows/windows_util.C (get_daisy_home_from_exe_path): Allow
+	"daisy-bin.exe" as alternative daisy.exe name.
+
+2026-05-06  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/soil/hydraulic_hyprop.C (Cw2): Remove per mode
+	scaling.  Thanks copilot.
+
 2026-04-28  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/upper_boundary/surface/max_exfiltration.C

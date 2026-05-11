@@ -20,6 +20,12 @@ Write "(Root original" to avoid warning
                Root component Depth)
          (spec root component Depth))
 
+** Fix hyprop bug.
+
+The bug sometimes lead to failure to solve Richards' equation.
+
+** Fix finding DAISYHOME from exe on Windows.
+
 * 7.1.10
 
 ** New 'steady-state' max_exfiltration model.

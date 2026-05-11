@@ -280,12 +280,10 @@ class HydraulicHyprop : public Hydraulic
       {
 	// Eq 39. 
 	const double dGamma_i_dh
-	  = alpha[i] * n[i] * m[i]
+	  = -alpha[i] * n[i] * m[i]
 	  * std::pow (-alpha[i] * h, n[i] - 1.0)
 	  * std::pow (1.0 + std::pow (-alpha[i] * h, n[i]),
-		      -(m[i] + 1.0))
-	  // Scaling.
-	  / (1.0 - Gamma (i, h0));
+		      -(m[i] + 1.0));
 
 	dGamma_dh += w[i] * dGamma_i_dh;
       }
@@ -301,7 +299,7 @@ class HydraulicHyprop : public Hydraulic
       = (Theta_sat - Theta_res) / (1.0 - Gamma0) * dGamma_dh
       + Theta_res * dS_ad_dh;
 	       
-    return result;
+    return -result;
   }
 
   double h (const double Theta_in) const
