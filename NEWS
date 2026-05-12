@@ -6,6 +6,12 @@ headlines of the changes since the last version.  For more detailed
 information on changes, read the 'ChangeLog' file from the source
 release.
 
+* 7.1.12
+
+** DAISYHOME now derived from exe on all platforms.
+
+** Bug fix: spawn no longer create all directories right away.
+
 * 7.1.11
 
 ** New root component replaces RootSystem submodule
