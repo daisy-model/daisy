@@ -114,14 +114,6 @@ struct ProgramSpawn : public Program {
     // n: Use these directories.
     daisy_assert (directory.size () == 0 || directory.size () > index);
     const symbol directory_one = (directory.size () == 0) ? program_one : directory[index];
-    Treelog::Open nest (msg, directory_one);
-
-    if (!boost::filesystem::create_directory (directory_one.name ()))  {
-	    std::ostringstream tmp;
-	    tmp << "Skipping '" << directory_one << "'";
-	    msg.message (tmp.str ());
-	    return;
-    }
     std::vector<std::string> args{
       "-d", directory_one.name(),
       "-D", input_directory.name(),
@@ -157,25 +149,33 @@ struct ProgramSpawn : public Program {
         auto job = jobs.front();
         jobs.pop_front();
         auto name = job.name;
-        msg.message("Running " + name);
-        ++running;
+	Treelog::Open nest (msg, name);
 
-        auto proc = std::make_shared<bp::process>(exec, exe.name(), job.args);
+	if (!boost::filesystem::create_directory (name))  {
+	    std::ostringstream tmp;
+	    tmp << "Skipping '" << name << "'";
+	    msg.message (tmp.str ());
+	} else {
+	  msg.message("Running " + name);
+	  ++running;
 
-        // Capturing proc by value keeps the pointer alive until we are done
-        proc->async_wait([&, proc, name](boost::system::error_code ec, int exit_code) {
-          ba::dispatch(strand, [&]() {
-            --running;
-            // Try to start a new one
-            start_next();
-          });
-          if (!ec && exit_code == 0) {
-            handle_success(name, msg);
-          }
-          else {
-            handle_failure(exit_code, name, msg);
-          }
-        });
+	  auto proc = std::make_shared<bp::process>(exec, exe.name(), job.args);
+
+	  // Capturing proc by value keeps the pointer alive until we are done
+	  proc->async_wait([&, proc, name](boost::system::error_code ec, int exit_code) {
+	    ba::dispatch(strand, [&]() {
+	      --running;
+	      // Try to start a new one
+	      start_next();
+	    });
+	    if (!ec && exit_code == 0) {
+	      handle_success(name, msg);
+	    }
+	    else {
+	      handle_failure(exit_code, name, msg);
+	    }
+	  });
+	}
         start_next(); // Recursively start more until we hit the limit or are done
       });
     };

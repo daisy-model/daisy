@@ -22,8 +22,11 @@
 
 #include "util/path.h"
 #include "util/assertion.h"
-#include "windows/windows_util.h"
 #include "object_model/version.h"
+
+#include <boost/dll.hpp>
+
+#include <filesystem>
 
 // Get chdir.
 #if defined (__unix)
@@ -86,41 +89,36 @@ Path::get_daisy_home ()
 {
   static symbol daisy_home;
 
-  if (daisy_home == symbol ())
+  if (daisy_home != symbol ())
+    return daisy_home;
+
+  // Check DAISYHOME
+  const char* daisy_home_env = getenv ("DAISYHOME");
+  if (daisy_home_env)
     {
-      // Check DAISYHOME
-      const char* daisy_home_env = getenv ("DAISYHOME");
-      if (daisy_home_env)
-	{
-	  Assertion::debug ("Has DAISYHOME environment variable");
-	  daisy_home = daisy_home_env;
-	}
-      else
-	{
-#if defined (_WIN32) || defined (__CYGWIN32__)
-  // Get the path from location of the exe
-  auto exe_path = get_exe_path();
-  Assertion::debug ("Trying to get DAISYHOME from '" + exe_path + "'");
-  auto result = get_daisy_home_from_exe_path();
-  if (result.length() > 0) {
-    daisy_home = result;
-  } else {
-    Assertion::debug("Could not get DAISHOME from exe path");
-    Assertion::debug("Using standard MS Windows home.");
-    daisy_home = "C:/daisy";
-  }
-#else // !MS WINDOWS
-#ifdef __APPLE__
-	  Assertion::debug ("OSX conventional home.");
-	  daisy_home =  "/Applications/Daisy";
-#else
-	  Assertion::debug ("Using standard Unix home.");
-	  daisy_home =  "/opt/daisy";
-#endif
-#endif // !MS WINDOWS
-	}
+      Assertion::debug ("Has DAISYHOME environment variable");
+      daisy_home = daisy_home_env;
+      return daisy_home;
     }
-  return daisy_home;
+  try
+    {
+      std::filesystem::path exe = boost::dll::program_location ().native ();
+      Assertion::debug ("Infering daisy home from exe file '"
+			  + exe.string () + "'");
+      auto path = exe.parent_path ().parent_path ();
+      if (path.filename () == "build")
+	{
+	  Assertion::debug ("Running from 'build' environment");
+	  path = path.parent_path ();
+	}
+      daisy_home = path.string ();
+      return daisy_home;
+    }
+  catch (...)
+    {
+      daisy_panic ("Can't find executable, use DAISYHOME instead");
+    }
+  daisy_notreached ();
 }
 
 const std::vector<symbol>&

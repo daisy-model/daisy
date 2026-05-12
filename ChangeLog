@@ -1,3 +1,12 @@
+2026-05-12  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/programs/program_spawn.C (run_cmds, prepare_cmd): Move
+	create directory from prapare to run.
+
+	* src/util/path.C (Path::get_daisy_home): Use
+	'boost::dll:program_location' to find exe on all platform.
+	Special case build directory.
+
 2026-05-11  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/windows/windows_util.C (get_daisy_home_from_exe_path): Allow
