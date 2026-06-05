@@ -1,20 +1,34 @@
 -TODO ---things that needs to be done with Daisy -*- outline -*-
 
-* Daisy distribution? w Silas
-
-** DONE Could not get DAISHOME from exe path
-
 * Afgrøder
 
 ** Manglende seed rate skal være fejl
 
-* PhD kursus
+* Remove windows directory
 
 * Root diffusion
 
 ** DONE Make root system a component
 
+** DONE zone base model
+
+** DONE uptake base model
+
+** DONE Split in multiple files.
+
+** additive model
+
+** diffusion model
+
 ** sow?
+
+*** Make new root / dead root (/ total WRoot ?) seperate parameters
+
+*** Dead root should be part of root system...
+
+*** Add new root everywhere (with modifiers?)
+
+*** Remove dead roots everywhere (with modifiers?)
 
 ** diffusion_coefficient
 
@@ -37,6 +51,8 @@ calculate permabity
 *** factors?
 
 ** diffusion
+
+* PhD kursus
 
 * Read time series
 

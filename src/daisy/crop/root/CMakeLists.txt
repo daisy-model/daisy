@@ -5,6 +5,9 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   ABAprod_uptake.C
   GP2D.C
   root_system.C
+  root_uptake.C
+  root_zone.C
+  root_classic.C
   rootdens.C
   rootdens_AP.C
   rootdens_GP1D.C

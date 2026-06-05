@@ -23,25 +23,16 @@
 #define ROOT_SYSTEM_H
 
 #include "object_model/model_derived.h"
-#include "object_model/plf.h"
-#include "daisy/crop/root/rootdens.h"
 #include <vector>
-#include <memory>
 
-class Frame;
 class Geometry;
 class Soil;
 class SoilHeat;
 class SoilWater;
 class Chemistry;
 class Log;
-class Metalib;
-class Units;
-class Block;
-class Rootdens;
-class ABAProd;
-class Solupt;
 class Treelog;
+class BlockModel;
 
 class RootSystem : public ModelDerived
 {
@@ -50,121 +41,66 @@ public:
   static const char *const component;
   symbol library_id () const;
 
-  const Metalib& metalib;
-
-  // Components.
-private:
-  std::unique_ptr<Rootdens> rootdens; // Root density calculation.
-  std::unique_ptr<ABAProd> ABAprod;   // Root density calculation.
-  std::unique_ptr<Solupt> NH4_uptake; // Ammonium uptake.
-  std::unique_ptr<Solupt> NO3_uptake; // Nitrate uptake.
-
-  // Parameters.
-private:
-  const double PenPar1;		// Penetration rate parameter, coefficient
-  const double PenPar2;		// Penetration rate parameter, threshold
-  const PLF PenpFFac;		// Mousture  influence on penetration, factor.
-  const PLF PenClayFac;		// Clay influence on penetration, factor.
-  const PLF PenWaterFac;	// Water influence on penetration, factor.
-  const PLF PenDSFac;	// Development stage influence on penetration, factor.
-  const PLF DensityDSFac;	// DS influence on homogeneity [DS] -> []
-  const double MaxPen;		// Max penetration depth
-  const double MaxWidth;        // Max horizontal distance from plant
-  const double Rad;		// Root radius [cm]
-  const double h_wp;		// Matrix potential at wilting
-  const double MxNH4Up;		// Max NH4 uptake per unit root length
-  const double MxNO3Up;		// Max NO3 uptake per unit root length
-  const double Rxylem;		// Transport resistence in xyleme
-
   // State.
-private:
-  double PotRtDpt;	        // Potential Root Penetration Depth [cm]
 public:
-  double Depth;			// Rooting Depth [cm]
-private:
-  std::vector<double> Density;	// Root density [cm/cm3] in soil layers
-  std::vector<double> EffectiveDensity;	// Effective root density [cm/cm3]
-public:
-  const std::vector<double>& actual_density () const
-  { return Density; }
-  const std::vector<double>& effective_density () const
-  { return EffectiveDensity; }
-  const std::vector<double>& dynamic_root_death () const // [cm/cm^3/h]
-  { return rootdens->dynamic_root_death (); }
-  double dynamic_root_death_DM () const // [g DM/h]
-  { return rootdens->dynamic_root_death_DM (); }
-private:
-  std::vector<double> H2OExtraction; // Extraction of H2O in soil [cm³/cm³/h]
-  std::vector<double> NH4Extraction; // Extraction of NH4-N in soil [gN/cm³/h]
-  std::vector<double> NO3Extraction; // Extraction of NH4-N in soil [gN/cm³/h]
-  std::vector<double> ABAExtraction; // Extraction of ABA in soil [g ABA/cm³/h]
-public:
-  double ABAConc;		// ABA concentration in uptake [g/cm^3]
-private:
-  double h_x;			// Root extraction at surface
-public:
-  double partial_soil_temperature; // Accumaleted soil temperature [°C]
-  double partial_day;           // Accuumalted time [h]
-  double soil_temperature;	// Soil temperature previous day [°C]
-
-  // Log.
-public:
-  double water_stress;		// Fraction of requested water we didn't got
-  double water_stress_days;	// Accumulated water stress
-  double production_stress;	// SVAT induced stress, -1 if not applicable
- 
-private:
-  double Ept;			// Potential evapotranspiration
-  double H2OUpt;		// H2O uptake [mm/h]
-  double NH4Upt;		// NH4-N uptake [g/m2/h]
-  double NO3Upt;		// NO3-N uptake [g/m2/h]
-
-public:
-  double crown_potential () const; // [cm]
-
+  virtual double ABA_concentration () const = 0;
+  virtual double soil_T () const = 0;	   // [dg C]
+  virtual double crown_potential () const = 0; // [cm]
+  virtual const std::vector<double>& actual_density () const = 0;
+  virtual const std::vector<double>& effective_density () const = 0;
+  virtual double depth () const = 0;
+  virtual double water_stress () const = 0;
+  virtual double water_stress_days () const = 0;
+  virtual double production_stress () const = 0;
+  virtual void set_production_stress (double) = 0;
+  
   // Uptake.
 private:
-  double potential_water_uptake (double h_x,
-                                 const Geometry&,
-				 const Soil& soil,
-				 const SoilWater& soil_water,
-                                 double dt);
+  virtual double potential_water_uptake (double h_x,
+					 const Geometry&,
+					 const Soil& soil,
+					 const SoilWater& soil_water,
+					 double dt) = 0;
 public:
-  double water_uptake (double Ept,
-                       const Geometry&,
-		       const Soil& soil, const SoilWater& soil_water,
-                       double EvapInterception, double dt, Treelog&);
+  virtual double water_uptake (double Ept,
+			       const Geometry&,
+			       const Soil& soil, const SoilWater& soil_water,
+			       double EvapInterception, double dt,
+			       Treelog&) = 0;
 public:
-  double nitrogen_uptake (const Geometry&,
-                          const Soil& soil,
-			  const SoilWater& soil_water,
-			  Chemistry& chemistry,
-			  double NH4_root_min,
-			  double NO3_root_min,
-			  double PotNUpt);
+  virtual double nitrogen_uptake (const Geometry&,
+				  const Soil& soil,
+				  const SoilWater& soil_water,
+				  Chemistry& chemistry,
+				  double NH4_root_min,
+				  double NO3_root_min,
+				  double PotNUpt) = 0;
 
   // Simulation.
-private:
-  static double density_distribution_parameter (double a);
+  virtual const std::vector<double>&
+  /**/ dynamic_root_death () const = 0; // [cm/cm^3/h]
+  virtual double dynamic_root_death_DM () const = 0; // [g DM/h]
 public:
-  void tick_dynamic (const Geometry& geo, const SoilHeat&, SoilWater&,
-		     const double day_fraction, const double dt, Treelog&);
-  void tick_daily (const Geometry&, const Soil&, const SoilWater&,
-		   double WRoot, bool root_growth, double DS, Treelog&);
-  void set_density (const Geometry& geometry, const Soil& soil,
-                    double WRoot, double DS, Treelog&);
-  void full_grown (const Geometry&, const Soil&, double WRoot, Treelog&);
-  void output (Log& log) const;
+  virtual void tick_dynamic (const Geometry& geo, const SoilHeat&, SoilWater&,
+			     const double day_fraction, const double dt,
+			     Treelog&) = 0;
+  virtual void tick_daily (const Geometry&, const Soil&, const SoilWater&,
+			   double WRoot, bool root_growth, double DS,
+			   Treelog&) = 0;
+  virtual void set_density (const Geometry& geometry, const Soil& soil,
+			    double WRoot, double DS, Treelog&) = 0;
+  virtual void full_grown (const Geometry&, const Soil&, double WRoot,
+			   Treelog&) = 0;
+  virtual void output (Log& log) const = 0;
 
   // Create and Destroy
 public:
-  void initialize (const Geometry& geo, const Soil& soil, 
-                   double row_width, double row_pos, const double DS,
-		   Treelog& msg);
-  void initialize (const Geometry& geo, const Soil&, const double DS,
-		   Treelog& msg);
-  bool check (const Geometry& geo, Treelog& msg) const;
-  static void load_syntax (Frame&);
+  virtual void initialize (const Geometry& geo, const Soil& soil, 
+			   double row_width, double row_pos, const double DS,
+			   Treelog& msg) = 0;
+  virtual void initialize (const Geometry& geo, const Soil&, const double DS,
+			   Treelog& msg) = 0;
+  virtual bool check (const Geometry& geo, Treelog& msg) const = 0;
   RootSystem (const BlockModel& al);
   ~RootSystem ();
 };

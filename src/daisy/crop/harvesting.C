@@ -71,8 +71,8 @@ Harvesting::harvest (const symbol column_name,
                      std::vector<double>& residuals_N_soil,
                      std::vector<double>& residuals_C_soil,
                      const bool combine,
-                     double& water_stress_days,
-                     double& nitrogen_stress_days,
+                     double water_stress_days,
+                     double nitrogen_stress_days,
                      Treelog& msg)
 {
   const double old_DM = production.DM ();
@@ -466,6 +466,7 @@ Harvesting::harvest (const symbol column_name,
   // Reset stress.
   const double wsd = water_stress_days;
   const double nsd = nitrogen_stress_days;
+  // TODO: Why was these zeroed?
   water_stress_days = nitrogen_stress_days = 0.0;
 
   // WP_ET

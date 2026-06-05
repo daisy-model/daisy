@@ -150,7 +150,7 @@ struct CropStandard : public Crop
                                       EvapInterception, 
                                       dt, msg); }
   void force_production_stress  (double pstress)
-  { root_system->production_stress = pstress; }
+  { root_system->set_production_stress (pstress); }
 
   // Simulation.
   void find_stomata_conductance (const Time& time, 
@@ -419,7 +419,7 @@ CropStandard::find_stomata_conductance (const Time& time,
 					    N_at_Nf, N_at_Cr, N_at_Pt);
   daisy_assert (rubisco_N >= 0.0);
       
-  const double ABA_xylem = root_system->ABAConc;
+  const double ABA_xylem = root_system->ABA_concentration ();
   daisy_assert (std::isfinite (ABA_xylem));
   daisy_assert (ABA_xylem >= 0.0);
   
@@ -546,8 +546,9 @@ CropStandard::tick (const Scope& scope,
 
       const double h_middle 
         = geo.content_height (soil_water, &SoilWater::h,
-                              -root_system->Depth/2.);
-      development->emergence (scope, h_middle, root_system->soil_temperature, 
+                              -root_system->depth ()/2.);
+      development->emergence (scope, h_middle,
+			      root_system->soil_T (), 
                               daystep.total_hours (), msg);
       cstage->tick (DS, msg);
       if (DS >= 0)
@@ -610,12 +611,12 @@ CropStandard::tick (const Scope& scope,
   harvesting->water_use (bioclimate.total_ea () * dt);
 
   const double nitrogen_stress = nitrogen->nitrogen_stress;
-  const double water_stress = root_system->water_stress;
+  const double water_stress = root_system->water_stress ();
   const double NNI = nitrogen->NNI;
 
   double Ass = production.PotCanopyAss;
-  if (root_system->production_stress >= 0.0)
-    Ass *= (1.0 - root_system->production_stress);
+  if (root_system->production_stress () >= 0.0)
+    Ass *= (1.0 - root_system->production_stress ());
   else 
     Ass *= water_stress_effect->factor (water_stress);
   if (enable_N_stress)
@@ -638,7 +639,7 @@ CropStandard::tick (const Scope& scope,
 
   // Root zone heat.
   const double T_soil_3 
-    = geo.content_height (soil_heat, &SoilHeat::T, -root_system->Depth/3.0);
+    = geo.content_height (soil_heat, &SoilHeat::T, -root_system->depth ()/3.0);
   daisy_assert (std::isfinite (T_soil_3));
   const double seed_C = seed->release_C (T_soil_3, dt);
   production.tick (bioclimate.daily_air_temperature (), T_soil_3,
@@ -729,7 +730,7 @@ CropStandard::harvest (const symbol column_name,
                            residuals_N_top, residuals_C_top, 
                            residuals_N_soil, residuals_C_soil,
                            combine,
-                           root_system->water_stress_days, 
+                           root_system->water_stress_days (), 
                            nitrogen->nitrogen_stress_days, msg);
 
   if (!approximate (development->DS, DSremove))
@@ -801,7 +802,7 @@ CropStandard::pluck (const symbol column_name,
                            residuals_N_top, residuals_C_top, 
                            residuals_N_soil, residuals_C_soil,
                            false,
-                           root_system->water_stress_days, 
+                           root_system->water_stress_days (), 
                            nitrogen->nitrogen_stress_days, msg);
 
   // Phenology may be affected.

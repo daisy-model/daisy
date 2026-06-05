@@ -1,3 +1,20 @@
+2026-06-05  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/crop/root/root_system.h: Split into files.
+	* src/daisy/crop/root/root_system.C:
+	* src/daisy/crop/root/root_classic.C:
+	* src/daisy/crop/root/root_zone.C:
+	* include/daisy/crop/root/root_zone.h:
+	* include/daisy/crop/root/root_uptake.h:
+	* src/daisy/crop/root/root_uptake.C:
+
+2026-05-27  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* include/daisy/crop/root/root_system.h: Made it a component.
+	* src/daisy/crop/root/root_system.C (root): New component.
+ 	(uptake, zone): New base models.
+	(classic): New model.
+
 2026-05-12  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/programs/program_spawn.C (run_cmds, prepare_cmd): Move

@@ -219,7 +219,7 @@ CropSimple::ActualWaterUptake (double Ept,
 
 void 
 CropSimple::force_production_stress  (double pstress)
-{ root_system->production_stress = pstress; }
+{ root_system->set_production_stress (pstress); }
 
 void
 CropSimple::tick (const Scope&, const Time& time, const Bioclimate& bioclimate, 
