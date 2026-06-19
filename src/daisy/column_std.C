@@ -87,6 +87,23 @@ struct ColumnStandard : public Column
   std::vector<double> tillage_age;
   std::unique_ptr<Irrigation> irrigation;
 
+  // Python/BMI coupling: cached arrays (filled in tick_move, valid after each tick).
+  double bottom_flux_cached_ = 0.0;                // [cm/h]
+  std::vector<double> flux_array_cached_;          // [cm/h], bottom edge of each cell
+  std::vector<double> h_array_cached_;             // [cm], pressure head per layer
+  std::vector<double> theta_array_cached_;         // [-], volumetric water content
+  std::vector<double> theta_sat_cached_;           // [-], saturated θ (static soil param)
+  mutable double runoff_rate_cached_ = 0.0;        // [mm], accumulated since last read
+
+  // Snapshots taken just before Richards solve (needed by estimate_sy_perturbation).
+  Time             time_last_;
+  const Weather*   weather_last_ = nullptr;
+  const Scope*     scope_last_   = nullptr;
+  std::vector<double> h_pretick_;
+  std::vector<double> theta_pretick_;
+  double              table_pretick_ = 0.0;
+  std::vector<double> S_sum_pretick_;
+
   // Log variables.
   double yield_DM;
   double yield_N;
@@ -183,6 +200,21 @@ public:
   double crop_sorg_dm (const symbol name) const;
   std::string crop_names () const;
   double bottom () const;
+
+  // Python/BMI coupling.
+  double get_groundwater_table () const override;
+  void   set_groundwater_table (double cm) override;
+  double get_bottom_flux () const override;
+  double get_column_area () const override;
+  std::vector<double> get_layer_tops () const override;
+  std::vector<double> get_layer_bottoms () const override;
+  std::vector<double> get_flux_array () const override;
+  std::vector<double> get_h_array () const override;
+  std::vector<double> get_theta_array () const override;
+  std::vector<double> get_theta_sat_array () const override;
+  double get_runoff_rate () const override;
+  std::tuple<double, std::vector<double>, std::vector<double>>
+    estimate_sy_perturbation (double dh_cm) override;
 
   // Simulation.
   void clear ();
@@ -848,6 +880,22 @@ ColumnStandard::tick_move (const Metalib& metalib,
   soil_heat->tick (geometry, *soil, *soil_water, T_bottom, *movement, 
                    surface->temperature (), dt, msg);
   soil_water->reset_old (); // Set Theta_old to Theta here.
+
+  // BMI: snapshot h + theta + S_sum + GW table just before Richards solve.
+  {
+    const size_t _n = geometry.cell_size ();
+    h_pretick_.resize (_n);
+    theta_pretick_.resize (_n);
+    for (size_t _i = 0; _i < _n; ++_i)
+      {
+        h_pretick_[_i]     = soil_water->h     (_i);
+        theta_pretick_[_i] = soil_water->Theta (_i);
+      }
+    table_pretick_ = groundwater->table ();
+    S_sum_pretick_.resize (_n);
+    for (size_t _i = 0; _i < _n; ++_i)
+      S_sum_pretick_[_i] = soil_water->S_sum (_i);
+  }
   chemistry->mass_balance (geometry, *soil_water);
   soil_water->tick_ice (geometry, *soil, dt, msg); 
   movement->tick (*soil, *soil_water, *soil_heat,
@@ -891,6 +939,27 @@ ColumnStandard::tick_move (const Metalib& metalib,
     }
   chemistry->update_C (*soil, *soil_water, *soil_heat, *awi);
   chemistry->mass_balance (geometry, *soil_water);
+
+  // BMI: cache post-Richards arrays and runoff for BMI getters.
+  {
+    const size_t n = geometry.cell_size ();
+    time_last_    = time_end;
+    weather_last_ = weather.get () ? weather.get () : global_weather;
+    scope_last_   = extern_scope;
+
+    bottom_flux_cached_ = soil_water->q_matrix (n);
+
+    flux_array_cached_.resize (n);
+    h_array_cached_.resize (n);
+    theta_array_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      {
+        flux_array_cached_[i]  = soil_water->q_matrix (i + 1); // [cm/h]
+        h_array_cached_[i]     = soil_water->h (i);            // [cm]
+        theta_array_cached_[i] = soil_water->Theta (i);        // [-]
+      }
+    runoff_rate_cached_ += surface->runoff_rate () * surface->ponding_average () * dt; // [mm]
+  }
 }
 
 bool
@@ -1211,6 +1280,14 @@ ColumnStandard::initialize (const Metalib& metalib,
   // Soil conductivity and capacity logs.
   soil_heat->tick_after (geometry.cell_size (), *soil, *soil_water, msg);
 
+  // BMI: cache static soil parameter theta_sat once after initialization.
+  {
+    const size_t n = geometry.cell_size ();
+    theta_sat_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      theta_sat_cached_[i] = soil->Theta_sat (i);
+  }
+
   // Litter layer.
   litter->tick (*bioclimate, geometry, *soil, *soil_water, *soil_heat,
 		*organic_matter, *chemistry, 0.0, msg);
@@ -1363,3 +1440,134 @@ Hansen et.al. 1990. with generic movement in soil.")
 } column_syntax;
 
 // column_std.C ends here.
+
+// ===== Python/BMI getter implementations =====
+
+double
+ColumnStandard::get_groundwater_table () const
+{ return groundwater->table (); }
+
+void
+ColumnStandard::set_groundwater_table (double cm)
+{ groundwater->set_table (cm); }
+
+double
+ColumnStandard::get_bottom_flux () const
+{ return bottom_flux_cached_; }
+
+double
+ColumnStandard::get_column_area () const
+{ return area; }
+
+std::vector<double>
+ColumnStandard::get_layer_tops () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> tops (n);
+  for (size_t i = 0; i < n; ++i)
+    tops[i] = geometry.cell_top (i);
+  return tops;
+}
+
+std::vector<double>
+ColumnStandard::get_layer_bottoms () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> bottoms (n);
+  for (size_t i = 0; i < n; ++i)
+    bottoms[i] = geometry.cell_bottom (i);
+  return bottoms;
+}
+
+std::vector<double>
+ColumnStandard::get_flux_array () const
+{ return flux_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_h_array () const
+{ return h_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_array () const
+{ return theta_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_sat_array () const
+{ return theta_sat_cached_; }
+
+double
+ColumnStandard::get_runoff_rate () const
+{
+  const double v = runoff_rate_cached_;
+  runoff_rate_cached_ = 0.0;
+  return v;
+}
+
+auto ColumnStandard::estimate_sy_perturbation (double dh_cm)
+  -> std::tuple<double, std::vector<double>, std::vector<double>>
+{
+  const std::tuple<double, std::vector<double>, std::vector<double>> failed
+    = {0.0, {}, {}};
+
+  if (!weather_last_ || !scope_last_ || h_pretick_.empty () || S_sum_pretick_.empty ())
+    return failed;
+
+  const double dh_safe = std::min (dh_cm, -table_pretick_);
+  if (dh_safe <= 0.0)
+    return failed;
+
+  const size_t n = geometry.cell_size ();
+
+  auto restore = [&]()
+    {
+      for (size_t i = 0; i < n; ++i)
+        soil_water->set_content (i, h_pretick_[i], theta_pretick_[i]);
+      soil_water->restore_S_sum (S_sum_pretick_);
+    };
+
+  struct TickResult { std::vector<double> theta, flux_mm_d, h_cm; };
+  auto run_tick = [&](double gw_table) -> TickResult
+    {
+      groundwater->set_table (gw_table);
+      soil_water->reset_old ();
+      try
+        {
+          movement->tick (*soil, *soil_water, *soil_heat,
+                          *surface, *groundwater,
+                          time_last_, *scope_last_, *weather_last_,
+                          24.0, Treelog::null ());
+        }
+      catch (...) {}
+      TickResult r;
+      r.theta.resize (n); r.flux_mm_d.resize (n); r.h_cm.resize (n);
+      for (size_t i = 0; i < n; ++i)
+        {
+          r.theta[i]     = soil_water->Theta (i);
+          r.h_cm[i]      = soil_water->h (i);
+          r.flux_mm_d[i] = soil_water->q_matrix (i + 1) * 10.0 * 24.0;
+        }
+      return r;
+    };
+
+  restore ();
+  const TickResult A = run_tick (table_pretick_);
+
+  restore ();
+  const TickResult B = run_tick (table_pretick_ + dh_safe);
+
+  double numerator = 0.0;
+  for (size_t i = 0; i < n; ++i)
+    {
+      const double dtheta = B.theta[i] - A.theta[i];
+      const double dz_m   = (geometry.cell_top (i) - geometry.cell_bottom (i)) * 1e-2;
+      numerator += dtheta * dz_m;
+    }
+  const double sy = std::abs (numerator) / std::abs (dh_safe * 1e-2);
+
+  groundwater->set_table (table_pretick_);
+  for (size_t i = 0; i < n; ++i)
+    soil_water->set_content (i, h_array_cached_[i], theta_array_cached_[i]);
+  soil_water->restore_S_sum (std::vector<double> (n, 0.0));
+
+  return {sy, B.flux_mm_d, B.h_cm};
+}

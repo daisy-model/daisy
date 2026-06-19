@@ -61,7 +61,7 @@ public:
   const std::unique_ptr<Scopesel> scopesel;
   const Scope* extern_scope;
   const std::unique_ptr<Condition> print_time;
-  const std::unique_ptr<Output> output_log;
+  std::unique_ptr<Output> output_log;  // non-const: close_output() resets it
   const bool message_timestep;
   const Timestep timestep;
   const double max_dt;
@@ -567,6 +567,107 @@ the simulation.  Can be overwritten by column specific weather.");
 
 Daisy::~Daisy ()
 { }
+
+// ===== Python/BMI forwarding methods =====
+
+double
+Daisy::get_groundwater_table (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_groundwater_table () : 0.0;
+}
+
+void
+Daisy::set_groundwater_table (double cm, unsigned int pos)
+{
+  Column* col = impl->field->find (pos);
+  if (col) col->set_groundwater_table (cm);
+}
+
+auto Daisy::estimate_sy_perturbation (double dh_cm, unsigned int pos)
+  -> std::tuple<double, std::vector<double>, std::vector<double>>
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->estimate_sy_perturbation (dh_cm)
+             : std::make_tuple (0.0, std::vector<double>{}, std::vector<double>{});
+}
+
+double
+Daisy::stop_duration_hours() const
+{
+  return impl->duration;
+}
+
+double
+Daisy::get_bottom_flux (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_bottom_flux () : 0.0;
+}
+
+std::vector<double>
+Daisy::get_flux_array (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_flux_array () : std::vector<double>{};
+}
+
+std::vector<double>
+Daisy::get_h_array (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_h_array () : std::vector<double>{};
+}
+
+std::vector<double>
+Daisy::get_theta_array (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_theta_array () : std::vector<double>{};
+}
+
+std::vector<double>
+Daisy::get_theta_sat_array (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_theta_sat_array () : std::vector<double>{};
+}
+
+double
+Daisy::get_runoff_rate (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_runoff_rate () : 0.0;
+}
+
+double
+Daisy::get_column_area (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_column_area () : 0.0;
+}
+
+std::vector<double>
+Daisy::get_layer_tops (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_layer_tops () : std::vector<double>{};
+}
+
+std::vector<double>
+Daisy::get_layer_bottoms (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_layer_bottoms () : std::vector<double>{};
+}
+
+void
+Daisy::summarize (Treelog& msg) const
+{ impl->summarize (msg); }
+
+void
+Daisy::close_output ()
+{ impl->output_log.reset (); }
 
 static struct ProgramDaisySyntax : public DeclareModel
 {

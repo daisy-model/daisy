@@ -94,6 +94,9 @@ endif()
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
 
+# Add tools for python interface
+add_subdirectory(tools)
+
 # Packaging
 # lib/ and sample/ contain .dai files that define functionality that should be installed
 add_subdirectory(lib)
