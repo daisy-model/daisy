@@ -1,0 +1,97 @@
+;;;  modification of "wclover" to hairy vetch as CC for the CatCap project 2020-2022. Modified by Celine Grønning 2025
+;NOTES: the model should only be used as CC sown after harvest and with termination in spring, as it is not calibrated with data as main crop. The model is calibrated on data from JB3 and JB6 over 2 years under danish weather conditions. 
+;Fitted to DAILY weather data input (temp. response). High germination rate
+
+(defcrop "Hairy Vetch" default (description "Developed by Celine Grønning")
+  (Devel default
+         (EmrTSum 50)  
+	 (DS_Emr 0.05)  
+	 (DSRate1 0.025)
+	 (TempEff1 (0 0.001) (4 0.005) (11 0.35) (17 0.7) (20 0.80) (32 1.00) (39 1.20))
+	 (PhotEff1 (00 0.10) (10 0.29) (11 0.55) (12 0.75) (13 0.89) (14 1.00)
+		   (15 1.08) (16 1.14) (17 1.18) (24 1.18)) 
+	 (DSRate2 0.020) 
+	 (TempEff2 (0 0.001) (5 0.015) (14 0.4) (20 0.8) (24 0.90) (29 1.00) (39 1.20)) 
+	 (defined_until_ds 2.0))
+	  
+  (LeafPhot original (Qeff 0.0500)
+	   (Fm   2.5) ;according to Tribouillois 2015, fabaceae had lower DM acquisition rates than poaceae. was 1.8
+	   (TempEff (-20 0.0001) (2.0 0.00) (4.0 0.0) (15.0 0.8) (20.0 1.00))); temperature base for calculating Degree hours is 4. Max rate is at 20 degrees (maybe FM should be increased´). Rodale institute 
+		    
+  (Seed LAI (DSLAI05 0.3)
+        ;; Added by pa 2014-07-18 to make it grow.
+        (SpLAIfac (0.0 100) (1.0 100)))
+  
+  (Canopy   
+	  (SpLAI 0.052); according to Tribouillois 2015 for hairy vetch 
+	  (HvsDS (0 001) (1 50)); changed based on web search. ontario ministry of agriculture, food and rural affairs 
+	  (LeafAIMod (0.0 1.0) (1.0 1.0)(2.0 0.75))  
+	  (SpStemAI 0.0030)
+	  (StemAIMod (0.0 1.0) (1.0 1.0) (2.0 1.00))
+	  (StemPhotEff 1.00)
+	  (LAIDist0 0.00 0.00 1.00) 
+	  (LAIDist1 0.0 0.60 0.90)
+	  (PARref 0.06) 
+	  (PARext 0.60) 
+	  (EPext 0.80)                    
+	 	  )
+        
+  (Root (DptEmr 2) 
+	(PenPar1 0.15)
+	(PenPar2 4.0) 
+	(MaxPen 100)    ; not changed, Throup-Kristensen (2008) observed a depth og 0.5-0.6m in mid november        
+	(rootdens "Gerwitz+Page74"
+	(SpRtLength 100.0)); Wendling 2016 
+	(Rad 0.0140) 
+	(h_wp -15000)  
+	(Rxylem 10)
+	(MxNH4Up 1e-11)  
+	(MxNO3Up 1e-8) 
+        (DensityDSFac (0.00 0.1) (0.8 1.00)));to simulate heterogeneity of roots in the establishment phase
+  
+ (Partit (RSR  (0.00 0.8) (0.33 0.80) (0.50 0.8) (1.00 0.8) (2.00 0.80)); changed based on RSR measured in cylinder experiments 
+	  (Root (0.00 0.60) (0.33 0.5) (0.53 0.45) (1.00 0.25) (2.00 0.15)); changed to match C distribution 
+	  (Leaf (0.00 0.65) (0.33 0.55)	(0.43 0.50) (0.63 0.40) (0.95 0.25) (1.2 0.20)(1.45 0.12) (2.00 0.0)); not changed
+	  (Stem (0.00 0.35) (0.33 0.45) (0.43 0.50) (0.63 0.60) (0.95 0.75) (1.2 0.70)(1.45 0.60) (2.00 0.0))); not changed 
+
+
+  (Prod	(NCrop 0.4) ; Changed to same as other crops - no reason to be so low, as it could become a limiting factor 
+	(E_Root 0.69)
+	(E_Leaf 0.68)
+	(E_Stem 0.66)
+	(E_SOrg 0.57)
+	(r_Root 0.025)
+	(r_Leaf 0.030)
+	(r_Stem 0.005) 
+	(r_SOrg 0.005)  
+	(ShldResC 0.30)	
+        (ReMobilDS 1.00)
+	(ReMobilRt 0.1)
+	(LfDR (0.00 0.01) (0.80 0.003) (1.00 0.003) (1.4 0.1) (2.00 0.25))
+	(ExfoliationFac 0.1) ; reduce phyllodeposition and decompostion over winter 
+	(RtDR (0.00 0.005) (0.50 0.005) (0.70 0.005) (2.00 0.01)) ; rhizodeposition
+    
+        (Large_RtDR 0.00) ; rhizodeposition 
+        (RtDR_T_factor (0.0 0.0) (5.0 1.0) ) )	
+         	
+(CrpN 	(DS_fixate 0.10) (DS_cut_fixate 0.15) (fixate_factor 0.2) 
+(PtRootCnc (0.00 0.030) (1.00 0.028) (2.00 0.028)) ; all changed to match CN analysis and N treatment response 
+(CrRootCnc (0.00 0.028) (1.00 0.023) (2.00 0.011))
+(NfRootCnc (0.00 0.025) (1.00 0.02) (2.00 0.008))
+
+(PtLeafCnc (0.00 0.05) (0.6 0.05) (0.80 0.05) (2.00 0.04))
+(CrLeafCnc (0.00 0.05) (0.6 0.05) (0.80 0.04) (2.00 0.03))
+(NfLeafCnc (0.00 0.0450) (0.7 0.045) (0.8 0.035)(2.00 0.030))
+
+(PtStemCnc (0.00 0.05) (0.6 0.05) (0.80 0.04) (2.00 0.04))
+(CrStemCnc (0.00 0.045) (0.6 0.045) (0.80 0.035) (2.00 0.03))
+(NfStemCnc (0.00 0.04) (1.00 0.028) (2.00 0.015))
+
+(PtSOrgCnc (0.00 0.030) (1.00 0.030) (2.00 0.030))
+(CrSOrgCnc (0.00 0.028) (1.00 0.028) (2.00 0.028))
+(NfSOrgCnc (0.00 0.022) (2.00 0.022))
+	
+(TLLeafEff (0.00 0.900) (2.00 0.900))
+(TLRootEff (0.00 0.100) (2.00 0.100)))
+
+ )
