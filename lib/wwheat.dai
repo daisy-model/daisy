@@ -364,8 +364,9 @@
 ))
 
 (defcrop "LessN_winterwheat_seedw" "LessN_winterwheat"
-        (Seed original (initial_weight 167 [kg/ha])))
-        
+        (Seed original (initial_weight 170 [kg/ha])))
+    
+(defcrop "Winter Wheat" "LessN_winterwheat"
+	(Seed original (inital_weight 122 [kg/ha])))
 
- (defcrop "Winter Wheat" "LessN_winterwheat_seedw")       
- 
+;; END
