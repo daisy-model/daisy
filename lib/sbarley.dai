@@ -1,6 +1,15 @@
 ;;; sbarley.dai - spring barley
 
-(defcrop "Spring Barley" default
+;; Spring Barley parameterizations
+	; The "Spring Barley Org" is the earlier (before version 7.1.12) default "Spring Barley" parameterization
+	; The "Spring Barley; Foulum" is from the RS-Model project
+	; The "LessN_SB" is calibrated by M.V. Schwartzkopff in the project LessN (2012-2025), published in https://doi.org/10.1016/j.geodrs.2025.e01033 (2026) 
+; The current (from version 7.1.13) default "Spring Barley" referer to "LessN_SB" 
+;; Seed weight must be specified; otherwise, a default rate of 122 kg/ha is applied, following recommendations from udsaedsberegner.dk 
+				; for a normal seedbed on average soil with a sowing date of 15 April. 
+
+
+(defcrop "Spring Barley Org" default
 
   (Devel default 
       (EmrTSum  100)
@@ -96,7 +105,7 @@
 
 )
 
-(defcrop "Spring Barley; Foulum" "Spring Barley"
+(defcrop "Spring Barley; Foulum" "Spring Barley Org"
   (description "RS-Model Projekt")
 
   (Devel original 
@@ -144,5 +153,113 @@
 
    )
 )
+
+(defcrop "LessN_SB" "Spring Barley"
+
+;;; Calibrated by M.V Schwartzkopff in the project LessN (2021-2025)
+;;; Developed as a main crop, based on the Spring barley crop module and crop module calibrated in report 'D1.3 Report on Comparative study of different geographical areas, cereals and models' Andersen et al. (2021)
+;;; Dataset from Foulum (JB4) and Flakkebjerg (JB6) used for calibration 
+;;; Dataset from Holstebro (JB1) and Guldborg (JB7) used for evaluation 
+;;; Results of calibration and evaluation published at https://doi.org/10.1016/j.geodrs.2025.e01033 (2026)
+
+(Devel default 
+      (EmrTSum  60)
+      (DS_Emr   0.01)
+      (DSRate1  0.030)
+      (TempEff1 	(0.0  0.0) (4.0  0.01) (5.0  0.15) 
+      			(10.0  0.65) (19.0  1.0) (24.0  1.1) 
+      			(30.0  1.2) (35.0 0.71) (40.0  0.05))         		
+         		
+      (PhotEff1 (0.0  0.1) (11.0  0.1) (16.0  1.0) (18.0  1.2) (20.0  1.2) (24.0  1.2))
+      
+      (DSRate2  0.030)
+      (TempEff2 	(0.0  0.0) (4.0  0.01) (5.0  0.15) 
+     			(10.0  0.75) (18.0  1.0) (20.0  1.1) 
+      			(22.0  1.1) (30.0  1.2) (35.0 0.71) 
+      			(40.0  0.05))      			
+  )
+
+(LeafPhot original 
+      (Fm 6.5 [g CO2/m^2/h])
+      (Qeff   0.050 [(g CO2/m^2/h)/(W/m^2)]); 	
+      (DSEff (0.0 [DS] 1.00) (0.3 [DS] 1.00) (0.4 [DS] 1.00) (0.8 [DS] 1.00) (1.0 [DS] 1.00) (1.5 [DS] 0.85) (1.7 [DS] 0.75) (2.0 [DS]  0.70)); Tjek Loreto 1994. Default is 5.0; N2014 is 3.25; N1994 is 3.4
+)
+
+(Seed release    
+        (DM_fraction 87 [%])
+        (C_fraction 45 [%])
+        (N_fraction 2 [%])
+        (rate 0.4 [d^-1])) 
+
+  (Canopy
+      (SpLAI    0.031)
+      (SpSOrgAI 0.005)
+      (LeafAIMod (0 1.30) (0.5 1.0) (0.9 0.80) (2 0.80));
+      (SOrgAIMod (0.0 0.0) (0.95 0.0) (1.0 1.0) (1.8 0.0))
+      (HvsDS (0 [DS] 1 [cm]) (1 [DS] 70 [cm]) (2 [DS] 80 [cm]))
+      (SOrgPhotEff 0.50)
+      (EpFac 1.2) 
+      (EPext  0.9)
+  )
+
+
+(Root (rootdens "Gerwitz+Page74" (SpRtLength 230 [m/g]))
+      (DptEmr     5)
+      (PenPar1    0.23) 
+      (NO3_uptake variable_sink (F_relative 10 [%]))
+      (MxNO3Up     2.5E-0007) 
+      (PenpFFac  (0 0) (0.5 1) (1 1) (2 1) (2.69 0.97) (2.99 0.94) (3.69 0.71) (3.99 0.41) (4.17 0.11) (4.22 0))
+      (PenWaterFac (0 1) (0.989 1) (0.99 0) (1 0))
+      )  
+ 
+  (Prod
+        (ShldResC   0.55)
+        (ReMobilDS  1.00)
+        (ReMobilRt  0.04)
+        (LfDR (0.00 0.00) (0.70 0.00) (1 0.01) (1.2 0.025) (2.00 0.08)) 
+        (RtDR (0.00 0.00) (0.70 0.005) (1.10 0.020) (2.00 0.030))
+  )
+
+
+
+(Partit
+      (Root (0.00  1) (0.025  0.65) (0.10  0.50) (0.25  0.40) (0.51  0.25) (0.72  0.12)                      (1.2  0.05) (1.5  0.0)  (2.00  0.00))
+      (Leaf (0.00 0.70)                           (0.2 0.6)  (0.4 0.6)   (0.60 0.6)   (0.75 0.4)   (0.85 0.22)  (1 0.05) (1.10 0.00)             (2.00 0.00))
+      (Stem (0.00 0.3)                            (0.2 0.4)  (0.4 0.4)   (0.60 0.4)   (0.75 0.59)  (0.85 0.75)  (1 0.85)  (1.10 0.35) (1.35 0.00) (2.00 0.00)) 
+      (RSR   (0.00 2) (0.5 1.5) (1 0.5) (2.00 0.5)) 
+
+      (NNI_crit 1.40 [])
+	(NNI_inc 0.65 [])
+)
+
+
+
+(CrpN 
+	(PtRootCnc (0.18 0.0250) (0.25 0.0250) (0.64 0.0260)               (1.20 0.0150) (2.00 0.0140))
+	(CrRootCnc (0.18 0.0170) (0.25 0.0170) (0.64 0.0190)               (1.20 0.0120) (2.00 0.0090))
+	(NfRootCnc (0.18 0.0090) (0.25 0.0090)                             (1.20 0.0030) (2.00 0.0030))	
+
+	(PtLeafCnc (0.18 0.0680) (0.25 0.0650) (0.64 0.0650) (1.00 0.0500) (1.50 0.0250) (2.00 0.0180))
+	(CrLeafCnc (0.18 0.0450) (0.25 0.0400) (0.64 0.0380) (1.00 0.0250) (1.50 0.0200) (2.00 0.0140))
+	(NfLeafCnc (0.18 0.0150) (0.25 0.0150) (0.64 0.0150) (1.00 0.0150) (1.50 0.0150) (2.00 0.0120))
+	
+	(PtStemCnc (0.18 0.0650) (0.25 0.0650) (0.64 0.0450) (1.00 0.0250) (1.50 0.0150) (2.00 0.0100))
+	(CrStemCnc (0.18 0.0390) (0.25 0.0370) (0.64 0.0300) (1.00 0.0150) (1.50 0.00700)(2.00 0.0060))
+        (NfStemCnc (0.18 0.0100) (0.25 0.0100) (0.64 0.0070) (1.00 0.0070) (1.50 0.0030) (2.00 0.0030))
+                
+        	(PtSOrgCnc                                            (1.00 0.0230) (1.20 0.0150)(2.00 0.0150))
+        	(CrSOrgCnc                                            (1.00 0.00150) (1.20 0.00125)(2.00 0.00125))
+        	(NfSOrgCnc                                            (1.00 0.00070) (1.20 0.0005)(2.00 0.0005))
+	        
+
+))
+
+
+(defcrop "LessN_springbarley_seedw" "LessN_SB"
+        (Seed original (initial_weight 160 [kg/ha])))
+
+(defcrop "Spring Barley" "LessN_SB"
+        (Seed original (initial_weight 122 [kg/ha])))
+
 
 ;;; sbarley.dai ends here.
