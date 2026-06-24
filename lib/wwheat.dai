@@ -1,4 +1,14 @@
-(defcrop "Winter Wheat" default
+;; Winter Wheat parameterizations
+	; The "Winter Wheat Org" is the earlier (before version 7.1.12) default "Winter Wheat" parameterization
+	; The "Winter Wheat; Foulum" is from the RS-Model project
+	; The "Winter Wheat JG" is calibrated by Jakob Gyldengreen, mainly for the variety Benchmark, focusing on N-dynamics, published in DOI: 10.1111/jac.12412
+	; The "LessN_winterwheat" is calibrated by M.V. Schwartzkopff in the project LessN (2012-2025), published in https://doi.org/10.1016/j.geodrs.2025.e01033 (2026) 
+; The current (from version 7.1.13) default "Winter Wheat" referer to "LessN_winterwheat" 
+;; Seed weight must be specified; otherwise, a default rate of 167 kg/ha is applied, following recommendations from udsaedsberegner.dk 
+				; for a normal seedbed on average soil with a sowing date of 15 September. 
+
+
+(defcrop "Winter Wheat Org" default
   (Devel default (EmrTSum  100)
       (DS_Emr   0.01)
       (DSRate1  0.026)
@@ -134,7 +144,7 @@
 ;;;     )
 ;;; )
 
-(defcrop "Winter Wheat; Foulum" "Winter Wheat"
+(defcrop "Winter Wheat; Foulum" "Winter Wheat Org"
     (description "RS-Model Project")
   (Devel original (EmrTSum  200)
       (DSRate1  0.022))
@@ -179,7 +189,7 @@
     )
 )
 
-(defcrop "Winter Wheat JG" "Winter Wheat"
+(defcrop "Winter Wheat JG" "Winter Wheat Org"
   "Mainly calibrated on the variety Benchmark"
   (cite "gyldengren2020effects")
 (Devel original
@@ -257,3 +267,105 @@
 	(CrSOrgCnc                                           (1.00 0.0125)    (2.00 0.0125))
         (NfSOrgCnc                                           (1.00 0.0005)    (2.00 0.0005))             
 ))
+
+(defcrop "LessN_winterwheat" "Winter Wheat Org"
+
+;;; Calibrated by M.V Schwartzkopff in the project LessN (2021-2025)
+;;; Developed as a main crop, based on the Winter Wheat JG crop module
+;;; Dataset from Foulum (JB4) and Flakkebjerg (JB6) used for calibration 
+;;; Dataset from Holstebro (JB1) and Guldborg (JB7) used for evaluation 
+;;; Results of calibration and evaluation published at https://doi.org/10.1016/j.geodrs.2025.e01033 (2026)
+ 
+;(CStage "BBCH; Winter Wheat")
+(Devel original
+
+         (DSRate1  0.032 [DS/d])
+         (TempEff1 	(0.0  0.00) (2.00  0.06) (7.00 0.21) (12.0  0.40) 
+         		(16.0  0.59) (20.0  0.80) (24.0 0.95) (28.0 1.00) (32.0 0.91) 
+         		(34.0 0.79) (35.0 0.71) (40.0 0.05))
+         
+         (PhotEff1 	(0 0) (6 0.05) (10.0  0.10) (11.0  0.20) 
+         		(12.0  0.35) (13.0  0.80) (14.0  1.00) 
+         		(15.0  1.08) (16.0  1.14) (17.0  1.18) (24.0  1.18))
+
+         (DSRate2  0.048 [DS/d])
+         (TempEff2 	(0.0  0.00)(4.0  0.03) (8.0  0.10) (12.0  0.21) 
+         		(15 0.31) (18.0  0.46) (22 0.79) (24.0  0.89) 
+         		(27.0  0.97) (32.0  1.00) (34.0  0.98) (35.0  0.95) (40.0  0.65))
+
+)
+
+
+(LeafPhot original (Fm 6.0 [g CO2/m^2/h])
+	 		
+	(TempEff 	(-20. 0.001) (0.0  0.00) (4.0 0.15) (8.0 0.40) (12.0  0.75) (16.0  1.3) 
+	 		(20.0  1.6) (24.0 1.90) (28.0 2.0) (32.0 1.82) (34.0 1.58) (35.0 1.42) (40.0 0.1)) 
+
+	 (DSEff (0.0 [DS] 1.00) (0.3 [DS] 1.00) (0.4 [DS] 1.00) (0.8 [DS] 1.00) (1.0 [DS] 1.00) (1.3 [DS] 0.85) (1.7 [DS] 0.75) (2.0 [DS]  0.70))
+)
+
+(Seed release         
+        (DM_fraction 87 [%])
+        (C_fraction 45 [%])
+        (N_fraction 2 [%])
+	(T_factor (20.0 [dg C] 100 [%])) 
+        (rate 0.4 [d^-1])
+)
+
+(Root    
+        (PenPar1 1.0 [mm/dg C/d]) 
+	(PenPar2 0.0 [dg C])
+        (MaxPen 175 [cm])
+        (NO3_uptake variable_sink (F_relative 10 [%]))
+        (PenWaterFac (0 1) (0.989 1) (0.99 0) (1 0))
+      (MxNH4Up     0.5E-0007) 
+      (MxNO3Up     0.5E-0007)
+)
+
+
+(Prod   (NCrop -1.0) 
+        (LfDR (0.00 0.00) (0.10 0.00) (0.25 0.00)(0.50 0.015) (0.90 0.025) (1.30 0.050) (1.70 0.060) (2.00 0.08))
+        (RtDR (0.00 0.00) (0.60 0.005) (1.00 0.020) (2.00 0.030))
+)
+
+(Canopy
+        (LeafAIMod (0 1.30) (0.5 1.0) (0.9 0.80) (2 0.80))
+        (HvsDS (0 [DS] 1 [cm]) (1 [DS] 80 [cm]) (2 [DS] 90 [cm]))
+)
+
+
+(Partit 
+	(Root (0.00 0.50) (0.28 0.45) (0.50 0.40)                                     (1.00 0.00)                        (2.00 0.00))
+	(Leaf (0.10 0.72) (0.28 0.58) (0.50 0.53) (0.65 0.40) (0.85 0.25) (0.95 0.25) (1.10 0.00) (1.35 0.00)             (2.00 0.00))
+	(Stem (0.10 0.28) (0.28 0.42) (0.50 0.47) (0.65 0.60) (0.85 0.75) (0.95 0.62) (1.10 0.38) (1.35 0.18) (1.50 0.00) (2.00 0.00))         
+        (NNI_crit 1.40 [])
+	(NNI_inc 0.65 [])
+)
+
+
+(CrpN 
+	(PtRootCnc (0.19 0.0250) (0.47 0.0260) (0.77 0.0190)    (1.20 0.0150) (2.00 0.0140))
+	(CrRootCnc (0.19 0.0170) (0.47 0.0190) (0.77 0.0160)    (1.20 0.0120) (2.00 0.0090))
+	(NfRootCnc (0.19 0.0090)                                (1.20 0.0030) (2.00 0.0030))	
+
+	(PtLeafCnc (0.19 0.0510) (0.47 0.0490) (0.77 0.0450) (1.00 0.0380)    (2.00 0.0210))
+	(CrLeafCnc (0.19 0.0390) (0.47 0.0370) (0.77 0.0300) (1.00 0.0250)    (2.00 0.0140))
+	(NfLeafCnc (0.19 0.0100) (0.47 0.0100) (0.77 0.0070) (1.00 0.0060)    (2.00 0.0050))
+	
+	(PtStemCnc (0.19 0.0380) (0.47 0.0360) (0.77 0.0210) (1.00 0.0150)    (2.00 0.0110))
+	(CrStemCnc (0.19 0.0230) (0.47 0.0140) (0.77 0.0090) (1.00 0.0070)    (2.00 0.0060))
+        (NfStemCnc (0.19 0.0100) (0.47 0.0070) (0.77 0.0040) (1.00 0.0020)    (2.00 0.0020))
+
+
+	(PtSOrgCnc              (1.00 0.0170)                             (2.00 0.0175))
+	(CrSOrgCnc              (1.00 0.0125)                             (2.00 0.0125))
+	(NfSOrgCnc              (1.00 0.0050)                             (2.00 0.0050))
+             
+))
+
+(defcrop "LessN_winterwheat_seedw" "LessN_winterwheat"
+        (Seed original (initial_weight 167 [kg/ha])))
+        
+
+ (defcrop "Winter Wheat" "LessN_winterwheat_seedw")       
+ 
