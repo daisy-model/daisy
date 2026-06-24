@@ -1,0 +1,117 @@
+; Modification of "dk-rye.dai" to winter rye as catch crop (CC) for the CatCap project 2020-2022. Modified by Celine Grønning 2025
+; NOTES:  The model should only be used as catch crop sown after harvest and with termination in spring, as it is not calibrated with data as main crop. 
+	; The model is calibrated on data from JB3 and JB6 over 2 years under danish weather conditions.
+	; The model is fitted to DAILY weather data input (temp. response) and high germination rate.
+;; Seed weight must be specified; otherwise, a default rate of 114 kg/ha is applied, following recommendations from udsaedsberegner.dk 
+				; for a normal seedbed on average soil with a sowing date of 15 September. 
+
+
+(defcrop "wryeCC" default
+(description "Developed by Celine Grønning")
+  (Devel default (EmrTSum  55) ;was 100, changed to match observed emergence. Shallow establishment (broadcast) gives fast germination 
+      (DS_Emr   0.01)
+      (DSRate1  0.02); was 0.02 to match observed DS development
+      (TempEff1 (-10.  0.01) ( 0.0  0.03) ( 4.0  0.18) (20.0  0.90) (25.0  1.00) (35.0  1.20)) 
+      (PhotEff1 ( 0.0  0.10) (10.0  0.29) (11.0  0.55) (12.0  0.75) (13.0  0.89) (14.0  1.00) (15.0  1.08) 
+                (16.0  1.14) (17.0  1.18) (24.0  1.18))
+      (DSRate2  0.025)
+      (TempEff2 (0.00  0.00) (10.0  0.14) (15.0  0.66) (20.0  1.00) (25.0  1.23))
+  )
+ 
+ (Vernal default
+      (DSLim 0.33)
+      (TaLim 5.00)
+      (TaSum -50.0)    
+  )
+
+  (LeafPhot original 
+      (Fm 3.6) ;was 4, to match DM measurements 
+      (DSEff (0.0 1.0) (0.3 1.0) (1.0 0.92)(2.0 0.90))
+      (Qeff   0.0500)
+       (TempEff (-20.0  0.00) (4.0 0.1) (17.0  1.00) (27.0  0.90) (35.0  0.70) (50.0  0.00)); calculated according to Tieszen (1970)
+   )
+   
+ (Seed release         ; HELT NYT SUBMODUL - DEFAULT BRUGER Seed LAI
+         (DM_fraction 87 [%])
+         (C_fraction 45 [%])
+         (N_fraction 2 [%])
+ 	(T_factor (20.0 [dg C] 100 [%])) ;; No temperature effect on rate.
+         (rate 0.4 [d^-1])
+)
+  (Canopy 
+      (SpLAI     0.04) ;original 0.022 then 0.025 should possibly be higher, up to 0.07? Wendling et al. (2016) & Tribouillois (2015) Vos &van der Putten (1997) 
+      (LeafAIMod (0.0 1.5) (0.3 1.0)) ;Amanullah (2015) 
+     (LAIDist0 0.00 0.00 1.00) 
+      (LAIDist1 0.10 0.80 1.00) 
+      (PARref   0.06)
+      (PARext   0.60) ;not changed, but waries with DS and management (rowspacing, plant density), and default is used 
+      (PARrel   0.05) 
+      (EPext    0.70) ; changed to cover the soil faster, and reduce bare soil evaporation originally 0.5
+      (HvsDS   (0.00    1)    (1.00  100)    (2.00  100)) 
+    )
+
+  (Root
+  (rootdens "Gerwitz+Page74" (SpRtLength 120 [m/g])) ;Wendling (2016) (oat)
+      (DptEmr     5) ;was 10 (shallow sowing of CC)
+      (PenPar1    0.12) ; lowered as Kemper et al (2020) show a similar depth of WR and OR measured in oktober and march  
+      (PenPar2     4.0) 
+      (MaxPen      175) ;Thorup-Kristensen (2009)
+      (Rad        0.005) 
+      (h_wp       -15000) 
+      (Rxylem     10.0) 
+      (MxNH4Up     2.2E-0007);originally 7.3E-0008
+      (MxNO3Up     6.67E-0008); Laine et al. 1993 originally 7.3E-0009
+      (DensityDSFac (0.00 0.1) (0.3 0.8) (0.33 1.00));to simulate heterogeneity of roots in the establishment phase
+        )
+ 
+  (Partit                  
+      (Root (0.00 0.75) (0.33 0.5) (0.53 0.35) (1.00 0.05) (2.00 0.00)) ; changed to match C distribution 
+      (Leaf (0.00 0.90) (0.33 0.75) (0.43 0.60) (0.53 0.55) (0.62 0.40) (0.77 0.18) (0.95 0.05) (1.14 0.00) (1.38 0.00) (2.00 0.00)) ; changed to match C distribution 
+      (Stem (0.00 0.10) (0.33 0.25) (0.43 0.40) (0.53 0.45) (0.62 0.60) (0.77 0.75) (0.95 0.07) (1.14 0.04) (1.38 0.02) (2.00 0.00)) ; changed to match C distribution 
+      (RSR  (0.00 1.0) (0.33 1.5) (1.00 0.5) (2.00 0.25))) ; changed based on RSR measured in cylinder experiments 
+    ;  (max_WRoot (0 [DS] 2.25 [Mg DM/ha]) (2 [DS] 2.25 [Mg DM/ha]))); new parameter to limit root weight  )
+
+  (Prod 
+      (NCrop     0.4)
+      (E_Root     0.69) 
+      (E_Leaf     0.68)
+      (E_Stem     0.66)
+      (E_SOrg     0.70) 
+      (r_Root     0.015)
+      (r_Leaf     0.030)
+      (r_Stem     0.010)
+      (r_SOrg     0.010)
+      (ShldResC   0.30)
+      (ReMobilDS  1.20)
+      (ReMobilRt  0.10)
+      (Large_RtDR 0.0) ; was 0.05, reduce rhizodeposition 
+      (ExfoliationFac 0.1); reduce phyllo- rhizodeposition 
+      (LfDR (0.00 0.00) (0.05 0.00) (0.20 0.00) (0.25 0.01) (0.90 0.03) (2.00 0.10))
+      (RtDR (0.00 0.00) (0.60 0.007) (1.20 0.015) (2.00 0.02)) ;match phyllo- rhizodepostion 
+    )
+ 
+
+  (CrpN
+              
+      (PtRootCnc (0.00 0.030)   (0.33 0.013) (1.00 0.0130)    (2.00 0.0130)) ;max observed, 
+      (CrRootCnc (0.00 0.02)    (0.33 0.010)(1.00 0.01)    (2.00 0.01));based on N stressed treatments that both treatments were N stressed
+      (NfRootCnc (0.00 0.0130)  (0.33 0.009) (1.00 0.0060)    (2.00 0.0060)) ; increase N treatment response 
+
+      (PtLeafCnc (0.00 0.05) (0.33 0.045) (0.50 0.038) (1.28 0.0340) (1.52 0.0210) (1.93 0.0170)) ; match observed max in lit. and CatCap
+      (CrLeafCnc (0.0 0.04) (0.33 0.030) (0.50 0.0280) (1.28 0.0280) (1.52 0.0160) (1.93 0.0130)) ; changed according to observed N status at DS 0.33 in N stressed treatments 
+      (NfLeafCnc (0.0 0.03) (0.33 0.0280) (0.50 0.0260) (1.28 0.0055) (1.52 0.0050) (1.93 0.0050)); N treatment response and lit. observations, landsforsøgene are low compared to CatCap measurements  
+
+      (PtStemCnc (0.0 0.05) (0.33 0.04) (0.50 0.0340) (1.12 0.0300) (1.28 0.060) (1.53 0.0055) (1.93 0.0055)) ; match observed max in lit. and CatCap
+      (CrStemCnc (0.0 0.034) (0.33 0.030) (0.50 0.03) (1.12 0.028) (1.28 0.02) (1.53 0.0031) (1.93 0.0025)); changed according to observed N status at DS 0.33 in N stressed treatments (no differentiation between Leaf and stem) - green stems 
+      (NfStemCnc (0.0 0.015) (0.50 0.0150) (1.12 0.0020) (1.28 0.0020) (1.53 0.0020) (1.93 0.0020)); N treatment response and lit. observations, landsforsøgene are low compared to CatCap measurements 
+
+      (PtSOrgCnc (1.12 0.0140) (2.00 0.0140)) 
+      (CrSOrgCnc (1.12 0.0120) (2.00 0.0120))  
+      (NfSOrgCnc (1.12 0.0100) (2.00 0.0100))) 
+
+)
+
+(defcrop "WinterRyeCatchCrop" "wryeCC"
+(Seed original (initial_weight 114 [kg/ha])))
+
+;;; wryeCC.dai ends here
