@@ -26,4 +26,7 @@
 (input file "onion.dai")
 (input file "onion_plantingofsets.dai")
 
+(input file "oilseedradish.dai")
+(input file "wryeCC.dai")
+
 ;;; crop.dai ends here
