@@ -28,5 +28,6 @@
 
 (input file "oilseedradish.dai")
 (input file "wryeCC.dai")
+(input file "hairyvetch.cai")
 
 ;;; crop.dai ends here
