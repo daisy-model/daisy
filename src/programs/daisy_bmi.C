@@ -213,10 +213,9 @@ bool DaisyController::set_groundwater_depth(double depth_cm)
   return true;
 }
 
-auto DaisyController::perturbation_tick(double dh_cm)
-  -> std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
+Daisy& DaisyController::daisy_ref ()
 {
-  return daisy().perturbation_tick(dh_cm);
+  return daisy ();
 }
 
 double DaisyController::get_pressure_head_at_depth(double) const

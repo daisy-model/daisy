@@ -181,16 +181,6 @@ public:
   bool set_groundwater_depth(double depth_cm);
 
   /**
-   * Re-run Richards with GW table raised by dh_cm and return perturbed
-   * {theta, flux_mm_d, h_cm} arrays.  Daisy state is restored to the
-   * real post-tick result afterwards (RAII guard).
-   * Sy is computed by the caller: Sy = sum((theta_C-theta_B)*dz) / dh.
-   * @param dh_cm  Head perturbation in cm (default 1 cm)
-   */
-  std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
-    perturbation_tick(double dh_cm = 1.0);
-
-  /**
    * Get pressure head at specific depth
    * @param z_cm Depth in cm (positive downward)
    * @return Pressure head in cm at that depth
@@ -473,6 +463,12 @@ public:
   // Allow move operations
   DaisyController(DaisyController&&) noexcept;
   DaisyController& operator=(DaisyController&&) noexcept;
+
+public:
+  /** Direct access to the Daisy simulation object.
+   *  For use by DaisyAPI extension methods — not intended for BMI callers.
+   *  Public because DaisyAPI does not inherit DaisyController. */
+  Daisy& daisy_ref ();
 };
 
-#endif // DAISY_PYTHON_CONTROLLER_H
+#endif // DAISY_BMI_H
