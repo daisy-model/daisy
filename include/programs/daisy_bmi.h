@@ -181,12 +181,14 @@ public:
   bool set_groundwater_depth(double depth_cm);
 
   /**
-   * Estimate specific yield via GW head perturbation + Richards re-solve.
+   * Re-run Richards with GW table raised by dh_cm and return perturbed
+   * {theta, flux_mm_d, h_cm} arrays.  Daisy state is restored to the
+   * real post-tick result afterwards (RAII guard).
+   * Sy is computed by the caller: Sy = sum((theta_C-theta_B)*dz) / dh.
    * @param dh_cm  Head perturbation in cm (default 1 cm)
-   * @return Estimated Sy [-]
    */
-  std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation(double dh_cm = 1.0);
+  std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
+    perturbation_tick(double dh_cm = 1.0);
 
   /**
    * Get pressure head at specific depth

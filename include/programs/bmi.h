@@ -91,18 +91,14 @@ public:
   /** Set scalar input value by variable name from src[0]. */
   void set_value(const std::string& name, const double* src);
 
-  /**
-   * Estimate specific yield for column `col` via head perturbation + Richards re-solve.
-   * @param dh_cm  Perturbation magnitude in cm (default 1 cm)
-   * @param col    Column index (default 0)
-   * @return Estimated Sy [-]
-   */
-  std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation(double dh_cm = 1.0, unsigned int col = 0u);
-
   // ===== CONSTRUCTOR / DESTRUCTOR =====
   DaisyBMI();
   ~DaisyBMI();
+
+protected:
+  // Accessor for subclasses (e.g. DaisyAPI) that need the controller
+  // to implement non-BMI extension methods.
+  DaisyController& ctrl () { return ctrl_; }
 
 private:
   DaisyController ctrl_;

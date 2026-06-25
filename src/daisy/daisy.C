@@ -584,12 +584,14 @@ Daisy::set_groundwater_table (double cm, unsigned int pos)
   if (col) col->set_groundwater_table (cm);
 }
 
-auto Daisy::estimate_sy_perturbation (double dh_cm, unsigned int pos)
-  -> std::tuple<double, std::vector<double>, std::vector<double>>
+auto Daisy::perturbation_tick (double dh_cm, unsigned int pos)
+  -> std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
 {
   Column* col = impl->field->find (pos);
-  return col ? col->estimate_sy_perturbation (dh_cm)
-             : std::make_tuple (0.0, std::vector<double>{}, std::vector<double>{});
+  return col ? col->perturbation_tick (dh_cm)
+             : std::make_tuple (std::vector<double>{},
+                                std::vector<double>{},
+                                std::vector<double>{});
 }
 
 double

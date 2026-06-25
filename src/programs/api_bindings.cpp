@@ -1,28 +1,26 @@
-// api_bindings.cpp -- pybind11 bindings for DaisyBMI
+// api_bindings.cpp -- pybind11 bindings for DaisyBMI and DaisyAPI.
 //
-// Exposes DaisyBMI to Python as the module "daisy_bmi".
+// Exposes both classes to Python as the module "daisy_bmi".
+//   DaisyBMI  — pure BMI 2.0 standard interface.
+//   DaisyAPI  — inherits DaisyBMI, adds Daisy-specific extensions
+//               (perturbation_tick, etc.).
 //
-// Compile (example, adjust paths):
-//   g++ -O3 -Wall -shared -std=c++17 -fPIC
-//       $(python3 -m pybind11 --includes)
-//       daisy_api_bindings.cpp daisy_bmi.C daisy_python_controller.C
-//       -o daisy_bmi$(python3-config --extension-suffix)
-//       -L. -ldaisy_core
-//
-// Usage from Python:
-//   import daisy_bmi
-//   m = daisy_bmi.DaisyBMI()
-//   m.initialize("myconfig.dai")
-//   while m.get_current_time() < 365.0:
-//       recharge = m.get_value("soil_water__recharge_rate")
-//       m.set_value("groundwater__depth", 150.0)
-//       m.update()
-//   m.finalize()
+// Python usage:
+//   from daisy import DaisyAPI
+//   api = DaisyAPI()
+//   api.initialize("myconfig.dai")
+//   while api.get_current_time() < 365.0:
+//       api.set_value("groundwater__depth", 150.0)
+//       api.update()
+//       theta_B = api.get_value_array("soil_water__content")
+//       theta_C, flux_C, h_C = api.perturbation_tick(1.0)
+//   api.finalize()
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include "programs/bmi.h"
+#include "programs/daisy_api.h"
 
 namespace py = pybind11;
 
@@ -132,4 +130,34 @@ PYBIND11_MODULE(daisy_bmi, m)
      },
      py::arg("name"),
      "Get an array output value as a numpy array of doubles");
+
+  // ---------------------------------------------------------------------------
+  // DaisyAPI — inherits all DaisyBMI methods, adds Daisy-specific extensions.
+  // This is the recommended class for Python coupling.
+  // ---------------------------------------------------------------------------
+  py::class_<DaisyAPI, DaisyBMI>(m, "DaisyAPI")
+    .def(py::init<>(), "Create a Daisy API instance (BMI + extensions)")
+
+    .def("perturbation_tick",
+         &DaisyAPI::perturbation_tick,
+         py::arg("dh_cm") = 1.0,
+         py::arg("col")   = 0u,
+         R"pbdoc(
+ Re-run Richards with the GW table raised by dh_cm and return the perturbed
+ soil state.  Daisy is always restored to the real post-tick result (RAII guard).
+
+ Returns
+ -------
+ tuple(theta_C, flux_mm_d, h_C)
+   theta_C    : list[float]  volumetric water content per layer  [-]
+   flux_mm_d  : list[float]  downward flux at bottom of each layer [mm/day]
+   h_C        : list[float]  pressure head per layer  [cm]
+
+ Compute Sy in Python
+ --------------------
+ theta_B = api.get_value_array("soil_water__content").tolist()
+ dz      = [top - bot for top, bot in zip(api.get_layer_tops(), api.get_layer_bottoms())]
+ theta_C, _, _ = api.perturbation_tick(dh_cm)
+ Sy = sum((c - b) * dz_i for c, b, dz_i in zip(theta_C, theta_B, dz)) / dh_cm
+         )pbdoc");
 }
