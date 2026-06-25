@@ -9,11 +9,11 @@ if hasattr(_os, "add_dll_directory"):
     _os.add_dll_directory(_pkg_dir)
 
 try:
-    from .daisy_bmi import DaisyBMI
+    from .daisy_bmi import DaisyAPI
 except ImportError as e:
     raise ImportError(
         "Failed to import daisy_bmi. Make sure the .pyd and required DLLs are present.\n"
         f"  .pyd directory: {_pkg_dir}"
     ) from e
 
-__all__ = ["DaisyBMI"]
+__all__ = ["DaisyAPI"]

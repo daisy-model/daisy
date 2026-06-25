@@ -10,7 +10,7 @@ Requirements:
 
 import os
 import numpy as np
-from daisy import DaisyBMI
+from daisy import DaisyAPI
 from pathlib import Path
 
 # daisy config file
@@ -38,7 +38,7 @@ def compute_zh0(tops: np.ndarray, h_daisy: np.ndarray) -> float | None:
 # -- Daisy simulation --
 
 # initialise Daisy
-daisy = DaisyBMI()
+daisy = DaisyAPI()
 os.chdir(config_file.parent)
 daisy.initialize(str(config_file))
 
