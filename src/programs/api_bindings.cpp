@@ -55,7 +55,7 @@ PYBIND11_MODULE(daisy_bmi, m)
     bmi.finalize()
   )pbdoc";
 
-  py::class_<DaisyBMI>(m, "DaisyBMI")
+  py::class_<DaisyBMI>(m, "DaisyAPI")
 
     .def(py::init<>(), "Create a new Daisy BMI instance")
 
