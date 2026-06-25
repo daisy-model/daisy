@@ -219,6 +219,11 @@ auto DaisyController::estimate_sy_perturbation(double dh_cm)
   return daisy().estimate_sy_perturbation(dh_cm);
 }
 
+Daisy& DaisyController::daisy_ref ()
+{
+  return daisy ();
+}
+
 double DaisyController::get_pressure_head_at_depth(double) const
 {
   return 0.0;  // stub

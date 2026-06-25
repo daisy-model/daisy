@@ -471,6 +471,12 @@ public:
   // Allow move operations
   DaisyController(DaisyController&&) noexcept;
   DaisyController& operator=(DaisyController&&) noexcept;
+
+public:
+  /** Direct access to the Daisy simulation object.
+   *  For use by DaisyAPI extension methods — not intended for BMI callers.
+   *  Public because DaisyAPI does not inherit DaisyController. */
+  Daisy& daisy_ref ();
 };
 
-#endif // DAISY_PYTHON_CONTROLLER_H
+#endif // DAISY_BMI_H
