@@ -10,7 +10,7 @@ Requirements:
 
 import os
 import numpy as np
-from daisy import DaisyBMI
+from daisy import DaisyAPI
 from pathlib import Path
 
 # daisy config file
@@ -38,7 +38,7 @@ def compute_zh0(tops: np.ndarray, h_daisy: np.ndarray) -> float | None:
 # -- Daisy simulation --
 
 # initialise Daisy
-daisy = DaisyBMI()
+daisy = DaisyAPI()
 os.chdir(config_file.parent)
 daisy.initialize(str(config_file))
 
@@ -60,12 +60,12 @@ for itime in np.arange(end_time-1):
     # Advance Daisy one day
     daisy.update_until(t + 1.0)
 
-    # get presure heads of column
-    h = daisy.get_value_array("soil_water__pressure_head") 
+    # get pressure heads and GW table depth
+    h = daisy.get_value_array("soil_water__pressure_head")
     gwl = compute_zh0(tops, h_daisy=h)
     if gwl is None:
         print(f'gwl at day {t:.1f} is below Daisy column')
     else:
-        print(f'gwl at day {t:.1f} is {gwl}')
+        print(f'gwl at day {t:.1f} is {gwl:.3f} m')
 
 daisy.finalize()

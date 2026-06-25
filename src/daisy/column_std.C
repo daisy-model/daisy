@@ -1502,7 +1502,13 @@ auto ColumnStandard::perturbation_tick (double dh_cm)
   if (!weather_last_ || !scope_last_ || !snapshots_.ready ())
     return failed;
 
-  const double dh_safe = std::min (dh_cm, -snapshots_.table_pre ());
+  // Clamp dh so GW cannot be raised above the surface.
+  // If table_pre() == 0 the groundwater object uses free drainage (no imposed
+  // table); the actual water table is implicit in the h-field.  In that case
+  // we fall back to the column bottom depth so small perturbations always pass.
+  const double gw        = snapshots_.table_pre ();   // [cm], neg = below surface
+  const double limit     = (gw < 0.0) ? -gw : -geometry.bottom ();
+  const double dh_safe   = std::min (dh_cm, limit);
   if (dh_safe <= 0.0)
     return failed;
 

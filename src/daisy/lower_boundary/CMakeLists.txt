@@ -7,6 +7,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   groundwater_fixed.C
   groundwater_flux.C
   groundwater_lysimeter.C
+  groundwater_api.C
   groundwater_source.C
   groundwater_static.C
 )
