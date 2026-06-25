@@ -20,7 +20,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
 )
 
 # ===== daisy_bmi pybind11 module =====
-pybind11_add_module(daisy_bmi bmi_bindings.cpp bmi.C daisy_bmi.C)
+pybind11_add_module(daisy_bmi api_bindings.cpp bmi.C daisy_bmi.C)
 target_link_libraries(daisy_bmi PRIVATE ${DAISY_CORE_NAME})
 target_include_directories(daisy_bmi PRIVATE
   ${CMAKE_SOURCE_DIR}/include

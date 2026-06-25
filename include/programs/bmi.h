@@ -15,7 +15,7 @@
 
 /**
  * @class DaisyBMI
- * @brief BMI 2.0 wrapper around DaisyPythonController
+ * @brief BMI 2.0 wrapper around DaisyController
  *
  * Variable names follow a "<category>_<quantity>" convention.
  *
@@ -105,7 +105,7 @@ public:
   ~DaisyBMI();
 
 private:
-  DaisyPythonController ctrl_;
+  DaisyController ctrl_;
   double start_time_days_;   // always 0
   double current_time_days_; // updated each update()
   double dt_days_;           // timestep size in days

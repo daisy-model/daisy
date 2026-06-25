@@ -20,7 +20,7 @@ class Toplevel;
 class Daisy;
 
 /**
- * @class DaisyPythonController
+ * @class DaisyController
  * @brief Python-friendly interface to control Daisy simulation externally
  * 
  * Allows Python code to:
@@ -30,7 +30,7 @@ class Daisy;
  * - Set boundary conditions (GW depth, rainfall, irrigation, etc.)
  * - Control simulation parameters
  */
-class DaisyPythonController
+class DaisyController
 {
 private:
   // Toplevel owns Metalib, parser, Treelog, and the Daisy program instance.
@@ -457,20 +457,20 @@ public:
   /**
    * Constructor
    */
-  DaisyPythonController();
+  DaisyController();
   
   /**
    * Destructor
    */
-  ~DaisyPythonController();
+  ~DaisyController();
   
   // Delete copy operations
-  DaisyPythonController(const DaisyPythonController&) = delete;
-  DaisyPythonController& operator=(const DaisyPythonController&) = delete;
+  DaisyController(const DaisyController&) = delete;
+  DaisyController& operator=(const DaisyController&) = delete;
   
   // Allow move operations
-  DaisyPythonController(DaisyPythonController&&) noexcept;
-  DaisyPythonController& operator=(DaisyPythonController&&) noexcept;
+  DaisyController(DaisyController&&) noexcept;
+  DaisyController& operator=(DaisyController&&) noexcept;
 };
 
 #endif // DAISY_PYTHON_CONTROLLER_H

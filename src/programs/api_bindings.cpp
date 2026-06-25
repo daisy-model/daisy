@@ -1,11 +1,11 @@
-// bmi_bindings.cpp -- pybind11 bindings for DaisyBMI
+// api_bindings.cpp -- pybind11 bindings for DaisyBMI
 //
 // Exposes DaisyBMI to Python as the module "daisy_bmi".
 //
 // Compile (example, adjust paths):
 //   g++ -O3 -Wall -shared -std=c++17 -fPIC
 //       $(python3 -m pybind11 --includes)
-//       daisy_bmi_bindings.cpp daisy_bmi.C daisy_python_controller.C
+//       daisy_api_bindings.cpp daisy_bmi.C daisy_python_controller.C
 //       -o daisy_bmi$(python3-config --extension-suffix)
 //       -L. -ldaisy_core
 //
