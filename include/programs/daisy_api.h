@@ -1,6 +1,6 @@
 // daisy_api.h -- Daisy-specific API extensions on top of the BMI layer.
 //
-// DaisyAPI inherits DaisyBMI (pure BMI 2.0) and adds methods that are
+// DaisyAPI inherits BMI (pure BMI 2.0) and adds methods that are
 // specific to Daisy coupling but are not part of the BMI standard.
 // This is the class exposed to Python via api_bindings.cpp.
 //
@@ -16,7 +16,7 @@
 #include <vector>
 #include "programs/bmi.h"
 
-class DaisyAPI : public DaisyBMI
+class DaisyAPI : public BMI
 {
 public:
   // ===== PERTURBATION / Sy ESTIMATION =====

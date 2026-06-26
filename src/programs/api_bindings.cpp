@@ -1,8 +1,8 @@
-// api_bindings.cpp -- pybind11 bindings for DaisyBMI and DaisyAPI.
+// api_bindings.cpp -- pybind11 bindings for BMI and DaisyAPI.
 //
 // Exposes both classes to Python as the module "daisy_bmi".
-//   DaisyBMI  — pure BMI 2.0 standard interface.
-//   DaisyAPI  — inherits DaisyBMI, adds Daisy-specific extensions
+//   BMI  — pure BMI 2.0 standard interface.
+//   DaisyAPI  — inherits BMI, adds Daisy-specific extensions
 //               (perturbation_tick, etc.).
 //
 // Python usage:
@@ -34,7 +34,7 @@ PYBIND11_MODULE(daisy_bmi, m)
     -------
     import daisy_bmi
 
-    bmi = daisy_bmi.DaisyBMI()
+    bmi = daisy_bmi.BMI()
     bmi.initialize("myconfig.dai")
 
     print("Component:", bmi.get_component_name())
@@ -55,53 +55,53 @@ PYBIND11_MODULE(daisy_bmi, m)
     bmi.finalize()
   )pbdoc";
 
-  py::class_<DaisyBMI>(m, "DaisyAPI")
+  py::class_<BMI>(m, "DaisyBMI")
 
     .def(py::init<>(), "Create a new Daisy BMI instance")
 
     // --- Lifecycle ---
-    .def("initialize",    &DaisyBMI::initialize,    py::arg("config_file"),
+    .def("initialize",    &BMI::initialize,    py::arg("config_file"),
          "Initialize from a .dai config file")
-    .def("update",        &DaisyBMI::update,
+    .def("update",        &BMI::update,
          "Advance model by one timestep")
-    .def("update_until",  &DaisyBMI::update_until,  py::arg("time"),
+    .def("update_until",  &BMI::update_until,  py::arg("time"),
          "Advance model until time (days since start)")
-    .def("finalize",      &DaisyBMI::finalize,
+    .def("finalize",      &BMI::finalize,
          "Finalize and release all resources")
 
     // --- Information ---
-    .def("get_component_name",    &DaisyBMI::get_component_name)
-    .def("get_input_var_names",   &DaisyBMI::get_input_var_names)
-    .def("get_output_var_names",  &DaisyBMI::get_output_var_names)
+    .def("get_component_name",    &BMI::get_component_name)
+    .def("get_input_var_names",   &BMI::get_input_var_names)
+    .def("get_output_var_names",  &BMI::get_output_var_names)
 
     // --- Time ---
-    .def("get_start_time",    &DaisyBMI::get_start_time,
+    .def("get_start_time",    &BMI::get_start_time,
          "Simulation start time [days]")
-    .def("get_end_time",      &DaisyBMI::get_end_time,
+    .def("get_end_time",      &BMI::get_end_time,
          "Simulation end time [days] (NaN = open-ended)")
-    .def("get_current_time",  &DaisyBMI::get_current_time,
+    .def("get_current_time",  &BMI::get_current_time,
          "Current simulation time [days since start]")
-    .def("get_time_step",     &DaisyBMI::get_time_step,
+    .def("get_time_step",     &BMI::get_time_step,
          "Current timestep size [days]")
-    .def("get_time_units",    &DaisyBMI::get_time_units,
+    .def("get_time_units",    &BMI::get_time_units,
          "Time unit string, e.g. 'd'")
 
     // --- Variable metadata ---
-    .def("get_var_type",      &DaisyBMI::get_var_type,     py::arg("name"))
-    .def("get_var_units",     &DaisyBMI::get_var_units,    py::arg("name"))
-    .def("get_var_itemsize",  &DaisyBMI::get_var_itemsize, py::arg("name"))
-    .def("get_var_nbytes",    &DaisyBMI::get_var_nbytes,   py::arg("name"))
-    .def("get_var_location",  &DaisyBMI::get_var_location, py::arg("name"))
-    .def("get_var_grid",      &DaisyBMI::get_var_grid,     py::arg("name"))
+    .def("get_var_type",      &BMI::get_var_type,     py::arg("name"))
+    .def("get_var_units",     &BMI::get_var_units,    py::arg("name"))
+    .def("get_var_itemsize",  &BMI::get_var_itemsize, py::arg("name"))
+    .def("get_var_nbytes",    &BMI::get_var_nbytes,   py::arg("name"))
+    .def("get_var_location",  &BMI::get_var_location, py::arg("name"))
+    .def("get_var_grid",      &BMI::get_var_grid,     py::arg("name"))
 
     // --- Grid metadata ---
-    .def("get_grid_rank",  &DaisyBMI::get_grid_rank, py::arg("grid"))
-    .def("get_grid_size",  &DaisyBMI::get_grid_size, py::arg("grid"))
-    .def("get_grid_type",  &DaisyBMI::get_grid_type, py::arg("grid"))
+    .def("get_grid_rank",  &BMI::get_grid_rank, py::arg("grid"))
+    .def("get_grid_size",  &BMI::get_grid_size, py::arg("grid"))
+    .def("get_grid_type",  &BMI::get_grid_type, py::arg("grid"))
 
     // --- Get / Set (scalar convenience wrappers) ---
     .def("get_value",
-         [](const DaisyBMI& self, const std::string& name) -> double {
+         [](const BMI& self, const std::string& name) -> double {
            // Allocate the correct-sized buffer; array vars (e.g.
            // soil_water__recharge_rate) hold one value per soil layer.
            // Writing N elements into a 1-element stack variable is UB and
@@ -115,14 +115,14 @@ PYBIND11_MODULE(daisy_bmi, m)
          "Get a scalar output value by BMI variable name")
 
     .def("set_value",
-         [](DaisyBMI& self, const std::string& name, double value) {
+         [](BMI& self, const std::string& name, double value) {
            self.set_value(name, &value);
          },
          py::arg("name"), py::arg("value"),
          "Set a scalar input value by BMI variable name")
 
     .def("get_value_array",
-     [](const DaisyBMI& self, const std::string& name) {
+     [](const BMI& self, const std::string& name) {
        int n = self.get_var_nbytes(name) / static_cast<int>(sizeof(double));
        py::array_t<double> arr(n);
        self.get_value(name, arr.mutable_data());
@@ -132,10 +132,10 @@ PYBIND11_MODULE(daisy_bmi, m)
      "Get an array output value as a numpy array of doubles");
 
   // ---------------------------------------------------------------------------
-  // DaisyAPI — inherits all DaisyBMI methods, adds Daisy-specific extensions.
+  // DaisyAPI — inherits all BMI methods, adds Daisy-specific extensions.
   // This is the recommended class for Python coupling.
   // ---------------------------------------------------------------------------
-  py::class_<DaisyAPI, DaisyBMI>(m, "DaisyAPI")
+  py::class_<DaisyAPI, BMI>(m, "API")
     .def(py::init<>(), "Create a Daisy API instance (BMI + extensions)")
 
     .def("perturbation_tick",

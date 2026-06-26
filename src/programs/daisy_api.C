@@ -10,5 +10,5 @@ auto DaisyAPI::perturbation_tick (double dh_cm, unsigned int col)
   if (col != 0u)
     throw std::invalid_argument (
       "perturbation_tick: col > 0 not yet supported");
-  return ctrl ().daisy_ref ().perturbation_tick (dh_cm);
+  return daisy ().perturbation_tick (dh_cm);
 }

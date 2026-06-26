@@ -19,12 +19,12 @@
 
 // ===== PRIVATE HELPERS =====
 
-Daisy& DaisyController::daisy() const
+Daisy& DaisyBMI::daisy() const
 {
   return dynamic_cast<Daisy&>(toplevel_->program());
 }
 
-void DaisyController::setup_logging()
+void DaisyBMI::setup_logging()
 {
   if (toplevel_) toplevel_->set_ui_none();
 }
@@ -66,7 +66,7 @@ static void ensure_daisy_home()
   catch (...) {} // non-fatal: Daisy will fall back to its own detection
 }
 
-bool DaisyController::load_config_file(const std::string& config_file)
+bool DaisyBMI::load_config_file(const std::string& config_file)
 {
   ensure_daisy_home();
   toplevel_ = std::make_unique<Toplevel>("daisy");
@@ -91,7 +91,7 @@ bool DaisyController::load_config_file(const std::string& config_file)
 
 // ===== INITIALIZATION =====
 
-bool DaisyController::initialize(const std::string& config_file)
+bool DaisyBMI::initialize(const std::string& config_file)
 {
   // Let exceptions propagate — the caller (DaisyBMI) will wrap them
   // with a meaningful message. A silent 'return false' hides the root cause.
@@ -102,7 +102,7 @@ bool DaisyController::initialize(const std::string& config_file)
 
 // ===== LIFECYCLE =====
 
-void DaisyController::start()
+void DaisyBMI::start()
 {
   if (!toplevel_) return;
   toplevel_->initialize();   // moves state from is_uninitialized -> is_ready
@@ -120,7 +120,7 @@ void DaisyController::start()
   }
 }
 
-bool DaisyController::advance(double days)
+bool DaisyBMI::advance(double days)
 {
   if (!initialized) return false;
   try
@@ -137,7 +137,7 @@ bool DaisyController::advance(double days)
   catch (...) { return false; }
 }
 
-bool DaisyController::tick()
+bool DaisyBMI::tick()
 {
   if (!initialized) return false;
   try
@@ -150,17 +150,17 @@ bool DaisyController::tick()
   catch (...) { return false; }
 }
 
-void DaisyController::stop()
+void DaisyBMI::stop()
 {
   running = false;
 }
 
-bool DaisyController::is_running() const
+bool DaisyBMI::is_running() const
 {
   return running;
 }
 
-bool DaisyController::finalize()
+bool DaisyBMI::finalize()
 {
   if (!initialized) return true;
   daisy().stop();
@@ -174,16 +174,16 @@ bool DaisyController::finalize()
 
 // ===== TIME =====
 
-double DaisyController::get_days_since_start() const { return elapsed_days_; }
+double DaisyBMI::get_days_since_start() const { return elapsed_days_; }
 
-double DaisyController::get_stop_days() const
+double DaisyBMI::get_stop_days() const
 {
   if (!initialized) return std::numeric_limits<double>::quiet_NaN();
   const double h = daisy().stop_duration_hours();
   return (h >= 0.0) ? h / 24.0 : std::numeric_limits<double>::quiet_NaN();
 }
 
-std::string DaisyController::get_time_string() const
+std::string DaisyBMI::get_time_string() const
 {
   if (!initialized) return "";
   const Time& t = daisy().time();
@@ -193,47 +193,47 @@ std::string DaisyController::get_time_string() const
   return buf;
 }
 
-int DaisyController::get_year()  const { return initialized ? daisy().time().year()  : 0; }
-int DaisyController::get_month() const { return initialized ? daisy().time().month() : 0; }
-int DaisyController::get_day()   const { return initialized ? daisy().time().mday()  : 0; }
-int DaisyController::get_hour()  const { return initialized ? daisy().time().hour()  : 0; }
-double DaisyController::get_current_dt_hours() const { return 1.0; }
-double DaisyController::get_current_dt_days()  const { return 1.0 / 24.0; }
+int DaisyBMI::get_year()  const { return initialized ? daisy().time().year()  : 0; }
+int DaisyBMI::get_month() const { return initialized ? daisy().time().month() : 0; }
+int DaisyBMI::get_day()   const { return initialized ? daisy().time().mday()  : 0; }
+int DaisyBMI::get_hour()  const { return initialized ? daisy().time().hour()  : 0; }
+double DaisyBMI::get_current_dt_hours() const { return 1.0; }
+double DaisyBMI::get_current_dt_days()  const { return 1.0 / 24.0; }
 
 // ===== GROUNDWATER =====
 
-double DaisyController::get_groundwater_depth() const
+double DaisyBMI::get_groundwater_depth() const
 {
   return daisy().get_groundwater_table();
 }
 
-bool DaisyController::set_groundwater_depth(double depth_cm)
+bool DaisyBMI::set_groundwater_depth(double depth_cm)
 {
   daisy().set_groundwater_table(depth_cm);
   return true;
 }
 
-Daisy& DaisyController::daisy_ref ()
+Daisy& DaisyBMI::daisy_ref ()
 {
   return daisy ();
 }
 
-double DaisyController::get_pressure_head_at_depth(double) const
+double DaisyBMI::get_pressure_head_at_depth(double) const
 {
   return 0.0;  // stub
 }
 
 // ===== SOIL WATER =====
 
-std::vector<double> DaisyController::get_soil_water_content() const      { return {}; }
-double DaisyController::get_soil_water_at_depth(double) const            { return 0.0; }
-double DaisyController::get_matric_potential_at_depth(double) const      { return 0.0; }
-double DaisyController::get_cumulative_water_to_depth(double) const      { return 0.0; }
-double DaisyController::get_available_water() const                      { return 0.0; }
+std::vector<double> DaisyBMI::get_soil_water_content() const      { return {}; }
+double DaisyBMI::get_soil_water_at_depth(double) const            { return 0.0; }
+double DaisyBMI::get_matric_potential_at_depth(double) const      { return 0.0; }
+double DaisyBMI::get_cumulative_water_to_depth(double) const      { return 0.0; }
+double DaisyBMI::get_available_water() const                      { return 0.0; }
 
 // ===== RECHARGE =====
 
-std::vector<double> DaisyController::get_recharge_rate() const
+std::vector<double> DaisyBMI::get_recharge_rate() const
 {
   std::vector<double> flux = daisy().get_flux_array();
   for (double& v : flux)
@@ -241,19 +241,19 @@ std::vector<double> DaisyController::get_recharge_rate() const
   return flux;
 }
 
-double DaisyController::get_cumulative_recharge() const { return 0.0; }
+double DaisyBMI::get_cumulative_recharge() const { return 0.0; }
 
-std::vector<double> DaisyController::get_pressure_head_array() const
+std::vector<double> DaisyBMI::get_pressure_head_array() const
 {
   return daisy().get_h_array();  // [cm], nlayers
 }
 
-std::vector<double> DaisyController::get_theta_array() const
+std::vector<double> DaisyBMI::get_theta_array() const
 {
   return daisy().get_theta_array();  // [-], nlayers
 }
 
-std::vector<double> DaisyController::get_theta_sat_array() const
+std::vector<double> DaisyBMI::get_theta_sat_array() const
 {
   return daisy().get_theta_sat_array();  // [-], nlayers, static soil param
 }
@@ -261,58 +261,58 @@ std::vector<double> DaisyController::get_theta_sat_array() const
 
 // ===== WATER BALANCE STUBS =====
 
-double DaisyController::get_et_rate() const               { return 0.0; }
-double DaisyController::get_cumulative_et() const         { return 0.0; }
-double DaisyController::get_transpiration_rate() const    { return 0.0; }
-double DaisyController::get_evaporation_rate() const      { return 0.0; }
-double DaisyController::get_drainage_rate() const         { return 0.0; }
-double DaisyController::get_cumulative_drainage() const   { return 0.0; }
-double DaisyController::get_runoff_rate() const
+double DaisyBMI::get_et_rate() const               { return 0.0; }
+double DaisyBMI::get_cumulative_et() const         { return 0.0; }
+double DaisyBMI::get_transpiration_rate() const    { return 0.0; }
+double DaisyBMI::get_evaporation_rate() const      { return 0.0; }
+double DaisyBMI::get_drainage_rate() const         { return 0.0; }
+double DaisyBMI::get_cumulative_drainage() const   { return 0.0; }
+double DaisyBMI::get_runoff_rate() const
 { return daisy().get_runoff_rate(); }  // [mm/day]
-double DaisyController::get_cumulative_runoff() const     { return 0.0; }
+double DaisyBMI::get_cumulative_runoff() const     { return 0.0; }
 
 // ===== CROP STUBS =====
 
-double DaisyController::get_leaf_area_index() const       { return 0.0; }
-double DaisyController::get_root_depth() const            { return 0.0; }
-double DaisyController::get_aboveground_biomass() const   { return 0.0; }
+double DaisyBMI::get_leaf_area_index() const       { return 0.0; }
+double DaisyBMI::get_root_depth() const            { return 0.0; }
+double DaisyBMI::get_aboveground_biomass() const   { return 0.0; }
 
 // ===== SOIL STUBS =====
 
-double DaisyController::get_soil_temperature_at_depth(double) const { return 0.0; }
-double DaisyController::get_soil_layer_thickness(int) const         { return 0.0; }
-double DaisyController::get_soil_layer_top(int) const               { return 0.0; }
-double DaisyController::get_soil_layer_bottom(int) const            { return 0.0; }
+double DaisyBMI::get_soil_temperature_at_depth(double) const { return 0.0; }
+double DaisyBMI::get_soil_layer_thickness(int) const         { return 0.0; }
+double DaisyBMI::get_soil_layer_top(int) const               { return 0.0; }
+double DaisyBMI::get_soil_layer_bottom(int) const            { return 0.0; }
 
 // ===== WEATHER STUBS =====
 
-double DaisyController::get_rainfall_rate() const         { return 0.0; }
-double DaisyController::get_cumulative_rainfall() const   { return 0.0; }
-double DaisyController::get_reference_et() const          { return 0.0; }
-double DaisyController::get_air_temperature() const       { return 0.0; }
-double DaisyController::get_air_humidity() const          { return 0.0; }
-double DaisyController::get_wind_speed() const            { return 0.0; }
+double DaisyBMI::get_rainfall_rate() const         { return 0.0; }
+double DaisyBMI::get_cumulative_rainfall() const   { return 0.0; }
+double DaisyBMI::get_reference_et() const          { return 0.0; }
+double DaisyBMI::get_air_temperature() const       { return 0.0; }
+double DaisyBMI::get_air_humidity() const          { return 0.0; }
+double DaisyBMI::get_wind_speed() const            { return 0.0; }
 
 // ===== NITROGEN STUBS =====
 
-double DaisyController::get_mineral_nitrogen() const      { return 0.0; }
-double DaisyController::get_cumulative_n_leaching() const { return 0.0; }
-double DaisyController::get_cumulative_n_uptake() const   { return 0.0; }
+double DaisyBMI::get_mineral_nitrogen() const      { return 0.0; }
+double DaisyBMI::get_cumulative_n_leaching() const { return 0.0; }
+double DaisyBMI::get_cumulative_n_uptake() const   { return 0.0; }
 
 // ===== DIAGNOSTICS STUBS =====
 
-std::string DaisyController::get_last_message() const     { return ""; }
-bool        DaisyController::has_errors() const           { return false; }
-double      DaisyController::get_simulation_time() const  { return 0.0; }
+std::string DaisyBMI::get_last_message() const     { return ""; }
+bool        DaisyBMI::has_errors() const           { return false; }
+double      DaisyBMI::get_simulation_time() const  { return 0.0; }
 
 // ===== CONSTRUCTOR / DESTRUCTOR =====
 
-DaisyController::DaisyController()
+DaisyBMI::DaisyBMI()
   : initialized(false), running(false)
 {
 }
 
-DaisyController::~DaisyController()
+DaisyBMI::~DaisyBMI()
 {
   if (initialized)
   {
@@ -320,7 +320,7 @@ DaisyController::~DaisyController()
   }
 }
 
-DaisyController::DaisyController(DaisyController&& other) noexcept
+DaisyBMI::DaisyBMI(DaisyBMI&& other) noexcept
   : toplevel_(std::move(other.toplevel_)),
     initialized(other.initialized),
     running(other.running),
@@ -331,7 +331,7 @@ DaisyController::DaisyController(DaisyController&& other) noexcept
   other.elapsed_days_ = 0.0;
 }
 
-DaisyController& DaisyController::operator=(DaisyController&& other) noexcept
+DaisyBMI& DaisyBMI::operator=(DaisyBMI&& other) noexcept
 {
   if (this != &other)
   {
@@ -347,14 +347,14 @@ DaisyController& DaisyController::operator=(DaisyController&& other) noexcept
   return *this;
 }
 
-double DaisyController::get_column_area() const
+double DaisyBMI::get_column_area() const
 { return daisy().get_column_area(); }
 
-std::vector<double> DaisyController::get_layer_tops() const
+std::vector<double> DaisyBMI::get_layer_tops() const
 { return daisy().get_layer_tops(); }
 
-std::vector<double> DaisyController::get_layer_bottoms() const
+std::vector<double> DaisyBMI::get_layer_bottoms() const
 { return daisy().get_layer_bottoms(); }
 
-int DaisyController::get_soil_layer_count() const
+int DaisyBMI::get_soil_layer_count() const
 { return static_cast<int>(daisy().get_layer_tops().size()); }

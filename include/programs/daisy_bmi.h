@@ -20,7 +20,7 @@ class Toplevel;
 class Daisy;
 
 /**
- * @class DaisyController
+ * @class DaisyBMI
  * @brief Python-friendly interface to control Daisy simulation externally
  * 
  * Allows Python code to:
@@ -30,7 +30,7 @@ class Daisy;
  * - Set boundary conditions (GW depth, rainfall, irrigation, etc.)
  * - Control simulation parameters
  */
-class DaisyController
+class DaisyBMI
 {
 private:
   // Toplevel owns Metalib, parser, Treelog, and the Daisy program instance.
@@ -449,25 +449,25 @@ public:
   /**
    * Constructor
    */
-  DaisyController();
+  DaisyBMI();
   
   /**
    * Destructor
    */
-  ~DaisyController();
+  ~DaisyBMI();
   
   // Delete copy operations
-  DaisyController(const DaisyController&) = delete;
-  DaisyController& operator=(const DaisyController&) = delete;
+  DaisyBMI(const DaisyBMI&) = delete;
+  DaisyBMI& operator=(const DaisyBMI&) = delete;
   
   // Allow move operations
-  DaisyController(DaisyController&&) noexcept;
-  DaisyController& operator=(DaisyController&&) noexcept;
+  DaisyBMI(DaisyBMI&&) noexcept;
+  DaisyBMI& operator=(DaisyBMI&&) noexcept;
 
 public:
   /** Direct access to the Daisy simulation object.
    *  For use by DaisyAPI extension methods — not intended for BMI callers.
-   *  Public because DaisyAPI does not inherit DaisyController. */
+   *  Public because DaisyAPI does not inherit DaisyBMI. */
   Daisy& daisy_ref ();
 };
 

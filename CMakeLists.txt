@@ -6,6 +6,7 @@ project(
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
 )
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(cmake/AddCoverageBuildType.cmake)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
