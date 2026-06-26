@@ -13,9 +13,11 @@
 #include <vector>
 #include "programs/daisy_bmi.h"
 
+class Daisy;  // forward declaration for protected daisy() accessor
+
 /**
- * @class DaisyBMI
- * @brief BMI 2.0 wrapper around DaisyController
+ * @class BMI
+ * @brief BMI 2.0 wrapper around DaisyBMI
  *
  * Variable names follow a "<category>_<quantity>" convention.
  *
@@ -37,7 +39,7 @@
  *   "vegetation__aboveground_biomass" [g/m2]
  *   "soil_water__content"            [m3/m3]  (first layer)
  */
-class DaisyBMI
+class BMI
 {
 public:
   // ===== BMI LIFECYCLE =====
@@ -101,11 +103,11 @@ public:
     estimate_sy_perturbation(double dh_cm = 1.0, unsigned int col = 0u);
 
   // ===== CONSTRUCTOR / DESTRUCTOR =====
-  DaisyBMI();
-  ~DaisyBMI();
+  BMI();
+  ~BMI();
 
 private:
-  DaisyController ctrl_;
+  DaisyBMI ctrl_;
   double start_time_days_;   // always 0
   double current_time_days_; // updated each update()
   double dt_days_;           // timestep size in days
@@ -114,6 +116,11 @@ private:
   static const std::vector<std::string> OUTPUT_VARS;
 
   double get_output_value(const std::string& name) const;
+
+protected:
+  /** Direct access to the Daisy simulation object for use by DaisyAPI
+   *  extension methods.  Same Daisy& that DaisyBMI uses internally. */
+  Daisy& daisy ();
 };
 
 #endif // DAISY_BMI_H

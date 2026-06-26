@@ -3,18 +3,21 @@
 // This file is part of Daisy.
 
 #include "programs/bmi.h"
+#include "daisy/daisy.h"
 #include <stdexcept>
 #include <limits>
 #include <cmath>
 
 // ===== STATIC VARIABLE LISTS =====
 
-const std::vector<std::string> DaisyBMI::INPUT_VARS = {
+Daisy& BMI::daisy () { return ctrl_.daisy_ref (); }
+
+const std::vector<std::string> BMI::INPUT_VARS = {
   "groundwater__depth",       // [cm] below surface
   "irrigation__rate",         // [mm/day]
 };
 
-const std::vector<std::string> DaisyBMI::OUTPUT_VARS = {
+const std::vector<std::string> BMI::OUTPUT_VARS = {
   "soil_water__recharge_rate",                // [mm/day]
   "land_surface__evapotranspiration_rate",    // [mm/day]
   "soil_water__transpiration_rate",           // [mm/day]
@@ -36,21 +39,21 @@ const std::vector<std::string> DaisyBMI::OUTPUT_VARS = {
 
 // ===== CONSTRUCTOR / DESTRUCTOR =====
 
-DaisyBMI::DaisyBMI()
+BMI::BMI()
   : start_time_days_(0.0)
   , current_time_days_(0.0)
   , dt_days_(1.0 / 24.0)   // default: hourly timestep
 {
 }
 
-DaisyBMI::~DaisyBMI()
+BMI::~BMI()
 {
-  // DaisyController destructor handles cleanup
+  // DaisyBMI destructor handles cleanup
 }
 
 // ===== LIFECYCLE =====
 
-void DaisyBMI::initialize(const std::string& config_file)
+void BMI::initialize(const std::string& config_file)
 {
   try
   {
@@ -59,32 +62,32 @@ void DaisyBMI::initialize(const std::string& config_file)
   catch (const std::exception& e)
   {
     throw std::runtime_error(
-      std::string("DaisyBMI::initialize failed for config: ") + config_file
+      std::string("BMI::initialize failed for config: ") + config_file
       + "\n  Reason: " + e.what());
   }
   catch (const int code)
   {
     throw std::runtime_error(
-      std::string("DaisyBMI::initialize failed for config: ") + config_file
+      std::string("BMI::initialize failed for config: ") + config_file
       + "\n  Reason: Daisy reported an error (check daisy.log for details). Exit code: "
       + std::to_string(code));
   }
   catch (const char* msg)
   {
     throw std::runtime_error(
-      std::string("DaisyBMI::initialize failed for config: ") + config_file
+      std::string("BMI::initialize failed for config: ") + config_file
       + "\n  Reason: " + msg);
   }
   catch (...)
   {
     throw std::runtime_error(
-      std::string("DaisyBMI::initialize failed for config: ") + config_file
+      std::string("BMI::initialize failed for config: ") + config_file
       + "\n  Reason: unknown exception");
   }
 
   if (!ctrl_.is_initialized())
     throw std::runtime_error(
-      std::string("DaisyBMI::initialize failed for config: ") + config_file);
+      std::string("BMI::initialize failed for config: ") + config_file);
 
   // Use Daisy's actual internal time as the reference point.
   // get_days_since_start() returns 0 right after init, but reading it through
@@ -97,10 +100,10 @@ void DaisyBMI::initialize(const std::string& config_file)
     dt_days_ = 1.0 / 24.0; // fallback: hourly
 }
 
-void DaisyBMI::update()
+void BMI::update()
 {
   if (!ctrl_.tick())
-    throw std::runtime_error("DaisyBMI::update (tick) failed");
+    throw std::runtime_error("BMI::update (tick) failed");
 
   // Sync current time directly from Daisy's internal clock.
   current_time_days_ = ctrl_.get_days_since_start();
@@ -111,7 +114,7 @@ void DaisyBMI::update()
     dt_days_ = actual_dt;
 }
 
-void DaisyBMI::update_until(double time)
+void BMI::update_until(double time)
 {
   // Use half-timestep epsilon to avoid running one tick too many due to
   // floating-point accumulation (e.g. 24 * 1/24 is not exactly 1.0).
@@ -125,63 +128,63 @@ void DaisyBMI::update_until(double time)
     current_time_days_ = time;
 }
 
-void DaisyBMI::finalize()
+void BMI::finalize()
 {
   ctrl_.finalize();
 }
 
 // ===== INFORMATION =====
 
-std::string DaisyBMI::get_component_name() const
+std::string BMI::get_component_name() const
 {
   return "Daisy";
 }
 
-std::vector<std::string> DaisyBMI::get_input_var_names() const
+std::vector<std::string> BMI::get_input_var_names() const
 {
   return INPUT_VARS;
 }
 
-std::vector<std::string> DaisyBMI::get_output_var_names() const
+std::vector<std::string> BMI::get_output_var_names() const
 {
   return OUTPUT_VARS;
 }
 
 // ===== TIME =====
 
-double DaisyBMI::get_start_time() const
+double BMI::get_start_time() const
 {
   return start_time_days_;
 }
 
-double DaisyBMI::get_end_time() const
+double BMI::get_end_time() const
 {
   return ctrl_.get_stop_days();
 }
 
-double DaisyBMI::get_current_time() const
+double BMI::get_current_time() const
 {
   return current_time_days_;
 }
 
-double DaisyBMI::get_time_step() const
+double BMI::get_time_step() const
 {
   return dt_days_;
 }
 
-std::string DaisyBMI::get_time_units() const
+std::string BMI::get_time_units() const
 {
   return "d";
 }
 
 // ===== VARIABLE INFO =====
 
-std::string DaisyBMI::get_var_type(const std::string& /*name*/) const
+std::string BMI::get_var_type(const std::string& /*name*/) const
 {
   return "double";
 }
 
-std::string DaisyBMI::get_var_units(const std::string& name) const
+std::string BMI::get_var_units(const std::string& name) const
 {
   if (name == "groundwater__depth")                    return "cm";
   if (name == "irrigation__rate")                      return "mm d-1";
@@ -204,7 +207,7 @@ std::string DaisyBMI::get_var_units(const std::string& name) const
   throw std::invalid_argument("Unknown variable: " + name);
 }
 
-int DaisyBMI::get_var_nbytes(const std::string& name) const {
+int BMI::get_var_nbytes(const std::string& name) const {
   if (name == "soil_layer__top_depth" || name == "soil_layer__bottom_depth"
       || name == "soil_water__recharge_rate"
       || name == "soil_water__pressure_head"
@@ -214,30 +217,30 @@ int DaisyBMI::get_var_nbytes(const std::string& name) const {
   return sizeof(double);
 }
 
-int DaisyBMI::get_var_itemsize(const std::string& /*name*/) const
+int BMI::get_var_itemsize(const std::string& /*name*/) const
 {
   return static_cast<int>(sizeof(double));
 }
 
-std::string DaisyBMI::get_var_location(const std::string& /*name*/) const
+std::string BMI::get_var_location(const std::string& /*name*/) const
 {
   return "none"; // scalars have no grid location
 }
 
-int DaisyBMI::get_var_grid(const std::string& /*name*/) const
+int BMI::get_var_grid(const std::string& /*name*/) const
 {
   return 0; // all vars on the single-cell scalar grid
 }
 
 // ===== GRID INFO =====
 
-int DaisyBMI::get_grid_rank(int /*grid*/) const  { return 0; }
-int DaisyBMI::get_grid_size(int /*grid*/) const  { return 1; }
-std::string DaisyBMI::get_grid_type(int /*grid*/) const { return "scalar"; }
+int BMI::get_grid_rank(int /*grid*/) const  { return 0; }
+int BMI::get_grid_size(int /*grid*/) const  { return 1; }
+std::string BMI::get_grid_type(int /*grid*/) const { return "scalar"; }
 
 // ===== GET / SET =====
 
-double DaisyBMI::get_output_value(const std::string& name) const
+double BMI::get_output_value(const std::string& name) const
 {
   if (name == "soil_water__recharge_rate") {
     auto v = ctrl_.get_recharge_rate();
@@ -261,7 +264,7 @@ double DaisyBMI::get_output_value(const std::string& name) const
   throw std::invalid_argument("Unknown output variable: " + name);
 }
 
-void DaisyBMI::get_value(const std::string& name, double* dest) const
+void BMI::get_value(const std::string& name, double* dest) const
 {
   if (name == "soil_layer__top_depth") {
     auto v = ctrl_.get_layer_tops();
@@ -296,7 +299,7 @@ void DaisyBMI::get_value(const std::string& name, double* dest) const
   dest[0] = get_output_value(name);   // bestaand pad voor scalars
 }
 
-void DaisyBMI::set_value(const std::string& name, const double* src)
+void BMI::set_value(const std::string& name, const double* src)
 {
   if (name == "groundwater__depth")
   {
@@ -305,9 +308,9 @@ void DaisyBMI::set_value(const std::string& name, const double* src)
   }
   if (name == "irrigation__rate")
   {
-    // TODO: expose irrigation setter in DaisyController
+    // TODO: expose irrigation setter in DaisyBMI
     // ctrl_.set_irrigation_rate(src[0]);
-    throw std::runtime_error("irrigation__rate setter not yet implemented in DaisyController");
+    throw std::runtime_error("irrigation__rate setter not yet implemented in DaisyBMI");
   }
   throw std::invalid_argument("Unknown input variable: " + name);
 }

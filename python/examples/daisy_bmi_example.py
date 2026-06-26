@@ -10,7 +10,7 @@ Requirements:
 
 import os
 import numpy as np
-from daisy import DaisyAPI
+from daisy import API
 from pathlib import Path
 
 # daisy config file
@@ -38,34 +38,34 @@ def compute_zh0(tops: np.ndarray, h_daisy: np.ndarray) -> float | None:
 # -- Daisy simulation --
 
 # initialise Daisy
-daisy = DaisyAPI()
+api = API()
 os.chdir(config_file.parent)
-daisy.initialize(str(config_file))
+api.initialize(str(config_file))
 
 # get static internals
-area   = daisy.get_value("column__area")             # scalar cm²
-tops   = daisy.get_value_array("soil_layer__top_depth")    # np.NDarray[float] cm
-bots   = daisy.get_value_array("soil_layer__bottom_depth") # np.NDarray[float] cm
+area   = api.get_value("column__area")             # scalar cm²
+tops   = api.get_value_array("soil_layer__top_depth")    # np.NDarray[float] cm
+bots   = api.get_value_array("soil_layer__bottom_depth") # np.NDarray[float] cm
 n_lay  = len(tops)
 
 # runs simulations per daily time step
 end_time = 365
 
-print(f"BMI time units are: {daisy.get_time_units()}")
+print(f"BMI time units are: {api.get_time_units()}")
 
 for itime in np.arange(end_time-1):
     # Get current time
-    t = daisy.get_current_time()
+    t = api.get_current_time()
 
     # Advance Daisy one day
-    daisy.update_until(t + 1.0)
+    api.update_until(t + 1.0)
 
-    # get presure heads of column
-    h = daisy.get_value_array("soil_water__pressure_head") 
+    # get pressure heads and GW table depth
+    h = api.get_value_array("soil_water__pressure_head")
     gwl = compute_zh0(tops, h_daisy=h)
     if gwl is None:
         print(f'gwl at day {t:.1f} is below Daisy column')
     else:
         print(f'gwl at day {t:.1f} is {gwl}')
 
-daisy.finalize()
+api.finalize()
