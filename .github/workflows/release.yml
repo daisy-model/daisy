@@ -125,10 +125,38 @@ jobs:
         run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Build Linux flatpak package
+        id: build_linux_flatpak
+        continue-on-error: true
         run: |
           cd flatpak
           flatpak-builder --user --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
           flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
+
+      - name: Dump Flatpak diagnostics
+        if: steps.build_linux_flatpak.outcome == 'failure'
+        run: |
+          cd flatpak
+          echo '=== Flatpak output files ==='
+          find build -type f \( -name 'libcxsparse*' -o -name 'libsuitesparseconfig*' -o -name 'CXSparseConfig.cmake' -o -name 'CXSparseTargets*.cmake' \) 2>/dev/null | sort || true
+
+          echo '=== Flatpak builder state files ==='
+          find .flatpak-builder -type f \( -name 'CMakeCache.txt' -o -name 'link.txt' -o -name 'CXSparseConfig.cmake' -o -name 'CXSparseTargets*.cmake' \) 2>/dev/null | sort || true
+
+          echo '=== Relevant CMake cache entries ==='
+          find .flatpak-builder -type f -name 'CMakeCache.txt' -print0 2>/dev/null | while IFS= read -r -d '' file; do
+            echo "--- ${file} ---"
+            grep -E 'DAISY_FLATPAK|CXSparse|SuiteSparse|CMAKE_PREFIX_PATH|CMAKE_LIBRARY_PATH' "${file}" || true
+          done
+
+          echo '=== Daisy link.txt files ==='
+          find .flatpak-builder -type f -path '*/CMakeFiles/daisy.dir/link.txt' -print0 2>/dev/null | while IFS= read -r -d '' file; do
+            echo "--- ${file} ---"
+            cat "${file}"
+          done
+
+      - name: Fail after diagnostics
+        if: steps.build_linux_flatpak.outcome == 'failure'
+        run: exit 1
 
       - name: Upload Linux flatpak package
         uses: actions/upload-artifact@v4
