@@ -91,7 +91,7 @@ jobs:
           sudo apt-get install -y cmake flatpak flatpak-builder libsuitesparse-dev libboost-filesystem-dev python3-pybind11
 
       - name: Configure Flathub
-        run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Build Linux packages
         run: make linux
@@ -154,7 +154,7 @@ jobs:
             mingw-w64-ucrt-x86_64-boost
             mingw-w64-ucrt-x86_64-pybind11
             mingw-w64-ucrt-x86_64-uv
-            nsis
+            mingw-w64-ucrt-x86_64-nsis
 
       - uses: actions/checkout@v5
 
