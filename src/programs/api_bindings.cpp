@@ -6,8 +6,8 @@
 //               (perturbation_tick, etc.).
 //
 // Python usage:
-//   from daisy import DaisyAPI
-//   api = DaisyAPI()
+//   from daisy import API
+//   api = API()
 //   api.initialize("myconfig.dai")
 //   while api.get_current_time() < 365.0:
 //       api.set_value("groundwater__depth", 150.0)
@@ -55,7 +55,7 @@ PYBIND11_MODULE(daisy_bmi, m)
     bmi.finalize()
   )pbdoc";
 
-  py::class_<BMI>(m, "DaisyBMI")
+  py::class_<BMI>(m, "BMI")
 
     .def(py::init<>(), "Create a new Daisy BMI instance")
 

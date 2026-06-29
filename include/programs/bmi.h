@@ -97,11 +97,6 @@ public:
   BMI();
   ~BMI();
 
-protected:
-  // Accessor for subclasses (e.g. DaisyAPI) that need the controller
-  // to implement non-BMI extension methods.
-  DaisyBMI& ctrl () { return ctrl_; }
-
 private:
   DaisyBMI ctrl_;
   double start_time_days_;   // always 0
