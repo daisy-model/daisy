@@ -9,7 +9,6 @@
 #define BMI_H
 
 #include <string>
-#include <tuple>
 #include <vector>
 #include "programs/daisy_bmi.h"
 
