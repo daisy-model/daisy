@@ -8,6 +8,17 @@ Releases are created from tags on `main`. The release workflow will only publish
 
 If any of these checks fail, the workflow fails and no release is published.
 
+## Test the release workflow
+
+The workflow can be started manually from the GitHub Actions page with `workflow_dispatch`. This is useful for testing the package builds without publishing a real release.
+
+Choose the `Build packages and publish release` workflow, select a branch, and provide:
+
+* `release_tag`: a stable version tag such as `v7.1.12`
+* `publish`: leave this as `false` for a dry run
+
+With `publish=false`, the workflow validates the version, builds the Linux, MacOS, and Windows packages, and uploads them as workflow artifacts, but it does not create a GitHub release.
+
 ## 1. Update the version
 
 Set the release version in `CMakeLists.txt`

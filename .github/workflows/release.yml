@@ -4,6 +4,17 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to validate against CMakeLists.txt, for example v7.1.12
+        required: true
+        type: string
+      publish:
+        description: Publish a GitHub release after building artifacts
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,6 +30,7 @@ jobs:
     outputs:
       should_release: ${{ steps.validate.outputs.should_release }}
       release_tag: ${{ steps.validate.outputs.release_tag }}
+      publish_release: ${{ steps.validate.outputs.publish_release }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -26,10 +38,14 @@ jobs:
 
       - id: validate
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
+          REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
         run: |
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
+          echo "publish_release=false" >> "$GITHUB_OUTPUT"
 
           if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "Skipping: $RELEASE_TAG is not a stable release tag."
@@ -43,11 +59,20 @@ jobs:
             exit 1
           fi
 
-          git fetch --no-tags origin main
-          main_sha="$( git rev-parse origin/main )"
-          if [ "$RELEASE_SHA" != "$main_sha" ]; then
-            echo "Error: tag must point at the current origin/main HEAD ($main_sha)."
-            exit 1
+          if [ "$EVENT_NAME" = "push" ] || [ "$REQUEST_PUBLISH" = "true" ]; then
+            git fetch --no-tags origin main
+            main_sha="$( git rev-parse origin/main )"
+            if [ "$REF_NAME" != "main" ] && [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+              echo "Error: manual publish must run from the main branch."
+              exit 1
+            fi
+            if [ "$RELEASE_SHA" != "$main_sha" ]; then
+              echo "Error: release must point at the current origin/main HEAD ($main_sha)."
+              exit 1
+            fi
+            echo "publish_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Manual dry run: building artifacts without publishing a GitHub release."
           fi
 
           echo "should_release=true" >> "$GITHUB_OUTPUT"
@@ -152,7 +177,7 @@ jobs:
       - build-linux
       - build-macos
       - build-windows
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Download release artifacts
