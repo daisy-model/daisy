@@ -37,7 +37,15 @@ class Scope;
 class Frame;
 class FrameModel;
 
-class Daisy : public Program
+#ifdef __unix
+#define DAISY_EXPORT /* nothing */
+#elif defined (BUILD_DLL)
+#define DAISY_EXPORT __declspec(dllexport)
+#else
+#define DAISY_EXPORT __declspec(dllimport)
+#endif
+
+class DAISY_EXPORT Daisy : public Program
 {
 public:
   static const char *const default_description;
@@ -57,7 +65,23 @@ public:
   void start ();
   bool is_running () const;
   void stop ();
-  
+
+  // Python/BMI coupling: forwarding to first (or pos-th) column.
+  double get_groundwater_table (unsigned int pos = 0u) const; // [cm]
+  void   set_groundwater_table (double cm, unsigned int pos = 0u);
+  /** Hours from simulation start to the configured stop time, or -1 if open-ended. */
+  double stop_duration_hours() const;
+
+  double              get_bottom_flux      (unsigned int pos = 0u) const; // [cm/h]
+  std::vector<double> get_flux_array       (unsigned int pos = 0u) const; // [cm/h]
+  std::vector<double> get_h_array          (unsigned int pos = 0u) const; // [cm]
+  std::vector<double> get_theta_array      (unsigned int pos = 0u) const; // [-]
+  std::vector<double> get_theta_sat_array  (unsigned int pos = 0u) const; // [-]
+  double              get_runoff_rate      (unsigned int pos = 0u) const; // [mm/day]
+  double              get_column_area      (unsigned int pos = 0u) const; // [cm²]
+  std::vector<double> get_layer_tops       (unsigned int pos = 0u) const; // [cm]
+  std::vector<double> get_layer_bottoms    (unsigned int pos = 0u) const; // [cm]
+
   // UI.
 public:
   void attach_ui (Run* run, const std::vector<Log*>& logs);
@@ -66,6 +90,8 @@ public:
 public:
   bool run (Treelog&);
   void tick (Treelog&);
+  void summarize (Treelog&) const;
+  void close_output ();
   void output (Log&) const;
 
   // Create and Destroy.

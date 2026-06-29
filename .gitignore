@@ -5,3 +5,11 @@ TAGS
 
 # python stuff
 __pycache__
+python/src/*.egg-info/
+
+# build artifacts copied into the Python package by CMake
+python/src/daisy/*.pyd
+python/src/daisy/*.dll
+
+# local machine-specific CMake overrides (paths, Python envs, etc.)
+CMakeUserPresets.json
