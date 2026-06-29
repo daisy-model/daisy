@@ -1,8 +1,11 @@
 """
-Example: Driving Daisy via the BMI interface (daisy_bmi Python module).
+Example: Driving Daisy via the extended API interface (daisy_bmi Python module).
 
-This shows the standard BMI coupling pattern, and is ready to be plugged
-into pymt, OpenEarth, or a custom MODFLOW6 coupling loop.
+This shows the Daisy-specific API coupling pattern, which extends the standard
+BMI interface with additional Daisy-specific methods. Use this when you need
+access beyond the BMI standard, e.g. for perturbation runs or direct state access.
+
+For a plain BMI 2.0 coupling (pymt, OpenEarth, MODFLOW6), use BMI instead of API.
 
 Requirements:
   - install daisy_bmi Python module via 'pip install -e python' from the root dir of this project
