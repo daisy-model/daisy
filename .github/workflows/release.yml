@@ -127,8 +127,9 @@ jobs:
       - name: Build Linux flatpak package
         run: |
           cd flatpak
+          version="$( cd .. && scripts/get_version_from_cmake.sh )"
           flatpak-builder --user --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
-          flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
+          flatpak build-bundle repo "daisy-${version}.flatpak" dk.ku.daisy
 
       - name: Upload Linux flatpak package
         uses: actions/upload-artifact@v5
@@ -202,7 +203,7 @@ jobs:
         with:
           name: release-windows
           path: |
-            build/mingw-gcc-portable/*.exe
+            build/mingw-gcc-portable/daisy-*-Windows-python*.exe
             build/mingw-gcc-portable/*.zip
           if-no-files-found: error
 
