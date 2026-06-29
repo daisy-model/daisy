@@ -52,6 +52,7 @@ modules:
   - name: cxsparse
     buildsystem: cmake
     config-opts:
+      - -DCMAKE_INSTALL_LIBDIR=lib
       - -DSUITESPARSE_ENABLE_PROJECTS=cxsparse;suitesparse_config
       - -DBUILD_SHARED_LIBS=ON  # Cant get it to work with static linkage against cxsparse
       - -DBUILD_STATIC_LIBS=OFF
