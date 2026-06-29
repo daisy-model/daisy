@@ -1,0 +1,133 @@
+; Winter Rye
+; One parameterization of winter rye parameterized by M.V. Schwartzkopff (2026)
+; The default "Winter Rye" is "LessN_winterrye" with a seed weight of 114 kg/ha, following recommendations from udsaedsberegner.dk for a normal seedbed on average soil with a sowing date of 15 September.  
+	
+
+(defcrop "LessN_winterrye" default
+
+;;; Calibrated by M.V Schwartzkopff in the project LessN (2021-2025)
+;;; Developed as a main crop, based on the dk-rye crop module and rye catch crop module from Grønning et al. (2025) https://doi.org/10.1016/j.agsy.2025.104442
+;;; Dataset from Foulum (JB4) and Flakkebjerg (JB6) used for calibration 
+;;; Dataset from Holstebro (JB1) and Guldborg (JB7) used for evaluation 
+;;; Results of calibration and evaluation published at https://doi.org/10.1016/j.geodrs.2025.e01033 (2026)
+
+  (Devel default 
+  (EmrTSum  100) 
+      (DS_Emr   0.01)
+      (DSRate1 0.022) 
+      (TempEff1 	(-10.  0.01) ( 0.0  0.03) ( 4.0  0.18)
+      			(20.0  0.90) (25.0  1.00) (35.0  1.20))             
+      (PhotEff1 ( 0.0  0.10) (10.0  0.29) (11.0  0.55) (12.0  0.75) (13.0  0.89) (14.0  1.00) (15.0  1.08) 
+                (16.0  1.14) (17.0  1.18) (24.0  1.18))      
+      (DSRate2  0.025)      
+      (TempEff2	(0.00  0.00) (10.0  0.14) (15.0  0.66)
+      			(20.0  1.00) (25.0  1.23))       
+  )
+ 
+ (Vernal default
+      (DSLim 0.33)
+      (TaLim 5.00)
+      (TaSum -50.0)    
+  )
+
+  (LeafPhot original 
+      (Fm 3.6) 
+      (DSEff (0.0 1.0) (0.3 1.0) (1.0 0.92)(2.0 0.90))
+      (Qeff   0.0500)
+      (TempEff 		(-20.0  0.00) (4.0 0.25) (7.0  0.60) (17.0  1.00) 
+      			(27.0  0.90) (35.0  0.70) (50.0  0.00))
+   )
+   
+  (Seed release         
+          (DM_fraction 87 [%])
+          (C_fraction 45 [%])
+          (N_fraction 2 [%])
+          (rate 0.4 [d^-1])
+) 
+  
+  (Canopy 
+     (SpLAI     0.04)
+     (LeafAIMod (0.0 1.5) (0.3 1.0)) 
+     (LAIDist0 0.00 0.00 1.00) 
+     (LAIDist1 0.10 0.80 1.00) 
+     (PARref   0.06)
+     (PARext   0.60) 
+     (PARrel   0.05) 
+     (EPext    0.70) 
+     (HvsDS   (0.00    1)    (1.00  100)    (2.00  100)) 
+    )
+
+  (Root
+  (rootdens "Gerwitz+Page74" (SpRtLength 120 [m/g]))
+      (DptEmr     10) 
+      (PenPar1    0.21) 
+      (PenPar2     4.0) 
+      (MaxPen      175) 
+      (Rad        0.005)  
+      (h_wp       -15000)  
+      (Rxylem     10.0) 
+      (MxNH4Up     2.2E-0007)
+      (MxNO3Up     6.67E-0008)
+      (DensityDSFac (0.00 0.1) (0.3 0.8) (0.33 1.00))
+      (PenDSFac (0.00 0.1) (0.33 1.0) (0.66 1.0) (0.7 1.0)) 
+       (PenWaterFac (0 1) (0.989 1) (0.99 0) (1 0))
+       )
+  
+(Partit                     
+      (Root (0.00 0.55) (0.33 0.6) (0.53 0.35) (1.00 0.05) (2.00 0.00)) 
+      (Leaf (0.00 0.90) (0.33 0.75) (0.43 0.60) (0.53 0.53) (0.62 0.40) (0.77 0.25) (0.95 0.10) (1.14 0.00) (1.38 0.00) (2.00 0.00)) 
+      (Stem (0.00 0.10) (0.33 0.25) (0.43 0.40) (0.53 0.47) (0.62 0.50) (0.77 0.55) (0.95 0.42) (1.14 0.00) (1.38 0.00) (2.00 0.00)) 
+      (RSR  (0.00 1.0) (0.33 1) (1.00 0.5) (2.00 0.25)) 
+      (NNI_crit 1.40 [])
+	(NNI_inc 0.65 [])
+ )
+
+  (Prod 
+      (NCrop     0.4)
+      (E_Root     0.69) 
+      (E_Leaf     0.68)
+      (E_Stem     0.66)
+      (E_SOrg     0.70) 
+      (r_Root     0.015)
+      (r_Leaf     0.030)
+      (r_Stem     0.010)
+      (r_SOrg     0.010) 
+      (ShldResC   0.30)
+      (ReMobilDS  1.20)
+      (ReMobilRt  0.10)
+      (Large_RtDR 0.0) 
+      (ExfoliationFac 0.1)
+      (LfDR (0.00 0.00) (0.05 0.01) (0.20 0.01) (0.25 0.01) (0.90 0.03) (2.00 0.10))
+      (RtDR (0.00 0.00) (0.60 0.01) (1.20 0.015) (2.00 0.02))
+    )
+
+ (CrpN          
+        (PtSOrgCnc (1.12 0.0140) (2.00 0.0140))
+       (CrSOrgCnc (1.12 0.0120) (2.00 0.0120))
+      (NfSOrgCnc (1.12 0.0100) (2.00 0.0100))
+ 
+  (PtRootCnc (0.00 0.030)   (0.33 0.015) (1.00 0.0130)    (2.00 0.0150))
+  (CrRootCnc (0.00 0.030)   (0.33 0.015) (1.00 0.0130)    (2.00 0.0150))
+  (NfRootCnc (0.00 0.0130)  (0.33 0.01) (1.00 0.0060)    (2.00 0.0060)) 
+  
+  
+  (PtLeafCnc (0.00 0.05) (0.33 0.045) (0.50 0.038) (1.28 0.0340) (1.52 0.0210) (1.93 0.0170))
+  (CrLeafCnc (0.0 0.02) (0.33 0.030) (0.50 0.020) (1.28 0.02) (1.52 0.0160) (1.93 0.0130)) 
+  (NfLeafCnc (0.0 0.01) (0.33 0.020) (0.50 0.010) (1.28 0.0055) (1.52 0.0050) (1.93 0.0050))
+  
+  (PtStemCnc (0.0 0.05) (0.33 0.04) (0.50 0.0340) (1.12 0.0300) (1.28 0.0060) (1.53 0.0055) (1.93 0.0055)) 
+  (CrStemCnc (0.0 0.03) (0.33 0.02) (0.50 0.02) (1.12 0.01) (1.28 0.003) (1.53 0.003) (1.93 0.002))
+  (NfStemCnc (0.0 0.01) 	    (0.50 0.01) (1.12 0.002) (1.28 0.002) (1.53 0.002) (1.93 0.002))
+  ) 
+
+ )
+
+; END of "LessN_winterrye"
+
+(defcrop "LessN_winterrye_seedw" "LessN_winterrye"
+        (Seed original (initial_weight 75 [kg/ha])))
+        
+(defcrop "Winter Rye" "LessN_winterrye"
+	(Seed original (initial_weight 114 [kg/ha])))
+	
+;; END of file 
