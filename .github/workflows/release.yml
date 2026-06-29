@@ -1,0 +1,196 @@
+name: Build packages and publish release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag to validate against CMakeLists.txt, for example v7.1.12
+        required: true
+        type: string
+      publish:
+        description: Publish a GitHub release after building artifacts
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    name: Validate release tag
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.validate.outputs.should_release }}
+      release_tag: ${{ steps.validate.outputs.release_tag }}
+      publish_release: ${{ steps.validate.outputs.publish_release }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - id: validate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+          RELEASE_SHA: ${{ github.sha }}
+          REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
+        run: |
+          echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
+          echo "publish_release=false" >> "$GITHUB_OUTPUT"
+
+          if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Skipping: $RELEASE_TAG is not a stable release tag."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          cmake_version="$( sed -n '/project(/,/)/ s/.*VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt | head -n1 )"
+          if [ "v${cmake_version}" != "$RELEASE_TAG" ]; then
+            echo "Error: tag $RELEASE_TAG does not match project version v${cmake_version}."
+            exit 1
+          fi
+
+          if [ "$EVENT_NAME" = "push" ] || [ "$REQUEST_PUBLISH" = "true" ]; then
+            git fetch --no-tags origin main
+            main_sha="$( git rev-parse origin/main )"
+            if [ "$REF_NAME" != "main" ] && [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+              echo "Error: manual publish must run from the main branch."
+              exit 1
+            fi
+            if [ "$RELEASE_SHA" != "$main_sha" ]; then
+              echo "Error: release must point at the current origin/main HEAD ($main_sha)."
+              exit 1
+            fi
+            echo "publish_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Manual dry run: building artifacts without publishing a GitHub release."
+          fi
+
+          echo "should_release=true" >> "$GITHUB_OUTPUT"
+
+  build-linux:
+    name: Build Linux package
+    needs: preflight
+    if: needs.preflight.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake flatpak flatpak-builder libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+
+      - name: Configure Flathub
+        run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Build Linux packages
+        run: make linux
+
+      - name: Upload Linux packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-linux
+          path: |
+            build/linux-gcc-portable/*.deb
+            flatpak/*.flatpak
+          if-no-files-found: error
+
+  build-macos:
+    name: Build macOS package
+    needs: preflight
+    if: needs.preflight.outputs.should_release == 'true'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: brew install cmake boost suite-sparse pybind11
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.18"
+
+      - name: Build macOS package
+        run: make macos
+
+      - name: Upload macOS packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-macos
+          path: build/macos-clang-portable/*.zip
+          if-no-files-found: error
+
+  build-windows:
+    name: Build Windows packages
+    needs: preflight
+    if: needs.preflight.outputs.should_release == 'true'
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            make
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-suitesparse
+            mingw-w64-ucrt-x86_64-boost
+            mingw-w64-ucrt-x86_64-pybind11
+            mingw-w64-ucrt-x86_64-uv
+            nsis
+
+      - uses: actions/checkout@v5
+
+      - name: Build Windows packages
+        run: make windows
+
+      - name: Upload Windows packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-windows
+          path: |
+            build/mingw-gcc-portable/*.exe
+            build/mingw-gcc-portable/*.zip
+          if-no-files-found: error
+
+  publish-release:
+    name: Publish GitHub release
+    needs:
+      - preflight
+      - build-linux
+      - build-macos
+      - build-windows
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: dist
+
+      - name: Create or update GitHub release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.preflight.outputs.release_tag }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --generate-notes
+          gh release upload "$RELEASE_TAG" dist/* --clobber
