@@ -12,7 +12,6 @@
 
 #include <memory>
 #include <string>
-#include <tuple>
 #include <vector>
 
 // Forward declarations
@@ -179,14 +178,6 @@ public:
    * @return true if successful
    */
   bool set_groundwater_depth(double depth_cm);
-
-  /**
-   * Estimate specific yield via GW head perturbation + Richards re-solve.
-   * @param dh_cm  Head perturbation in cm (default 1 cm)
-   * @return Estimated Sy [-]
-   */
-  std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation(double dh_cm = 1.0);
 
   /**
    * Get pressure head at specific depth

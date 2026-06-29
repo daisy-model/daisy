@@ -171,8 +171,6 @@ public:
   void set_matrix (const std::vector<double>& h,
                    const std::vector<double>& Theta,
                    const std::vector<double>& q);
-  // Restore S_sum_ from a saved snapshot (used by estimate_sy_perturbation).
-  void restore_S_sum (const std::vector<double>& snapshot);
   void set_tertiary (const std::vector<double>& Theta_p,
                      const std::vector<double>& q_p,
                      const std::vector<double>& S_B2M,

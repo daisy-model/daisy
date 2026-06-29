@@ -24,7 +24,6 @@
 #define DAISY_H
 
 #include "programs/program.h"
-#include <tuple>
 #include <vector>
 #include <memory>
 
@@ -70,8 +69,6 @@ public:
   // Python/BMI coupling: forwarding to first (or pos-th) column.
   double get_groundwater_table (unsigned int pos = 0u) const; // [cm]
   void   set_groundwater_table (double cm, unsigned int pos = 0u);
-  std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation (double dh_cm, unsigned int pos = 0u);
   /** Hours from simulation start to the configured stop time, or -1 if open-ended. */
   double stop_duration_hours() const;
 

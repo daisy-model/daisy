@@ -315,11 +315,3 @@ void BMI::set_value(const std::string& name, const double* src)
   throw std::invalid_argument("Unknown input variable: " + name);
 }
 
-auto DaisyBMI::estimate_sy_perturbation(double dh_cm, unsigned int col)
-  -> std::tuple<double, std::vector<double>, std::vector<double>>
-{
-  if (col != 0u)
-    throw std::invalid_argument("estimate_sy_perturbation: col > 0 not yet supported via DaisyBMI");
-  return ctrl_.estimate_sy_perturbation(dh_cm);
-}
-

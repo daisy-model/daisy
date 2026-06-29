@@ -213,12 +213,6 @@ bool DaisyBMI::set_groundwater_depth(double depth_cm)
   return true;
 }
 
-auto DaisyBMI::estimate_sy_perturbation(double dh_cm)
-  -> std::tuple<double, std::vector<double>, std::vector<double>>
-{
-  return daisy().estimate_sy_perturbation(dh_cm);
-}
-
 Daisy& DaisyBMI::daisy_ref ()
 {
   return daisy ();

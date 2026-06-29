@@ -25,7 +25,6 @@
 
 #include "object_model/model_framed.h"
 #include "daisy/manager/irrigate.h"
-#include <tuple>
 #include <vector>
 
 class Frame;
@@ -150,11 +149,6 @@ public:
   virtual double              get_column_area ()   const;        // [cm²]
   virtual std::vector<double> get_layer_tops ()    const;        // [cm], negative downward
   virtual std::vector<double> get_layer_bottoms () const;        // [cm], negative downward
-  // Perturb GW table by dh_cm, re-run Richards, compute Sy = Σ(Δθ·Δz)/dh,
-  // then restore state.  Default: no-op returning 0.
-  virtual std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation (double /*dh_cm*/)
-    { return {0.0, {}, {}}; }
 
   // Current development stage for the crop named "crop", or
   // Crop::DSremove if no such crop is present.

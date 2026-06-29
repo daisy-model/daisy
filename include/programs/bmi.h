@@ -9,7 +9,6 @@
 #define BMI_H
 
 #include <string>
-#include <tuple>
 #include <vector>
 #include "programs/daisy_bmi.h"
 
@@ -92,15 +91,6 @@ public:
 
   /** Set scalar input value by variable name from src[0]. */
   void set_value(const std::string& name, const double* src);
-
-  /**
-   * Estimate specific yield for column `col` via head perturbation + Richards re-solve.
-   * @param dh_cm  Perturbation magnitude in cm (default 1 cm)
-   * @param col    Column index (default 0)
-   * @return Estimated Sy [-]
-   */
-  std::tuple<double, std::vector<double>, std::vector<double>>
-    estimate_sy_perturbation(double dh_cm = 1.0, unsigned int col = 0u);
 
   // ===== CONSTRUCTOR / DESTRUCTOR =====
   BMI();

@@ -239,13 +239,6 @@ SoilWater::set_matrix (const std::vector<double>& h,
   q_matrix_ = q;
 }
 
-void
-SoilWater::restore_S_sum (const std::vector<double>& snapshot)
-{
-  daisy_assert (S_sum_.size () == snapshot.size ());
-  S_sum_ = snapshot;
-}
-
 void 
 SoilWater::set_tertiary (const std::vector<double>& Theta_p,
                          const std::vector<double>& q_p,
