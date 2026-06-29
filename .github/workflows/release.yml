@@ -77,8 +77,29 @@ jobs:
 
           echo "should_release=true" >> "$GITHUB_OUTPUT"
 
-  build-linux:
-    name: Build Linux package
+  build-linux-deb:
+    name: Build Linux deb package
+    needs: preflight
+    if: needs.preflight.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+
+      - name: Build Linux deb package
+        run: make debian
+
+      - name: Upload Linux deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-linux-deb
+          path: build/linux-gcc-portable/*.deb
+          if-no-files-found: error
+
+  build-linux-flatpak:
+    name: Build Linux flatpak package
     needs: preflight
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
@@ -88,26 +109,31 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake flatpak flatpak-builder libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Restore Flatpak builder cache
+        uses: actions/cache@v4
+        with:
+          path: flatpak/.flatpak-builder
+          key: ${{ runner.os }}-flatpak-builder-${{ hashFiles('flatpak/dk.ku.daisy.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-flatpak-builder-
 
       - name: Configure Flathub
         run: sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-      - name: Build Linux packages
+      - name: Build Linux flatpak package
         run: |
-          make debian
           cd flatpak
-          sudo flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
+          sudo flatpak-builder --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
           sudo flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
           sudo chown -R "$( id -u )":"$( id -g )" .
 
-      - name: Upload Linux packages
+      - name: Upload Linux flatpak package
         uses: actions/upload-artifact@v4
         with:
-          name: release-linux
-          path: |
-            build/linux-gcc-portable/*.deb
-            flatpak/*.flatpak
+          name: release-linux-flatpak
+          path: flatpak/*.flatpak
           if-no-files-found: error
 
   build-macos:
@@ -179,7 +205,8 @@ jobs:
     name: Publish GitHub release
     needs:
       - preflight
-      - build-linux
+      - build-linux-deb
+      - build-linux-flatpak
       - build-macos
       - build-windows
     if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
