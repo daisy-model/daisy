@@ -94,7 +94,12 @@ jobs:
         run: sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Build Linux packages
-        run: make linux
+        run: |
+          make debian
+          cd flatpak
+          sudo flatpak-builder --force-clean --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
+          sudo flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
+          sudo chown -R "$( id -u )":"$( id -g )" .
 
       - name: Upload Linux packages
         uses: actions/upload-artifact@v4
