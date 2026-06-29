@@ -114,20 +114,21 @@ jobs:
       - name: Restore Flatpak builder cache
         uses: actions/cache@v4
         with:
-          path: flatpak/.flatpak-builder
+          path: |
+            flatpak/.flatpak-builder
+            flatpak/repo
           key: ${{ runner.os }}-flatpak-builder-${{ hashFiles('flatpak/dk.ku.daisy.yml') }}
           restore-keys: |
             ${{ runner.os }}-flatpak-builder-
 
       - name: Configure Flathub
-        run: sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Build Linux flatpak package
         run: |
           cd flatpak
-          sudo flatpak-builder --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
-          sudo flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
-          sudo chown -R "$( id -u )":"$( id -g )" .
+          flatpak-builder --user --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
+          flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
 
       - name: Upload Linux flatpak package
         uses: actions/upload-artifact@v4
