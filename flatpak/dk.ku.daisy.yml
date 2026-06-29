@@ -52,6 +52,7 @@ modules:
   - name: cxsparse
     buildsystem: cmake
     config-opts:
+      - -DCMAKE_INSTALL_LIBDIR=lib
       - -DSUITESPARSE_ENABLE_PROJECTS=cxsparse;suitesparse_config
       - -DBUILD_SHARED_LIBS=ON  # Cant get it to work with static linkage against cxsparse
       - -DBUILD_STATIC_LIBS=OFF
@@ -69,9 +70,8 @@ modules:
       - -DBoost_USE_STATIC_RUNTIME=ON
       - -DDAISY_FLATPAK=ON
     sources:
-      - type: git
-        url: https://github.com/daisy-model/daisy.git
-        branch: main
+      - type: dir
+        path: ..
 
   - name: launcher
     buildsystem: simple

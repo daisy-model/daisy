@@ -18,6 +18,7 @@ jobs:
       uses: astral-sh/setup-uv@v7
       with:
         version: "0.9.18"
+        enable-cache: false
 
     - name: Install python
       run: uv python install 3.13
@@ -45,7 +46,7 @@ jobs:
 
     - name: Upload test log
       if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: test-output-ubuntu
         path: build/Testing

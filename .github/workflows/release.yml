@@ -77,8 +77,29 @@ jobs:
 
           echo "should_release=true" >> "$GITHUB_OUTPUT"
 
-  build-linux:
-    name: Build Linux package
+  build-linux-deb:
+    name: Build Linux deb package
+    needs: preflight
+    if: needs.preflight.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+
+      - name: Build Linux deb package
+        run: make debian
+
+      - name: Upload Linux deb package
+        uses: actions/upload-artifact@v5
+        with:
+          name: release-linux-deb
+          path: build/linux-gcc-portable/*.deb
+          if-no-files-found: error
+
+  build-linux-flatpak:
+    name: Build Linux flatpak package
     needs: preflight
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
@@ -88,21 +109,32 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake flatpak flatpak-builder libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Restore Flatpak builder cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            flatpak/.flatpak-builder
+            flatpak/repo
+          key: ${{ runner.os }}-flatpak-builder-${{ hashFiles('flatpak/dk.ku.daisy.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-flatpak-builder-
 
       - name: Configure Flathub
-        run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-      - name: Build Linux packages
-        run: make linux
+      - name: Build Linux flatpak package
+        run: |
+          cd flatpak
+          flatpak-builder --user --state-dir .flatpak-builder --install-deps-from=flathub --repo=repo build dk.ku.daisy.yml
+          flatpak build-bundle repo "daisy-$( ../scripts/get_version_from_cmake.sh ).flatpak" dk.ku.daisy
 
-      - name: Upload Linux packages
-        uses: actions/upload-artifact@v4
+      - name: Upload Linux flatpak package
+        uses: actions/upload-artifact@v5
         with:
-          name: release-linux
-          path: |
-            build/linux-gcc-portable/*.deb
-            flatpak/*.flatpak
+          name: release-linux-flatpak
+          path: flatpak/*.flatpak
           if-no-files-found: error
 
   build-macos:
@@ -113,6 +145,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Remove unused untrusted Homebrew tap
+        run: brew untap aws/tap || true
+
       - name: Install build dependencies
         run: brew install cmake boost suite-sparse pybind11
 
@@ -120,12 +155,13 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           version: "0.9.18"
+          enable-cache: false
 
       - name: Build macOS package
         run: make macos
 
       - name: Upload macOS packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: release-macos
           path: build/macos-clang-portable/*.zip
@@ -154,7 +190,7 @@ jobs:
             mingw-w64-ucrt-x86_64-boost
             mingw-w64-ucrt-x86_64-pybind11
             mingw-w64-ucrt-x86_64-uv
-            nsis
+            mingw-w64-ucrt-x86_64-nsis
 
       - uses: actions/checkout@v5
 
@@ -162,7 +198,7 @@ jobs:
         run: make windows
 
       - name: Upload Windows packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: release-windows
           path: |
@@ -174,7 +210,8 @@ jobs:
     name: Publish GitHub release
     needs:
       - preflight
-      - build-linux
+      - build-linux-deb
+      - build-linux-flatpak
       - build-macos
       - build-windows
     if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
