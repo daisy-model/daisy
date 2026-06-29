@@ -69,7 +69,7 @@ modules:
       - -DBoost_USE_STATIC_RUNTIME=ON
       - -DDAISY_FLATPAK=ON
     sources:
-      - type: git
+      - type: dir
         path: ..
 
   - name: launcher
