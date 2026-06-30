@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "name": "MinGW",
+      "compileCommands": "${workspaceFolder}/build/release/compile_commands.json",
+      "intelliSenseMode": "gcc-x64"
+    }
+  ],
+  "version": 4
+}

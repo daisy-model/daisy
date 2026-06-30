@@ -57,6 +57,7 @@
 #include "object_model/frame_model.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
+#include "daisy/richards_snapshots.h"
 #include <sstream>
 
 struct ColumnStandard : public Column
@@ -86,6 +87,22 @@ struct ColumnStandard : public Column
   double second_year_utilization_;
   std::vector<double> tillage_age;
   std::unique_ptr<Irrigation> irrigation;
+
+  // BMI coupling: cached arrays (filled in tick_move, valid after each tick).
+  double bottom_flux_cached_ = 0.0;                // [cm/h]
+  std::vector<double> flux_array_cached_;          // [cm/h], bottom edge of each cell
+  std::vector<double> h_array_cached_;             // [cm], pressure head per layer
+  std::vector<double> theta_array_cached_;         // [-], volumetric water content
+  std::vector<double> theta_sat_cached_;           // [-], saturated θ (static soil param)
+  mutable double runoff_rate_cached_ = 0.0;        // [mm], accumulated since last read
+
+  // Richards solver context — needed to re-run movement->tick() in perturbation_tick().
+  Time             time_last_;
+  const Weather*   weather_last_ = nullptr;
+  const Scope*     scope_last_   = nullptr;
+  // Pre/post-Richards snapshots.  snap_pre() is called just before movement->tick(),
+  // snap_post() just after.  perturbation_tick() uses both to run atomically.
+  RichardsSnapshots snapshots_;
 
   // Log variables.
   double yield_DM;
@@ -183,6 +200,26 @@ public:
   double crop_sorg_dm (const symbol name) const;
   std::string crop_names () const;
   double bottom () const;
+
+  // BMI coupling.
+  double get_groundwater_table () const override;
+  void   set_groundwater_table (double cm) override;
+  double get_bottom_flux () const override;
+  double get_column_area () const override;
+  std::vector<double> get_layer_tops () const override;
+  std::vector<double> get_layer_bottoms () const override;
+  std::vector<double> get_flux_array () const override;
+  std::vector<double> get_h_array () const override;
+  std::vector<double> get_theta_array () const override;
+  std::vector<double> get_theta_sat_array () const override;
+  double get_runoff_rate () const override;
+  std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
+    perturbation_tick (double dh_cm) override;
+
+  // Solute BMI coupling.
+  std::vector<symbol> get_chemical_names () const override;
+  std::vector<double> get_C_array (symbol chem) const override;
+  void set_C_array (symbol chem, const std::vector<double>& C) override;
 
   // Simulation.
   void clear ();
@@ -848,6 +885,9 @@ ColumnStandard::tick_move (const Metalib& metalib,
   soil_heat->tick (geometry, *soil, *soil_water, T_bottom, *movement, 
                    surface->temperature (), dt, msg);
   soil_water->reset_old (); // Set Theta_old to Theta here.
+
+  // Snapshot A: h, theta, S_sum and GW table just before Richards solve.
+  snapshots_.snap_pre (*soil_water, *groundwater);
   chemistry->mass_balance (geometry, *soil_water);
   soil_water->tick_ice (geometry, *soil, dt, msg); 
   movement->tick (*soil, *soil_water, *soil_heat,
@@ -891,6 +931,30 @@ ColumnStandard::tick_move (const Metalib& metalib,
     }
   chemistry->update_C (*soil, *soil_water, *soil_heat, *awi);
   chemistry->mass_balance (geometry, *soil_water);
+
+  // BMI: cache post-Richards arrays and runoff for BMI getters.
+  {
+    const size_t n = geometry.cell_size ();
+    time_last_    = time_end;
+    weather_last_ = weather.get () ? weather.get () : global_weather;
+    scope_last_   = extern_scope;
+
+    bottom_flux_cached_ = soil_water->q_matrix (n);
+
+    flux_array_cached_.resize (n);
+    h_array_cached_.resize (n);
+    theta_array_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      {
+        flux_array_cached_[i]  = soil_water->q_matrix (i + 1); // [cm/h]
+        h_array_cached_[i]     = soil_water->h (i);            // [cm]
+        theta_array_cached_[i] = soil_water->Theta (i);        // [-]
+      }
+    runoff_rate_cached_ += surface->runoff_rate () * surface->ponding_average () * dt; // [mm]
+
+    // Snapshot B: post-Richards state for atomic restore in perturbation_tick().
+    snapshots_.snap_post (*soil_water, *groundwater);
+  }
 }
 
 bool
@@ -1211,6 +1275,14 @@ ColumnStandard::initialize (const Metalib& metalib,
   // Soil conductivity and capacity logs.
   soil_heat->tick_after (geometry.cell_size (), *soil, *soil_water, msg);
 
+  // BMI: cache static soil parameter theta_sat once after initialization.
+  {
+    const size_t n = geometry.cell_size ();
+    theta_sat_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      theta_sat_cached_[i] = soil->Theta_sat (i);
+  }
+
   // Litter layer.
   litter->tick (*bioclimate, geometry, *soil, *soil_water, *soil_heat,
 		*organic_matter, *chemistry, 0.0, msg);
@@ -1363,3 +1435,155 @@ Hansen et.al. 1990. with generic movement in soil.")
 } column_syntax;
 
 // column_std.C ends here.
+
+// ===== BMI getter implementations =====
+
+double
+ColumnStandard::get_groundwater_table () const
+{ return groundwater->table (); }
+
+void
+ColumnStandard::set_groundwater_table (double cm)
+{ groundwater->set_table (cm); }
+
+double
+ColumnStandard::get_bottom_flux () const
+{ return bottom_flux_cached_; }
+
+double
+ColumnStandard::get_column_area () const
+{ return area; }
+
+std::vector<double>
+ColumnStandard::get_layer_tops () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> tops (n);
+  for (size_t i = 0; i < n; ++i)
+    tops[i] = geometry.cell_top (i);
+  return tops;
+}
+
+std::vector<double>
+ColumnStandard::get_layer_bottoms () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> bottoms (n);
+  for (size_t i = 0; i < n; ++i)
+    bottoms[i] = geometry.cell_bottom (i);
+  return bottoms;
+}
+
+std::vector<double>
+ColumnStandard::get_flux_array () const
+{ return flux_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_h_array () const
+{ return h_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_array () const
+{ return theta_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_sat_array () const
+{ return theta_sat_cached_; }
+
+double
+ColumnStandard::get_runoff_rate () const
+{
+  const double v = runoff_rate_cached_;
+  runoff_rate_cached_ = 0.0;
+  return v;
+}
+
+// ===== Solute BMI coupling =====
+
+std::vector<symbol>
+ColumnStandard::get_chemical_names () const
+{
+  std::vector<symbol> names;
+  for (const Chemical* chem : chemistry->all ())
+    names.push_back (chem->objid);
+  return names;
+}
+
+std::vector<double>
+ColumnStandard::get_C_array (const symbol chem) const
+{
+  if (!chemistry->know (chem))
+    return {};
+  const Chemical& ch = chemistry->find (chem);
+  const size_t n = geometry.cell_size ();
+  std::vector<double> result (n);
+  for (size_t i = 0; i < n; i++)
+    result[i] = ch.C_primary (i);
+  return result;
+}
+
+void
+ColumnStandard::set_C_array (const symbol chem, const std::vector<double>& C)
+{
+  if (!chemistry->know (chem)) return;
+  const size_t n = geometry.cell_size ();
+  Chemical& ch = chemistry->find (chem);
+  for (size_t c = 0; c < n && c < C.size (); c++)
+    ch.set_C_raw (c, C[c], soil_water->Theta_primary (c));
+}
+
+auto ColumnStandard::perturbation_tick (double dh_cm)
+  -> std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
+{
+  const std::tuple<std::vector<double>, std::vector<double>, std::vector<double>> failed
+    = {{}, {}, {}};
+
+  if (!weather_last_ || !scope_last_ || !snapshots_.ready ())
+    return failed;
+
+  // Clamp dh so GW cannot be raised above the surface.
+  // If table_pre() == 0 the groundwater object uses free drainage (no imposed
+  // table); the actual water table is implicit in the h-field.  In that case
+  // we fall back to the column bottom depth so small perturbations always pass.
+  const double gw        = snapshots_.table_pre ();   // [cm], neg = below surface
+  const double limit     = (gw < 0.0) ? -gw : -geometry.bottom ();
+  const double dh_safe   = std::min (dh_cm, limit);
+  if (dh_safe <= 0.0)
+    return failed;
+
+  const size_t n = geometry.cell_size ();
+
+  // RAII guard: always restore to snapshot B when this scope exits.
+  struct Guard
+  {
+    ColumnStandard& col;
+    ~Guard () { col.snapshots_.restore_post (*col.soil_water, *col.groundwater); }
+  } guard {*this};
+
+  // Restore to snapshot A and raise GW by dh_safe.
+  snapshots_.restore_pre (*soil_water, *groundwater);
+  groundwater->set_table (snapshots_.table_pre () + dh_safe);
+
+  // Re-run Richards only — not the full tick_move.
+  soil_water->reset_old ();
+  try
+    {
+      movement->tick (*soil, *soil_water, *soil_heat,
+                      *surface, *groundwater,
+                      time_last_, *scope_last_, *weather_last_,
+                      24.0, Treelog::null ());
+    }
+  catch (...) {}
+
+  // Read perturbed result — Sy is computed by the caller.
+  std::vector<double> theta_C (n), flux_C (n), h_C (n);
+  for (size_t i = 0; i < n; ++i)
+    {
+      theta_C[i] = soil_water->Theta (i);
+      h_C[i]     = soil_water->h (i);
+      flux_C[i]  = soil_water->q_matrix (i + 1) * 10.0 * 24.0; // cm/h → mm/day
+    }
+
+  return {theta_C, flux_C, h_C};
+  // Guard destructor fires here → snapshots_.restore_post() restores state B.
+}

@@ -207,7 +207,9 @@ struct ChemicalBase : public Chemical
                         double from, double to) const; // [g/cm^2]
   double S_secondary (size_t) const;
   double S_primary (size_t) const;
-  
+
+  void   set_C_raw (size_t cell, double C, double Theta) override;
+
   // Transport.
   void set_macro_flux (size_t e, double value);
   void set_primary (const Soil& soil, const SoilWater& soil_water,
@@ -462,6 +464,13 @@ ChemicalBase::S_secondary (size_t i) const
 double 
 ChemicalBase::S_primary (size_t i) const
 { return S_primary_[i]; }
+
+void ChemicalBase::set_C_raw (const size_t cell, const double C, const double Theta)
+{
+  C_primary_[cell] = C;
+  M_primary_[cell] = C * Theta;
+  M_total_[cell]   = M_primary_[cell] + M_secondary_[cell];
+}
 
 void 
 ChemicalBase::set_primary (const Soil& soil, const SoilWater& soil_water,
