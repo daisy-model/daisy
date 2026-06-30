@@ -56,7 +56,7 @@ Push the new tag to GitHub
 
 Pushing the tag starts the GitHub release workflow. It will build and publish these release artifacts:
 
-* Linux: `.deb` and `.flatpak`
+* Linux: `.deb`, `.flatpak`, and the generated documentation PDFs
 * MacOS: `.zip`
 * Windows: `.exe` installer and `.zip`
 

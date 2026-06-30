@@ -86,16 +86,27 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Install build dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gnuplot libsuitesparse-dev libboost-filesystem-dev python3-pybind11 texlive-fonts-recommended texlive-latex-extra
 
       - name: Build Linux deb package
-        run: make debian
+        run: |
+          make debian
+          make linux-doc
 
       - name: Upload Linux deb package
         uses: actions/upload-artifact@v5
         with:
           name: release-linux-deb
           path: build/linux-gcc-portable/*.deb
+          if-no-files-found: error
+
+      - name: Upload Linux documentation PDFs
+        uses: actions/upload-artifact@v5
+        with:
+          name: release-linux-docs
+          path: build/linux-gcc-portable/doc/*.pdf
           if-no-files-found: error
 
   build-linux-flatpak:
