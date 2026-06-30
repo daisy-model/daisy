@@ -102,15 +102,22 @@ private:
   double current_time_days_; // updated each update()
   double dt_days_;           // timestep size in days
 
-  static const std::vector<std::string> INPUT_VARS;
-  static const std::vector<std::string> OUTPUT_VARS;
+  // Variable lists — built dynamically after initialize().
+  std::vector<std::string> input_vars_;
+  std::vector<std::string> output_vars_;
+
+  static const std::vector<std::string> BASE_INPUT_VARS;
+  static const std::vector<std::string> BASE_OUTPUT_VARS;
+
+  void build_var_lists ();  // call after initialize()
 
   double get_output_value(const std::string& name) const;
 
 protected:
   /** Direct access to the Daisy simulation object for use by DaisyAPI
    *  extension methods.  Same Daisy& that DaisyBMI uses internally. */
-  Daisy& daisy ();
+  Daisy&       daisy ();
+  const Daisy& daisy () const;
 };
 
 #endif // DAISY_BMI_H

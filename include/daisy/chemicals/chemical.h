@@ -101,6 +101,10 @@ public:
   virtual double S_secondary (size_t i) const = 0;
   virtual double S_primary (size_t i) const = 0;
   
+  // BMI coupling — direct concentration override (buffer-zone sync).
+public:
+  virtual void   set_C_raw (size_t cell, double C, double Theta) = 0;
+
   // Transport.
 public:
   virtual void set_primary (const Soil& soil, const SoilWater& soil_water,

@@ -129,7 +129,14 @@ PYBIND11_MODULE(daisy_bmi, m)
        return arr;
      },
      py::arg("name"),
-     "Get an array output value as a numpy array of doubles");
+     "Get an array output value as a numpy array of doubles")
+
+    .def("set_value_array",
+     [](BMI& self, const std::string& name, py::array_t<double, py::array::c_style> arr) {
+       self.set_value(name, arr.data());
+     },
+     py::arg("name"), py::arg("values"),
+     "Set an array input value from a numpy array of doubles");
 
   // ---------------------------------------------------------------------------
   // DaisyAPI — inherits all BMI methods, adds Daisy-specific extensions.
@@ -145,19 +152,8 @@ PYBIND11_MODULE(daisy_bmi, m)
          R"pbdoc(
  Re-run Richards with the GW table raised by dh_cm and return the perturbed
  soil state.  Daisy is always restored to the real post-tick result (RAII guard).
+         )pbdoc")
 
- Returns
- -------
- tuple(theta_C, flux_mm_d, h_C)
-   theta_C    : list[float]  volumetric water content per layer  [-]
-   flux_mm_d  : list[float]  downward flux at bottom of each layer [mm/day]
-   h_C        : list[float]  pressure head per layer  [cm]
 
- Compute Sy in Python
- --------------------
- theta_B = api.get_value_array("soil_water__content").tolist()
- dz      = [top - bot for top, bot in zip(api.get_layer_tops(), api.get_layer_bottoms())]
- theta_C, _, _ = api.perturbation_tick(dh_cm)
- Sy = sum((c - b) * dz_i for c, b, dz_i in zip(theta_C, theta_B, dz)) / dh_cm
-         )pbdoc");
+    ;
 }

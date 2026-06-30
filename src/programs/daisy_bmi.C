@@ -1,4 +1,4 @@
-// daisy_bmi.C -- Python-controllable Daisy interface implementation
+// daisy_bmi.C -- BMI-controllable Daisy interface implementation
 //
 // This file is part of Daisy.
 
@@ -10,6 +10,7 @@
 #include "daisy/daisy.h"
 #include "daisy/daisy_time.h"
 #include "daisy/field.h"
+#include "object_model/symbol.h"
 #include <filesystem>
 #include <limits>
 #include <stdexcept>
@@ -218,6 +219,11 @@ Daisy& DaisyBMI::daisy_ref ()
   return daisy ();
 }
 
+const Daisy& DaisyBMI::daisy_ref () const
+{
+  return daisy ();
+}
+
 double DaisyBMI::get_pressure_head_at_depth(double) const
 {
   return 0.0;  // stub
@@ -358,3 +364,22 @@ std::vector<double> DaisyBMI::get_layer_bottoms() const
 
 int DaisyBMI::get_soil_layer_count() const
 { return static_cast<int>(daisy().get_layer_tops().size()); }
+
+// ===== SOLUTE BMI COUPLING =====
+
+std::vector<std::string> DaisyBMI::get_chemical_names () const
+{
+  std::vector<std::string> names;
+  for (const symbol& s : daisy ().get_chemical_names ())
+    names.push_back (s.name ());
+  return names;
+}
+
+std::vector<double> DaisyBMI::get_solute_array (const std::string& chem_name) const
+{ return daisy().get_C_array (symbol (chem_name)); }
+
+void DaisyBMI::set_solute_array (const std::string& chem_name,
+                                  const std::vector<double>& C)
+{ daisy().set_C_array (symbol (chem_name), C); }
+
+

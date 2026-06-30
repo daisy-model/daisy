@@ -1,4 +1,4 @@
-// daisy_bmi.h -- Python-controllable Daisy interface
+// daisy_bmi.h -- BMI-controllable Daisy interface.
 //
 // This file is part of Daisy.
 // 
@@ -20,9 +20,9 @@ class Daisy;
 
 /**
  * @class DaisyBMI
- * @brief Python-friendly interface to control Daisy simulation externally
+ * @brief BMI-friendly interface to control Daisy simulation externally
  * 
- * Allows Python code to:
+ * Allows external code to:
  * - Initialize simulation from .dai config file
  * - Advance simulation per timestep
  * - Read simulation state (time, water, ET, recharge, etc.)
@@ -38,7 +38,7 @@ private:
   bool running;
 
   // Elapsed simulation time in days, incremented each tick().
-  // Matches MODFLOW's approach: a simple counter, independent of calendar dates.
+  // Matches a simple counter, independent of calendar dates.
   double elapsed_days_ = 0.0;
 
   // Private helper — returns Daisy& from toplevel (after initialize)
@@ -467,7 +467,23 @@ public:
   /** Direct access to the Daisy simulation object.
    *  For use by DaisyAPI extension methods — not intended for BMI callers.
    *  Public because DaisyAPI does not inherit DaisyBMI. */
-  Daisy& daisy_ref ();
+  Daisy&       daisy_ref ();
+  const Daisy& daisy_ref () const;
+
+  // ===== SOLUTE BMI COUPLING =====
+
+  /** Names of all traced chemicals in the simulation. */
+  std::vector<std::string> get_chemical_names () const;
+
+  /** Get primary-domain concentration array for a named chemical [g/cm³],
+   *  one value per soil layer (top to bottom). */
+  std::vector<double> get_solute_array (const std::string& chem_name) const;
+
+  /** Overwrite the primary-domain concentration array for a named chemical.
+   *  Used for buffer-zone sync after the groundwater model returns C_gw. */
+  void set_solute_array (const std::string& chem_name,
+                         const std::vector<double>& C);
+
 };
 
 #endif // DAISY_BMI_H

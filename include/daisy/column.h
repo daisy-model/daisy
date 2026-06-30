@@ -138,7 +138,7 @@ public:
 					  double to) const = 0; 
   virtual double second_year_utilization () const = 0;
 
-  // Python/BMI coupling: groundwater table and soil state arrays.
+  // BMI coupling: groundwater table and soil state arrays.
   virtual double get_groundwater_table () const { return 0.0; }  // [cm], neg = below surface
   virtual void   set_groundwater_table (double) {}               // [cm]
   virtual double get_bottom_flux ()       const { return 0.0; }  // [cm/h], + = downward
@@ -150,6 +150,11 @@ public:
   virtual double              get_column_area ()   const;        // [cm²]
   virtual std::vector<double> get_layer_tops ()    const;        // [cm], negative downward
   virtual std::vector<double> get_layer_bottoms () const;        // [cm], negative downward
+
+  // Solute BMI coupling.
+  virtual std::vector<symbol> get_chemical_names () const { return {}; }
+  virtual std::vector<double> get_C_array (symbol chem) const { return {}; }
+  virtual void set_C_array (symbol chem, const std::vector<double>& C) {}
   // Perturb GW table by dh_cm, re-run Richards (only), then restore to the
   // post-tick state.  Returns {theta_perturbed, flux_mm_d, h_cm} arrays.
   // Sy is computed by the caller: Sy = Σ((θ_C−θ_B)·Δz) / dh.

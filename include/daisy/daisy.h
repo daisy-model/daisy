@@ -67,7 +67,7 @@ public:
   bool is_running () const;
   void stop ();
 
-  // Python/BMI coupling: forwarding to first (or pos-th) column.
+  // BMI coupling: forwarding to first (or pos-th) column.
   double get_groundwater_table (unsigned int pos = 0u) const; // [cm]
   void   set_groundwater_table (double cm, unsigned int pos = 0u);
   std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
@@ -84,6 +84,11 @@ public:
   double              get_column_area      (unsigned int pos = 0u) const; // [cm²]
   std::vector<double> get_layer_tops       (unsigned int pos = 0u) const; // [cm]
   std::vector<double> get_layer_bottoms    (unsigned int pos = 0u) const; // [cm]
+
+  // Solute BMI coupling.
+  std::vector<symbol> get_chemical_names (unsigned int pos = 0u) const;
+  std::vector<double> get_C_array (symbol chem, unsigned int pos = 0u) const;
+  void set_C_array   (symbol chem, const std::vector<double>& C, unsigned int pos = 0u);
 
   // UI.
 public:

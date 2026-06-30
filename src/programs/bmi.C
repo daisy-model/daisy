@@ -11,13 +11,14 @@
 // ===== STATIC VARIABLE LISTS =====
 
 Daisy& BMI::daisy () { return ctrl_.daisy_ref (); }
+const Daisy& BMI::daisy () const { return ctrl_.daisy_ref (); }
 
-const std::vector<std::string> BMI::INPUT_VARS = {
+const std::vector<std::string> BMI::BASE_INPUT_VARS = {
   "groundwater__depth",       // [cm] below surface
   "irrigation__rate",         // [mm/day]
 };
 
-const std::vector<std::string> BMI::OUTPUT_VARS = {
+const std::vector<std::string> BMI::BASE_OUTPUT_VARS = {
   "soil_water__recharge_rate",                // [mm/day]
   "land_surface__evapotranspiration_rate",    // [mm/day]
   "soil_water__transpiration_rate",           // [mm/day]
@@ -37,6 +38,21 @@ const std::vector<std::string> BMI::OUTPUT_VARS = {
   "soil__theta_sat",                          // [-] array, N layers (static soil param)
 };
 
+// Build per-chemical BMI variable names from the traced chemicals.
+// Called once after initialize().
+void BMI::build_var_lists ()
+{
+  input_vars_  = BASE_INPUT_VARS;
+  output_vars_ = BASE_OUTPUT_VARS;
+
+  // soil_solute_<NAME>__concentration: output (get) and input (set) array [g/cm³]
+  for (const std::string& name : ctrl_.get_chemical_names ())
+    {
+      output_vars_.push_back ("soil_solute_" + name + "__concentration");
+      input_vars_.push_back  ("soil_solute_" + name + "__concentration");
+    }
+}
+
 // ===== CONSTRUCTOR / DESTRUCTOR =====
 
 BMI::BMI()
@@ -44,6 +60,8 @@ BMI::BMI()
   , current_time_days_(0.0)
   , dt_days_(1.0 / 24.0)   // default: hourly timestep
 {
+  input_vars_  = BASE_INPUT_VARS;
+  output_vars_ = BASE_OUTPUT_VARS;
 }
 
 BMI::~BMI()
@@ -98,6 +116,9 @@ void BMI::initialize(const std::string& config_file)
   dt_days_ = ctrl_.get_current_dt_days();
   if (dt_days_ <= 0.0)
     dt_days_ = 1.0 / 24.0; // fallback: hourly
+
+  // Build dynamic variable lists now that chemicals are known.
+  build_var_lists ();
 }
 
 void BMI::update()
@@ -142,12 +163,12 @@ std::string BMI::get_component_name() const
 
 std::vector<std::string> BMI::get_input_var_names() const
 {
-  return INPUT_VARS;
+  return input_vars_;
 }
 
 std::vector<std::string> BMI::get_output_var_names() const
 {
-  return OUTPUT_VARS;
+  return output_vars_;
 }
 
 // ===== TIME =====
@@ -204,6 +225,11 @@ std::string BMI::get_var_units(const std::string& name) const
   if (name == "soil_water__pressure_head")             return "cm";
   if (name == "soil_water__theta")                     return "1";
   if (name == "soil__theta_sat")                       return "1";
+  // Solute variables: soil_solute_<NAME>__concentration
+  if (name.rfind ("soil_solute_", 0) == 0
+      && name.size () > 15
+      && name.substr (name.size () - 15) == "__concentration")
+    return "g cm-3";
   throw std::invalid_argument("Unknown variable: " + name);
 }
 
@@ -213,6 +239,11 @@ int BMI::get_var_nbytes(const std::string& name) const {
       || name == "soil_water__pressure_head"
       || name == "soil_water__theta"
       || name == "soil__theta_sat")
+    return ctrl_.get_soil_layer_count() * sizeof(double);
+  // Solute concentration array: nlayers long.
+  if (name.rfind ("soil_solute_", 0) == 0
+      && name.size () > 15
+      && name.substr (name.size () - 15) == "__concentration")
     return ctrl_.get_soil_layer_count() * sizeof(double);
   return sizeof(double);
 }
@@ -237,6 +268,20 @@ int BMI::get_var_grid(const std::string& /*name*/) const
 int BMI::get_grid_rank(int /*grid*/) const  { return 0; }
 int BMI::get_grid_size(int /*grid*/) const  { return 1; }
 std::string BMI::get_grid_type(int /*grid*/) const { return "scalar"; }
+
+// ===== HELPERS =====
+
+// Extract chemical name from "soil_solute_<NAME>__<suffix>".
+// Returns empty string if pattern doesn't match.
+static std::string extract_solute_name (const std::string& name,
+                                        const std::string& suffix)
+{
+  static const std::string prefix = "soil_solute_";
+  if (name.rfind (prefix, 0) != 0) return {};
+  if (name.size () <= prefix.size () + suffix.size ()) return {};
+  if (name.substr (name.size () - suffix.size ()) != suffix) return {};
+  return name.substr (prefix.size (), name.size () - prefix.size () - suffix.size ());
+}
 
 // ===== GET / SET =====
 
@@ -296,7 +341,16 @@ void BMI::get_value(const std::string& name, double* dest) const
     std::copy(v.begin(), v.end(), dest);
     return;
   }
-  dest[0] = get_output_value(name);   // bestaand pad voor scalars
+  // Solute concentration array.
+  {
+    const std::string chem = extract_solute_name (name, "__concentration");
+    if (!chem.empty ()) {
+      auto v = ctrl_.get_solute_array (chem);
+      std::copy (v.begin (), v.end (), dest);
+      return;
+    }
+  }
+  dest[0] = get_output_value(name);   // scalar fallback
 }
 
 void BMI::set_value(const std::string& name, const double* src)
@@ -309,8 +363,16 @@ void BMI::set_value(const std::string& name, const double* src)
   if (name == "irrigation__rate")
   {
     // TODO: expose irrigation setter in DaisyBMI
-    // ctrl_.set_irrigation_rate(src[0]);
     throw std::runtime_error("irrigation__rate setter not yet implemented in DaisyBMI");
+  }
+  // Solute concentration array (buffer-zone sync — overwrites C and M).
+  {
+    const std::string chem = extract_solute_name (name, "__concentration");
+    if (!chem.empty ()) {
+      const int n = get_var_nbytes (name) / static_cast<int> (sizeof (double));
+      ctrl_.set_solute_array (chem, std::vector<double> (src, src + n));
+      return;
+    }
   }
   throw std::invalid_argument("Unknown input variable: " + name);
 }

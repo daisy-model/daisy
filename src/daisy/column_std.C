@@ -88,7 +88,7 @@ struct ColumnStandard : public Column
   std::vector<double> tillage_age;
   std::unique_ptr<Irrigation> irrigation;
 
-  // Python/BMI coupling: cached arrays (filled in tick_move, valid after each tick).
+  // BMI coupling: cached arrays (filled in tick_move, valid after each tick).
   double bottom_flux_cached_ = 0.0;                // [cm/h]
   std::vector<double> flux_array_cached_;          // [cm/h], bottom edge of each cell
   std::vector<double> h_array_cached_;             // [cm], pressure head per layer
@@ -201,7 +201,7 @@ public:
   std::string crop_names () const;
   double bottom () const;
 
-  // Python/BMI coupling.
+  // BMI coupling.
   double get_groundwater_table () const override;
   void   set_groundwater_table (double cm) override;
   double get_bottom_flux () const override;
@@ -215,6 +215,11 @@ public:
   double get_runoff_rate () const override;
   std::tuple<std::vector<double>, std::vector<double>, std::vector<double>>
     perturbation_tick (double dh_cm) override;
+
+  // Solute BMI coupling.
+  std::vector<symbol> get_chemical_names () const override;
+  std::vector<double> get_C_array (symbol chem) const override;
+  void set_C_array (symbol chem, const std::vector<double>& C) override;
 
   // Simulation.
   void clear ();
@@ -1431,7 +1436,7 @@ Hansen et.al. 1990. with generic movement in soil.")
 
 // column_std.C ends here.
 
-// ===== Python/BMI getter implementations =====
+// ===== BMI getter implementations =====
 
 double
 ColumnStandard::get_groundwater_table () const
@@ -1491,6 +1496,40 @@ ColumnStandard::get_runoff_rate () const
   const double v = runoff_rate_cached_;
   runoff_rate_cached_ = 0.0;
   return v;
+}
+
+// ===== Solute BMI coupling =====
+
+std::vector<symbol>
+ColumnStandard::get_chemical_names () const
+{
+  std::vector<symbol> names;
+  for (const Chemical* chem : chemistry->all ())
+    names.push_back (chem->objid);
+  return names;
+}
+
+std::vector<double>
+ColumnStandard::get_C_array (const symbol chem) const
+{
+  if (!chemistry->know (chem))
+    return {};
+  const Chemical& ch = chemistry->find (chem);
+  const size_t n = geometry.cell_size ();
+  std::vector<double> result (n);
+  for (size_t i = 0; i < n; i++)
+    result[i] = ch.C_primary (i);
+  return result;
+}
+
+void
+ColumnStandard::set_C_array (const symbol chem, const std::vector<double>& C)
+{
+  if (!chemistry->know (chem)) return;
+  const size_t n = geometry.cell_size ();
+  Chemical& ch = chemistry->find (chem);
+  for (size_t c = 0; c < n && c < C.size (); c++)
+    ch.set_C_raw (c, C[c], soil_water->Theta_primary (c));
 }
 
 auto ColumnStandard::perturbation_tick (double dh_cm)

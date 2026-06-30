@@ -2,7 +2,7 @@
 //
 // DaisyAPI inherits BMI (pure BMI 2.0) and adds methods that are
 // specific to Daisy coupling but are not part of the BMI standard.
-// This is the class exposed to Python via api_bindings.cpp.
+// daisy_api.h -- Daisy-specific extensions on top of the BMI interface.indings.cpp.
 //
 // Adding a new non-BMI method:
 //   1. Declare it here.

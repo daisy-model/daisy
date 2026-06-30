@@ -568,7 +568,7 @@ the simulation.  Can be overwritten by column specific weather.");
 Daisy::~Daisy ()
 { }
 
-// ===== Python/BMI forwarding methods =====
+// ===== BMI forwarding methods =====
 
 double
 Daisy::get_groundwater_table (unsigned int pos) const
@@ -661,6 +661,27 @@ Daisy::get_layer_bottoms (unsigned int pos) const
 {
   Column* col = impl->field->find (pos);
   return col ? col->get_layer_bottoms () : std::vector<double>{};
+}
+
+std::vector<symbol>
+Daisy::get_chemical_names (unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_chemical_names () : std::vector<symbol>{};
+}
+
+std::vector<double>
+Daisy::get_C_array (symbol chem, unsigned int pos) const
+{
+  Column* col = impl->field->find (pos);
+  return col ? col->get_C_array (chem) : std::vector<double>{};
+}
+
+void
+Daisy::set_C_array (symbol chem, const std::vector<double>& C, unsigned int pos)
+{
+  Column* col = impl->field->find (pos);
+  if (col) col->set_C_array (chem, C);
 }
 
 void

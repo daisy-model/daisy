@@ -139,6 +139,8 @@ public:
   { return S_forward_sink_[i]; }
   double S_sum (std::size_t i) const
   { return S_sum_[i]; }
+  void restore_S_sum (const std::vector<double>& v)
+  { S_sum_ = v; }
   double h_ice (std::size_t i) const
   { return h_ice_[i]; }
   double X_ice (std::size_t i) const
