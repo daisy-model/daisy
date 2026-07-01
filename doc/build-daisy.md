@@ -22,5 +22,6 @@ to the cmake configure command, e.g.
 * [Linux](build-instructions-linux.md)
 * [MacOS](build-instructions-macos.md)
 * [Windows](build-instructions-windows.md)
+* [Making a release](making-a-release.md)
 
 Documentation: [build-documentation.md](build-documentation.md)

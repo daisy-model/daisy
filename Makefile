@@ -1,14 +1,35 @@
 daisy_version := $(shell scripts/get_version_from_cmake.sh)
+daisy_tag := v$(daisy_version)
 current_dir := $(shell pwd)
 has_gcovr := $(shell command -v gcovr 2> /dev/null)
 python_version = 3.13
-python_root := $(shell scripts/find_python_root_dir.sh ${PYTHON_VERSION})
+python_root = $(shell scripts/find_python_root_dir.sh ${python_version})
 nproc := 6
 
 # Python
 .PHONY: uv-python
 uv-python:
 	uv python install $(python_version)
+
+
+# Release
+.PHONY: release-tag
+release-tag:
+	@git fetch --no-tags origin main
+	@if [ "$$( git rev-parse --abbrev-ref HEAD )" != "main" ]; then \
+		echo "Refusing to tag: current branch is not main"; \
+		exit 1; \
+	fi
+	@if [ "$$( git rev-parse HEAD )" != "$$( git rev-parse origin/main )" ]; then \
+		echo "Refusing to tag: local main is not at origin/main HEAD"; \
+		exit 1; \
+	fi
+	@if git rev-parse "$(daisy_tag)" >/dev/null 2>&1; then \
+		echo "Refusing to tag: $(daisy_tag) already exists"; \
+		exit 1; \
+	fi
+	git tag -a "$(daisy_tag)" -m "Release $(daisy_tag)"
+	@echo "Created tag $(daisy_tag)"
 
 
 # Windows
