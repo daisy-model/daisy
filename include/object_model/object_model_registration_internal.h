@@ -28,5 +28,6 @@ void register_number_models ();
 void register_parser_file_models ();
 void register_parser_models ();
 void register_stringer_models ();
+void register_unit_models ();
 
 #endif // OBJECT_MODEL_REGISTRATION_INTERNAL_H
