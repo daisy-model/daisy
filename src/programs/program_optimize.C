@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_top.h"
 #include "object_model/block_model.h"
 #include "object_model/block_submodel.h"
@@ -326,7 +327,7 @@ Each point in the simplex must have a value for each parameter");
   { }
 };
 
-static struct ProgramOptimizeSyntax : public DeclareModel
+struct ProgramOptimizeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramOptimize (al); }
@@ -403,6 +404,12 @@ Maximal number of iterations with no improvement of worst point.");
 Stop after this number of iterations.");
     frame.set_check ("max_iter", VCheck::positive ());
   }
-} ProgramOptimize_syntax;
+};
+
+void
+register_program_optimize_models ()
+{
+  static ProgramOptimizeSyntax program_optimize_syntax;
+}
 
 // program_optimize.C ends here.

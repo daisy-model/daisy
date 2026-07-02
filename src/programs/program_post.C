@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "daisy/output/dlf.h"
 #include "util/lexer_soil.h"
 #include "object_model/units.h"
@@ -475,7 +476,7 @@ ProgramPost::ProgramPost (const BlockModel& al)
 ProgramPost::~ProgramPost ()
 { }
 
-static struct ProgramPostSyntax : public DeclareModel
+struct ProgramPostSyntax : public DeclareModel
 
 {
   Model* make (const BlockModel& al) const
@@ -515,6 +516,12 @@ Only include values to the left of this position.");
     frame.declare_string ("dimension", Attribute::OptionalConst, "\
 Dimension for data output.  By default, use dimension from file.");
   }
-} ProgramPost_syntax;
+};
+
+void
+register_program_post_models ()
+{
+  static ProgramPostSyntax program_post_syntax;
+}
 
 // program_post.C ends here.

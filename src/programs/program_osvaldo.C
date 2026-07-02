@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
@@ -183,7 +184,7 @@ struct ProgramOsvaldo : public Program
   { }
 };
 
-static struct ProgramOsvaldoSyntax : public DeclareModel
+struct ProgramOsvaldoSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramOsvaldo (al); }
@@ -206,6 +207,12 @@ Number of digits in simulated file name.");
     frame.declare_string ("measured_file", Attribute::Const, "\
 Name of file containing measurments.");
   }
-} ProgramOsvaldo_syntax;
+};
+
+void
+register_program_osvaldo_models ()
+{
+  static ProgramOsvaldoSyntax program_osvaldo_syntax;
+}
 
 // program_osvaldo.C ends here.

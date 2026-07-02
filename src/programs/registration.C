@@ -24,10 +24,22 @@
 void
 register_program_models ()
 {
+  register_program_astdump_models ();
+  register_program_GP2D_models ();
+  register_program_KM2_models ();
   register_program_core_models ();
   register_program_batch_models ();
+  register_program_cpedata_models ();
   register_program_document_models ();
   register_program_file_models ();
+  register_program_hmovie_models ();
+  register_program_nwaps_models ();
+  register_program_optimize_models ();
+  register_program_osvaldo_models ();
+  register_program_post_models ();
+  register_program_rootmatch_models ();
+  register_program_sbrdata_models ();
   register_program_extract_models ();
   register_program_spawn_models ();
+  register_program_weather_models ();
 }

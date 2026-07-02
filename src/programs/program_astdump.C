@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/block_model.h"
@@ -550,7 +551,7 @@ ProgramASTdump::print_document (Treelog& msg)
   print_attribute ("version", version);
 }
 
-static struct ProgramASTdumpSyntax : public DeclareModel
+struct ProgramASTdumpSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramASTdump (al); }
@@ -564,6 +565,12 @@ Generate a dump of the abstract syntax tree.")
 			  "Name of file to store results in.");
     frame.set ("where", "astdump.txt");
   }
-} ProgramASTdump_syntax;
+};
+
+void
+register_program_astdump_models ()
+{
+  static ProgramASTdumpSyntax program_astdump_syntax;
+}
 
 // program_document.C ends here.

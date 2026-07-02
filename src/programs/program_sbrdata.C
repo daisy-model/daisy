@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "util/lexer_data.h"
 #include "object_model/librarian.h"
 #include "util/assertion.h"
@@ -219,7 +220,7 @@ Year\tMonth\tR_max_H";
   { }
 };
 
-static struct ProgramRS2WGSyntax : public DeclareModel
+struct ProgramRS2WGSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramRS2WG (al); }
@@ -246,7 +247,7 @@ Hourly precipitation interval file.");
     frame.declare ("hlim", "mm", Attribute::Const, Attribute::Variable, "\
 Upper limits for each precipitation interval.");
   }
-} ProgramRS2WG_syntax;
+};
 
 // Weather generator to Daisy
 
@@ -614,7 +615,7 @@ Year\tMonth";
   { }
 };
 
-static struct ProgramWG2DWFSyntax : public DeclareModel
+struct ProgramWG2DWFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramWG2DWF (al); }
@@ -645,6 +646,13 @@ Upper limits for each precipitation interval.");
     frame.declare_string ("header", Attribute::Const, "\
 Stuff to put in the Daisy weather file header.");
   }
-} ProgramWG2DWF_syntax;
+};
+
+void
+register_program_sbrdata_models ()
+{
+  static ProgramRS2WGSyntax program_rs2wg_syntax;
+  static ProgramWG2DWFSyntax program_wg2dwf_syntax;
+}
 
 // program_sbrdata.C ends here.

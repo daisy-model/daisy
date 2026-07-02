@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "util/lexer.h"
 #include "object_model/librarian.h"
 #include "util/assertion.h"
@@ -283,7 +284,7 @@ struct ProgramKM2 : public Program
   { }
 };
 
-static struct ProgramKM2Syntax : public DeclareModel
+struct ProgramKM2Syntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramKM2 (al); }
@@ -296,6 +297,12 @@ Read KM2 precipitation data.")
     frame.declare_string ("file", Attribute::Const, "\
 Name of KM2 file where data is found.");
   }
-} ProgramKM2_syntax;
+};
+
+void
+register_program_KM2_models ()
+{
+  static ProgramKM2Syntax program_km2_syntax;
+}
 
 // program_KM2.C ends here.

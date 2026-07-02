@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "daisy/soil/transport/geometry_rect.h"
 #include "daisy/crop/root/rootdens.h"
 #include "object_model/treelog.h"
@@ -133,7 +134,7 @@ struct ProgramGP2D : public Program
   { }
 };
 
-static struct ProgramGP2DSyntax : public DeclareModel
+struct ProgramGP2DSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramGP2D (al); }
@@ -163,6 +164,12 @@ Totoal root dry matter.");
 Not currently used.");
     frame.set ("DS", 2.0);
   }
-} ProgramGP2D_syntax;
+};
+
+void
+register_program_GP2D_models ()
+{
+  static ProgramGP2DSyntax program_gp2d_syntax;
+}
 
 // rootdens_GP2D.C ends here.

@@ -21,11 +21,23 @@
 #ifndef PROGRAM_REGISTRATION_INTERNAL_H
 #define PROGRAM_REGISTRATION_INTERNAL_H
 
+void register_program_GP2D_models ();
+void register_program_KM2_models ();
+void register_program_astdump_models ();
 void register_program_batch_models ();
+void register_program_cpedata_models ();
 void register_program_core_models ();
 void register_program_document_models ();
 void register_program_extract_models ();
 void register_program_file_models ();
+void register_program_hmovie_models ();
+void register_program_nwaps_models ();
+void register_program_optimize_models ();
+void register_program_osvaldo_models ();
+void register_program_post_models ();
+void register_program_rootmatch_models ();
+void register_program_sbrdata_models ();
 void register_program_spawn_models ();
+void register_program_weather_models ();
 
 #endif // PROGRAM_REGISTRATION_INTERNAL_H
