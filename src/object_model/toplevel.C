@@ -31,6 +31,7 @@
 #include "util/path.h"
 #include "object_model/version.h"
 #include "util/assertion.h"
+#include "util/format_registration.h"
 #include "object_model/treelog_text.h"
 #include "object_model/treelog_store.h"
 #include "object_model/librarian.h"
@@ -84,6 +85,16 @@ struct Toplevel::Implementation : boost::noncopyable
                   const std::string& preferred_ui);
   ~Implementation ();
 };
+
+namespace
+{
+const std::string&
+register_runtime_models (const std::string& preferred_ui)
+{
+  register_format_models ();
+  return preferred_ui;
+}
+}
 
 void
 Toplevel::Implementation::run_program (const std::string& name_str)
@@ -701,7 +712,7 @@ Toplevel::load_syntax (Frame& frame)
 }
 
 Toplevel::Toplevel (const std::string& preferred_ui)
-  : impl (new Implementation (load_syntax, preferred_ui))
+  : impl (new Implementation (load_syntax, register_runtime_models (preferred_ui)))
 { 
   // We don't use stdio.
   std::ios::sync_with_stdio (false);

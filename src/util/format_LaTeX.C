@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "util/format_LaTeX.h"
+#include "util/format_registration.h"
 #include "object_model/version.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
@@ -404,7 +405,17 @@ FormatLaTeX::FormatLaTeX (const BlockModel& al)
     list_level (0)
 { }
 
-static struct FormatLaTeXSyntax : public DeclareModel
+namespace
+{
+struct FormatInit : public DeclareComponent 
+{
+  FormatInit ()
+    : DeclareComponent (Format::component, "\
+Text formatting component.")
+  { }
+};
+
+struct FormatLaTeXSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FormatLaTeX (al); }
@@ -413,4 +424,12 @@ static struct FormatLaTeXSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} FormatLaTeX_syntax;
+};
+}
+
+void
+register_format_models ()
+{
+  static FormatInit format_init;
+  static FormatLaTeXSyntax format_latex_syntax;
+}
