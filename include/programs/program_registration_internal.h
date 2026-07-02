@@ -21,8 +21,11 @@
 #ifndef PROGRAM_REGISTRATION_INTERNAL_H
 #define PROGRAM_REGISTRATION_INTERNAL_H
 
+void register_program_batch_models ();
 void register_program_core_models ();
+void register_program_document_models ();
 void register_program_extract_models ();
 void register_program_file_models ();
+void register_program_spawn_models ();
 
 #endif // PROGRAM_REGISTRATION_INTERNAL_H

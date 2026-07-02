@@ -25,6 +25,9 @@ void
 register_program_models ()
 {
   register_program_core_models ();
+  register_program_batch_models ();
+  register_program_document_models ();
   register_program_file_models ();
   register_program_extract_models ();
+  register_program_spawn_models ();
 }

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_top.h"
 #include "object_model/block_model.h"
 #include "object_model/treelog.h"
@@ -92,7 +93,7 @@ struct ProgramBatch : public Program
   { sequence_delete (program.begin (), program.end ()); }
 };
 
-static struct ProgramBatchSyntax : public DeclareModel
+struct ProgramBatchSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramBatch (al); }
@@ -107,8 +108,14 @@ Directory in which to initialize, check and run the programs.");
     frame.declare_object ("run", Program::component, 
                        Attribute::State, Attribute::Variable, "\
 List of programs to run.  The programs will be run in the sequence listed.");
-   
+    
   }
-} ProgramBatch_syntax;
+};
+
+void
+register_program_batch_models ()
+{
+  static ProgramBatchSyntax program_batch_syntax;
+}
 
 // program_batch.C ends here.
