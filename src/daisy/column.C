@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/column.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/output/log.h"
 #include "object_model/librarian.h"
@@ -59,7 +60,7 @@ Column::Column (const BlockModel& al)
 Column::~Column ()
 { }
 
-static struct ColumnInit : public DeclareComponent
+struct ColumnInit : public DeclareComponent
 {
   void load_frame (Frame& frame) const
   { 
@@ -85,6 +86,12 @@ A 'column' is an one-dimensional vertical description of the\n\
 soil/crop/atmosphere system.  The column component contains most of\n\
 the other processes in Daisy as submodels.")
   { }
-} Column_init;
+};
+
+void
+register_column_models ()
+{
+  static ColumnInit column_init;
+}
 
 // column.C ends here.

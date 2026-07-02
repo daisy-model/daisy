@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/toplevel.h"
+#include "daisy/daisy_registration.h"
 #include "object_model/metalib.h"
 #include "daisy/daisy.h"
 #include "gnuplot/gnuplot_registration.h"
@@ -103,6 +104,7 @@ register_runtime_models (const std::string& preferred_ui)
   register_program_models ();
   register_gnuplot_models ();
   register_ui_models ();
+  register_daisy_models ();
   return preferred_ui;
 }
 }
