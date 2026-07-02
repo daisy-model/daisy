@@ -27,6 +27,7 @@ void register_integer_models ();
 void register_number_models ();
 void register_parser_file_models ();
 void register_parser_models ();
+void register_rate_models ();
 void register_stringer_models ();
 void register_unit_models ();
 

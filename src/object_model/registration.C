@@ -31,5 +31,6 @@ register_object_model_models ()
   register_stringer_models ();
   register_boolean_models ();
   register_integer_models ();
+  register_rate_models ();
   register_unit_models ();
 }
