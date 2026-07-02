@@ -22,9 +22,16 @@
 #define OBJECT_MODEL_REGISTRATION_INTERNAL_H
 
 void register_boolean_models ();
+void register_boolean_string_models ();
 void register_function_models ();
 void register_integer_models ();
+void register_integer_arithmetic_models ();
 void register_number_models ();
+void register_number_apply_models ();
+void register_number_arithmetic_models ();
+void register_number_const_models ();
+void register_number_lisp_models ();
+void register_number_plf_models ();
 void register_parser_file_models ();
 void register_parser_models ();
 void register_rate_models ();

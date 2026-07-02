@@ -25,6 +25,7 @@
 #include "util/assertion.h"
 #include "util/memutils.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
@@ -72,7 +73,7 @@ struct IntegerSqr : public IntegerOperand
   { }
 };
 
-static struct IntegerSqrSyntax : public DeclareModel
+struct IntegerSqrSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSqr (al); }
@@ -87,7 +88,7 @@ static struct IntegerSqrSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} IntegerSqr_syntax;
+};
 
 struct IntegerOperands : public Integer
 {
@@ -162,7 +163,7 @@ struct IntegerMax : public IntegerOperands
   { }
 };
 
-static struct IntegerMaxSyntax : public DeclareModel
+struct IntegerMaxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerMax (al); }
@@ -179,7 +180,7 @@ static struct IntegerMaxSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} IntegerMax_syntax;
+};
 
 struct IntegerMin : public IntegerOperands
 {
@@ -203,7 +204,7 @@ struct IntegerMin : public IntegerOperands
   { }
 };
 
-static struct IntegerMinSyntax : public DeclareModel
+struct IntegerMinSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerMin (al); }
@@ -220,7 +221,7 @@ static struct IntegerMinSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} IntegerMin_syntax;
+};
 
 struct IntegerProduct : public IntegerOperands
 {
@@ -239,7 +240,7 @@ struct IntegerProduct : public IntegerOperands
   { }
 };
 
-static struct IntegerProductSyntax : public DeclareModel
+struct IntegerProductSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerProduct (al); }
@@ -255,7 +256,7 @@ static struct IntegerProductSyntax : public DeclareModel
                        "The operands for this function.");
     frame.order ("operands");
   }
-} IntegerProduct_syntax;
+};
 
 struct IntegerSum : public IntegerOperands
 {
@@ -274,7 +275,7 @@ struct IntegerSum : public IntegerOperands
   { }
 };
 
-static struct IntegerSumSyntax : public DeclareModel
+struct IntegerSumSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSum (al); }
@@ -293,7 +294,7 @@ static struct IntegerSumSyntax : public DeclareModel
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
-} IntegerSum_syntax;
+};
 
 struct IntegerSubtract : public IntegerOperands
 {
@@ -315,7 +316,7 @@ struct IntegerSubtract : public IntegerOperands
   { }
 };
 
-static struct IntegerSubtractSyntax : public DeclareModel
+struct IntegerSubtractSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSubtract (al); }
@@ -333,7 +334,7 @@ subtracts all but the first from the first.")
                        "The operands for this function.");
     frame.order ("operands");
   }
-} IntegerSubtract_syntax;
+};
 
 struct IntegerDivide : public IntegerOperands
 {
@@ -392,7 +393,7 @@ struct IntegerModulo : public IntegerDivide
   { }
 };
 
-static struct IntegerModuloSyntax : public DeclareModel
+struct IntegerModuloSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerModulo (al); }
@@ -408,9 +409,9 @@ static struct IntegerModuloSyntax : public DeclareModel
                          "The operands for this function.");
       frame.order ("operands");
   }
-} IntegerModulo_syntax;
+};
 
-static struct IntegerDivideSyntax : public DeclareModel
+struct IntegerDivideSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerDivide (al); }
@@ -426,5 +427,17 @@ static struct IntegerDivideSyntax : public DeclareModel
                          "The operands for this function.");
       frame.order ("operands");
   }
-} IntegerDivide_syntax;
+};
 
+void
+register_integer_arithmetic_models ()
+{
+  static IntegerSqrSyntax integer_sqr_syntax;
+  static IntegerMaxSyntax integer_max_syntax;
+  static IntegerMinSyntax integer_min_syntax;
+  static IntegerProductSyntax integer_product_syntax;
+  static IntegerSumSyntax integer_sum_syntax;
+  static IntegerSubtractSyntax integer_subtract_syntax;
+  static IntegerModuloSyntax integer_modulo_syntax;
+  static IntegerDivideSyntax integer_divide_syntax;
+}

@@ -27,6 +27,7 @@
 #include "util/memutils.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/submodeler.h"
 #include "object_model/treelog.h"
 #include "object_model/frame.h"
@@ -84,7 +85,7 @@ struct NumberLog10 : public NumberOperand
   { }
 };
 
-static struct NumberLog10Syntax : public DeclareModel
+struct NumberLog10Syntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberLog10 (al); }
@@ -99,7 +100,7 @@ static struct NumberLog10Syntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} NumberLog10_syntax;
+};
 
 struct NumberLn : public NumberOperand
 {
@@ -117,7 +118,7 @@ struct NumberLn : public NumberOperand
   { }
 };
 
-static struct NumberLnSyntax : public DeclareModel
+struct NumberLnSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberLn (al); }
@@ -132,7 +133,7 @@ static struct NumberLnSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} NumberLn_syntax;
+};
 
 struct NumberExp : public NumberOperand
 {
@@ -149,7 +150,7 @@ struct NumberExp : public NumberOperand
   { }
 };
 
-static struct NumberExpSyntax : public DeclareModel
+struct NumberExpSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberExp (al); }
@@ -164,7 +165,7 @@ static struct NumberExpSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} NumberExp_syntax;
+};
 
 struct NumberSqrt : public NumberOperand
 {
@@ -182,7 +183,7 @@ struct NumberSqrt : public NumberOperand
   { }
 };
 
-static struct NumberSqrtSyntax : public DeclareModel
+struct NumberSqrtSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSqrt (al); }
@@ -197,7 +198,7 @@ static struct NumberSqrtSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} NumberSqrt_syntax;
+};
 
 struct NumberSqr : public NumberOperand
 {
@@ -219,7 +220,7 @@ struct NumberSqr : public NumberOperand
   { }
 };
 
-static struct NumberSqrSyntax : public DeclareModel
+struct NumberSqrSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSqr (al); }
@@ -234,7 +235,7 @@ static struct NumberSqrSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} NumberSqr_syntax;
+};
 
 struct NumberPow : public Number
 {
@@ -288,7 +289,7 @@ struct NumberPow : public Number
   { }
 };
 
-static struct NumberPowSyntax : public DeclareModel
+struct NumberPowSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberPow (al); }
@@ -305,7 +306,7 @@ static struct NumberPowSyntax : public DeclareModel
                        "The exponent operand for this function.");
     frame.order ("base", "exponent");
   }
-} NumberPow_syntax;
+};
 
 struct NumberOperands : public Number
 {
@@ -448,7 +449,7 @@ struct NumberMax : public NumberOperands
   { }
 };
 
-static struct NumberMaxSyntax : public DeclareModel
+struct NumberMaxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberMax (al); }
@@ -469,7 +470,7 @@ static struct NumberMaxSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} NumberMax_syntax;
+};
 
 struct NumberMin : public NumberOperands
 {
@@ -495,7 +496,7 @@ struct NumberMin : public NumberOperands
   { }
 };
 
-static struct NumberMinSyntax : public DeclareModel
+struct NumberMinSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberMin (al); }
@@ -518,7 +519,7 @@ static struct NumberMinSyntax : public DeclareModel
 #endif // !CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
-} NumberMin_syntax;
+};
 
 struct NumberProduct : public NumberOperands
 {
@@ -544,7 +545,7 @@ struct NumberProduct : public NumberOperands
   { }
 };
 
-static struct NumberProductSyntax : public DeclareModel
+struct NumberProductSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberProduct (al); }
@@ -560,7 +561,7 @@ static struct NumberProductSyntax : public DeclareModel
                        "The operands for this function.");
     frame.order ("operands");
   }
-} NumberProduct_syntax;
+};
 
 struct NumberSum : public NumberOperands
 {
@@ -581,7 +582,7 @@ struct NumberSum : public NumberOperands
   { }
 };
 
-static struct NumberSumSyntax : public DeclareModel
+struct NumberSumSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSum (al); }
@@ -600,7 +601,7 @@ static struct NumberSumSyntax : public DeclareModel
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
-} NumberSum_syntax;
+};
 
 struct NumberSubtract : public NumberOperands
 {
@@ -624,7 +625,7 @@ struct NumberSubtract : public NumberOperands
   { }
 };
 
-static struct NumberSubtractSyntax : public DeclareModel
+struct NumberSubtractSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSubtract (al); }
@@ -647,7 +648,7 @@ subtracts all but the first from the first.")
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
-} NumberSubtract_syntax;
+};
 
 struct NumberDivide : public NumberOperands
 {
@@ -696,7 +697,7 @@ struct NumberDivide : public NumberOperands
   { }
 };
 
-static struct NumberDivideSyntax : public DeclareModel
+struct NumberDivideSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberDivide (al); }
@@ -713,7 +714,23 @@ static struct NumberDivideSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} NumberDivide_syntax;
+};
+
+void
+register_number_arithmetic_models ()
+{
+  static NumberLog10Syntax number_log10_syntax;
+  static NumberLnSyntax number_ln_syntax;
+  static NumberExpSyntax number_exp_syntax;
+  static NumberSqrtSyntax number_sqrt_syntax;
+  static NumberSqrSyntax number_sqr_syntax;
+  static NumberPowSyntax number_pow_syntax;
+  static NumberMaxSyntax number_max_syntax;
+  static NumberMinSyntax number_min_syntax;
+  static NumberProductSyntax number_product_syntax;
+  static NumberSumSyntax number_sum_syntax;
+  static NumberSubtractSyntax number_subtract_syntax;
+  static NumberDivideSyntax number_divide_syntax;
+}
 
 // number_arit.C ends here.
-

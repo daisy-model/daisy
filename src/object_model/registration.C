@@ -28,9 +28,16 @@ register_object_model_models ()
   register_parser_file_models ();
   register_function_models ();
   register_number_models ();
+  register_number_const_models ();
+  register_number_apply_models ();
+  register_number_plf_models ();
+  register_number_arithmetic_models ();
+  register_number_lisp_models ();
   register_stringer_models ();
   register_boolean_models ();
+  register_boolean_string_models ();
   register_integer_models ();
+  register_integer_arithmetic_models ();
   register_rate_models ();
   register_unit_models ();
 }
