@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "util/solver.h"
+#include "util/util_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -57,12 +58,21 @@ Solver::Solver (const BlockModel& al)
 Solver::~Solver ()
 { }
 
-static struct SolverInit : public DeclareComponent 
+namespace
+{
+struct SolverInit : public DeclareComponent 
 {
   SolverInit ()
     : DeclareComponent (Solver::component, "\
 A way to solve the matrix equation 'A x = b'.")
   { }
-} Solver_init;
+};
+}
+
+void
+register_solver_models ()
+{
+  static SolverInit solver_init;
+}
 
 // solver.C ends here.

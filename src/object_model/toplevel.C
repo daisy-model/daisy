@@ -31,7 +31,7 @@
 #include "util/path.h"
 #include "object_model/version.h"
 #include "util/assertion.h"
-#include "util/format_registration.h"
+#include "util/util_registration.h"
 #include "object_model/treelog_text.h"
 #include "object_model/treelog_store.h"
 #include "object_model/librarian.h"
@@ -91,7 +91,7 @@ namespace
 const std::string&
 register_runtime_models (const std::string& preferred_ui)
 {
-  register_format_models ();
+  register_util_models ();
   return preferred_ui;
 }
 }

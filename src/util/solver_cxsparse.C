@@ -22,6 +22,7 @@
 
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
+#include "util/util_registration_internal.h"
 #include "object_model/librarian.h"
 
 #include "util/solver_cxsparse.h"
@@ -63,7 +64,9 @@ SolverCXSparse::SolverCXSparse (const BlockModel& al)
 { }
 
 
-static struct SolverCXSparseSyntax : public DeclareModel
+namespace
+{
+struct SolverCXSparseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SolverCXSparse (al); }
@@ -80,6 +83,13 @@ The uBLAS interface was provided by Gunter Winkler <guwi17@gmx.de>.")
   void load_frame (Frame&) const
   {
   }
-} SolverCXSparse_syntax;
+};
+}
+
+void
+register_solver_cxsparse_models ()
+{
+  static SolverCXSparseSyntax solver_cxsparse_syntax;
+}
 
 // solver_cxsparse.C ends here.

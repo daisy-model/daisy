@@ -22,6 +22,7 @@
 
 #include "util/format_LaTeX.h"
 #include "util/format_registration.h"
+#include "util/util_registration_internal.h"
 #include "object_model/version.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
