@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "util/lexer_table.h"
 #include "util/scope_table.h"
 #include "object_model/parameter_types/number.h"
@@ -238,7 +239,7 @@ XYSourceFreq::XYSourceFreq (const BlockModel& al)
 XYSourceFreq::~XYSourceFreq ()
 { }
 
-static struct XYSourceFreqSyntax : public DeclareModel
+struct XYSourceFreqSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceFreq (al); }
@@ -277,6 +278,12 @@ Show 'sort' value instead of accumulated frequency.");
 Show plot values on x axis.");
     frame.set ("plot_on_x", true);
   }
-} XYSourceFreq_syntax;
+};
+
+void
+register_gnuplot_xysource_freq_models ()
+{
+  static XYSourceFreqSyntax xysource_freq_syntax;
+}
 
 // xysource_freq.C ends here.

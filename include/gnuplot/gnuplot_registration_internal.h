@@ -26,11 +26,24 @@ void register_gnuplot_base_models ();
 void register_gnuplot_multi_models ();
 void register_gnuplot_profile_models ();
 void register_gnuplot_program_models ();
+void register_gnuplot_source_combine_models ();
+void register_gnuplot_source_expr_models ();
+void register_gnuplot_source_merge_models ();
 void register_gnuplot_soil_models ();
 void register_gnuplot_source_models ();
+void register_gnuplot_source_std_models ();
 void register_gnuplot_time_models ();
 void register_gnuplot_vector_models ();
+void register_gnuplot_xysource_combine_models ();
+void register_gnuplot_xysource_expr_models ();
+void register_gnuplot_xysource_flux_models ();
+void register_gnuplot_xysource_freq_models ();
+void register_gnuplot_xysource_inline_models ();
+void register_gnuplot_xysource_loop_models ();
+void register_gnuplot_xysource_merge_models ();
 void register_gnuplot_xysource_models ();
+void register_gnuplot_xysource_profile_models ();
+void register_gnuplot_xysource_xycombine_models ();
 void register_gnuplot_xy_models ();
 
 #endif // GNUPLOT_REGISTRATION_INTERNAL_H

@@ -19,7 +19,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "object_model/parameter_types/number.h"
@@ -102,7 +104,7 @@ XYSourceInline::~XYSourceInline ()
 { }
 
 
-static struct XYSourceInlineSyntax : public DeclareModel
+struct XYSourceInlineSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceInline (al); }
@@ -124,6 +126,12 @@ Dimension for x points.");
 Dimension for y points.");
 
   }
-} XYSourceInline_syntax;
+};
+
+void
+register_gnuplot_xysource_inline_models ()
+{
+  static XYSourceInlineSyntax xysource_inline_syntax;
+}
 
 // xysource_inline.C ends here.

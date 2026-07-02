@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "util/scope_id.h"
@@ -148,7 +149,7 @@ XYSourceLoop::~XYSourceLoop ()
 { }
 
 
-static struct XYSourceLoopSyntax : public DeclareModel
+struct XYSourceLoopSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceLoop (al); }
@@ -212,6 +213,12 @@ Name of free variable to calculate the 'x' and 'y' expressions from.");
     frame.set ("tag", "x");
 
   }
-} XYSourceLoop_syntax;
+};
+
+void
+register_gnuplot_xysource_loop_models ()
+{
+  static XYSourceLoopSyntax xysource_loop_syntax;
+}
 
 // xysource_loop.C ends here.
