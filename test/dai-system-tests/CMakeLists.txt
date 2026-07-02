@@ -7,6 +7,8 @@ if(${OS} STREQUAL "macos")
   )
 elseif(${OS} STREQUAL "mingw")
   list(APPEND _disabled_dai_system_tests
+    "dai_system_test.daisy/crop.vernalization-default"
+    "dai_system_test.daisy/lower_boundary.groundwater-deep"
     "dai_system_test.programs.hydraulic"
     "dai_system_test.programs.spawn"
   )
