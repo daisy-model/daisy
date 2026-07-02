@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/vcheck.h"
 #include "object_model/block_model.h"
 #include "object_model/frame_submodel.h"
@@ -127,7 +128,7 @@ GnuplotBase::~GnuplotBase ()
 { }
 
 
-static struct GnuplotSyntax : public DeclareBase
+struct GnuplotSyntax : public DeclareBase
 {
   GnuplotSyntax ()
     : DeclareBase (Gnuplot::component, "common", "Common parameters.")
@@ -212,6 +213,12 @@ cross the legend.");
     frame.set_check ("legend", check_legend);
     frame.set ("legend", "auto");
   }
-} Gnuplot_syntax;
+};
+
+void
+register_gnuplot_base_models ()
+{
+  static GnuplotSyntax gnuplot_syntax;
+}
 
 // gnuplot_base.C ends her.

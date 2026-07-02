@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/source.h"
 #include "object_model/treelog.h"
@@ -368,7 +369,7 @@ GnuplotTime::~GnuplotTime ()
   sequence_delete (source.begin (), source.end ()); 
 }
 
-static struct GnuplotTimeSyntax : public DeclareModel
+struct GnuplotTimeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotTime (al); }
@@ -399,4 +400,10 @@ By default determine this from the data.");
                        Attribute::Variable, "\
 Time series to plot.");
   }
-} GnuplotTime_syntax;
+};
+
+void
+register_gnuplot_time_models ()
+{
+  static GnuplotTimeSyntax gnuplot_time_syntax;
+}

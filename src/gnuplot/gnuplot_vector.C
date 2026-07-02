@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/lexer_flux.h"
 #include "object_model/treelog.h"
@@ -422,7 +423,7 @@ GnuplotVector::GnuplotVector (const BlockModel& al)
 GnuplotVector::~GnuplotVector ()
 { }
 
-static struct GnuplotVectorSyntax : public DeclareModel
+struct GnuplotVectorSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotVector (al); }
@@ -458,6 +459,12 @@ Multiply vector values with this factor.");
     frame.declare_string ("dimension", Attribute::OptionalConst, "\
 Dimension for data.  By default, use dimension from file.");
   }
-} GnuplotVector_syntax;
+};
+
+void
+register_gnuplot_vector_models ()
+{
+  static GnuplotVectorSyntax gnuplot_vector_syntax;
+}
 
 // gnuplot_vector.C ends here.

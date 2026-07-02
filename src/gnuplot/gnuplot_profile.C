@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "daisy/column.h"
 #include "daisy/soil/soil.h"
 #include "daisy/soil/horizon.h"
@@ -173,7 +174,7 @@ GnuplotProfile::GnuplotProfile (const BlockModel& al)
 GnuplotProfile::~GnuplotProfile ()
 { }
 
-static struct GnuplotProfileSyntax : public DeclareModel
+struct GnuplotProfileSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotProfile (al); }
@@ -187,6 +188,12 @@ static struct GnuplotProfileSyntax : public DeclareModel
                           Attribute::Const, Attribute::Singleton, "\
 Column whose soil profile to plot.");
   }
-} GnuplotProfile_syntax;
+};
+
+void
+register_gnuplot_profile_models ()
+{
+  static GnuplotProfileSyntax gnuplot_profile_syntax;
+}
 
 // gnuplot_profile.C ends here.

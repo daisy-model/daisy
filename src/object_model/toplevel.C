@@ -23,6 +23,7 @@
 #include "object_model/toplevel.h"
 #include "object_model/metalib.h"
 #include "daisy/daisy.h"
+#include "gnuplot/gnuplot_registration.h"
 #include "ui/ui.h"
 #include "object_model/library.h"
 #include "object_model/parser_file.h"
@@ -100,6 +101,7 @@ register_runtime_models (const std::string& preferred_ui)
   register_object_model_models ();
   register_util_models ();
   register_program_models ();
+  register_gnuplot_models ();
   register_ui_models ();
   return preferred_ui;
 }

@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/source.h"
 #include "object_model/treelog.h"
@@ -88,7 +89,7 @@ GnuplotMulti::GnuplotMulti (const BlockModel& al)
 GnuplotMulti::~GnuplotMulti ()
 { sequence_delete (graph.begin (), graph.end ()); }
 
-static struct GnuplotMultiSyntax : public DeclareModel
+struct GnuplotMultiSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotMulti (al); }
@@ -110,4 +111,10 @@ The commands will be inserted right after the last graph.");
                        Attribute::Variable, "Graphs to plot.");
 
   }
-} GnuplotMulti_syntax;
+};
+
+void
+register_gnuplot_multi_models ()
+{
+  static GnuplotMultiSyntax gnuplot_multi_syntax;
+}
