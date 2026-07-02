@@ -28,6 +28,7 @@
 #include "object_model/intrinsics.h"
 #include "object_model/library.h"
 #include "object_model/frame_model.h"
+#include "object_model/object_model_registration_internal.h"
 
 // The 'rate' component.
 
@@ -46,13 +47,13 @@ Rate::Rate ()
 Rate::~Rate ()
 { }
 
-static struct RateInit : public DeclareComponent 
+struct RateInit : public DeclareComponent 
 {
   RateInit ()
     : DeclareComponent (Rate::component, "\
 Specify a rate or a halftime.")
   { }
-} Rate_init;
+};
 
 void
 Rate::declare (Frame& frame, const symbol name, const symbol description)
@@ -135,7 +136,7 @@ struct RateRate : public Rate
   { }
 };
 
-static struct RateRateSyntax : DeclareModel
+struct RateRateSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RateRate (al); }
@@ -149,11 +150,11 @@ Specify rate directly.")
 Rate to use.");
     frame.order ("rate");
   }
-} RateRate_syntax;
+};
 
 // The zero paramerization.
 
-static struct RateZeroSyntax : public DeclareParam
+struct RateZeroSyntax : public DeclareParam
 { 
   RateZeroSyntax ()
     : DeclareParam (Rate::component, "zero", "rate", "\
@@ -163,7 +164,7 @@ A rate of zero.")
   {
     frame.set ("rate", 0.0);
   }
-} RateZero_syntax;
+};
 
 
 // halftime model.
@@ -182,7 +183,7 @@ struct RateHalftime : public Rate
   { }
 };
 
-static struct RateHalftimeSyntax : DeclareModel
+struct RateHalftimeSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RateHalftime (al); }
@@ -196,6 +197,15 @@ A rate specified through the equivalent halftime (rate = ln 2 / halftime).")
 Halftime of the rate to use.");
     frame.order ("halftime");
   }
-} RateHalftime_syntax;
+};
+
+void
+register_rate_models ()
+{
+  static RateInit rate_init;
+  static RateRateSyntax rate_rate_syntax;
+  static RateZeroSyntax rate_zero_syntax;
+  static RateHalftimeSyntax rate_halftime_syntax;
+}
 
 // rate.C ends here.

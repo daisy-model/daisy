@@ -27,6 +27,7 @@
 #include "object_model/block_model.h"
 #include "util/assertion.h"
 #include "object_model/frame.h"
+#include "ui/ui_registration_internal.h"
 
 #if defined (__MINGW32__) || defined (_MSC_VER)
 #include <windows.h>
@@ -62,13 +63,13 @@ UI::UI (const char *const id)
 UI::~UI ()
 { }
 
-static struct UIInit : public DeclareComponent 
+struct UIInit : public DeclareComponent 
 {
   UIInit ()
     : DeclareComponent (UI::component, "\
 Top level user interface.")
   { }
-} UI_init;
+};
 
 // UIProgress
 
@@ -125,7 +126,7 @@ UIProgress::UIProgress (const BlockModel& al)
 UIProgress::~UIProgress ()
 { }
 
-static struct UIProgressSyntax : public DeclareModel
+struct UIProgressSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UIProgress (al); }
@@ -141,7 +142,7 @@ inside another program such as an editor that can capture the output.")
   {
 
   }
-} UIProgress_syntax;
+};
 
 // UINone
 
@@ -195,7 +196,7 @@ UINone::UINone (const BlockModel& al)
 UINone::~UINone ()
 { }
 
-static struct UINoneSyntax : public DeclareModel
+struct UINoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UINone (al); }
@@ -211,6 +212,14 @@ a larger system.")
   {
 
   }
-} UINone_syntax;
+};
+
+void
+register_ui_core_models ()
+{
+  static UIInit ui_init;
+  static UIProgressSyntax ui_progress_syntax;
+  static UINoneSyntax ui_none_syntax;
+}
 
 // ui.C ends here.

@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "util/lexer_soil.h"
 #include "object_model/check.h"
@@ -232,7 +233,7 @@ XYSourceProfile::~XYSourceProfile ()
 { }
 
 
-static struct XYSourceProfileSyntax : public DeclareModel
+struct XYSourceProfileSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceProfile (al); }
@@ -269,6 +270,12 @@ Dimension for soil position.");
 By default, data will be drawn with linespoints.", "\
 By default the specified 'z' value, time, and tag.");
   }
-} XYSourceProfile_syntax;
+};
+
+void
+register_gnuplot_xysource_profile_models ()
+{
+  static XYSourceProfileSyntax xysource_profile_syntax;
+}
 
 // xysource_profile.C ends here.

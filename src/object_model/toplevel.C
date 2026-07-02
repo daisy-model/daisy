@@ -21,8 +21,10 @@
 #define BUILD_DLL
 
 #include "object_model/toplevel.h"
+#include "daisy/daisy_registration.h"
 #include "object_model/metalib.h"
 #include "daisy/daisy.h"
+#include "gnuplot/gnuplot_registration.h"
 #include "ui/ui.h"
 #include "object_model/library.h"
 #include "object_model/parser_file.h"
@@ -31,6 +33,10 @@
 #include "util/path.h"
 #include "object_model/version.h"
 #include "util/assertion.h"
+#include "object_model/object_model_registration.h"
+#include "programs/program_registration.h"
+#include "ui/ui_registration.h"
+#include "util/util_registration.h"
 #include "object_model/treelog_text.h"
 #include "object_model/treelog_store.h"
 #include "object_model/librarian.h"
@@ -84,6 +90,24 @@ struct Toplevel::Implementation : boost::noncopyable
                   const std::string& preferred_ui);
   ~Implementation ();
 };
+
+namespace
+{
+const std::string&
+register_runtime_models (const std::string& preferred_ui)
+{
+  static DeclareSubmodel toplevel_submodel (Toplevel::load_submodel,
+                                            "Toplevel",
+                                            Toplevel::default_description);
+  register_object_model_models ();
+  register_util_models ();
+  register_program_models ();
+  register_gnuplot_models ();
+  register_ui_models ();
+  register_daisy_models ();
+  return preferred_ui;
+}
+}
 
 void
 Toplevel::Implementation::run_program (const std::string& name_str)
@@ -701,7 +725,7 @@ Toplevel::load_syntax (Frame& frame)
 }
 
 Toplevel::Toplevel (const std::string& preferred_ui)
-  : impl (new Implementation (load_syntax, preferred_ui))
+  : impl (new Implementation (load_syntax, register_runtime_models (preferred_ui)))
 { 
   // We don't use stdio.
   std::ios::sync_with_stdio (false);
@@ -717,9 +741,5 @@ Toplevel::~Toplevel ()
   catch (...)
     { error ("Exception occured during cleanup"); }
 }
-
-static DeclareSubmodel 
-toplevel_submodel (Toplevel::load_submodel, "Toplevel",
-                   Toplevel::default_description);
 
 // toplevel.C ends here.

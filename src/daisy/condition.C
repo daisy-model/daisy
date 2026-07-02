@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -56,7 +57,7 @@ Condition::Condition (const char *const id)
 Condition::~Condition ()
 { }
 
-static struct ConditionInit : public DeclareComponent 
+struct ConditionInit : public DeclareComponent 
 {
   ConditionInit ()
     : DeclareComponent (Condition::component, "\
@@ -65,6 +66,12 @@ whether the water pressure in a specific depth is above a given\n\
 threshold.  Logic conditions like 'and' and 'or' can be used for\n\
 testing whether multiple conditions are fulfilled simultaneously.")
   { }
-} Condition_init;
+};
+
+void
+register_condition_models ()
+{
+  static ConditionInit condition_init;
+}
 
 // condition.C ends here.

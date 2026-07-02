@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
@@ -114,7 +115,7 @@ XYSource::XYSource (const BlockModel& al)
 XYSource::~XYSource ()
 { }
 
-static struct XYSourceInit : public DeclareComponent 
+struct XYSourceInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -122,4 +123,10 @@ static struct XYSourceInit : public DeclareComponent
     : DeclareComponent (XYSource::component, "\
 XY data series.")
   { }
-} XYSource_init;
+};
+
+void
+register_gnuplot_xysource_models ()
+{
+  static XYSourceInit xysource_init;
+}

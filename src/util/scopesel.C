@@ -23,6 +23,7 @@
 #include "util/scopesel.h"
 #include "util/scope.h"
 #include "util/assertion.h"
+#include "util/util_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/treelog.h"
 #include "object_model/librarian.h"
@@ -47,13 +48,15 @@ Scopesel::Scopesel ()
 Scopesel::~Scopesel ()
 { }
 
-static struct ScopeselInit : public DeclareComponent
+namespace
+{
+struct ScopeselInit : public DeclareComponent
 { 
   ScopeselInit ()
     : DeclareComponent (Scopesel::component, "\
 A method to choose a scope in a Daisy simulation.")
   { }
-} Scopesel_init;
+};
 
 // The 'name' model.
 
@@ -93,7 +96,7 @@ struct ScopeselName : public Scopesel
   { }
 };
 
-static struct ScopeselNameSyntax : public DeclareModel
+struct ScopeselNameSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ScopeselName (al); }
@@ -108,7 +111,7 @@ static struct ScopeselNameSyntax : public DeclareModel
   ScopeselNameSyntax ()
     : DeclareModel (Scopesel::component, "name", "Select named scope.")
   { }
-} ScopeselName_syntax;
+};
 
 // The 'null' model.
 
@@ -123,7 +126,7 @@ struct ScopeselNull : public Scopesel
   { }
 };
 
-static struct ScopeselNullSyntax : public DeclareModel
+struct ScopeselNullSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ScopeselNull (al); }
@@ -134,7 +137,7 @@ static struct ScopeselNullSyntax : public DeclareModel
   ScopeselNullSyntax ()
     : DeclareModel (Scopesel::component, "null", "Select the empty scope.")
   { }
-} ScopeselNull_syntax;
+};
 
 // The 'multi' model.
 
@@ -272,7 +275,7 @@ struct ScopeselMulti : public Scopesel
   { }
 };
 
-static struct ScopeselMultiSyntax : public DeclareModel
+struct ScopeselMultiSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ScopeselMulti (al); }
@@ -293,9 +296,17 @@ The entries in the combined scope will have the form <scope>.<key>,\n\
 where <scope> is the name of the scope containing the entry, and <key>\n\
 is the name of the entry in <scope>.")
   { }
-} ScopeselMulti_syntax;
+};
+}
+
+void
+register_scopesel_models ()
+{
+  static ScopeselInit scopesel_init;
+  static ScopeselNameSyntax scopesel_name_syntax;
+  static ScopeselNullSyntax scopesel_null_syntax;
+  static ScopeselMultiSyntax scopesel_multi_syntax;
+}
 
 
 // scopesel.C ends here
-
-

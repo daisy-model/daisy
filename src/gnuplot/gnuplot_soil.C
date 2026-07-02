@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/lexer_soil.h"
 #include "object_model/treelog.h"
@@ -411,7 +412,7 @@ GnuplotSoil::GnuplotSoil (const BlockModel& al)
 GnuplotSoil::~GnuplotSoil ()
 { }
 
-static struct GnuplotSoilSyntax : public DeclareModel
+struct GnuplotSoilSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotSoil (al); }
@@ -460,6 +461,12 @@ Number of sample lines for the 'smooth' and 'contour' types.");
     frame.declare_string ("dimension", Attribute::OptionalConst, "\
 Dimension for data.  By default, use dimension from file.");
   }
-} GnuplotSoil_syntax;
+};
+
+void
+register_gnuplot_soil_models ()
+{
+  static GnuplotSoilSyntax gnuplot_soil_syntax;
+}
 
 // gnuplot_soil.C ends here.

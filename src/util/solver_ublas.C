@@ -23,6 +23,7 @@
 #include "util/solver_ublas.h"
 #include "util/assertion.h"
 #include "object_model/block_model.h"
+#include "util/util_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 
@@ -51,7 +52,9 @@ SolverUBLAS:: SolverUBLAS (const BlockModel& al)
   : Solver (al.type_name ())
 { }
 
-static struct SolverUBLASSyntax : public DeclareModel
+namespace
+{
+struct SolverUBLASSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SolverUBLAS (al); }
@@ -61,6 +64,13 @@ static struct SolverUBLASSyntax : public DeclareModel
   void load_frame (Frame&) const
   {
   }
-} SolverUBLAS_syntax;
+};
+}
+
+void
+register_solver_ublas_models ()
+{
+  static SolverUBLASSyntax solver_ublas_syntax;
+}
 
 // solver_ublas.C ends here.

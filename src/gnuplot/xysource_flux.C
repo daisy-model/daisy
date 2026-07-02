@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "util/lexer_flux.h"
 #include "object_model/check.h"
@@ -478,7 +479,7 @@ XYSourceFlux::~XYSourceFlux ()
 { }
 
 
-static struct XYSourceFluxSyntax : public DeclareModel
+struct XYSourceFluxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceFlux (al); }
@@ -532,6 +533,12 @@ Dimension for soil position.");
 By default, data will be drawn with linespoints.", "\
 By default the specified 'z' or 'x' value, time, and tag.");
   }
-} XYSourceFlux_syntax;
+};
+
+void
+register_gnuplot_xysource_flux_models ()
+{
+  static XYSourceFluxSyntax xysource_flux_syntax;
+}
 
 // xysource_flux.C ends here.

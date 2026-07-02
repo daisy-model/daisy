@@ -19,7 +19,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
 #include "gnuplot/source.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "object_model/units.h"
@@ -204,7 +206,7 @@ SourceMerge::SourceMerge (const BlockModel& al)
     accumulate_ (al.flag ("accumulate"))
 { }
 
-static struct SourceMergeSyntax : public DeclareModel
+struct SourceMergeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SourceMerge (al); }
@@ -230,9 +232,15 @@ List of timeseries to merge.");
     frame.declare_string ("dimension", Attribute::OptionalConst, "\
 Dimension of data to plot.\n\
 By default use the first source with a known dimension.");
-
+    
     
   }
-} SourceMerge_syntax;
+};
+
+void
+register_gnuplot_source_merge_models ()
+{
+  static SourceMergeSyntax source_merge_syntax;
+}
 
 // source_merge.C ends here.

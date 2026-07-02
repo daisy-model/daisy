@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/treelog.h"
 #include "object_model/librarian.h"
@@ -250,7 +251,7 @@ struct ProgramSpawn : public Program {
   {  }
 };
 
-static struct ProgramSpawnSyntax : public DeclareModel
+struct ProgramSpawnSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramSpawn (al); }
@@ -340,6 +341,12 @@ Setup files containing programs to run.\n\
 By default, use the present setup file.");
     frame.set_empty ("file");
   }
-} ProgramSpawn_syntax;
+};
+
+void
+register_program_spawn_models ()
+{
+  static ProgramSpawnSyntax program_spawn_syntax;
+}
 
 // program_spawn.C ends here.

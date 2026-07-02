@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/block_model.h"
@@ -1562,7 +1563,7 @@ standard parameterizations for the model.");
   format->version ();
 }
 
-static struct ProgramDocumentSyntax : public DeclareModel
+struct ProgramDocumentSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramDocument (al); }
@@ -1583,7 +1584,7 @@ Generate the components part of the reference manual.")
 		"Include a copy of all loaded parameterizations in document.");
     frame.set ("print_parameterizations", false);
   }
-} ProgramDocument_syntax;
+};
 
 struct ProgramDocmodel : public Program
 {
@@ -1682,7 +1683,7 @@ ProgramDocmodel::print_document (Treelog& msg)
       msg.error ("'" + models[i] + "': no such model");
 }
 
-static struct ProgramDocmodelSyntax : public DeclareModel
+struct ProgramDocmodelSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramDocmodel (al); }
@@ -1703,6 +1704,13 @@ Document specific models.")
     frame.declare_string ("component", Attribute::Const, 
                           "Component to find the models in.");
   }
-} ProgramDocmodel_syntax;
+};
+
+void
+register_program_document_models ()
+{
+  static ProgramDocumentSyntax program_document_syntax;
+  static ProgramDocmodelSyntax program_docmodel_syntax;
+}
 
 // program_document.C ends here.

@@ -19,7 +19,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
 #include "gnuplot/source_file.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/units.h"
 #include "util/lexer_table.h"
 #include "object_model/librarian.h"
@@ -167,7 +169,7 @@ SourceStandard::~SourceStandard ()
 { }
 
 
-static struct SourceStandardSyntax : public DeclareModel
+struct SourceStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SourceStandard (al); }
@@ -198,6 +200,12 @@ Set offset to first value read.\n\
 Useful for plotting already accumulated data from a later date.");
     frame.set ("reset_offset", false);
   }
-} SourceStandard_syntax;
+};
+
+void
+register_gnuplot_source_std_models ()
+{
+  static SourceStandardSyntax source_standard_syntax;
+}
 
 // source_std.C ends here.

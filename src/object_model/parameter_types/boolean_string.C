@@ -24,6 +24,7 @@
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include <vector>
 
 struct BooleanStringEqual : public Boolean
@@ -58,7 +59,7 @@ struct BooleanStringEqual : public Boolean
   { }
 };
 
-static struct BooleanStringEqualSyntax : public DeclareModel
+struct BooleanStringEqualSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanStringEqual (al); }
@@ -72,6 +73,12 @@ static struct BooleanStringEqualSyntax : public DeclareModel
 		"Strings to compare.");
     frame.order ("values");
   }
-} BooleanStringEqual_syntax;
+};
+
+void
+register_boolean_string_models ()
+{
+  static BooleanStringEqualSyntax boolean_string_equal_syntax;
+}
 
 // boolean_string.C ends here.

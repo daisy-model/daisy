@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/timestep.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/frame_submodel.h"
 #include "object_model/block.h"
 #include "util/assertion.h"
@@ -394,8 +395,11 @@ operator== (const Timestep& a, const Timestep& b)
   return center + a == center + b;
 }
 
-static DeclareSubmodel 
-timestep_submodel (Timestep::load_syntax, "Timestep", "\
+void
+register_timestep_models ()
+{
+  static DeclareSubmodel timestep_submodel (Timestep::load_syntax, "Timestep", "\
 Relative time.");
+}
 
 // timestep.C ends here

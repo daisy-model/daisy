@@ -1,5 +1,6 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
   gnuplot.C
+  registration.C
   gnuplot_base.C
   gnuplot_multi.C
   gnuplot_profile.C

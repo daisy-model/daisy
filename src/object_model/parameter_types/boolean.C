@@ -22,6 +22,7 @@
 
 
 #include "object_model/parameter_types/boolean.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "util/assertion.h"
@@ -51,6 +52,8 @@ Boolean::Boolean (const BlockModel& al)
 Boolean::~Boolean ()
 { }
 
+namespace
+{
 struct BooleanTrue : public Boolean
 {
   // Simulation.
@@ -71,7 +74,7 @@ struct BooleanTrue : public Boolean
   { }
 };
 
-static struct BooleanTrueSyntax : DeclareModel
+struct BooleanTrueSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanTrue (al); }
@@ -81,7 +84,7 @@ static struct BooleanTrueSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanTrue_syntax;
+};
 
 
 struct BooleanFalse : public Boolean
@@ -104,7 +107,7 @@ struct BooleanFalse : public Boolean
   { }
 };
 
-static struct BooleanFalseSyntax : DeclareModel
+struct BooleanFalseSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanFalse (al); }
@@ -114,7 +117,7 @@ static struct BooleanFalseSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   {  }
-} BooleanFalse_syntax;
+};
 
 struct BooleanOperands : public Boolean
 {
@@ -169,7 +172,7 @@ struct BooleanOperands : public Boolean
   { sequence_delete (operand.begin (), operand.end ()); }
 };
 
-static struct BooleanOperandsSyntax : public DeclareBase
+struct BooleanOperandsSyntax : public DeclareBase
 {
   BooleanOperandsSyntax ()
     : DeclareBase (Boolean::component, "operands", "\
@@ -182,7 +185,7 @@ Base class for boolean expressions involving multiple boolean operands.")
 List of operands to compare.");
     frame.order ("operands");
   }
-} BooleanOperands_syntax;
+};
 
 struct BooleanAnd : public BooleanOperands 
 {
@@ -198,7 +201,7 @@ struct BooleanAnd : public BooleanOperands
   { }
 };
 
-static struct BooleanAndSyntax : DeclareModel
+struct BooleanAndSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanAnd (al); }
@@ -208,7 +211,7 @@ static struct BooleanAndSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanAnd_syntax;
+};
 
 
 struct BooleanOr : public BooleanOperands 
@@ -225,7 +228,7 @@ struct BooleanOr : public BooleanOperands
   { }
 };
 
-static struct BooleanOrSyntax : DeclareModel
+struct BooleanOrSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanOr (al); }
@@ -235,7 +238,7 @@ static struct BooleanOrSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanOr_syntax;
+};
 
 struct BooleanXOr : public BooleanOperands 
 {
@@ -249,7 +252,7 @@ struct BooleanXOr : public BooleanOperands
   { }
 };
 
-static struct BooleanXOrSyntax : DeclareModel
+struct BooleanXOrSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanXOr (al); }
@@ -264,7 +267,7 @@ static struct BooleanXOrSyntax : DeclareModel
 The two operands to compare.");
     frame.order ("operands");
   }
-} BooleanXOr_syntax;
+};
 
 struct BooleanNot : public BooleanOperands 
 {
@@ -278,7 +281,7 @@ struct BooleanNot : public BooleanOperands
   { }
 };
 
-static struct BooleanNotSyntax : DeclareModel
+struct BooleanNotSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNot (al); }
@@ -293,14 +296,28 @@ static struct BooleanNotSyntax : DeclareModel
 The operand to check.");
     frame.order ("operands");
   }
-} BooleanNot_syntax;
+};
 
-static struct BooleanInit : public DeclareComponent 
+struct BooleanInit : public DeclareComponent 
 {
   BooleanInit ()
     : DeclareComponent (Boolean::component, "\
 Generic representation of booleans.")
   { }
-} Boolean_init;
+};
+}
+
+void
+register_boolean_models ()
+{
+  static BooleanTrueSyntax boolean_true_syntax;
+  static BooleanFalseSyntax boolean_false_syntax;
+  static BooleanOperandsSyntax boolean_operands_syntax;
+  static BooleanAndSyntax boolean_and_syntax;
+  static BooleanOrSyntax boolean_or_syntax;
+  static BooleanXOrSyntax boolean_xor_syntax;
+  static BooleanNotSyntax boolean_not_syntax;
+  static BooleanInit boolean_init;
+}
 
 // boolean.C ends here.
