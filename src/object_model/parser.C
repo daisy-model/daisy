@@ -24,6 +24,7 @@
 #include "object_model/parser.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 
 const char *const Parser::component = "parser";
 
@@ -45,7 +46,9 @@ Parser::Parser (const BlockModel& al)
 Parser::~Parser ()
 { }
 
-static struct ParserInit : public DeclareComponent 
+namespace
+{
+struct ParserInit : public DeclareComponent 
 {
   ParserInit ()
     : DeclareComponent (Parser::component, "\
@@ -54,6 +57,13 @@ variables must be given an initial value.  It is the responsibility of\n\
 the 'parser' component to read these data from an external source\n\
 (typically a setup file), and convert them into the internal format.")
   { }
-} Parser_init;
+};
+}
+
+void
+register_parser_models ()
+{
+  static ParserInit parser_init;
+}
 
 // parser.C ends here.

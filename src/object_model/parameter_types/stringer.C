@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/parameter_types/stringer.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/parameter_types/number.h"
 #include "object_model/submodeler.h"
@@ -54,6 +55,8 @@ Stringer::Stringer (const BlockModel& al)
 Stringer::~Stringer ()
 { }
 
+namespace
+{
 struct StringerCond : public Stringer
 {
   // Parameters.
@@ -127,7 +130,7 @@ stringer_cond_clause_submodel (StringerCond::Clause::load_syntax,
                               "StringerCondClause", "\
 If condition is true, return value.");
 
-static struct StringerCondSyntax : public DeclareModel
+struct StringerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerCond (al); }
@@ -143,7 +146,7 @@ List of clauses to match for.",
                                    StringerCond::Clause::load_syntax);
     frame.order ("clauses");
   }
-} StringerCond_syntax;
+};
 
 struct StringerNumber : public Stringer
 {
@@ -175,7 +178,7 @@ struct StringerNumber : public Stringer
   { }
 };
 
-static struct StringerNumberSyntax : public DeclareBase
+struct StringerNumberSyntax : public DeclareBase
 {
   StringerNumberSyntax ()
     : DeclareBase (Stringer::component, "number", "\
@@ -186,7 +189,7 @@ Extract the value of a number.")
     frame.declare_object ("number", Number::component, "\
 Number to manipulate."); 
   }
-} StringerNumber_syntax;
+};
 
 struct StringerValue : public StringerNumber
 {
@@ -210,7 +213,7 @@ struct StringerValue : public StringerNumber
   { }
 };
 
-static struct StringerValueSyntax : public DeclareModel
+struct StringerValueSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerValue (al); }
@@ -223,7 +226,7 @@ Extract the value of a number as a string.")
     frame.declare_integer ("precision", Attribute::OptionalConst, "\
 Number of decimals after point.  By default, use a floating format.");
   }
-} StringerValue_syntax;
+};
 
 struct StringerDimension : public StringerNumber
 {
@@ -235,7 +238,7 @@ struct StringerDimension : public StringerNumber
   { }
 };
 
-static struct StringerDimensionSyntax : public DeclareModel
+struct StringerDimensionSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerDimension (al); }
@@ -246,7 +249,7 @@ Extract the dimension of a number as a string.")
   void load_frame (Frame& frame) const
   {
   }
-} StringerDimension_syntax;
+};
 
 struct StringerIdentity : public Stringer
 {
@@ -274,7 +277,7 @@ struct StringerIdentity : public Stringer
   { }
 };
 
-static struct StringerIdentitySyntax : public DeclareModel
+struct StringerIdentitySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerIdentity (al); }
@@ -288,13 +291,24 @@ Return the specified value.")
     frame.declare_string ("value", Attribute::Const, "\
 Constant value.");
   }
-} StringerIdentity_syntax;
+};
 
-static struct StringerInit : public DeclareComponent 
+struct StringerInit : public DeclareComponent 
 {
   StringerInit ()
     : DeclareComponent (Stringer::component, "\
 Generic representation of strings.")
   { }
-} Stringer_init;
+};
+}
 
+void
+register_stringer_models ()
+{
+  static StringerCondSyntax stringer_cond_syntax;
+  static StringerNumberSyntax stringer_number_syntax;
+  static StringerValueSyntax stringer_value_syntax;
+  static StringerDimensionSyntax stringer_dimension_syntax;
+  static StringerIdentitySyntax stringer_identity_syntax;
+  static StringerInit stringer_init;
+}
