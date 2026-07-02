@@ -26,6 +26,7 @@
 #include "programs/program.h"
 #include "object_model/metalib.h"
 #include "object_model/library.h"
+#include "ui/ui_registration_internal.h"
 #include "util/filepos.h"
 #include "util/memutils.h"
 #include "util/assertion.h"
@@ -75,7 +76,7 @@ UIItemModel::UIItemModel (const BlockModel& al)
 UIItemModel::~UIItemModel ()
 { }
 
-static struct UIItemInit : public DeclareComponent 
+struct UIItemInit : public DeclareComponent 
 {
   UIItemInit ()
     : DeclareComponent (UIItem::component, "\
@@ -86,7 +87,7 @@ User interface information about a item.")
     frame.declare_string ("name", Attribute::Const,
                           "Name of user interface unit.");
   }
-} UIItem_init;
+};
 
 // The 'raw' uiitem model.
 
@@ -99,7 +100,7 @@ struct UIItemRaw : UIItemModel
   { }
 };
 
-static struct UIItem_RawSyntax : public DeclareModel
+struct UIItem_RawSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UIItemRaw (al); }
@@ -109,7 +110,7 @@ Raw item for the user interface.")
   { }
   void load_frame (Frame&) const
   { }
-} UIItemRaw_syntax;
+};
 
 // The 'uifilter' component.
 
@@ -130,13 +131,13 @@ UIFilter::UIFilter (const BlockModel& al)
 UIFilter::~UIFilter ()
 { }
 
-static struct UIFilterInit : public DeclareComponent 
+struct UIFilterInit : public DeclareComponent 
 {
   UIFilterInit ()
     : DeclareComponent (UIFilter::component, "\
 Presentation of data in the user interface.")
   { }
-} UIFilter_init;
+};
 
 // The 'base' uifilter base model.
 
@@ -203,7 +204,7 @@ UIFilterBase::~UIFilterBase ()
     }
 }
 
-static struct UIFilter_BaseSyntax : public DeclareBase
+struct UIFilter_BaseSyntax : public DeclareBase
 {
   UIFilter_BaseSyntax ()
     : DeclareBase (UIFilter::component, "base", "\
@@ -211,7 +212,7 @@ Base filter for the user interface.")
   { }
   void load_frame (Frame&) const
   { }
-} UIFilterBase_syntax;
+};
 
 // The 'raw' uifilter model.
 
@@ -335,7 +336,7 @@ UIFilterRaw::UIFilterRaw (const BlockModel& al)
 UIFilterRaw::~UIFilterRaw ()
 { }
 
-static struct UIFilter_RawSyntax : public DeclareModel
+struct UIFilter_RawSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UIFilterRaw (al); }
@@ -345,7 +346,7 @@ Raw filter for the user interface.")
   { }
   void load_frame (Frame&) const
   { }
-} UIFilterRaw_syntax;
+};
 
 // The 'simple' uifilter model.
 
@@ -502,7 +503,7 @@ UIFilterSimple::UIFilterSimple (const BlockModel& al)
 UIFilterSimple::~UIFilterSimple ()
 { }
 
-static struct UIFilter_SimpleSyntax : public DeclareModel
+struct UIFilter_SimpleSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UIFilterSimple (al); }
@@ -598,7 +599,18 @@ Name of default component.");
     frame.declare_submodule_sequence ("all", Attribute::Const, "\
 List of components to support.", load_component);
   }
-} UIFilterSimple_syntax;
+};
+
+void
+register_ui_filter_models ()
+{
+  static UIItemInit ui_item_init;
+  static UIItem_RawSyntax ui_item_raw_syntax;
+  static UIFilterInit ui_filter_init;
+  static UIFilter_BaseSyntax ui_filter_base_syntax;
+  static UIFilter_RawSyntax ui_filter_raw_syntax;
+  static UIFilter_SimpleSyntax ui_filter_simple_syntax;
+}
 
 
 // uifilter.C ends here.
