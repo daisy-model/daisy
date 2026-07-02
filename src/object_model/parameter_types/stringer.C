@@ -125,11 +125,6 @@ Value to return.");
   { sequence_delete (clauses.begin (), clauses.end ()); }
 };
 
-static DeclareSubmodel 
-stringer_cond_clause_submodel (StringerCond::Clause::load_syntax,
-                              "StringerCondClause", "\
-If condition is true, return value.");
-
 struct StringerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
@@ -305,6 +300,9 @@ Generic representation of strings.")
 void
 register_stringer_models ()
 {
+  static DeclareSubmodel stringer_cond_clause_submodel (
+    StringerCond::Clause::load_syntax, "StringerCondClause", "\
+If condition is true, return value.");
   static StringerCondSyntax stringer_cond_syntax;
   static StringerNumberSyntax stringer_number_syntax;
   static StringerValueSyntax stringer_value_syntax;

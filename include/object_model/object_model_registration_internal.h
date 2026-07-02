@@ -24,6 +24,9 @@
 void register_boolean_models ();
 void register_boolean_string_models ();
 void register_function_models ();
+#ifdef BUILD_PYTHON
+void register_function_python_models ();
+#endif
 void register_integer_models ();
 void register_integer_arithmetic_models ();
 void register_number_models ();
@@ -32,6 +35,8 @@ void register_number_arithmetic_models ();
 void register_number_const_models ();
 void register_number_lisp_models ();
 void register_number_plf_models ();
+void register_number_soil_models ();
+void register_number_source_models ();
 void register_parser_file_models ();
 void register_parser_models ();
 void register_rate_models ();

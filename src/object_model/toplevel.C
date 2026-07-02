@@ -92,6 +92,9 @@ namespace
 const std::string&
 register_runtime_models (const std::string& preferred_ui)
 {
+  static DeclareSubmodel toplevel_submodel (Toplevel::load_submodel,
+                                            "Toplevel",
+                                            Toplevel::default_description);
   register_object_model_models ();
   register_util_models ();
   return preferred_ui;
@@ -730,9 +733,5 @@ Toplevel::~Toplevel ()
   catch (...)
     { error ("Exception occured during cleanup"); }
 }
-
-static DeclareSubmodel 
-toplevel_submodel (Toplevel::load_submodel, "Toplevel",
-                   Toplevel::default_description);
 
 // toplevel.C ends here.

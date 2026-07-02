@@ -155,11 +155,6 @@ Value to return.");
   { sequence_delete (clauses.begin (), clauses.end ()); }
 };
 
-static DeclareSubmodel 
-integer_cond_clause_submodel (IntegerCond::Clause::load_syntax,
-                              "IntegerCondClause", "\
-If condition is true, return value.");
-
 struct IntegerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
@@ -190,6 +185,9 @@ Generic representation of integers.")
 void
 register_integer_models ()
 {
+  static DeclareSubmodel integer_cond_clause_submodel (
+    IntegerCond::Clause::load_syntax, "IntegerCondClause", "\
+If condition is true, return value.");
   static IntegerConstSyntax integer_const_syntax;
   static IntegerCondSyntax integer_cond_syntax;
   static IntegerInit integer_init;

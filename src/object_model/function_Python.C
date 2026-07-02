@@ -22,6 +22,7 @@
 #include "object_model/function.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "util/assertion.h"
 
 #include <pybind11/embed.h>
@@ -103,7 +104,7 @@ struct FunctionPython : public Function
   { }
 };
 
-static struct FunctionPythonSyntax : public DeclareModel
+struct FunctionPythonSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionPython (al); }
@@ -122,6 +123,12 @@ Function domain.");
     frame.declare_string ("range", Attribute::Const, "\
 Function range.");
   }
-} FunctionPython_syntax;
+};
+
+void
+register_function_python_models ()
+{
+  static FunctionPythonSyntax function_python_syntax;
+}
 
 // function_Python.C ends here.

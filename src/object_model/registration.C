@@ -27,12 +27,17 @@ register_object_model_models ()
   register_parser_models ();
   register_parser_file_models ();
   register_function_models ();
+#ifdef BUILD_PYTHON
+  register_function_python_models ();
+#endif
   register_number_models ();
   register_number_const_models ();
   register_number_apply_models ();
   register_number_plf_models ();
   register_number_arithmetic_models ();
   register_number_lisp_models ();
+  register_number_source_models ();
+  register_number_soil_models ();
   register_stringer_models ();
   register_boolean_models ();
   register_boolean_string_models ();
