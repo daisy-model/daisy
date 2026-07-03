@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
@@ -57,7 +58,7 @@ public:
   { }
 };
 
-static struct GroundwaterDeepSyntax : public DeclareModel
+struct GroundwaterDeepSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterDeep (al); }
@@ -69,4 +70,10 @@ Deep groundwater, free drainage.")
   void load_frame (Frame& frame) const
     { 
     }
-} GroundwaterDeep_syntax;
+};
+
+void
+register_groundwater_deep_models ()
+{
+  static GroundwaterDeepSyntax groundwater_deep_syntax;
+}

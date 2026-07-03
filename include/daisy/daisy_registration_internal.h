@@ -36,6 +36,16 @@ void register_condition_walltime_models ();
 void register_condition_weather_models ();
 void register_daisy_program_models ();
 void register_daisy_time_models ();
+void register_groundwater_models ();
+void register_groundwater_aquitard_models ();
+void register_groundwater_deep_models ();
+void register_groundwater_extern_models ();
+void register_groundwater_file_models ();
+void register_groundwater_fixed_models ();
+void register_groundwater_flux_models ();
+void register_groundwater_lysimeter_models ();
+void register_groundwater_source_models ();
+void register_groundwater_static_models ();
 void register_timestep_models ();
 
 #endif // DAISY_REGISTRATION_INTERNAL_H

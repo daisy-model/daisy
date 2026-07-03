@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
@@ -61,7 +62,7 @@ public:
   { }
 };
 
-static struct GroundwaterFluxSyntax : public DeclareModel
+struct GroundwaterFluxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterFlux (al); }
@@ -76,4 +77,10 @@ Flux groundwater, free drainage.")
 		  "Constant flux to groundwater.");
       frame.order ("flux");
     }
-} GroundwaterFlux_syntax;
+};
+
+void
+register_groundwater_flux_models ()
+{
+  static GroundwaterFluxSyntax groundwater_flux_syntax;
+}

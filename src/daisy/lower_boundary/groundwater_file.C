@@ -20,6 +20,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater_file.h"
 
 Groundwater::bottom_t
@@ -134,7 +135,7 @@ GroundwaterFile::GroundwaterFile (const BlockModel& al)
 GroundwaterFile::~GroundwaterFile ()
 { }
 
-static struct GroundwaterFileSyntax : public DeclareModel
+struct GroundwaterFileSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new GroundwaterFile (al); }
@@ -154,6 +155,12 @@ Linear interpolation is used between the datapoints.");
                      "Add this to depth from file.");
       frame.set ("offset", 0.0);
     }
-} GroundwaterFile_syntax;
+};
+
+void
+register_groundwater_file_models ()
+{
+  static GroundwaterFileSyntax groundwater_file_syntax;
+}
 
 // groundwater_file.C ends here.

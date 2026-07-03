@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -55,16 +56,16 @@ Groundwater::Groundwater (const BlockModel& al)
 Groundwater::~Groundwater ()
 { }
 
-static struct GroundwaterInit : public DeclareComponent 
+struct GroundwaterInit : public DeclareComponent 
 {
   GroundwaterInit ()
     : DeclareComponent (Groundwater::component, "\
 The 'groundwater' component is responsible for specifying the\n\
 groundwater table at each timestep.")
   { }
-} Groundwater_init;
+};
 
-static struct GroundwaterBaseSyntax : public DeclareBase
+struct GroundwaterBaseSyntax : public DeclareBase
 {
   GroundwaterBaseSyntax ()
     : DeclareBase (Groundwater::component, "common", "\
@@ -75,6 +76,22 @@ All groundwater models can log height.")
    frame.declare ("height", "cm", Attribute::LogOnly,
               "Groundwater level.  Positive numbers indicate free drainage.");
   }
-} GroundwaterBase_syntax;
+};
+
+void
+register_groundwater_models ()
+{
+  static GroundwaterInit groundwater_init;
+  static GroundwaterBaseSyntax groundwater_base_syntax;
+  register_groundwater_aquitard_models ();
+  register_groundwater_deep_models ();
+  register_groundwater_extern_models ();
+  register_groundwater_file_models ();
+  register_groundwater_fixed_models ();
+  register_groundwater_flux_models ();
+  register_groundwater_lysimeter_models ();
+  register_groundwater_source_models ();
+  register_groundwater_static_models ();
+}
 
 // groundwater.C ends here.

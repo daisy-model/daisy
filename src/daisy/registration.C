@@ -27,6 +27,7 @@ register_daisy_models ()
   register_daisy_time_models ();
   register_timestep_models ();
   register_condition_models ();
+  register_groundwater_models ();
   register_column_models ();
   register_daisy_program_models ();
 }

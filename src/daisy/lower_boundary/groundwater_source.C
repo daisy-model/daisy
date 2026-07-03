@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "gnuplot/source.h"
 #include "daisy/daisy_time.h"
@@ -177,7 +178,7 @@ GroundwaterSource::GroundwaterSource (const BlockModel& al)
 GroundwaterSource::~GroundwaterSource ()
 { }
 
-static struct GroundwaterSourceSyntax : public DeclareModel
+struct GroundwaterSourceSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterSource (al); }
@@ -195,6 +196,12 @@ Groundwater table time series.");
                    "Add this to depth from source.");
     frame.set ("offset", 0.0);
   }
-} GroundwaterSource_syntax;
+};
+
+void
+register_groundwater_source_models ()
+{
+  static GroundwaterSourceSyntax groundwater_source_syntax;
+}
 
 // groundwater_source.C ends here.

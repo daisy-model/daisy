@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
@@ -64,7 +65,7 @@ public:
   { }
 };
 
-static struct GroundwaterFixedSyntax : public DeclareModel
+struct GroundwaterFixedSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterFixed (al); }
@@ -78,6 +79,11 @@ Fixed high groundwater level.")
 		"Groundwater level (negative number below surface).");
     frame.order ("table");
   }
-} GroundwaterFixed_syntax;
+};
 
+void
+register_groundwater_fixed_models ()
+{
+  static GroundwaterFixedSyntax groundwater_fixed_syntax;
+}
 

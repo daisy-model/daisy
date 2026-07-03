@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "daisy/output/output.h"
 #include "object_model/parameter_types/number.h"
@@ -81,7 +82,7 @@ public:
   { }
 };
 
-static struct GroundwaterExternSyntax : public DeclareModel
+struct GroundwaterExternSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterExtern (al); }
@@ -97,4 +98,10 @@ Expression that evaluates to groundwate table in.");
     frame.declare ("initial_table", "cm", Check::none (), Attribute::OptionalConst,
 		"Groundwater level for initialization of soil water.");
   }
-} GroundwaterExtern_syntax;
+};
+
+void
+register_groundwater_extern_models ()
+{
+  static GroundwaterExternSyntax groundwater_extern_syntax;
+}
