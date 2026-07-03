@@ -1551,13 +1551,14 @@ of the component, and that it is not possible to define libraries of\n\
 standard parameterizations for the model."); 
   std::vector<symbol> fixed;
   Librarian::submodel_all (fixed);
+  sort (fixed.begin (), fixed.end (), symbol::alphabetical);
   for (unsigned int i = 0; i < fixed.size (); i++)
     {
       const symbol name = fixed[i];
       const Frame& frame = *Librarian::submodel_frame (name).get ();
       const symbol description = Librarian::submodel_description (name);
       print_fixed (name, frame, description);
-  }
+    }
   
   // Daisy version.
   format->version ();

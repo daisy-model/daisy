@@ -3,14 +3,19 @@ if(${BUILD_DOC})
     COMMAND mkdir -p doc/gnufig
   )
   add_custom_command(OUTPUT doc/components.tex
-    COMMAND ${DAISY_BIN_NAME} -d doc all.dai -p document
+    COMMAND ${DAISY_BIN_NAME} -d doc
+            -D ${CMAKE_SOURCE_DIR}/lib
+            ${CMAKE_SOURCE_DIR}/lib/all.dai
+            -p document
     COMMAND cd doc && gnuplot document.gnuplot
     DEPENDS
     doc_setup
   )
 
   add_custom_command(OUTPUT doc/stdlog.tex
-    COMMAND ${DAISY_BIN_NAME} -d doc ${CMAKE_SOURCE_DIR}/txt/stdlog.dai
+    COMMAND ${DAISY_BIN_NAME} -d doc
+            -D ${CMAKE_SOURCE_DIR}/lib
+            ${CMAKE_SOURCE_DIR}/txt/stdlog.dai
     DEPENDS doc_setup
   )
 
@@ -104,8 +109,8 @@ if(${BUILD_DOC})
   # The docs target first builds reference.pdf, tutorial.pdf and exercises.pdf; then it deletes all
   # the files used/generated during build.
   add_custom_target(docs
-    COMMAND rm -r doc/gnufig
-    COMMAND find doc/ -type f -regex .+\.[^pdf] | xargs rm
+    COMMAND ${CMAKE_COMMAND} -E rm -rf doc/gnufig
+    COMMAND find doc -type f ! -name "*.pdf" -delete
     DEPENDS reference tutorial exercises
   )
 endif()
