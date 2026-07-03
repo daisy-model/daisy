@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/log_select.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select.h"
 #include "daisy/condition.h"
 #include "object_model/metalib.h"
@@ -464,56 +465,60 @@ LogSelect::document_entries (Format& format, const Metalib& metalib,
     entries[i]->document (format);
 }
 
-static struct LogSelectSyntax : public DeclareBase
+void
+register_log_select_models ()
 {
-  LogSelectSyntax ()
-    : DeclareBase (Log::component, "select", "Select variables to log.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct LogSelectSyntax : public DeclareBase
   {
-    Model::load_model (frame);
-    frame.declare_string ("parameter_names", 
+    LogSelectSyntax ()
+      : DeclareBase (Log::component, "select", "Select variables to log.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.declare_string ("parameter_names",
                           Attribute::Const, Attribute::Variable, "\
 List of string parameters to print to the table header.\n\
 \n\
 For example, if you have defined 'column' and 'crop' parameters for\n\
 this table log parameterization, you can print them to the log file\n\
 header by specifying '(parameter_names column crop)'.");
-    frame.set_empty ("parameter_names");
-    frame.declare_object ("when", Condition::component, "\
+      frame.set_empty ("parameter_names");
+      frame.declare_object ("when", Condition::component, "\
 Add entries to the log file when this condition is true.");
-    frame.declare_object ("active", Condition::component, "\
+      frame.declare_object ("active", Condition::component, "\
 Add data when this condition is true.\n\
 E.g. count percolation only when there is no crop.");
-    frame.set ("active", "true");
-    frame.declare_object ("entries", Select::component, 
+      frame.set ("active", "true");
+      frame.declare_object ("entries", Select::component,
                           Attribute::State, Attribute::Variable,
                           "What to log in each column.");
-    frame.declare_boolean ("time_columns", Attribute::OptionalConst, "\
+      frame.declare_boolean ("time_columns", Attribute::OptionalConst, "\
 Iff true, add columns for year, month, mday and hour in the begining of\n\
 the lines.  By default, this will be true of you have not specified any\n\
 time entries yourself.");
-    frame.declare_object ("volume", Volume::component, 
+      frame.declare_object ("volume", Volume::component,
                           Attribute::Const, Attribute::Singleton,
                           "Soil volume to log.");
-    frame.set ("volume", "box");
-    frame.declare ("from", "cm", Attribute::OptionalConst,
+      frame.set ("volume", "box");
+      frame.declare ("from", "cm", Attribute::OptionalConst,
                    "Default 'from' value for all entries.\n\
 By default, use the top of the soil.\n\
 OBSOLETE: Use (volume box (top FROM)) instead.");
-    frame.declare ("to", "cm", Attribute::OptionalConst,
+      frame.declare ("to", "cm", Attribute::OptionalConst,
                    "Default 'to' value for all entries.\n\
 By default, use the bottom of the soil.\n\
 OBSOLETE: Use (volume box (bottom TO)) instead.");
-    frame.declare_boolean ("print_initial", Attribute::OptionalConst, "\
+      frame.declare_boolean ("print_initial", Attribute::OptionalConst, "\
 Print a line with initial values when logging starts.\n\
 By default, an initial line will be printed if any entry has 'handle'\n\
 set to 'current'.");
-    frame.declare_object ("summary", Summary::component,
+      frame.declare_object ("summary", Summary::component,
                           Attribute::Const, Attribute::Variable,
                           "Summaries for this log file.");
-    frame.set_empty ("summary");
-  }
-} LogSelect_syntax;
+      frame.set_empty ("summary");
+    }
+  } log_select_syntax;
+}
 
 // log_select.C ends here.

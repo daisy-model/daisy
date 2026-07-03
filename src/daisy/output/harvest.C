@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/harvest.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/frame.h"
 #include "daisy/output/log.h"
 #include "object_model/librarian.h"
@@ -203,8 +204,12 @@ Harvest::Harvest (const symbol col,
     harvest_index (hi)
 { }
 
-static DeclareSubmodel 
-harvest_submodel (Harvest::load_syntax, "Harvest", "\
+void
+register_harvest_models ()
+{
+  static DeclareSubmodel
+  harvest_submodel (Harvest::load_syntax, "Harvest", "\
 Log of all harvests during the simulation.");
+}
 
 // harvest.C ends here.

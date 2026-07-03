@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select_value.h"
 #include "daisy/output/bdconv.h"
 #include "object_model/block_model.h"
@@ -376,107 +377,6 @@ SelectVolume::SelectVolume (const BlockModel& al)
 SelectVolume::~SelectVolume ()
 { }
 
-static struct SelectVolumeBase : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new SelectVolume (al); }
-  SelectVolumeBase ()
-    : DeclareModel (Select::component, "volume_base", "value", "\
-Shared parameters for volume based logs.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_string ("space", Attribute::OptionalConst, "\
-This option determine how to handle mutiple cells within the volume.\n\
-\n\
-min: Use smallest value\n\
-\n\
-max: Use largest value\n\
-\n\
-sum: Use the weighted sum of all cells.\n\
-If this is set, the 'density_z', 'density_x', and 'density_y' parameters\n\
-take effect.");
-    frame.set_check ("space", Select::multi_check ());
-    frame.set ("space", "sum");
-    frame.declare_boolean ("density", Attribute::Const, 
-		"If true, divide total content with volume.\n\
-Otherwise, obey 'density_z', 'density_x', and 'density_y'.\n\
-Unly used if 'space' is 'sum'.");
-    frame.set ("density", false);
-    frame.declare_boolean ("density_z", Attribute::Const, 
-		"If true, divide total content with volume height.\n\
-This parameter is ignored if 'density' is true.\n\
-Unly used if 'space' is 'sum'.");
-    frame.declare_boolean ("density_x", Attribute::Const, 
-		"If true, divide total content with volume width.\n\
-This parameter is ignored if 'density' is true.\n\
-Unly used if 'space' is 'sum'.");
-    frame.declare_boolean ("density_y", Attribute::Const, 
-		"If true, divide total content with volume depth.\n\
-This parameter is ignored if 'density' is true.\n\
-Unly used if 'space' is 'sum'.");
-    frame.declare_object ("volume", Volume::component, 
-                       Attribute::Const, Attribute::Singleton,
-                       "Soil volume to log.");
-    frame.set ("volume", "box");
-
-    frame.declare ("min_root_density", "cm/cm^3", Attribute::Const, "\
-Minimum root density in cells.\n\
-\n\
-Set this paramater to a positive amount in order to log only cells\n\
-within the (dynamic) root zone.  If the root density in the cell is\n\
-above this amount, the full amount of the data being logged will be\n\
-included.  If the root density is below, the amount included will be\n\
-scaled down accordingly.  That is, if there are no roots, the data for\n\
-the cell will be scaled to zero, while if there is only half the\n\
-specified minimum root density, the data for the cell will be scaled\n\
-to 0.5.");
-    frame.set ("min_root_density", -1.0);
-    frame.declare_string ("min_root_crop", Attribute::Const, "\
-Name of crop whose roots scould be used for the root density requirements.\n\
-Set this to \"*\" to use all roots.");
-    frame.set ("min_root_crop", "*"); // Select::wildcard may not be initialized.
-  }
-} SelectVolume_base;
-
-static struct SelectVolumeSyntax : public DeclareParam
-{
-  SelectVolumeSyntax ()
-    : DeclareParam (Select::component, "volume", "volume_base", "\
-Summarize specified volume.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set ("density_z", false);
-    frame.set ("density_x", false);
-    frame.set ("density_y", false);
-  }
-} Select_volume_syntax;
-
-static struct SelectIntervalSyntax : public DeclareParam
-{
-  SelectIntervalSyntax ()
-    : DeclareParam (Select::component, "interval", "volume_base",
-                    "Summarize specified interval.\n\
-This is similar to 'volume', except for the default values of\n         \
-'density_x' and 'density_y', and the unqiue 'from' and 'to' parameters.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set ("density_z", false);
-    frame.set ("density_x", true);
-    frame.set ("density_y", true);
-    frame.declare ("from", "cm", Attribute::OptionalConst,
-		"Specify height (negative) to measure from.\n\
-By default, measure from the top.\n\
-OBSOLETE: Use (volume box (top FROM)) instead.");
-    frame.declare ("to", "cm", Attribute::OptionalConst,
-		"Specify height (negative) to measure interval.\n\
-By default, measure to the bottom.\n\
-OBSOLETE: Use (volume box (bottom TO)) instead.");
-  }
-} Select_interval_syntax;
-
 // Here follows a hack to log the water content at fixed pressure.
 
 struct SelectWater : public SelectVolume
@@ -533,63 +433,168 @@ struct SelectWater : public SelectVolume
   { }
 };
 
-static struct SelectWaterSyntax : public DeclareModel
+void
+register_select_volume_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectWater (al); }
+  static struct SelectVolumeBase : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectVolume (al); }
+    SelectVolumeBase ()
+      : DeclareModel (Select::component, "volume_base", "value", "\
+Shared parameters for volume based logs.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("space", Attribute::OptionalConst, "\
+This option determine how to handle mutiple cells within the volume.\n\
+\n\
+min: Use smallest value\n\
+\n\
+max: Use largest value\n\
+\n\
+sum: Use the weighted sum of all cells.\n\
+If this is set, the 'density_z', 'density_x', and 'density_y' parameters\n\
+take effect.");
+      frame.set_check ("space", Select::multi_check ());
+      frame.set ("space", "sum");
+      frame.declare_boolean ("density", Attribute::Const,
+                             "If true, divide total content with volume.\n\
+Otherwise, obey 'density_z', 'density_x', and 'density_y'.\n\
+Unly used if 'space' is 'sum'.");
+      frame.set ("density", false);
+      frame.declare_boolean ("density_z", Attribute::Const,
+                             "If true, divide total content with volume height.\n\
+This parameter is ignored if 'density' is true.\n\
+Unly used if 'space' is 'sum'.");
+      frame.declare_boolean ("density_x", Attribute::Const,
+                             "If true, divide total content with volume width.\n\
+This parameter is ignored if 'density' is true.\n\
+Unly used if 'space' is 'sum'.");
+      frame.declare_boolean ("density_y", Attribute::Const,
+                             "If true, divide total content with volume depth.\n\
+This parameter is ignored if 'density' is true.\n\
+Unly used if 'space' is 'sum'.");
+      frame.declare_object ("volume", Volume::component,
+                            Attribute::Const, Attribute::Singleton,
+                            "Soil volume to log.");
+      frame.set ("volume", "box");
 
-  SelectWaterSyntax ()
-    : DeclareModel (Select::component, "water", "volume_base", "\
-Shared parameters for water limited volumn logging.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("h", "cm", Check::non_positive (), Attribute::Const, 
-                "Pressure to log water content for.");
-    frame.declare ("h_ice", "cm", Check::non_positive (), Attribute::Const, 
-		"Pressure at which all air is out of the matrix.\n\
-When there are no ice, this is 0.0.  When there are ice, the ice is\n\
-presumed to occupy the large pores, so it is h (Theta_sat - X_ice).");
-    frame.set ("h_ice", 0.0);
-  }
-} SelectWater_syntax;
-  
-static struct SelectWaterVolumeParam : public DeclareParam
-{
-  SelectWaterVolumeParam ()
-    : DeclareParam (Select::component, "water_volume", "water", "\
-Summarize water content in the specified volume.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("density_z", false);
-    frame.set ("density_x", false);
-    frame.set ("density_y", false);
- }    
-} Select_water_volume_syntax;
+      frame.declare ("min_root_density", "cm/cm^3", Attribute::Const, "\
+Minimum root density in cells.\n\
+\n\
+Set this paramater to a positive amount in order to log only cells\n\
+within the (dynamic) root zone.  If the root density in the cell is\n\
+above this amount, the full amount of the data being logged will be\n\
+included.  If the root density is below, the amount included will be\n\
+scaled down accordingly.  That is, if there are no roots, the data for\n\
+the cell will be scaled to zero, while if there is only half the\n\
+specified minimum root density, the data for the cell will be scaled\n\
+to 0.5.");
+      frame.set ("min_root_density", -1.0);
+      frame.declare_string ("min_root_crop", Attribute::Const, "\
+Name of crop whose roots scould be used for the root density requirements.\n\
+Set this to \"*\" to use all roots.");
+      frame.set ("min_root_crop", "*"); // Select::wildcard may not be initialized.
+    }
+  } select_volume_base;
 
-static struct SelectWaterIntervalParam : public DeclareParam
-{
-  void load_frame (Frame& frame) const
+  static struct SelectVolumeSyntax : public DeclareParam
   {
-    frame.set ("density_z", false);
-    frame.set ("density_x", true);
-    frame.set ("density_y", true);
-    frame.declare ("from", "cm", Attribute::OptionalConst,
-		"Specify height (negative) to measure from.\n\
+    SelectVolumeSyntax ()
+      : DeclareParam (Select::component, "volume", "volume_base", "\
+Summarize specified volume.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("density_z", false);
+      frame.set ("density_x", false);
+      frame.set ("density_y", false);
+    }
+  } select_volume_syntax;
+
+  static struct SelectIntervalSyntax : public DeclareParam
+  {
+    SelectIntervalSyntax ()
+      : DeclareParam (Select::component, "interval", "volume_base",
+                      "Summarize specified interval.\n\
+This is similar to 'volume', except for the default values of\n         \
+'density_x' and 'density_y', and the unqiue 'from' and 'to' parameters.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("density_z", false);
+      frame.set ("density_x", true);
+      frame.set ("density_y", true);
+      frame.declare ("from", "cm", Attribute::OptionalConst,
+                      "Specify height (negative) to measure from.\n\
 By default, measure from the top.\n\
 OBSOLETE: Use (volume box (top FROM)) instead.");
-    frame.declare ("to", "cm", Attribute::OptionalConst,
-		"Specify height (negative) to measure interval.\n\
+      frame.declare ("to", "cm", Attribute::OptionalConst,
+                      "Specify height (negative) to measure interval.\n\
 By default, measure to the bottom.\n\
 OBSOLETE: Use (volume box (bottom TO)) instead.");
-  }    
-  SelectWaterIntervalParam ()
-    : DeclareParam (Select::component, "water_interval", "water", "\
+    }
+  } select_interval_syntax;
+
+  static struct SelectWaterSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectWater (al); }
+
+    SelectWaterSyntax ()
+      : DeclareModel (Select::component, "water", "volume_base", "\
+Shared parameters for water limited volumn logging.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("h", "cm", Check::non_positive (), Attribute::Const,
+                      "Pressure to log water content for.");
+      frame.declare ("h_ice", "cm", Check::non_positive (), Attribute::Const,
+                      "Pressure at which all air is out of the matrix.\n\
+When there are no ice, this is 0.0.  When there are ice, the ice is\n\
+presumed to occupy the large pores, so it is h (Theta_sat - X_ice).");
+      frame.set ("h_ice", 0.0);
+    }
+  } select_water_syntax;
+
+  static struct SelectWaterVolumeParam : public DeclareParam
+  {
+    SelectWaterVolumeParam ()
+      : DeclareParam (Select::component, "water_volume", "water", "\
+Summarize water content in the specified volume.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("density_z", false);
+      frame.set ("density_x", false);
+      frame.set ("density_y", false);
+    }
+  } select_water_volume_syntax;
+
+  static struct SelectWaterIntervalParam : public DeclareParam
+  {
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("density_z", false);
+      frame.set ("density_x", true);
+      frame.set ("density_y", true);
+      frame.declare ("from", "cm", Attribute::OptionalConst,
+                      "Specify height (negative) to measure from.\n\
+By default, measure from the top.\n\
+OBSOLETE: Use (volume box (top FROM)) instead.");
+      frame.declare ("to", "cm", Attribute::OptionalConst,
+                      "Specify height (negative) to measure interval.\n\
+By default, measure to the bottom.\n\
+OBSOLETE: Use (volume box (bottom TO)) instead.");
+    }
+    SelectWaterIntervalParam ()
+      : DeclareParam (Select::component, "water_interval", "water", "\
 Summarize water content in the specified interval.\n\
 This is similar to 'water_volume', except for the default values of\n\
 'density_x' and 'density_y', and the unqiue 'from' and 'to' parameters.")
-  { }
-} Select_water_interval_syntax;
+    { }
+  } select_water_interval_syntax;
+}
 
 // select_volumne.C ends here

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/fetch.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select.h"
 #include "object_model/treelog.h"
 #include "object_model/frame_submodel.h"
@@ -157,7 +158,11 @@ Fetch::Fetch (const symbol key)
     sum (-42.42e42)
 { }
 
-static DeclareSubmodel fetch_submodel (Fetch::load_syntax, "Fetch", "\
+void
+register_fetch_models ()
+{
+  static DeclareSubmodel fetch_submodel (Fetch::load_syntax, "Fetch", "\
 A summary file line.");
+}
 
 // fetch.C ends here.

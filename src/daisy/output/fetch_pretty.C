@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/fetch_pretty.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/frame_submodel.h"
 #include "util/mathlib.h"
@@ -147,8 +148,12 @@ Typically 1.0 to add this line, or -1.0 to subtract it.");
   frame.set ("factor", 1.0);
 }
 
-static DeclareSubmodel 
-fetch_prettysubmodel (FetchPretty::load_syntax, "FetchPretty", "\
+void
+register_fetch_pretty_models ()
+{
+  static DeclareSubmodel
+  fetch_prettysubmodel (FetchPretty::load_syntax, "FetchPretty", "\
 A summary file line.");
+}
 
 // fetch_pretty.C ends here.

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/log_alist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/metalib.h"
 #include "object_model/block_model.h"
 #include "daisy/condition.h"
@@ -233,27 +234,31 @@ LogCheckpoint::LogCheckpoint (const BlockModel& al)
 LogCheckpoint::~LogCheckpoint ()
 { }
 
-static struct LogCheckpointSyntax : public DeclareModel
+void
+register_log_checkpoint_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new LogCheckpoint (al); }
+  static struct LogCheckpointSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new LogCheckpoint (al); }
 
-  LogCheckpointSyntax ()
-    : DeclareModel (Log::component, "checkpoint", "\
+    LogCheckpointSyntax ()
+      : DeclareModel (Log::component, "checkpoint", "\
 Create a checkpoint of the entire simulation state, suitable for later\n\
 hot start.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    Model::load_model (frame);
-    frame.declare_string ("where", Attribute::Const,
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.declare_string ("where", Attribute::Const,
                 "File name prefix for the generated checkpoint.\n\
 The time will be appended, together with the '.dai' suffix.");
-    frame.set ("where", "checkpoint");
-    frame.declare_object ("when", Condition::component,
+      frame.set ("where", "checkpoint");
+      frame.declare_object ("when", Condition::component,
                        "Make a checkpoint every time this condition is true.");
-    frame.set ("when", "finished");
-  }
-} LogCheckpoint_syntax;
+      frame.set ("when", "finished");
+    }
+  } log_checkpoint_syntax;
+}
 
 // log_checkpoint.C ends here.

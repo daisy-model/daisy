@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select_value.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
@@ -183,14 +184,18 @@ SelectValue::SelectValue (const BlockModel& al)
     value (0.0)
 { }
 
-static struct SelectValueSyntax : public DeclareBase
+void
+register_select_value_models ()
 {
-  SelectValueSyntax ()
-    : DeclareBase (Select::component, "value", "\
+  static struct SelectValueSyntax : public DeclareBase
+  {
+    SelectValueSyntax ()
+      : DeclareBase (Select::component, "value", "\
 Log a single numeric value.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} SelectValue_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } select_value_syntax;
+}
 
 // select_value.C ends here.

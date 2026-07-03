@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/summary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/fetch_pretty.h"
 #include "daisy/output/select.h"
 #include "object_model/treelog.h"
@@ -138,34 +139,38 @@ SummarySimple::summarize (Treelog& msg) const
     } 
 }
 
-static struct SummarySimpleSyntax : public DeclareModel
+void
+register_summary_simple_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SummarySimple (al); }
-  SummarySimpleSyntax ()
-    : DeclareModel (Summary::component, "simple",
-                    SummarySimple::default_description)
-  { }
-  void load_frame (Frame& frame) const
+  static struct SummarySimpleSyntax : public DeclareModel
   {
-    frame.declare_string ("where", Attribute::OptionalConst,
-                "File name to store the summary.\n\
+    Model* make (const BlockModel& al) const
+    { return new SummarySimple (al); }
+    SummarySimpleSyntax ()
+      : DeclareModel (Summary::component, "simple",
+                      SummarySimple::default_description)
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("where", Attribute::OptionalConst,
+                  "File name to store the summary.\n\
 By default, the summary will be stored in daisy.log and the screen.");
-    frame.declare_boolean ("print_sum", Attribute::Const, 
-                "Print sum of all the summary lines.");
-    frame.set ("print_sum", true);
-    frame.declare_string ("sum_name", Attribute::Const,
-                "Name of the sum of all the entries.");
-    frame.set ("sum_name", "Sum");	
-    frame.declare_string ("period", Attribute::OptionalConst, "\
+      frame.declare_boolean ("print_sum", Attribute::Const,
+                  "Print sum of all the summary lines.");
+      frame.set ("print_sum", true);
+      frame.declare_string ("sum_name", Attribute::Const,
+                  "Name of the sum of all the entries.");
+      frame.set ("sum_name", "Sum");
+      frame.declare_string ("period", Attribute::OptionalConst, "\
 Set this to 'y', 'm', 'w', 'd' or 'h' to get fluxes per time period\n\
 instead of total amount.");
-    frame.declare_submodule_sequence ("fetch", Attribute::Const, "\
+      frame.declare_submodule_sequence ("fetch", Attribute::Const, "\
 List of columns to fetch for the summary.", FetchPretty::load_syntax);
-    frame.declare_integer ("precision", Attribute::Const,
-                "Number of digits to print after decimal point.");
-    frame.set ("precision", 2);
-  }
-} SummarySimple_syntax;
+      frame.declare_integer ("precision", Attribute::Const,
+                  "Number of digits to print after decimal point.");
+      frame.set ("precision", 2);
+    }
+  } summary_simple_syntax;
+}
 
 // summary_simple.C ends here.
