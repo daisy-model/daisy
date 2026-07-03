@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/ABAprod.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/parameter_types/number.h"
 #include "util/scope_exchange.h"
 #include "daisy/soil/transport/geometry.h"
@@ -131,23 +132,28 @@ ABAProdSoil::ABAProdSoil (const BlockModel& al)
 ABAProdSoil::~ABAProdSoil ()
 { }
 
-static struct ABAProdSoilSyntax : public DeclareModel
+void
+register_ABAprod_soil_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ABAProdSoil (al); }
-  ABAProdSoilSyntax ()
-    : DeclareModel (ABAProd::component, "soil", "\
-ABA production based on soil location.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ABAProdSoilSyntax : public DeclareModel
   {
-    frame.declare_object ("expr", Number::component, 
-                      Attribute::Const, Attribute::Singleton, "\
+    Model* make (const BlockModel& al) const
+    { return new ABAProdSoil (al); }
+    ABAProdSoilSyntax ()
+      : DeclareModel (ABAProd::component, "soil", "\
+ABA production based on soil location.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("expr", Number::component, 
+                        Attribute::Const, Attribute::Singleton, "\
 Expression to evaluate to ABA uptake [g/cm^3/h].\n\
 The symbol 'h' will be bound to the water pressure [cm].\n\
 The symbol 'L' will be bound to the root density [cm/cm^3].\n\
 The symbol 'S' will be bound to the water uptake [cm^3/cm^3/h].");
-  }
-} ABAProdSoil_syntax;
+    }
+  } ABAProdSoil_syntax;
+}
 
 // ABAprod_soil.C ends here
+

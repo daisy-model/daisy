@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/photo.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/check.h"
@@ -51,20 +52,30 @@ Photo::Photo (const BlockModel& al)
 Photo::~Photo ()
 { }
 
-static struct PhotoInit : public DeclareComponent 
+void
+register_photo_models ()
 {
-  void load_frame (Frame& frame) const
-  { 
-    Model::load_model (frame);
-    frame.declare ("min_PAR", "W/m^2", Check::non_negative (), Attribute::Const,
-               "Minimum PAR at top of canopy for photosynthesis.\n\
+  static struct PhotoInit : public DeclareComponent 
+  {
+    void load_frame (Frame& frame) const
+    { 
+      Model::load_model (frame);
+      frame.declare ("min_PAR", "W/m^2", Check::non_negative (), Attribute::Const,
+                 "Minimum PAR at top of canopy for photosynthesis.\n\
 If radiation is below this amount, photosynthesis will be disabled.");
-    frame.set ("min_PAR", 0.1);
-  }
-  PhotoInit ()
-    : DeclareComponent (Photo::component, "\
+      frame.set ("min_PAR", 0.1);
+    }
+    PhotoInit ()
+      : DeclareComponent (Photo::component, "\
 Leaf photosynthesis.")
-  { }
-} Photo_init;
+    { }
+  } Photo_init;
+
+  register_photo_Farquhar_models ();
+  register_photo_FCC3_models ();
+  register_photo_FCC4_models ();
+  register_photo_GL_models ();
+}
 
 // photo.C ends here.
+

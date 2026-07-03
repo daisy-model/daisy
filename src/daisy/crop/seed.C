@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/seed.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -40,15 +41,23 @@ Seed::Seed (const BlockModel& al)
 Seed::~Seed ()
 { }
 
-static struct SeedInit : public DeclareComponent 
+void
+register_seed_models ()
 {
-  SeedInit ()
-    : DeclareComponent (Seed::component, "\
+  static struct SeedInit : public DeclareComponent 
+  {
+    SeedInit ()
+      : DeclareComponent (Seed::component, "\
 Initial growth after emergence.\n\
 \n\
 The initial growth process governs the growth of the crop until the\n\
 point where there is enough leaf area for photosynthesis to take over.")
-  { }
-} Seed_init;
+    { }
+  } Seed_init;
+
+  register_seed_LAI_models ();
+  register_seed_release_models ();
+}
 
 // seed.C ends here.
+

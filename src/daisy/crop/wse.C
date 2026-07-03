@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/wse.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "programs/program.h"
 #include "util/mathlib.h"
@@ -65,22 +66,6 @@ WSE::create_full ()
   return full;
 }
 
-static struct WSE_fullSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new WSE_full (al); }
-  WSE_fullSyntax ()
-    : DeclareModel (WSE::component, "full", "\
-Water stress has full effect on crop growth.\n\
-This means that if there is 50% water stress, assimilate production\n\
-will be cut into half.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-
-  }
-} WSE_full_syntax;
-
 struct WSE_partial : public WSE
 {
   const double y_half;
@@ -105,31 +90,6 @@ struct WSE_partial : public WSE
   { }
 };
 
-static struct WSE_partialSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new WSE_partial (al); }
-  WSE_partialSyntax ()
-    : DeclareModel (WSE::component, "partial", "\
-Water stress has partial effect on crop growth.\n\
-\n\
-With this model, there will be full production when there is enough\n\
-available soil water to cover the potential evapotranspiration, and no\n\
-production when there is no soil water available.  In between production\n\
-is controled by the 'y_half' parameter.\n\
-\n\
-See SH:REFERENCE for more explanation.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_fraction ("y_half", Attribute::Const, "\
-Effect on assimilate production of water stress.\n\
-This parameter specifies the effect on assimilate production\n(\
-compared to potential) when the amount of available soil water is\n\
-enough to cover exactly half the potential evapotranspiration.");
-  }
-} WSE_partial_syntax;
-
 struct WSE_none : public WSE
 {
   double factor (const double) const
@@ -149,21 +109,6 @@ WSE::create_none ()
   std::unique_ptr<WSE> none (new WSE_none ());
   return none;
 }
-
-static struct WSE_noneSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new WSE_none (al); }
-  WSE_noneSyntax ()
-    : DeclareModel (WSE::component, "none", 
-               "Water stress has no effect on plant growth.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-
-  }
-} WSE_none_syntax;
-
 
 struct ProgramWSE_table : public Program
 {
@@ -198,31 +143,87 @@ struct ProgramWSE_table : public Program
   { }
 };
 
-static struct ProgramWSE_tableSyntax : public DeclareModel
+void
+register_wse_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ProgramWSE_table (al); }
-  ProgramWSE_tableSyntax ()
-    : DeclareModel (Program::component, "wse", "Generate a table of the water stress effect.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct WSEInit : public DeclareComponent 
   {
-    frame.declare_object ("wse", WSE::component, 
-                       Attribute::Const, Attribute::Singleton, "\
-The water stress effect to show in the table.");
-    frame.declare_integer ("intervals", Attribute::Const, "\
-Number of intervals in the table.");
-    frame.set ("intervals", 10);
-    frame.order ("wse");
-  }
-} ProgramWSE_table_syntax;
-
-static struct WSEInit : public DeclareComponent 
-{
-  WSEInit ()
-    : DeclareComponent (WSE::component, "\
+    WSEInit ()
+      : DeclareComponent (WSE::component, "\
 The water stress effect on crop growth.")
-  { }
-} WSE_init;
+    { }
+  } WSE_init;
+  static struct WSE_fullSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new WSE_full (al); }
+    WSE_fullSyntax ()
+      : DeclareModel (WSE::component, "full", "\
+Water stress has full effect on crop growth.\n\
+This means that if there is 50% water stress, assimilate production\n\
+will be cut into half.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+  
+    }
+  } WSE_full_syntax;
+  static struct WSE_partialSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new WSE_partial (al); }
+    WSE_partialSyntax ()
+      : DeclareModel (WSE::component, "partial", "\
+Water stress has partial effect on crop growth.\n\
+\n\
+With this model, there will be full production when there is enough\n\
+available soil water to cover the potential evapotranspiration, and no\n\
+production when there is no soil water available.  In between production\n\
+is controled by the 'y_half' parameter.\n\
+\n\
+See SH:REFERENCE for more explanation.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_fraction ("y_half", Attribute::Const, "\
+Effect on assimilate production of water stress.\n\
+This parameter specifies the effect on assimilate production\n(\
+compared to potential) when the amount of available soil water is\n\
+enough to cover exactly half the potential evapotranspiration.");
+    }
+  } WSE_partial_syntax;
+  static struct WSE_noneSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new WSE_none (al); }
+    WSE_noneSyntax ()
+      : DeclareModel (WSE::component, "none", 
+                 "Water stress has no effect on plant growth.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+  
+    }
+  } WSE_none_syntax;
+  static struct ProgramWSE_tableSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ProgramWSE_table (al); }
+    ProgramWSE_tableSyntax ()
+      : DeclareModel (Program::component, "wse", "Generate a table of the water stress effect.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("wse", WSE::component, 
+                         Attribute::Const, Attribute::Singleton, "\
+The water stress effect to show in the table.");
+      frame.declare_integer ("intervals", Attribute::Const, "\
+Number of intervals in the table.");
+      frame.set ("intervals", 10);
+      frame.order ("wse");
+    }
+  } ProgramWSE_table_syntax;
+}
 
 // wse.C ends here.
+

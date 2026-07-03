@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/stomatacon.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include <sstream>
 #include "object_model/check.h"
@@ -76,36 +77,6 @@ StomataCon_SHA12::stomata_con (const double ABA,  // [g/cm^3]
                    * (m * pow(hs, alpha) * pow(A, lambda)) /(cs_ppm),
                    gs_min);
 }
-
-static struct StomataConSHA12Syntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new StomataCon_SHA12 (al); }
-  StomataConSHA12Syntax ()
-    : DeclareModel (StomataCon::component, "SHA12", "WSF", "\
-Stomata conductance calculated by the model given by Eq. 12.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "Ahmadi20091541");
-
-    frame.declare ("alpha", Attribute::None (), Check::non_negative (),
-                   Attribute::Const,
-                   "Humidity effect");
-    frame.set ("alpha", 1.0);
-    frame.declare ("lambda", Attribute::None (), Check::non_negative (),
-                   Attribute::Const,
-                   "Net photosyhtesis effect");
-    frame.set ("lambda", 1.0);
-    frame.declare ("m", Attribute::Unknown (), 
-                   Check::non_negative (), Attribute::Const,
-                   "Slope parameter, dimension depends on alpha and lambda.");
-    frame.declare ("min", "mol H2O/m^2 leaf/s", 
-                   Check::positive (), Attribute::OptionalConst,
-                   "Minimal conductivity.");
-  }
-} StomataConSHA12syntax;
-
 
 struct StomataCon_SHA14 : public StomataCon_WSF_base
 {
@@ -163,34 +134,6 @@ StomataCon_SHA14::stomata_con (const double ABA,  // [g/cm^3]
     return gsw;
   return std::min (gsw, gs_max);
 }
-
-static struct StomataConSHA14Syntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new StomataCon_SHA14 (al); }
-  StomataConSHA14Syntax ()
-    : DeclareModel (StomataCon::component, "SHA14", "WSF", "\
-Stomata conductance calculated by the model given by Eq. 14.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "Ahmadi20091541");
-
-    frame.declare ("alpha", Attribute::None (), Check::non_negative (),
-                   Attribute::Const,
-                   "Humidity effect");
-    frame.declare ("lambda", "m^2 leaf s/umol CO2", Check::non_negative (),
-                   Attribute::Const,
-                   "Net photosyhtesis effect");
-    frame.declare ("m", "mol H2O/m^2 leaf/s", 
-                   Check::non_negative (), Attribute::Const,
-                   "Conductivity factor.");
-    frame.declare ("max", "mol H2O/m^2 leaf/s", 
-                   Check::none (), Attribute::OptionalConst,
-                   "Maximal conductivity.\n\
-By default, there is no maxium.");
-  }
-} StomataConSHA14syntax;
 
 struct StomataCon_MNA : public StomataCon_WSF_base
 {
@@ -250,34 +193,94 @@ StomataCon_MNA::stomata_con (const double ABA,  // [g/cm^3]
   return std::min (gsw, gs_max);
 }
 
-static struct StomataConMNASyntax : public DeclareModel
+void
+register_stomatacon_SHA_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new StomataCon_MNA (al); }
-  StomataConMNASyntax ()
-    : DeclareModel (StomataCon::component, "MNA", "WSF", "\
-Stomata conductance calculated by the model given by Eq. 14.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct StomataConSHA12Syntax : public DeclareModel
   {
-    Model::declare_obsolete (frame, "We can't find a source to this equation.");
-    frame.declare ("alpha", Attribute::None (), Check::non_negative (),
-                   Attribute::Const,
-                   "Humidity effect");
-    frame.declare ("lambda", "umol CO2/m^2 leaf/s", Check::non_positive (),
-                   Attribute::Const,
-                   "Net photosyhtesis effect");
-    frame.declare ("m", "mol H2O/m^2 leaf/s", 
-                   Check::non_negative (), Attribute::Const,
-                   "Conductivity factor.");
-    frame.declare ("b", "mol/m^2/s", Check::positive (), Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new StomataCon_SHA12 (al); }
+    StomataConSHA12Syntax ()
+      : DeclareModel (StomataCon::component, "SHA12", "WSF", "\
+Stomata conductance calculated by the model given by Eq. 12.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "Ahmadi20091541");
+  
+      frame.declare ("alpha", Attribute::None (), Check::non_negative (),
+                     Attribute::Const,
+                     "Humidity effect");
+      frame.set ("alpha", 1.0);
+      frame.declare ("lambda", Attribute::None (), Check::non_negative (),
+                     Attribute::Const,
+                     "Net photosyhtesis effect");
+      frame.set ("lambda", 1.0);
+      frame.declare ("m", Attribute::Unknown (), 
+                     Check::non_negative (), Attribute::Const,
+                     "Slope parameter, dimension depends on alpha and lambda.");
+      frame.declare ("min", "mol H2O/m^2 leaf/s", 
+                     Check::positive (), Attribute::OptionalConst,
+                     "Minimal conductivity.");
+    }
+  } StomataConSHA12syntax;
+  static struct StomataConSHA14Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new StomataCon_SHA14 (al); }
+    StomataConSHA14Syntax ()
+      : DeclareModel (StomataCon::component, "SHA14", "WSF", "\
+Stomata conductance calculated by the model given by Eq. 14.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "Ahmadi20091541");
+  
+      frame.declare ("alpha", Attribute::None (), Check::non_negative (),
+                     Attribute::Const,
+                     "Humidity effect");
+      frame.declare ("lambda", "m^2 leaf s/umol CO2", Check::non_negative (),
+                     Attribute::Const,
+                     "Net photosyhtesis effect");
+      frame.declare ("m", "mol H2O/m^2 leaf/s", 
+                     Check::non_negative (), Attribute::Const,
+                     "Conductivity factor.");
+      frame.declare ("max", "mol H2O/m^2 leaf/s", 
+                     Check::none (), Attribute::OptionalConst,
+                     "Maximal conductivity.\n\
+By default, there is no maxium.");
+    }
+  } StomataConSHA14syntax;
+  static struct StomataConMNASyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new StomataCon_MNA (al); }
+    StomataConMNASyntax ()
+      : DeclareModel (StomataCon::component, "MNA", "WSF", "\
+Stomata conductance calculated by the model given by Eq. 14.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::declare_obsolete (frame, "We can't find a source to this equation.");
+      frame.declare ("alpha", Attribute::None (), Check::non_negative (),
+                     Attribute::Const,
+                     "Humidity effect");
+      frame.declare ("lambda", "umol CO2/m^2 leaf/s", Check::non_positive (),
+                     Attribute::Const,
+                     "Net photosyhtesis effect");
+      frame.declare ("m", "mol H2O/m^2 leaf/s", 
+                     Check::non_negative (), Attribute::Const,
+                     "Conductivity factor.");
+      frame.declare ("b", "mol/m^2/s", Check::positive (), Attribute::Const, "\
 Stomatal intercept.\n\
 Ball and Berry (1982) & Wang and Leuning(1998): (0.01 mol/m2/s)");
-    frame.declare ("max", "mol H2O/m^2 leaf/s", 
-                   Check::none (), Attribute::OptionalConst,
-                   "Maximal conductivity.\n\
+      frame.declare ("max", "mol H2O/m^2 leaf/s", 
+                     Check::none (), Attribute::OptionalConst,
+                     "Maximal conductivity.\n\
 By default, there is no maximum.");
-  }
-} StomataConMNAsyntax;
+    }
+  } StomataConMNAsyntax;
+}
 
 // stomatacon_SHA.C ends here.
+

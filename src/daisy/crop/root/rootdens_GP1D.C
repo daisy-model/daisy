@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -287,36 +288,41 @@ Rootdens_GP1D::Rootdens_GP1D (const BlockModel& al)
     k (-42.42e42)
 { }
 
-static struct Rootdens_GP1DSyntax : public DeclareModel
+void
+register_rootdens_GP1D_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new Rootdens_GP1D (al); }
-  Rootdens_GP1DSyntax ()
-    : DeclareModel (Rootdens::component, "GP1D", 
-	       "Use exponential function for root density.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct Rootdens_GP1DSyntax : public DeclareModel
   {
-    frame.set_strings ("cite", "gp74");
-    frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
-                "Root density at (potential) penetration depth.");
-    frame.set ("DensRtTip", 0.1);
-    frame.declare ("DensIgnore", "cm/cm^3", Check::positive (),
-                Attribute::OptionalConst,
-                "Ignore cells with less than this root density.\n\
+    Model* make (const BlockModel& al) const
+    { return new Rootdens_GP1D (al); }
+    Rootdens_GP1DSyntax ()
+      : DeclareModel (Rootdens::component, "GP1D", 
+  	       "Use exponential function for root density.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "gp74");
+      frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
+                  "Root density at (potential) penetration depth.");
+      frame.set ("DensRtTip", 0.1);
+      frame.declare ("DensIgnore", "cm/cm^3", Check::positive (),
+                  Attribute::OptionalConst,
+                  "Ignore cells with less than this root density.\n\
 By default, this is the same as DensRtTip.");
-    frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
+      frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
 Calculated from 'DensRtTip'.");
-    frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
-                "Root density at soil surface.");
-    frame.declare ("k", Attribute::None (), Attribute::LogOnly,
-                "Scale factor due to soil limit.\n\
+      frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
+                  "Root density at soil surface.");
+      frame.declare ("k", Attribute::None (), Attribute::LogOnly,
+                  "Scale factor due to soil limit.\n\
 \n\
 Some roots might be below the soil imposed maximum root depth, or in areas\n\
 with a density lower than the limit specified by DensIgnore.\n\
 These roots will be re distributed within the root zone by multiplying the\n\
 density with this scale factor.");
-  }
-} Rootdens_GP1D_syntax;
+    }
+  } Rootdens_GP1D_syntax;
+}
 
 // rootdens_GP1D.C ends here.
+

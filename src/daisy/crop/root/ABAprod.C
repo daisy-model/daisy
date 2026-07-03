@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/ABAprod.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -40,16 +41,6 @@ ABAProd::ABAProd (const BlockModel& al)
 
 ABAProd::~ABAProd ()
 { }
-
-static struct ABAProdInit : public DeclareComponent
-{
-  ABAProdInit () 
-    : DeclareComponent (ABAProd::component, "\
-The 'ABAproduction' component calculates the prod of ABA in soil.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} ABAProd_init;
 
 struct ABAProdNone : public ABAProd
 {
@@ -75,16 +66,33 @@ struct ABAProdNone : public ABAProd
   { }
 };
 
-static struct ABAProdNoneSyntax : public DeclareModel
+void
+register_ABAprod_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ABAProdNone (al); }
-  ABAProdNoneSyntax ()
-    : DeclareModel (ABAProd::component, "none", "No ABA production.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} ABAProdNone_syntax;
+  static struct ABAProdInit : public DeclareComponent
+  {
+    ABAProdInit () 
+      : DeclareComponent (ABAProd::component, "\
+The 'ABAproduction' component calculates the prod of ABA in soil.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } ABAProd_init;
+  static struct ABAProdNoneSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ABAProdNone (al); }
+    ABAProdNoneSyntax ()
+      : DeclareModel (ABAProd::component, "none", "No ABA production.")
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } ABAProdNone_syntax;
+
+  register_ABAprod_root_models ();
+  register_ABAprod_soil_models ();
+  register_ABAprod_uptake_models ();
+}
 
 // ABAprod.C ends here
 

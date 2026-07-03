@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "object_model/check.h"
@@ -50,20 +51,32 @@ Rootdens::Rootdens (const BlockModel& al)
 Rootdens::~Rootdens ()
 { }
 
-static struct RootdensInit : public DeclareComponent 
+void
+register_rootdens_models ()
 {
-  RootdensInit ()
-    : DeclareComponent (Rootdens::component, "\
-Root density calculations.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct RootdensInit : public DeclareComponent 
   {
-    Model::load_model (frame);
-    frame.declare ("SpRtLength", "m/g", Check::positive (), Attribute::Const,
-               "Specific root length");
-    frame.set ("SpRtLength", 100.0);
-  }
-} Rootdens_init;
+    RootdensInit ()
+      : DeclareComponent (Rootdens::component, "\
+Root density calculations.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.declare ("SpRtLength", "m/g", Check::positive (), Attribute::Const,
+                 "Specific root length");
+      frame.set ("SpRtLength", 100.0);
+    }
+  } Rootdens_init;
+
+  register_rootdens_AP_models ();
+  register_rootdens_GP1D_models ();
+  register_rootdens_GP2D_models ();
+  register_rootdens_G_P_models ();
+  register_rootdens_growth_models ();
+  register_rootdens_local_models ();
+  register_rootdens_PLF_models ();
+}
 
 // rootdens.C ends here.
 

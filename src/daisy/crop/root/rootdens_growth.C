@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -251,41 +252,46 @@ RootdensGrowth::RootdensGrowth (const BlockModel& al)
     LastWRoot (al.number ("WRoot", 0.0))
 { }
 
-static struct RootdensGrowthSyntax : public DeclareModel
+void
+register_rootdens_growth_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new RootdensGrowth (al); }
-  RootdensGrowthSyntax ()
-    : DeclareModel (Rootdens::component, "growth", "\
-Dynamic root growth model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct RootdensGrowthSyntax : public DeclareModel
   {
-    frame.declare ("row_position", "cm", Check::non_negative (),
-                   Attribute::State, "\
+    Model* make (const BlockModel& al) const
+    { return new RootdensGrowth (al); }
+    RootdensGrowthSyntax ()
+      : DeclareModel (Rootdens::component, "growth", "\
+Dynamic root growth model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("row_position", "cm", Check::non_negative (),
+                     Attribute::State, "\
 Horizontal position of row crops.");
-    frame.set ("row_position", 0.0);
-    frame.declare ("row_distance", "cm", Attribute::OptionalState, 
-                   "Distance between rows of crops.");
-    frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
-                "Root density at (potential) penetration depth.");
-    frame.set ("DensRtTip", 0.1);
-    frame.declare ("depth_factor", "cm", Attribute::None (),
-		   Check::non_negative (), Attribute::Const, "\
+      frame.set ("row_position", 0.0);
+      frame.declare ("row_distance", "cm", Attribute::OptionalState, 
+                     "Distance between rows of crops.");
+      frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
+                  "Root density at (potential) penetration depth.");
+      frame.set ("DensRtTip", 0.1);
+      frame.declare ("depth_factor", "cm", Attribute::None (),
+  		   Check::non_negative (), Attribute::Const, "\
 Depth (negative) affect on root growth.\n\
 Specify a value less than one to decrease root growth, and larger\n\
 than one to increase root growth at the specified depth.");
-    frame.set ("depth_factor", PLF::always_1 ());
-    frame.declare ("Depth", "cm",
-                   Check::non_negative (), Attribute::OptionalState,
-                   "Expected depth of root zone (positive).");
-    frame.declare ("Width", "cm",
-                   Check::non_negative (), Attribute::OptionalState,
-                   "Expected width of root zone.");
-    frame.declare ("WRoot", "g DM/m^2", 
-                   Check::non_negative (), Attribute::OptionalState,
-                   "Total root mass.");
-    }
-} RootdensGrowth_syntax;
+      frame.set ("depth_factor", PLF::always_1 ());
+      frame.declare ("Depth", "cm",
+                     Check::non_negative (), Attribute::OptionalState,
+                     "Expected depth of root zone (positive).");
+      frame.declare ("Width", "cm",
+                     Check::non_negative (), Attribute::OptionalState,
+                     "Expected width of root zone.");
+      frame.declare ("WRoot", "g DM/m^2", 
+                     Check::non_negative (), Attribute::OptionalState,
+                     "Total root mass.");
+      }
+  } RootdensGrowth_syntax;
+}
 
 // rootdens_growth.C ends here.
+

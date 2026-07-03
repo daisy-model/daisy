@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/phenology.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/crop/production.h"
 #include "daisy/crop/vernalization.h"
@@ -212,57 +213,61 @@ PhenologyStandard::PhenologyStandard (const BlockModel& al)
     defined_until_ds (al.number ("defined_until_ds"))
 { }
 
-static struct PhenologyStandardSyntax : public DeclareModel
+void
+register_phenology_standard_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new PhenologyStandard (al); }
-
-  PhenologyStandardSyntax ()
-    : DeclareModel (Phenology::component, "default", 
-                    "Default crop phenology model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct PhenologyStandardSyntax : public DeclareModel
   {
-    // Parameters.
-    frame.declare_object ("modify_DS", Number::component,
-			  Attribute::OptionalConst, Attribute::Singleton, "\
+    Model* make (const BlockModel& al) const
+    { return new PhenologyStandard (al); }
+  
+    PhenologyStandardSyntax ()
+      : DeclareModel (Phenology::component, "default", 
+                      "Default crop phenology model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      // Parameters.
+      frame.declare_object ("modify_DS", Number::component,
+  			  Attribute::OptionalConst, Attribute::Singleton, "\
 Expression for modifying DS.\n\
 The original value is available as a free varible named 'x'.\n\
 The expression will be used as a new value for DS.");
-    frame.declare ("EmrTSum", "dg C d", Attribute::Const,
-                   "Soil temperature sum at emergence.");
-    frame.declare ("EmrSMF", "cm", Attribute::None (), Attribute::Const,
-                   "Soil moisture (h-function) effect on emergence.");
-    PLF SMF;
-    SMF.add (-1000.0, 1.00);
-    SMF.add (-150.0, 1.00);
-    SMF.add (-50.00, 1.00);
-    SMF.add (-30.00, 1.00);
-    frame.set ("EmrSMF",SMF);
-    frame.declare ("DS_Emr", "DS", Attribute::Const,
-                   "Development stage at emergence.");
-    frame.set ("DS_Emr", 0.01);
-    frame.declare ("DSRate1", "DS/d", Attribute::Const,
-                   "Development rate in the vegetative stage.");
-    frame.declare ("DSRate2", "DS/d", Attribute::Const,
-                   "Development rate in the reproductive stage.");
-    frame.declare ("TempEff1", "dg C", Attribute::None (), Attribute::Const,
-                   "Temperature effect, vegetative stage.");
-    frame.declare ("TempEff2", "dg C", Attribute::None (), Attribute::Const,
-                   "Temperature effect, reproductive stage.");
-    frame.declare ("PhotEff1", "h", Attribute::None (), Attribute::Const,
-                   "Photoperiode effect, vegetative stage.");
-    frame.declare ("DSMature", "DS", Attribute::Const,
-                   "Development stage at maturation.");
-    frame.set ("DSMature", 2.0);
-    frame.declare ("DSRepeat", "DS", Attribute::Const,
-                   "Development stage when DS set back is activated.");
-    frame.set ("DSRepeat", 4.0);
-    frame.declare ("DSSetBack", "DS", Attribute::Const,
-                   "Development stage set back at DSRepeat.");
-    frame.set ("DSSetBack", 1.7);
-    frame.declare ("defined_until_ds", "DS", Attribute::Const, "\
+      frame.declare ("EmrTSum", "dg C d", Attribute::Const,
+                     "Soil temperature sum at emergence.");
+      frame.declare ("EmrSMF", "cm", Attribute::None (), Attribute::Const,
+                     "Soil moisture (h-function) effect on emergence.");
+      PLF SMF;
+      SMF.add (-1000.0, 1.00);
+      SMF.add (-150.0, 1.00);
+      SMF.add (-50.00, 1.00);
+      SMF.add (-30.00, 1.00);
+      frame.set ("EmrSMF",SMF);
+      frame.declare ("DS_Emr", "DS", Attribute::Const,
+                     "Development stage at emergence.");
+      frame.set ("DS_Emr", 0.01);
+      frame.declare ("DSRate1", "DS/d", Attribute::Const,
+                     "Development rate in the vegetative stage.");
+      frame.declare ("DSRate2", "DS/d", Attribute::Const,
+                     "Development rate in the reproductive stage.");
+      frame.declare ("TempEff1", "dg C", Attribute::None (), Attribute::Const,
+                     "Temperature effect, vegetative stage.");
+      frame.declare ("TempEff2", "dg C", Attribute::None (), Attribute::Const,
+                     "Temperature effect, reproductive stage.");
+      frame.declare ("PhotEff1", "h", Attribute::None (), Attribute::Const,
+                     "Photoperiode effect, vegetative stage.");
+      frame.declare ("DSMature", "DS", Attribute::Const,
+                     "Development stage at maturation.");
+      frame.set ("DSMature", 2.0);
+      frame.declare ("DSRepeat", "DS", Attribute::Const,
+                     "Development stage when DS set back is activated.");
+      frame.set ("DSRepeat", 4.0);
+      frame.declare ("DSSetBack", "DS", Attribute::Const,
+                     "Development stage set back at DSRepeat.");
+      frame.set ("DSSetBack", 1.7);
+      frame.declare ("defined_until_ds", "DS", Attribute::Const, "\
 This parameterization is only valid until the specified development state.");
-    frame.set ("defined_until_ds", 2.0);
-  }
-} PhenologyStandard_syntax;
+      frame.set ("defined_until_ds", 2.0);
+    }
+  } PhenologyStandard_syntax;
+}

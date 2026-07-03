@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/canopy_std.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/log.h"
 #include "object_model/block_submodel.h"
 #include "util/mathlib.h"
@@ -333,6 +334,10 @@ CanopyStandard::CanopyStandard (const BlockSubmodel& vl)
 CanopyStandard::~CanopyStandard ()
 { }
 
-static DeclareSubmodel 
-canopy_standard_submodel (CanopyStandard::load_syntax, "CanopyStandard", "\
+void
+register_canopy_std_models ()
+{
+  static DeclareSubmodel 
+  canopy_standard_submodel (CanopyStandard::load_syntax, "CanopyStandard", "\
 Standard canopy model.");
+}

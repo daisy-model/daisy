@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/seed.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/plf.h"
@@ -96,7 +97,6 @@ SeedLAI::forced_CAI (const double WLeaf, const double SpLAI, const double DS)
   // This is then our initial CAI esstimate.
   const double CAI_init = std::min (CAI_max, CAI_fixed);
 
-
   // If CAI_init is below CAI_exit, we will exit initialization phase.
   // The idea is that enough leaf DM has been generated to account for
   // the LAI using the ordinary mechanism, so we no longer need the
@@ -110,35 +110,40 @@ SeedLAI::forced_CAI (const double WLeaf, const double SpLAI, const double DS)
   return -1.0;              // No force.
 }
 
-static struct Seed_LAISyntax : public DeclareModel
+void
+register_seed_LAI_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SeedLAI (al); }
-  Seed_LAISyntax ()
-    : DeclareModel (Seed::component, "LAI", "\
-Initial crop growth is governed by a forced LAI function.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct Seed_LAISyntax : public DeclareModel
   {
-    // Parameters.
-    frame.declare ("DSLAI05", "DS", Attribute::Const,
-                "DS at CAI=0.5; initial phase.");
-    frame.set ("DSLAI05", 0.15);
-    frame.declare ("SpLAIfac", "DS", Attribute::None (), Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new SeedLAI (al); }
+    Seed_LAISyntax ()
+      : DeclareModel (Seed::component, "LAI", "\
+Initial crop growth is governed by a forced LAI function.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      // Parameters.
+      frame.declare ("DSLAI05", "DS", Attribute::Const,
+                  "DS at CAI=0.5; initial phase.");
+      frame.set ("DSLAI05", 0.15);
+      frame.declare ("SpLAIfac", "DS", Attribute::None (), Attribute::Const, "\
 Factor defining maximum specific leaf weight.\n\
 Only used during the initial phase.");
-    PLF SpLf;
-    SpLf.add (0.00, 3.00);
-    SpLf.add (0.20, 1.50);
-    SpLf.add (0.40, 1.25);
-    SpLf.add (0.60, 1.00);
-    frame.set ("SpLAIfac", SpLf);
-
-    // State.
-    frame.declare_boolean ("InitCAI", Attribute::State,
-                "Initial CAI development phase.");
-    frame.set ("InitCAI", true);
-  }
-} SeedLAI_syntax;
+      PLF SpLf;
+      SpLf.add (0.00, 3.00);
+      SpLf.add (0.20, 1.50);
+      SpLf.add (0.40, 1.25);
+      SpLf.add (0.60, 1.00);
+      frame.set ("SpLAIfac", SpLf);
+  
+      // State.
+      frame.declare_boolean ("InitCAI", Attribute::State,
+                  "Initial CAI development phase.");
+      frame.set ("InitCAI", true);
+    }
+  } SeedLAI_syntax;
+}
 
 // seed_LAI.C ends here.
+

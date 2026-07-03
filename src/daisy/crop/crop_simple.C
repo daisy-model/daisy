@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/crop.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/root/root_system.h"
 #include "daisy/crop/canopy_simple.h"
 #include "daisy/output/log.h"
@@ -476,107 +477,112 @@ CropSimple::CropSimple (const BlockModel& al)
 CropSimple::~CropSimple ()
 { }
 
-static struct CropSimpleSyntax : public DeclareModel
+void
+register_crop_simple_models ()
 {
-  Model* make (const BlockModel& al) const
- { return new CropSimple (al); }
-
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
-  { 
-    bool ok = true;
-    if (!al.check ("LAIvsTS") && !al.check ("LAIvsDay"))
-      {
-	err.entry ("Must specify either 'LAIvsTS' or 'LAIvsDay'");
-	ok = false;
-      }
-    else if (al.check ("LAIvsTS") && al.check ("LAIvsDay"))
-      {
-	err.entry ("Cannot specify both 'LAIvsTS' or 'LAIvsDay'");
-	ok = false;
-      }
-    else
-      {
-	const PLF& plf = al.check ("LAIvsTS")
-	  ? al.plf ("LAIvsTS") : al.plf ("LAIvsDay");
-	try 
-	  {
-	    plf.first_interesting ();
-	    plf.last_interesting ();
-	    plf.max_at ();
-	  }
-	catch (...)
-	  {
-	    err.entry (std::string ("'")
-		       + (al.check ("LAIvsTS") ? "LAIvsTS" : "LAIvsDay")
-		       + "' has bogus value");
-	    ok = false;
-	  }
-      }
-
-    return ok;
-  }
-  
-  CropSimpleSyntax ()
-    : DeclareModel (Crop::component, "simple", "Forced growth crop model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct CropSimpleSyntax : public DeclareModel
   {
-    frame.add_check (check_alist);
-    frame.declare ("LAIvsTS", "dg C d", "m^2/m^2", Attribute::OptionalConst, 
-		"LAI as a function of T_sum");
-    frame.declare ("LAIvsDay", "d", "m^2/m^2", Attribute::OptionalConst, 
-		"LAI as a function of number of days since sowing.");
-    frame.declare ("forced_LAI", "m^2/m^2", Check::non_negative (), 
-		Attribute::State, "\
+    Model* make (const BlockModel& al) const
+   { return new CropSimple (al); }
+  
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    { 
+      bool ok = true;
+      if (!al.check ("LAIvsTS") && !al.check ("LAIvsDay"))
+        {
+  	err.entry ("Must specify either 'LAIvsTS' or 'LAIvsDay'");
+  	ok = false;
+        }
+      else if (al.check ("LAIvsTS") && al.check ("LAIvsDay"))
+        {
+  	err.entry ("Cannot specify both 'LAIvsTS' or 'LAIvsDay'");
+  	ok = false;
+        }
+      else
+        {
+  	const PLF& plf = al.check ("LAIvsTS")
+  	  ? al.plf ("LAIvsTS") : al.plf ("LAIvsDay");
+  	try 
+  	  {
+  	    plf.first_interesting ();
+  	    plf.last_interesting ();
+  	    plf.max_at ();
+  	  }
+  	catch (...)
+  	  {
+  	    err.entry (std::string ("'")
+  		       + (al.check ("LAIvsTS") ? "LAIvsTS" : "LAIvsDay")
+  		       + "' has bogus value");
+  	    ok = false;
+  	  }
+        }
+  
+      return ok;
+    }
+    
+    CropSimpleSyntax ()
+      : DeclareModel (Crop::component, "simple", "Forced growth crop model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.declare ("LAIvsTS", "dg C d", "m^2/m^2", Attribute::OptionalConst, 
+  		"LAI as a function of T_sum");
+      frame.declare ("LAIvsDay", "d", "m^2/m^2", Attribute::OptionalConst, 
+  		"LAI as a function of number of days since sowing.");
+      frame.declare ("forced_LAI", "m^2/m^2", Check::non_negative (), 
+  		Attribute::State, "\
 Minimum LAI, automatically cleared when exceeded by 'LAIvsTS'.");
-    frame.set ("forced_LAI", 0.0);
-    frame.declare_submodule("Canopy", Attribute::State, "Canopy.",
-			 CanopySimple::load_syntax);
-    frame.declare ("height_max", "cm", Check::non_negative (), Attribute::Const, 
-		"Maximum height of plant, reached when flowering.");
-    frame.set ("height_max", 80.0);
-    frame.declare ("T_sum", "dg C d", Check::non_negative (), Attribute::State, 
-		"Temperature sum since sowing (or spring).");
-    frame.set ("T_sum", 0.0);
-    frame.declare ("day", "d", Check::non_negative (), Attribute::State, 
-		"Number of days since sowing (or spring).");
-    frame.set ("day", 0.0);
-    frame.declare_integer ("spring", Attribute::Const, 2,
-		"Zero 'T_sum' at this month and day.");
-    std::vector<int> spring_time;
-    spring_time.push_back (3);
-    spring_time.push_back (1);
-    frame.set ("spring", spring_time);
-    frame.declare ("spring_LAI", "m^2/m^2", Check::non_negative (), Attribute::Const, 
-		"Set 'forced_LAI' to this after spring clearence of 'T_sum'.");
-    frame.set ("spring_LAI", 0.1);
-    frame.declare_object ("Root", RootSystem::component, "Root system.");
-    frame.set ("Root", "classic");
-    frame.declare ("root_DM", "Mg DM/ha", Check::non_negative (), Attribute::Const, 
-		"Fully developed root drymatter.");
-    frame.set ("root_DM", 2.0);
-    frame.declare ("root_N", "kg N/ha", Check::non_negative (), Attribute::Const,
-		"Fully developed root N content.");
-    frame.set ("root_N", 20.0);
-    frame.declare_object ("root_am", AOM::component, 
-                      Attribute::Const, Attribute::Variable, "\
+      frame.set ("forced_LAI", 0.0);
+      frame.declare_submodule("Canopy", Attribute::State, "Canopy.",
+  			 CanopySimple::load_syntax);
+      frame.declare ("height_max", "cm", Check::non_negative (), Attribute::Const, 
+  		"Maximum height of plant, reached when flowering.");
+      frame.set ("height_max", 80.0);
+      frame.declare ("T_sum", "dg C d", Check::non_negative (), Attribute::State, 
+  		"Temperature sum since sowing (or spring).");
+      frame.set ("T_sum", 0.0);
+      frame.declare ("day", "d", Check::non_negative (), Attribute::State, 
+  		"Number of days since sowing (or spring).");
+      frame.set ("day", 0.0);
+      frame.declare_integer ("spring", Attribute::Const, 2,
+  		"Zero 'T_sum' at this month and day.");
+      std::vector<int> spring_time;
+      spring_time.push_back (3);
+      spring_time.push_back (1);
+      frame.set ("spring", spring_time);
+      frame.declare ("spring_LAI", "m^2/m^2", Check::non_negative (), Attribute::Const, 
+  		"Set 'forced_LAI' to this after spring clearence of 'T_sum'.");
+      frame.set ("spring_LAI", 0.1);
+      frame.declare_object ("Root", RootSystem::component, "Root system.");
+      frame.set ("Root", "classic");
+      frame.declare ("root_DM", "Mg DM/ha", Check::non_negative (), Attribute::Const, 
+  		"Fully developed root drymatter.");
+      frame.set ("root_DM", 2.0);
+      frame.declare ("root_N", "kg N/ha", Check::non_negative (), Attribute::Const,
+  		"Fully developed root N content.");
+      frame.set ("root_N", 20.0);
+      frame.declare_object ("root_am", AOM::component, 
+                        Attribute::Const, Attribute::Variable, "\
 Root AM parameters.");
-    frame.set_check ("root_am", AM::check_om_pools ());
-    frame.set ("root_am", AM::default_AM ());
-    frame.declare ("potential_N", "kg N/ha", Check::non_negative (), Attribute::Const,
-		"Potential N content at harvest.");
-    frame.declare ("N_demand", "g N/m^2", Attribute::LogOnly,
-		"Current potential N content.");
-    frame.declare ("N_actual", "g N/m^2", Check::non_negative (), Attribute::State,
-		"N uptake until now.");
-    frame.set ("N_actual", 0.0);
-    frame.declare ("N_b", "kg N/ha", Check::non_negative (), Attribute::Const,
-		"N uptake form parameter.");
-    frame.set ("N_b", 10.0);
-    frame.declare_fraction ("N_flowering", Attribute::Const, "\
+      frame.set_check ("root_am", AM::check_om_pools ());
+      frame.set ("root_am", AM::default_AM ());
+      frame.declare ("potential_N", "kg N/ha", Check::non_negative (), Attribute::Const,
+  		"Potential N content at harvest.");
+      frame.declare ("N_demand", "g N/m^2", Attribute::LogOnly,
+  		"Current potential N content.");
+      frame.declare ("N_actual", "g N/m^2", Check::non_negative (), Attribute::State,
+  		"N uptake until now.");
+      frame.set ("N_actual", 0.0);
+      frame.declare ("N_b", "kg N/ha", Check::non_negative (), Attribute::Const,
+  		"N uptake form parameter.");
+      frame.set ("N_b", 10.0);
+      frame.declare_fraction ("N_flowering", Attribute::Const, "\
 Fraction of potential N uptake reached at flowering.");
-    frame.set ("N_flowering", 0.9);
-  }
-} simple_crop_syntax;
+      frame.set ("N_flowering", 0.9);
+    }
+  } simple_crop_syntax;
+}
 
 // crop_simple.C ends here.
+

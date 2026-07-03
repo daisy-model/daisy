@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/block_model.h"
 #include <sstream>
@@ -132,24 +133,26 @@ rubiscoNdist_forced
     }
 }
 
-static struct rubiscoNdist_forcedSyntax : public DeclareModel
+void
+register_rubiscoNdist_forced_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new rubiscoNdist_forced (al); }
-
-  rubiscoNdist_forcedSyntax ()
-    : DeclareModel (RubiscoNdist::component, "forced", 
-	       "Forced rubisco capacity distribution model in the canopy.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct rubiscoNdist_forcedSyntax : public DeclareModel
   {
-    Model::declare_obsolete (frame, "Experimental, avoid");
-    frame.declare_object ("value", Number::component, 
-                       Attribute::Const, Attribute::Singleton, "\
+    Model* make (const BlockModel& al) const
+    { return new rubiscoNdist_forced (al); }
+  
+    rubiscoNdist_forcedSyntax ()
+      : DeclareModel (RubiscoNdist::component, "forced", 
+  	       "Forced rubisco capacity distribution model in the canopy.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::declare_obsolete (frame, "Experimental, avoid");
+      frame.declare_object ("value", Number::component, 
+                         Attribute::Const, Attribute::Singleton, "\
 Expression that evaluates to the relative rubisco capacity where 1 is the value in top of the canopy.");
-    frame.order ("value");
-
-  }
-} rubiscoNdist_forcedsyntax;
-
-
+      frame.order ("value");
+  
+    }
+  } rubiscoNdist_forcedsyntax;
+}

@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/block_model.h"
 #include <sstream>
@@ -89,25 +90,29 @@ rubiscoNdistDPF::rubiscoN_distribution (const Units&,
   for (int i = 0; i < No; i++)
      rubiscoNdist[i] = cropN0 * (exp(-kn_LAI * dLAI *(i+0.5))); //[mol/mÂ² leaf]
 
-
 }
 
-static struct rubiscoNdistDPFSyntax : public DeclareModel
+void
+register_rubiscoNdist_DPF_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new rubiscoNdistDPF (al); }
-
-  rubiscoNdistDPFSyntax ()
-    : DeclareModel (RubiscoNdist::component, "exp", 
-	       "Boegh et al.(2002) rubisco N-distribution model in the canopy for photosynthesis.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct rubiscoNdistDPFSyntax : public DeclareModel
   {
-
-    frame.declare ("kn", Attribute::None (), Check::positive (), Attribute::Const,
-                "Extinction coefficient of nitrogen in the canopy, kn = 0.713 (De Pury &Farquhar, 1997)");
-    frame.set ("kn", 0.713);
-  }
-} rubiscoNdistDPF_syntax;
+    Model* make (const BlockModel& al) const
+    { return new rubiscoNdistDPF (al); }
+  
+    rubiscoNdistDPFSyntax ()
+      : DeclareModel (RubiscoNdist::component, "exp", 
+  	       "Boegh et al.(2002) rubisco N-distribution model in the canopy for photosynthesis.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+  
+      frame.declare ("kn", Attribute::None (), Check::positive (), Attribute::Const,
+                  "Extinction coefficient of nitrogen in the canopy, kn = 0.713 (De Pury &Farquhar, 1997)");
+      frame.set ("kn", 0.713);
+    }
+  } rubiscoNdistDPF_syntax;
+}
 
 // rubiscoNdist_DPF.C ends here
+

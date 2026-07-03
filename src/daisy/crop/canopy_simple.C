@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/canopy_simple.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/log.h"
 #include "object_model/block_submodel.h"
 #include "object_model/librarian.h"
@@ -118,8 +119,13 @@ CanopySimple::CanopySimple (const BlockSubmodel& vl)
 CanopySimple::~CanopySimple ()
 { }
 
-static DeclareSubmodel 
-canopy_simple_submodel (CanopySimple::load_syntax, "CanopySimple", "\
+void
+register_canopy_simple_models ()
+{
+  static DeclareSubmodel 
+  canopy_simple_submodel (CanopySimple::load_syntax, "CanopySimple", "\
 Simple canopy model.");
+}
 
 // canopy_simple.C ends here.
+

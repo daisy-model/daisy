@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/photo_Farquhar.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/root/rubiscoNdist.h"
 #include "daisy/upper_boundary/bioclimate/bioclimate.h"
 #include "daisy/crop/canopy_std.h"
@@ -177,53 +178,58 @@ PhotoFCC4::respiration_rate (const double Vm_25, const double Tl) const
   return rd;
 }
 
-static struct Photo_FCC4Syntax : public DeclareModel
+void
+register_photo_FCC4_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new PhotoFCC4 (al); }
-  Photo_FCC4Syntax ()
-    : DeclareModel (Photo::component, "FC_C4", "Farquhar", "\
-C4 photosynthesis and stomatal conductance model by Collatz et al., 1992.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct Photo_FCC4Syntax : public DeclareModel
   {
-    frame.declare ("Q10k", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Q10k = 1.8 (Collatz et al., 1992)");
-    frame.set ("Q10k", 1.8);
-
-    frame.declare ("Q10vm", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Q10vm = 2.4 (Collatz et al., 1992)");
-    frame.set ("Q10vm", 2.4);
-
-    frame.declare ("Q10rd", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Q10rd = 2.0 (Collatz et al., 1992)");
-    frame.set ("Q10rd", 2.0);
-
-    frame.declare ("kj", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Initial slope of photosynthetic CO2 response, kj = 0.6 mol/m^2/s (Collatz et al., 1992)");
-    frame.set ("kj", 0.6);
-
-    frame.declare ("alpha", "mol/mol", Check::positive (), Attribute::Const,
-                "Initial slope of photosynthetic light response. alpha = 0.04 (Collatz et al., 1992)");
-    frame.set ("alpha", 0.04);
-
-    frame.declare ("paab", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Leaf absorbtivity to PAR. paab = 0.86 (Collatz et al., 1992)");
-    frame.set ("paab", 0.86);
-
-    frame.declare ("theta", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Curvature parameter");
-    frame.set ("theta", 0.83);
-    
-    frame.declare ("beta", Attribute::Unknown (), Check::positive (), Attribute::Const,
-                "Curvanture parameter");
-    frame.set ("beta", 0.93);
-
-    // Ball & Berry parameters:
-    // frame.set ("m", 3.0);
-    // frame.set ("b", 0.08);
-  }
-
-} PhotoFCC4_syntax;
+    Model* make (const BlockModel& al) const
+    { return new PhotoFCC4 (al); }
+    Photo_FCC4Syntax ()
+      : DeclareModel (Photo::component, "FC_C4", "Farquhar", "\
+C4 photosynthesis and stomatal conductance model by Collatz et al., 1992.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("Q10k", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Q10k = 1.8 (Collatz et al., 1992)");
+      frame.set ("Q10k", 1.8);
+  
+      frame.declare ("Q10vm", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Q10vm = 2.4 (Collatz et al., 1992)");
+      frame.set ("Q10vm", 2.4);
+  
+      frame.declare ("Q10rd", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Q10rd = 2.0 (Collatz et al., 1992)");
+      frame.set ("Q10rd", 2.0);
+  
+      frame.declare ("kj", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Initial slope of photosynthetic CO2 response, kj = 0.6 mol/m^2/s (Collatz et al., 1992)");
+      frame.set ("kj", 0.6);
+  
+      frame.declare ("alpha", "mol/mol", Check::positive (), Attribute::Const,
+                  "Initial slope of photosynthetic light response. alpha = 0.04 (Collatz et al., 1992)");
+      frame.set ("alpha", 0.04);
+  
+      frame.declare ("paab", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Leaf absorbtivity to PAR. paab = 0.86 (Collatz et al., 1992)");
+      frame.set ("paab", 0.86);
+  
+      frame.declare ("theta", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Curvature parameter");
+      frame.set ("theta", 0.83);
+      
+      frame.declare ("beta", Attribute::Unknown (), Check::positive (), Attribute::Const,
+                  "Curvanture parameter");
+      frame.set ("beta", 0.93);
+  
+      // Ball & Berry parameters:
+      // frame.set ("m", 3.0);
+      // frame.set ("b", 0.08);
+    }
+  
+  } PhotoFCC4_syntax;
+}
 
 // photo_FCC4 ends here.
+

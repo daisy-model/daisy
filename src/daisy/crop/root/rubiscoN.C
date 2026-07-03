@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rubiscoN.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/check.h"
@@ -42,14 +43,6 @@ RubiscoN::RubiscoN ()
 
 RubiscoN::~RubiscoN ()
 { }
-
-static struct RubiscoNInit : public DeclareComponent 
-{
-  RubiscoNInit ()
-    : DeclareComponent (RubiscoN::component, "\
-Find total amount of Rubisco-N in leaves.")
-  { }
-} RubiscoN_init;
 
 // The 'default' model.
 
@@ -93,33 +86,45 @@ public:
   { }
 };
 
-static struct RubiscoNStandardSyntax : public DeclareModel
+void
+register_rubiscoN_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new RubiscoNStandard (al); }
-
-  RubiscoNStandardSyntax ()
-    : DeclareModel (RubiscoN::component, "default", 
-		    "Standard estimation of RuBisCo N.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct RubiscoNInit : public DeclareComponent 
   {
-    frame.declare_fraction ("fraction", Attribute::Const, "\
+    RubiscoNInit ()
+      : DeclareComponent (RubiscoN::component, "\
+Find total amount of Rubisco-N in leaves.")
+    { }
+  } RubiscoN_init;
+  static struct RubiscoNStandardSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new RubiscoNStandard (al); }
+  
+    RubiscoNStandardSyntax ()
+      : DeclareModel (RubiscoN::component, "default", 
+  		    "Standard estimation of RuBisCo N.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_fraction ("fraction", Attribute::Const, "\
 Fraction of remaining N in leaves that RuBisCo-N.\n\
 First structural and luxury N may be subtracted, as per the\n\
 other parameters.");
-    frame.set_cited ("fraction", 0.75, "Equation 6", "boegh2002");
-    frame.declare ("offset", "g N/m^2", Check::none (), Attribute::Const, "\
+      frame.set_cited ("fraction", 0.75, "Equation 6", "boegh2002");
+      frame.declare ("offset", "g N/m^2", Check::none (), Attribute::Const, "\
 Subtract this amount of N per LAI.");
-    frame.set ("offset", 0.0);
-    frame.declare_boolean ("subtract_Nf", Attribute::Const, "\
+      frame.set ("offset", 0.0);
+      frame.declare_boolean ("subtract_Nf", Attribute::Const, "\
 Subtract N corresponding to the non functional concentration in leafs.");
-    frame.set ("subtract_Nf", false);
-    frame.declare_boolean ("subtract_Pt", Attribute::Const, "\
+      frame.set ("subtract_Nf", false);
+      frame.declare_boolean ("subtract_Pt", Attribute::Const, "\
 Subtract N above the critical concentration in leafs.");
-    frame.set ("subtract_Pt", false);
-
-  }
-} rubiscoNStandard_syntax;
+      frame.set ("subtract_Pt", false);
+  
+    }
+  } rubiscoNStandard_syntax;
+}
 
 // rubiscoN.C ends here.
+

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -219,32 +220,37 @@ Rootdens::create_uniform (const Metalib& metalib, Treelog& msg)
     (Librarian::build_stock<Rootdens> (metalib, msg, "Gerwitz+Page74",
                                        "uniform")); }
 
-static struct Rootdens_G_PSyntax : public DeclareModel
+void
+register_rootdens_G_P_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new Rootdens_G_P (al); }
-  Rootdens_G_PSyntax ()
-    : DeclareModel (Rootdens::component, "Gerwitz+Page74", 
-	       "Use exponential function for root density.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct Rootdens_G_PSyntax : public DeclareModel
   {
-    frame.set_strings ("cite", "gp74");
-    frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
-                "Root density at (potential) penetration depth.");
-    frame.set ("DensRtTip", 0.1);
-    frame.declare ("MinDens", "cm/cm^3", Check::non_negative (), Attribute::Const,
-                "Minimal root density\n\
+    Model* make (const BlockModel& al) const
+    { return new Rootdens_G_P (al); }
+    Rootdens_G_PSyntax ()
+      : DeclareModel (Rootdens::component, "Gerwitz+Page74", 
+  	       "Use exponential function for root density.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "gp74");
+      frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
+                  "Root density at (potential) penetration depth.");
+      frame.set ("DensRtTip", 0.1);
+      frame.declare ("MinDens", "cm/cm^3", Check::non_negative (), Attribute::Const,
+                  "Minimal root density\n\
 Root density will never be below this, as long as there is enough root mass.\n \
 Extra root mass will be distributed according to Gerwitz and Page.\n\
 If there are too little root mass, the root will have the same density\n\
 all the way down.");
-    frame.set ("MinDens", 0.0);
-    frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
+      frame.set ("MinDens", 0.0);
+      frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
 Calculated from 'DensRtTip'.");
-    frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
-                "Root density at soil surface.");
-  }
-} Rootdens_G_P_syntax;
+      frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
+                  "Root density at soil surface.");
+    }
+  } Rootdens_G_P_syntax;
+}
 
 // rootdens_G_P.C ends here.
+
