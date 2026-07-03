@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 #include "daisy/column.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/library.h"
 #include "daisy/upper_boundary/surface/surface.h"
 #include "daisy/soil/soil_heat.h"
@@ -1229,7 +1230,7 @@ ColumnStandard::summarize (Treelog& msg) const
 ColumnStandard::~ColumnStandard ()
 { }
 
-static struct ColumnStandardSyntax : public DeclareModel
+struct ColumnStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ColumnStandard (al); }
@@ -1360,6 +1361,12 @@ This includes dry matter incorporated directly in the soil.");
     : DeclareModel (Column::component, "default", "\
 Hansen et.al. 1990. with generic movement in soil.")
   { }
-} column_syntax;
+};
+
+void
+register_column_standard_models ()
+{
+  static ColumnStandardSyntax column_standard_syntax;
+}
 
 // column_std.C ends here.

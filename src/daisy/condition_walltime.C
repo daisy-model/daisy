@@ -21,7 +21,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -61,7 +63,7 @@ public:
   { }
 };
 
-static struct ConditionPeriodicSyntax : public DeclareModel
+struct ConditionPeriodicSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionPeriodic (al); }
@@ -77,7 +79,7 @@ it was true.")
     frame.set ("period", 1);
     frame.order ("period");
   }
-} ConditionPeriodic_syntax;
+};
 
 // The 'period' condition.
 
@@ -116,7 +118,7 @@ public:
   { }
 };
 
-static struct ConditionWalltimeSyntax : public DeclareModel
+struct ConditionWalltimeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionWalltime (al); }
@@ -129,6 +131,13 @@ it was true.")
   {
     Timestep::load_syntax (frame);
   }
-} ConditionWalltime_syntax;
+};
+
+void
+register_condition_walltime_models ()
+{
+  static ConditionPeriodicSyntax condition_periodic_syntax;
+  static ConditionWalltimeSyntax condition_walltime_syntax;
+}
 
 // condition_walltime.C ends here.

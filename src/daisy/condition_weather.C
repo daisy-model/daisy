@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/field.h"
 #include "daisy/daisy.h"
@@ -81,7 +82,7 @@ struct ConditionTSum : public Condition
   { }
 };
 
-static struct ConditionTSumAboveSyntax : public DeclareModel
+struct ConditionTSumAboveSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionTSum (al); }
@@ -133,7 +134,7 @@ Temeperature sum above which the condition becomes true.");
 Current temeprature sum since last reset.");
       frame.order ("TSum_limit");
   }
-} ConditionTSumAbove_syntax;
+};
 
 // The 'daily_air_temperature' Model.
 
@@ -161,7 +162,7 @@ struct ConditionDailyAirTemperature : public Condition
   { }
 };
 
-static struct ConditionDailyAirTemperatureSyntax : public DeclareModel
+struct ConditionDailyAirTemperatureSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionDailyAirTemperature (al); }
@@ -175,7 +176,7 @@ Test if the daily air is warmer than the specified temperature.")
 Lowest air temperature for which the condition is true.");
     frame.order ("temperature");
   }
-} ConditionDailyAirTemperature_syntax;
+};
 
 // The 'daily_precipitation' Model.
 
@@ -203,7 +204,7 @@ struct ConditionDailyPrecipitation : public Condition
   { }
 };
 
-static struct ConditionDailyPrecipitationSyntax : public DeclareModel
+struct ConditionDailyPrecipitationSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionDailyPrecipitation (al); }
@@ -217,6 +218,14 @@ Test if the daily precipitation is warmer than the specified value.")
 Lowest precipitation for which the condition is true.");
     frame.order ("precipitation");
   }
-} ConditionDailyPrecipitation_syntax;
+};
+
+void
+register_condition_weather_models ()
+{
+  static ConditionTSumAboveSyntax condition_tsum_above_syntax;
+  static ConditionDailyAirTemperatureSyntax condition_daily_air_temperature_syntax;
+  static ConditionDailyPrecipitationSyntax condition_daily_precipitation_syntax;
+}
 
 // condition_weather.C ends here.

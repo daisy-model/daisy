@@ -92,6 +92,7 @@ void
 register_column_models ()
 {
   static ColumnInit column_init;
+  register_column_standard_models ();
 }
 
 // column.C ends here.

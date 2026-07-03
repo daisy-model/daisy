@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/crop/crop.h"
 #include "daisy/field.h"
@@ -90,7 +91,7 @@ struct ConditionWith : public Condition
   { }
 };
 
-static struct ConditionWithSyntax : public DeclareModel
+struct ConditionWithSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionWith (al); }
@@ -107,7 +108,7 @@ Test condition for specific column.")
                           "Condition to test on the specified column.");
     frame.order ("where", "condition");
   }
-} ConditionWith_syntax;
+};
 
 // The 'crop_ds_after' condition.
 
@@ -142,7 +143,7 @@ struct ConditionDSAfter : public Condition
   { }
 };
 
-static struct ConditionCropDSSyntax : public DeclareModel
+struct ConditionCropDSSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionDSAfter (al); }
@@ -162,7 +163,7 @@ Specify \"all\" to use combined weight of all crops on the field in test.");
                 "Development stage [-1.0:2.0].");
     frame.order ("crop", "ds");
   }
-} ConditionCropDS_syntax;
+};
 
 // The 'crop_stage_after' condition.
 
@@ -197,7 +198,7 @@ struct ConditionStageAfter : public Condition
   { }
 };
 
-static struct ConditionCropStageSyntax : public DeclareModel
+struct ConditionCropStageSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionStageAfter (al); }
@@ -216,7 +217,7 @@ Specify \"all\" to use combined weight of all crops on the field in test.");
 		   "Crop specific phenological stage.");
     frame.order ("crop", "stage");
   }
-} ConditionCropStage_syntax;
+};
 
 // The 'crop_dm_over' condition.
 
@@ -249,7 +250,7 @@ struct ConditionDMOver : public Condition
   { }
 };
 
-static struct ConditionCropDMSyntax : public DeclareModel
+struct ConditionCropDMSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionDMOver (al); }
@@ -272,7 +273,7 @@ Height above which we measure the DM weight.");
     frame.set ("height", 0.0);
     frame.order ("crop", "weight");
   }
-} ConditionCropDM_syntax;
+};
 
 // The 'crop_dm_sorg_over' condition.
 
@@ -303,7 +304,7 @@ struct ConditionDMSOrgOver : public Condition
   { }
 };
 
-static struct ConditionCropDMSorgSyntax : public DeclareModel
+struct ConditionCropDMSorgSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionDMSOrgOver (al); }
@@ -322,6 +323,16 @@ True iff the storage organ has reached the specified amount of dry matter.")
 Amount of non-root dry-matter required for the condition to be true.");
     frame.order ("crop", "weight");
   }
-} ConditionCropDMSorg_syntax;
+};
+
+void
+register_condition_crop_models ()
+{
+  static ConditionWithSyntax condition_with_syntax;
+  static ConditionCropDSSyntax condition_crop_ds_syntax;
+  static ConditionCropStageSyntax condition_crop_stage_syntax;
+  static ConditionCropDMSyntax condition_crop_dm_syntax;
+  static ConditionCropDMSorgSyntax condition_crop_dmsorg_syntax;
+}
 
 // condition_crop.C ends here.

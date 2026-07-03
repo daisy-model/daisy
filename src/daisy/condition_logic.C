@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/log.h"
 #include "object_model/frame.h"
 #include "util/memutils.h"
@@ -261,7 +262,7 @@ struct ConditionIf : public Condition
   { }
 };
 
-static struct ConditionFalseSyntax : public DeclareModel
+struct ConditionFalseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionFalse (al); }
@@ -270,9 +271,9 @@ static struct ConditionFalseSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} ConditionFalse_syntax;
+};
 
-static struct ConditionTrueSyntax : public DeclareModel
+struct ConditionTrueSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionTrue (al); }
@@ -281,9 +282,9 @@ static struct ConditionTrueSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} ConditionTrue_syntax;
+};
 
-static struct ConditionOrSyntax : public DeclareModel
+struct ConditionOrSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionOr (al); }
@@ -299,9 +300,9 @@ or the end of the list is reached.")
                        Attribute::State, Attribute::Variable, "Conditions to test.");
     frame.order ("operands");
   }
-} ConditionOr_syntax;
+};
 
-static struct ConditionAndSyntax : public DeclareModel
+struct ConditionAndSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionAnd (al); }
@@ -317,9 +318,9 @@ or the end of the list is reached.")
                        Attribute::State, Attribute::Variable, "Conditions to test.");
     frame.order ("operands");
   }
-} ConditionAnd_syntax;
+};
 
-static struct ConditionNotSyntax : public DeclareModel
+struct ConditionNotSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionNot (al); }
@@ -333,9 +334,9 @@ True iff the operand is not true.")
                        "Condition to test.");
     frame.order ("operand");
   }
-} ConditionNot_syntax;
+};
 
-static struct ConditionIfSyntax : public DeclareModel
+struct ConditionIfSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionIf (al); }
@@ -354,6 +355,17 @@ else return the value of the third condition.")
                        "Condition to use if the 'if' test was false.");
     frame.order ("if", "then", "else");
   }
-} ConditionIf_syntax;
+};
+
+void
+register_condition_logic_models ()
+{
+  static ConditionFalseSyntax condition_false_syntax;
+  static ConditionTrueSyntax condition_true_syntax;
+  static ConditionOrSyntax condition_or_syntax;
+  static ConditionAndSyntax condition_and_syntax;
+  static ConditionNotSyntax condition_not_syntax;
+  static ConditionIfSyntax condition_if_syntax;
+}
 
 // condition_logic.C ends here.

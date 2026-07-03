@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/daisy.h"
 #include "object_model/librarian.h"
 
@@ -67,7 +68,7 @@ struct ConditionFinished : public Condition
   { }
 };
 
-static struct ConditionRunningSyntax : public DeclareModel
+struct ConditionRunningSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionRunning (al); }
@@ -78,9 +79,9 @@ static struct ConditionRunningSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} ConditionRunning_syntax;
+};
 
-static struct ConditionFinishedSyntax : public DeclareModel
+struct ConditionFinishedSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionFinished (al); }
@@ -91,4 +92,11 @@ static struct ConditionFinishedSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} ConditionFinished_syntax;
+};
+
+void
+register_condition_daisy_state_models ()
+{
+  static ConditionRunningSyntax condition_running_syntax;
+  static ConditionFinishedSyntax condition_finished_syntax;
+}

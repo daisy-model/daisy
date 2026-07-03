@@ -72,6 +72,16 @@ void
 register_condition_models ()
 {
   static ConditionInit condition_init;
+  register_condition_boolean_models ();
+  register_condition_BBCH_models ();
+  register_condition_crop_models ();
+  register_condition_daisy_state_models ();
+  register_condition_extern_models ();
+  register_condition_logic_models ();
+  register_condition_soil_models ();
+  register_condition_time_models ();
+  register_condition_walltime_models ();
+  register_condition_weather_models ();
 }
 
 // condition.C ends here.

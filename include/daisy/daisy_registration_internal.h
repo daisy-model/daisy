@@ -22,7 +22,18 @@
 #define DAISY_REGISTRATION_INTERNAL_H
 
 void register_column_models ();
+void register_column_standard_models ();
 void register_condition_models ();
+void register_condition_BBCH_models ();
+void register_condition_boolean_models ();
+void register_condition_crop_models ();
+void register_condition_daisy_state_models ();
+void register_condition_extern_models ();
+void register_condition_logic_models ();
+void register_condition_soil_models ();
+void register_condition_time_models ();
+void register_condition_walltime_models ();
+void register_condition_weather_models ();
 void register_daisy_program_models ();
 void register_daisy_time_models ();
 void register_timestep_models ();

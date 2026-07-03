@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy_time.h"
 #include "daisy/daisy.h"
@@ -517,7 +518,7 @@ struct ConditionTimestep : public Condition
   { return *new ConditionTimestep (al); }
 };
 
-static struct ConditionMM_DDBase : public DeclareBase
+struct ConditionMM_DDBase : public DeclareBase
 {
   ConditionMM_DDBase ()
     : DeclareBase (Condition::component, "mm_dd_base", "\
@@ -562,9 +563,9 @@ Conditions based on month and day.")
     frame.set ("second", 0);
     frame.order ("month", "day");
   }
-} ConditionMM_DD_base;
+};
 
-static struct ConditionMMDDSyntax : public DeclareModel
+struct ConditionMMDDSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionMMDD (al); }
@@ -574,9 +575,9 @@ True a specific month, day and hour in the year.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionMMDD_syntax;
+};
 
-static struct ConditionBeforeMMDDSyntax : public DeclareModel
+struct ConditionBeforeMMDDSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionBeforeMMDD (al); }
@@ -586,9 +587,9 @@ True before specific month, day and hour in the year.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionBeforeMMDD_syntax;
+};
 
-static struct ConditionAfterMMDDSyntax : public DeclareModel
+struct ConditionAfterMMDDSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionAfterMMDD (al); }
@@ -598,9 +599,9 @@ True after specific month, day and hour in the year.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionAfterMMDD_syntax;
+};
 
-static struct ConditionTimeBase : public DeclareBase
+struct ConditionTimeBase : public DeclareBase
 {
   ConditionTimeBase ()
     : DeclareBase (Condition::component, "time", "\
@@ -612,9 +613,9 @@ Conditions based on a specific time.")
                          "Fixed time to test for.", Time::load_syntax);
     frame.order ("time");
   }
-} ConditionTime_base;
+};
 
-static struct ConditionAtSyntax : public DeclareModel
+struct ConditionAtSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionAt (al); }
@@ -624,9 +625,9 @@ True, iff the simulation time is at the specified time.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionAt_syntax;
+};
 
-static struct ConditionBeforeSyntax : public DeclareModel
+struct ConditionBeforeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionBefore (al); }
@@ -636,9 +637,9 @@ True, iff the simulation time is before the specified time.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionBefore_syntax;
+};
 
-static struct ConditionAfterSyntax : public DeclareModel
+struct ConditionAfterSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionAfter (al); }
@@ -648,9 +649,9 @@ True, iff the simulation time is after the specified time.")
   { }
   void load_frame (Frame&) const
   { }
-} ConditionAfter_syntax;
+};
 
-static struct ConditionMicrosecondSyntax : public DeclareModel
+struct ConditionMicrosecondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionMicrosecond (al); }
@@ -664,9 +665,9 @@ True, at the specified microsecond.")
                 "Microsecond when the condition is true [0-999999].");
     frame.order ("at");
   }
-} ConditionMicrosecond_syntax;
+};
 
-static struct ConditionSecondSyntax : public DeclareModel
+struct ConditionSecondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionSecond (al); }
@@ -681,9 +682,9 @@ True, at the specified second.")
     frame.set_check ("at", VCheck::valid_second ());
     frame.order ("at");
   }
-} ConditionSecond_syntax;
+};
 
-static struct ConditionMinuteSyntax : public DeclareModel
+struct ConditionMinuteSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionMinute (al); }
@@ -698,9 +699,9 @@ True, at the specified minute.")
     frame.set_check ("at", VCheck::valid_minute ());
     frame.order ("at");
   }
-} ConditionMinute_syntax;
+};
 
-static struct ConditionHourSyntax : public DeclareModel
+struct ConditionHourSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionHour (al); }
@@ -715,9 +716,9 @@ True, at the specified hour.")
     frame.set_check ("at", VCheck::valid_hour ());
     frame.order ("at");
   }
-} ConditionHour_syntax;
+};
 
-static struct ConditionMDaySyntax : public DeclareModel
+struct ConditionMDaySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionMDay (al); }
@@ -732,9 +733,9 @@ True, at the specified day in the month.")
     frame.set_check ("at", VCheck::valid_mday ());
     frame.order ("at");
   }
-} ConditionMDay_syntax;
+};
 
-static struct ConditionYDaySyntax : public DeclareModel
+struct ConditionYDaySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionYDay (al); }
@@ -750,9 +751,9 @@ True, at the specified julian day.")
     frame.set_check ("at", valid_jday);
     frame.order ("at");
   }
-} ConditionYDay_syntax;
+};
 
-static struct ConditionMonthSyntax : public DeclareModel
+struct ConditionMonthSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionMonth (al); }
@@ -767,9 +768,9 @@ True, at the specified month.")
     frame.set_check ("at", VCheck::valid_month ());
     frame.order ("at");
   }
-} ConditionMonth_syntax;
+};
 
-static struct ConditionYearSyntax : public DeclareModel
+struct ConditionYearSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionYear (al); }
@@ -784,9 +785,9 @@ True, at the specified year.")
     frame.set_check ("at", VCheck::valid_year ());
     frame.order ("at");
   }
-} ConditionYear_syntax;
+};
 
-static struct ConditionTimestepSyntax : public DeclareModel
+struct ConditionTimestepSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionTimestep (al); }
@@ -805,7 +806,7 @@ in log files.")
 Timestep to use.");
     frame.order ("operand", "timestep");
   }
-} ConditionTimestep_syntax;
+};
 
 // The 'end' base model.
 
@@ -841,7 +842,7 @@ struct ConditionEnd : public Condition
 
 // The 'hourly' model.
 
-static struct ConditionHourlySyntax : public DeclareModel
+struct ConditionHourlySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "h", &Time::hour); }
@@ -852,11 +853,11 @@ static struct ConditionHourlySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionHourly_syntax;
+};
 
 // The 'secondly' model.
 
-static struct ConditionSecondlySyntax : public DeclareModel
+struct ConditionSecondlySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "s", &Time::second); }
@@ -867,11 +868,11 @@ static struct ConditionSecondlySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionSecondly_syntax;
+};
 
 // The 'minutely' model.
 
-static struct ConditionMinutelySyntax : public DeclareModel
+struct ConditionMinutelySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "min", &Time::minute); }
@@ -882,11 +883,11 @@ static struct ConditionMinutelySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionMinutely_syntax;
+};
 
 // The 'daily' model.
 
-static struct ConditionDailySyntax : public DeclareModel
+struct ConditionDailySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "d", &Time::mday); }
@@ -897,11 +898,11 @@ static struct ConditionDailySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionDaily_syntax;
+};
 
 // The 'weekly' model.
 
-static struct ConditionWeeklySyntax : public DeclareModel
+struct ConditionWeeklySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "w", &Time::week); }
@@ -912,11 +913,11 @@ static struct ConditionWeeklySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionWeekly_syntax;
+};
 
 // The 'monthly' model.
 
-static struct ConditionMonthlySyntax : public DeclareModel
+struct ConditionMonthlySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "m", &Time::month); }
@@ -927,11 +928,11 @@ static struct ConditionMonthlySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionMonthly_syntax;
+};
 
 // The 'yearly' model.
 
-static struct ConditionYearlySyntax : public DeclareModel
+struct ConditionYearlySyntax : public DeclareModel
  {
   Model* make (const BlockModel& al) const
   { return new ConditionEnd (al, "y", &Time::year); }
@@ -942,7 +943,7 @@ static struct ConditionYearlySyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} ConditionYearly_syntax;
+};
 
 // The 'interval' base model.
 
@@ -1012,7 +1013,7 @@ public:
 
 // The 'every' model.
 
-static struct ConditionEverySyntax : public DeclareModel
+struct ConditionEverySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionInterval (al, submodel_value_block<Timestep> (al)); }
@@ -1027,6 +1028,36 @@ static struct ConditionEverySyntax : public DeclareModel
                          "Time for next match.",
                          Time::load_syntax);
   }
-} ConditionEvery_syntax;
+};
+
+void
+register_condition_time_models ()
+{
+  static ConditionMM_DDBase condition_mm_dd_base;
+  static ConditionMMDDSyntax condition_mmdd_syntax;
+  static ConditionBeforeMMDDSyntax condition_before_mmdd_syntax;
+  static ConditionAfterMMDDSyntax condition_after_mmdd_syntax;
+  static ConditionTimeBase condition_time_base;
+  static ConditionAtSyntax condition_at_syntax;
+  static ConditionBeforeSyntax condition_before_syntax;
+  static ConditionAfterSyntax condition_after_syntax;
+  static ConditionMicrosecondSyntax condition_microsecond_syntax;
+  static ConditionSecondSyntax condition_second_syntax;
+  static ConditionMinuteSyntax condition_minute_syntax;
+  static ConditionHourSyntax condition_hour_syntax;
+  static ConditionMDaySyntax condition_mday_syntax;
+  static ConditionYDaySyntax condition_yday_syntax;
+  static ConditionMonthSyntax condition_month_syntax;
+  static ConditionYearSyntax condition_year_syntax;
+  static ConditionTimestepSyntax condition_timestep_syntax;
+  static ConditionHourlySyntax condition_hourly_syntax;
+  static ConditionSecondlySyntax condition_secondly_syntax;
+  static ConditionMinutelySyntax condition_minutely_syntax;
+  static ConditionDailySyntax condition_daily_syntax;
+  static ConditionWeeklySyntax condition_weekly_syntax;
+  static ConditionMonthlySyntax condition_monthly_syntax;
+  static ConditionYearlySyntax condition_yearly_syntax;
+  static ConditionEverySyntax condition_every_syntax;
+}
 
 // condition_time.C ends here.
