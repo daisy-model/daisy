@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "object_model/librarian.h"
@@ -42,7 +43,7 @@ struct ActionStop : public Action
     { }
 };
 
-static struct ActionStopSyntax : DeclareModel
+struct ActionStopSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionStop (al); }
@@ -51,6 +52,12 @@ static struct ActionStopSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} ActionStop_syntax;
+};
+
+void
+register_action_stop_models ()
+{
+  static ActionStopSyntax action_stop_syntax;
+}
 
 // action_stop.C ends here.

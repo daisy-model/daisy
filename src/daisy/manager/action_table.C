@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/metalib.h"
 #include "object_model/library.h"
@@ -350,7 +351,7 @@ ActionTable::ActionTable (const BlockModel& al)
 }
 
 // Add the ActionTable syntax to the syntax table.
-static struct ActionTableSyntax : DeclareModel
+struct ActionTableSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionTable (al); }
@@ -440,6 +441,12 @@ Height where you want to end the incorporation (a negative number).\n\
 OBSOLETE: Use (volume box (bottom TO)) instead.");
     frame.set ("to", -25.0);
   }
-} ActionTable_syntax;
+};
+
+void
+register_action_table_models ()
+{
+  static ActionTableSyntax action_table_syntax;
+}
 
 // action_table.C ends here.

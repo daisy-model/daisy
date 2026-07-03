@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -55,7 +56,7 @@ struct ActionSowBase : public Action
 };
 
 // Add the ActionSowBase syntax to the syntax table.
-static struct ActionSowBaseSyntax : DeclareBase
+struct ActionSowBaseSyntax : DeclareBase
 {
   ActionSowBaseSyntax ()
     : DeclareBase (Action::component, "sow_base", "Shared sowing parameters.")
@@ -90,7 +91,7 @@ ortogonal to the rows as is otherwise assumed by Daisy.");
                    Attribute::OptionalConst, "Amount of seed applied.\n\
 By default, initial growth will be governed by 'typical' seed amounts.");
   }
-} ActionSowBase_syntax;
+};
 
 struct ActionSow : public ActionSowBase
 {
@@ -112,7 +113,7 @@ struct ActionSow : public ActionSowBase
 };
 
 // Add the ActionSow syntax to the syntax table.
-static struct ActionSowSyntax : DeclareModel
+struct ActionSowSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSow (al); }
@@ -126,10 +127,7 @@ static struct ActionSowSyntax : DeclareModel
     frame.declare_object ("crop", Crop::component, "Crop to sow.");
     frame.order ("crop");
   }
-} ActionSow_syntax;
-
-static DeclareAlias 
-ActionPlant_syntax (Action::component, "plant", "sow");
+};
 
 struct ActionSowObject : public ActionSowBase
 {
@@ -164,7 +162,7 @@ struct ActionSowObject : public ActionSowBase
 };
 
 // Add the ActionSowObject syntax to the syntax table.
-static struct ActionSowObjectSyntax : DeclareModel
+struct ActionSowObjectSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSowObject (al); }
@@ -179,7 +177,7 @@ Unlike the normal 'sow', this action can only be called once per simulation.")
     frame.declare_object ("crop", Crop::component, "Crop to sow.");
     frame.order ("crop");
   }
-} ActionSowObject_syntax;
+};
 
 struct ActionSowName : public ActionSowBase
 {
@@ -210,7 +208,7 @@ struct ActionSowName : public ActionSowBase
 };
 
 // Add the ActionSowName syntax to the syntax table.
-static struct ActionSowNameSyntax : DeclareModel
+struct ActionSowNameSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSowName (al); }
@@ -226,6 +224,16 @@ This name can be a reference parameter.")
     frame.set_check ("crop", Crop::check_buildable ());
     frame.order ("crop");
   }
-} ActionSowName_syntax;
+};
+
+void
+register_action_sow_models ()
+{
+  static ActionSowBaseSyntax action_sow_base_syntax;
+  static ActionSowSyntax action_sow_syntax;
+  static DeclareAlias action_plant_syntax (Action::component, "plant", "sow");
+  static ActionSowObjectSyntax action_sow_object_syntax;
+  static ActionSowNameSyntax action_sow_name_syntax;
+}
 
 // action_sow.C ends here.

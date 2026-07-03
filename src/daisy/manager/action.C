@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
@@ -61,7 +62,7 @@ Action::Action (const BlockModel& al)
 Action::~Action ()
 { }
 
-static struct ActionInit : public DeclareComponent
+struct ActionInit : public DeclareComponent
 {
   ActionInit ()
     : DeclareComponent (Action::component, "\
@@ -70,6 +71,33 @@ levels, from a single tillage operation to strategies of how to manage\n\
 a farm.  Typically, but not necessarily, the high level management\n\
 strategies are build by combining low level management operations.")
   { }
-} Action_init;
+};
+
+void
+register_action_models ()
+{
+  static ActionInit action_init;
+  register_action_BBCH_models ();
+  register_action_activity_models ();
+  register_action_crop_models ();
+  register_action_extern_models ();
+  register_action_fertilize_models ();
+  register_action_harvest_models ();
+  register_action_irrigate_models ();
+  register_action_lisp_models ();
+  register_action_markvand_models ();
+  register_action_message_models ();
+  register_action_repeat_models ();
+  register_action_sow_models ();
+  register_action_spray_models ();
+  register_action_stop_models ();
+  register_action_surface_models ();
+  register_action_table_models ();
+  register_action_tillage_models ();
+  register_action_wait_models ();
+  register_action_while_models ();
+  register_action_with_models ();
+  register_irrigation_models ();
+}
 
 // action.C ends here.

@@ -29,5 +29,6 @@ register_daisy_models ()
   register_condition_models ();
   register_groundwater_models ();
   register_column_models ();
+  register_action_models ();
   register_daisy_program_models ();
 }

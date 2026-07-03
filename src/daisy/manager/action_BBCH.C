@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "object_model/librarian.h"
@@ -174,7 +175,7 @@ struct ActionBBCH : public Action
   { }
 };
 
-static struct ActionBBCHSyntax : DeclareModel
+struct ActionBBCHSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionBBCH (al); }
@@ -209,6 +210,12 @@ the specified BBCH interval, or at the end of the interval, whichever\n\
 comes first. Use 'true' to perform the action at the start of the interval,\n\
 or 'false' to perform it at the end.");
   }
-} ActionBBCH_syntax;
+};
+
+void
+register_action_BBCH_models ()
+{
+  static ActionBBCHSyntax action_bbch_syntax;
+}
 
 // action_BBCH.C ends here.

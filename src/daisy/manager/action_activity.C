@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/frame.h"
 #include "daisy/output/log.h"
@@ -101,7 +102,7 @@ struct ActionActivity : public Action
   { }
 };
 
-static struct ActionSequenceSyntax : public DeclareModel
+struct ActionSequenceSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionActivity (al); }
@@ -132,9 +133,9 @@ at each time step.")
                        "Sequence of actions to perform.");
     frame.set_empty ("do");
   }
-} ActionSequence_syntax;
+};
 
-static struct ActionActivitySyntax : public DeclareParam
+struct ActionActivitySyntax : public DeclareParam
 {
   ActionActivitySyntax ()
     : DeclareParam (Action::component, "activity", "sequence", "\
@@ -146,6 +147,13 @@ at each time step.")
   {
     frame.order ("do");
   }
-} ActionActivity_syntax;
+};
+
+void
+register_action_activity_models ()
+{
+  static ActionSequenceSyntax action_sequence_syntax;
+  static ActionActivitySyntax action_activity_syntax;
+}
 
 // action_activity.C ends here

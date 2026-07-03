@@ -19,6 +19,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -100,12 +101,12 @@ struct MV_Soil : public Model
   { }
 };
 
-static struct MV_SoilInit : public DeclareComponent
+struct MV_SoilInit : public DeclareComponent
 {
   MV_SoilInit () 
     : DeclareComponent (MV_Soil::component, MV_Soil::description)
   { }
-} Soil_init;
+};
 
 
 const char *const MV_Soil::description = "\
@@ -120,7 +121,7 @@ MV_Soil::library_id () const
   return id;
 }
 
-static struct MV_SoilSyntax : DeclareModel
+struct MV_SoilSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MV_Soil (al); }
@@ -157,7 +158,7 @@ static struct MV_SoilSyntax : DeclareModel
     frame.declare ("k_qb", Attribute::None (), Attribute::Const,
                 "Drainage constant subsone.");
   }
-} MV_Soil_syntax;
+};
 
 // MV_Crop
 
@@ -270,12 +271,12 @@ struct MV_Crop : public Model
   { }
 };
 
-static struct MV_CropInit : public DeclareComponent
+struct MV_CropInit : public DeclareComponent
 {
   MV_CropInit () 
     : DeclareComponent (MV_Crop::component, MV_Crop::description)
   { }
-} Crop_init;
+};
 
 const char *const MV_Crop::description = "\
 Description of a crop for use by the MARKVAND model.";
@@ -289,7 +290,7 @@ MV_Crop::library_id () const
   return id;
 }
 
-static struct MV_CropSyntax : DeclareModel
+struct MV_CropSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MV_Crop (al); }
@@ -350,7 +351,7 @@ Green leaf area index at the time where growth rate become exponential.");
     frame.declare ("c_r", "mm/d", Check::non_negative (), Attribute::Const,
                 "Root penetration rate.");
   }
-} MV_Crop_syntax;
+};
 
 struct ActionMarkvand : public Action
 {
@@ -666,7 +667,7 @@ ActionMarkvand::ActionMarkvand (const BlockModel& al)
 ActionMarkvand::~ActionMarkvand ()
 { }
 
-static struct ActionMarkvandSyntax : DeclareModel
+struct ActionMarkvandSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionMarkvand (al); }
@@ -722,6 +723,16 @@ By default, the reservoir will be full at plant emergence.");
 Solutes in irrigation water.", load_ppm);
     frame.set_empty ("solute");
   }
-} ActionMarkvand_syntax;
+};
+
+void
+register_action_markvand_models ()
+{
+  static MV_SoilInit mv_soil_init;
+  static MV_SoilSyntax mv_soil_syntax;
+  static MV_CropInit mv_crop_init;
+  static MV_CropSyntax mv_crop_syntax;
+  static ActionMarkvandSyntax action_markvand_syntax;
+}
 
 // action_markvand.C ends here.

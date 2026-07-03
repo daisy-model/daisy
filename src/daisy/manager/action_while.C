@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/frame.h"
 #include "daisy/output/log.h"
@@ -86,7 +87,7 @@ struct ActionWhile : public Action
   }
 };
 
-static struct ActionWhileSyntax : DeclareModel
+struct ActionWhileSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWhile (al); }
@@ -117,6 +118,12 @@ list is done.")
                           "List of actions to perform.");
     frame.order ("actions");
   }
-} ActionWhile_syntax;
+};
+
+void
+register_action_while_models ()
+{
+  static ActionWhileSyntax action_while_syntax;
+}
 
 // action_while.C ends here.

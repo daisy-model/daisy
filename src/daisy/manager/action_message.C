@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/condition.h"
@@ -166,7 +167,7 @@ struct ActionPanic : public Action
   { }
 };
 
-static struct ActionAssertSyntax : public DeclareModel
+struct ActionAssertSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionAssert (al); }
@@ -183,9 +184,9 @@ Assert that condition is true, if not, stop the simulation.")
 		  "Error message to give iff assertion fails.");
       frame.set ("message", "Required condition not fulfilled");
   }
-} ActionAssert_syntax;
+};
 
-static struct ActionMessageSyntax : public DeclareModel
+struct ActionMessageSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionMessage (al); }
@@ -199,9 +200,9 @@ Write a message to the user.")
 		  "Message to give to the user.");
       frame.order ("message");
   }
-} ActionMessage_syntax;
+};
 
-static struct ActionWarningSyntax : public DeclareModel
+struct ActionWarningSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWarning (al); }
@@ -215,9 +216,9 @@ Write a warning to the user.")
 		  "Warning to give to the user.");
       frame.order ("message");
   }
-} ActionWarning_syntax;
+};
 
-static struct ActionErrorSyntax : public DeclareModel
+struct ActionErrorSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionError (al); }
@@ -231,9 +232,9 @@ Write a error message to the user.")
 		  "Error message to give.");
       frame.order ("message");
   }
-} ActionError_syntax;
+};
 
-static struct ActionPanicSyntax : public DeclareModel
+struct ActionPanicSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionPanic (al); }
@@ -247,7 +248,7 @@ Write a error message to the user and stop the simulation.")
 		  "Error message to give.");
       frame.order ("message");
   }
-} ActionPanic_syntax;
+};
 
 // The 'sorption_table' action mode.
 
@@ -284,7 +285,7 @@ struct ActionSorptionTable : public Action
   { }
 };
 
-static struct ActionSorptionTableSyntax : public DeclareModel
+struct ActionSorptionTableSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSorptionTable (al); }
@@ -312,8 +313,18 @@ If zero, instead add start to C for the next entry in the table.");
 Number of entries in the table.");
     frame.set ("intervals", 10);
   }
-} ActionSorptionTable_syntax;
+};
+
+void
+register_action_message_models ()
+{
+  static ActionAssertSyntax action_assert_syntax;
+  static ActionMessageSyntax action_message_syntax;
+  static ActionWarningSyntax action_warning_syntax;
+  static ActionErrorSyntax action_error_syntax;
+  static ActionPanicSyntax action_panic_syntax;
+  static ActionSorptionTableSyntax action_sorption_table_syntax;
+}
 
 
 // action_message.C ends here.
-

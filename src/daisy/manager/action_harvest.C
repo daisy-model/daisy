@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "daisy/field.h"
@@ -74,7 +75,7 @@ struct ActionEmerge : public Action
   { }
 };
 
-static struct ActionEmergeSyntax : DeclareModel
+struct ActionEmergeSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionEmerge (al); }
@@ -92,11 +93,11 @@ nothing will happen.");
     frame.set_check ("crop", Crop::check_all ());
     frame.order ("crop");
   }
-} ActionEmerge_syntax;
+};
 
 // The 'harvest_base' base model.
 
-static struct ActionHarvestBaseSyntax : DeclareBase
+struct ActionHarvestBaseSyntax : DeclareBase
 {
   ActionHarvestBaseSyntax ()
     : DeclareBase (Action::component, "harvest_base", "\
@@ -130,7 +131,7 @@ This is mostly useful for silage.");
     frame.set ("combine", false);
     frame.order ("crop");
   }
-} ActionHarvestBase_syntax;
+};
 
 // The 'harvest' action model.
 
@@ -215,7 +216,7 @@ If this was intended, you should use the 'cut' action instead to avoid this mess
   { }
 };
 
-static struct ActionHarvestSyntax : DeclareModel
+struct ActionHarvestSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionHarvest (al); }
@@ -225,7 +226,7 @@ Harvest a crop.")
   { }
   void load_frame (Frame& frame) const
   { }
-} ActionHarvest_syntax;
+};
 
 // The 'cut' action model.
 
@@ -243,7 +244,7 @@ If this was intended, you should use the 'harvest' action instead to avoid this 
   { }
 };
 
-static struct ActionCutSyntax : DeclareModel
+struct ActionCutSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionCut (al); }
@@ -252,7 +253,7 @@ static struct ActionCutSyntax : DeclareModel
   { }
   void load_frame (Frame& frame) const
   { }
-} ActionCut_syntax;
+};
 
 // The 'pluck' action model.
 
@@ -308,7 +309,7 @@ If this was intended, you should use the 'harvest' action instead to avoid this 
   { }
 };
 
-static struct ActionPluckSyntax : DeclareModel
+struct ActionPluckSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionPluck (al); }
@@ -338,6 +339,16 @@ Fraction of storage organ to pluck.");
     frame.set ("sorg", 1.0);
     frame.order ("crop");
   }
-} ActionPluck_syntax;
+};
+
+void
+register_action_harvest_models ()
+{
+  static ActionEmergeSyntax action_emerge_syntax;
+  static ActionHarvestBaseSyntax action_harvest_base_syntax;
+  static ActionHarvestSyntax action_harvest_syntax;
+  static ActionCutSyntax action_cut_syntax;
+  static ActionPluckSyntax action_pluck_syntax;
+}
 
 // action_harvest.C ends here.

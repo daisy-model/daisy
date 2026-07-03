@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/condition.h"
@@ -151,7 +152,7 @@ struct ActionWaitMMDD : public Action
   { }
 };
 
-static struct ActionWaitSyntax : public DeclareModel
+struct ActionWaitSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWait (al); }
@@ -165,9 +166,9 @@ Wait until the specified condition is true.")
                          "Condition to wait for.");
       frame.order ("condition");
   }
-} ActionWait_syntax;
+};
 
-static struct ActionWaitPeriodSyntax : public DeclareModel
+struct ActionWaitPeriodSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWaitDays (al); }
@@ -200,9 +201,9 @@ Waits the specified period.")
                           "Wait until this date.\
 Setting this overrides the 'days' and 'hours' parameters.", Time::load_syntax);
   }
-} ActionWaitPeriod_syntax;
+};
 
-static struct ActionWaitDaysSyntax : public DeclareParam
+struct ActionWaitDaysSyntax : public DeclareParam
 {
   ActionWaitDaysSyntax ()
     : DeclareParam (Action::component, "wait_days", "wait_period", "\
@@ -213,9 +214,9 @@ Waits the specified number of days.")
     frame.set ("hours", 0);
     frame.order ("days");
   }
-} ActionWaitDays_syntax;
+};
 
-static struct ActionWaitHoursSyntax : public DeclareParam
+struct ActionWaitHoursSyntax : public DeclareParam
 {
   ActionWaitHoursSyntax ()
     : DeclareParam (Action::component, "wait_hours", "wait_period", "\
@@ -226,9 +227,9 @@ Waits the specified number of hours.")
     frame.set ("days", 0);
     frame.order ("hours");
   }
-} ActionWaitHours_syntax;
+};
 
-static struct ActionWaitMMDDSyntax : public DeclareModel
+struct ActionWaitMMDDSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWaitMMDD (al); }
@@ -276,7 +277,7 @@ Wait until a specific month and day in the year.")
     frame.set ("hour", 8);
     frame.order ("month", "day");
   }
-} ActionWaitMMDD_syntax;
+};
 
 // The 'at' action.
 
@@ -330,7 +331,7 @@ struct ActionAt : public Action
   { }
 };
 
-static struct ActionAtSyntax : public DeclareModel
+struct ActionAtSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionAt (al); }
@@ -375,6 +376,17 @@ Do action at specific time.")
 
     frame.order ("year", "month", "day");
   }
-} ActionAt_syntax;
+};
+
+void
+register_action_wait_models ()
+{
+  static ActionWaitSyntax action_wait_syntax;
+  static ActionWaitPeriodSyntax action_wait_period_syntax;
+  static ActionWaitDaysSyntax action_wait_days_syntax;
+  static ActionWaitHoursSyntax action_wait_hours_syntax;
+  static ActionWaitMMDDSyntax action_wait_mmdd_syntax;
+  static ActionAtSyntax action_at_syntax;
+}
 
 // action_wait.C ends here.

@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -120,7 +121,7 @@ public:
   { sequence_delete (actions.begin (), actions.end ()); }
 };
 
-static struct ActionWithColumnSyntax : DeclareModel
+struct ActionWithColumnSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionWithColumn (al); }
@@ -138,6 +139,12 @@ Perform actions on a specific column.")
                        "Actions to perform on the specified column.");
     frame.order ("column", "actions");
   }
-} ActionWithColumn_syntax;
+};
+
+void
+register_action_with_models ()
+{
+  static ActionWithColumnSyntax action_with_column_syntax;
+}
 
 // action_with.C ends here.
