@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/smb.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/organic_matter/dom.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -139,28 +140,31 @@ SMB::SMB (const BlockModel& al)
     maintenance (al.number ("maintenance"))
 { }
 
-static struct SMBInit : public DeclareSolo
+void
+register_smb_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SMB (al); }
-  void load_frame (Frame& frame) const
+  static struct SMBInit : public DeclareSolo
   {
-    OM::load_syntax (frame, "\
+    Model* make (const BlockModel& al) const
+    { return new SMB (al); }
+    void load_frame (Frame& frame) const
+    {
+      OM::load_syntax (frame, "\
 The first numbers corresponds to each of the SMB pools, the next\n\
 numbers corresponds to the SOM pools, and the last numbers to each of\n\
 the DOM pools.  The length of the sequence should thus be the number\n\
 of SMB pools plus the number of SOM pools plus the number of DOM pools."); 
-    frame.declare ("maintenance", "h^-1", Check::fraction (), Attribute::Const, "\
+      frame.declare ("maintenance", "h^-1", Check::fraction (), Attribute::Const, "\
 The fraction used for staying alive each hour.");
-  }
-  SMBInit ()
-    : DeclareSolo (SMB::component, "\
+    }
+    SMBInit ()
+      : DeclareSolo (SMB::component, "\
 A single Soil MicroBiological pool.")
-  { }
-} SMB_init;
+    { }
+  } smb_init;
 
-static struct SMBSlowSyntax : public DeclareParam
-{
+  static struct SMBSlowSyntax : public DeclareParam
+  {
   SMBSlowSyntax ()
     : DeclareParam (SMB::component, "SMB-SLOW", root_name (), "\
 Slow SMB pool parameterization.")
@@ -184,10 +188,10 @@ Slow SMB pool parameterization.")
     SMB1_fractions.push_back (0.0);
     frame.set ("fractions", SMB1_fractions);
   }
-} SMBSlow_syntax;
+  } smb_slow_syntax;
 
-static struct SMBFastSyntax : public DeclareParam
-{
+  static struct SMBFastSyntax : public DeclareParam
+  {
   SMBFastSyntax ()
     : DeclareParam (SMB::component, "SMB-FAST", root_name (), "\
 Fast SMB pool parameterization.")
@@ -211,10 +215,10 @@ Fast SMB pool parameterization.")
     SMB2_fractions.push_back (0.0);
     frame.set ("fractions", SMB2_fractions);
   }
-} SMBFast_syntax;
+  } smb_fast_syntax;
 
-static struct SMBFast2000Syntax : public DeclareParam
-{
+  static struct SMBFast2000Syntax : public DeclareParam
+  {
   SMBFast2000Syntax ()
     : DeclareParam (SMB::component, "SMB-FAST-2000", "SMB-FAST", "\
 Fast SMB pool parameterization.")
@@ -229,7 +233,8 @@ Fast SMB pool parameterization.")
     SMB2_fractions.push_back (0.0);
     frame.set ("fractions", SMB2_fractions);
   }
-} SMBFast2000_syntax;
+  } smb_fast_2000_syntax;
+}
 
 
 // smb.C ends here.

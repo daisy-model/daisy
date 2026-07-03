@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/clayom.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -40,16 +41,23 @@ ClayOM::ClayOM (const BlockModel& al)
 ClayOM::~ClayOM ()
 { }
 
-static struct ClayOMInit : public DeclareComponent 
+void
+register_clay_om_models ()
 {
-  void load_frame (Frame& frame) const
+  static struct ClayOMInit : public DeclareComponent
   {
-    Model::load_model (frame);
-  }
-  ClayOMInit ()
-    : DeclareComponent (ClayOM::component, "\
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+    }
+    ClayOMInit ()
+      : DeclareComponent (ClayOM::component, "\
 Find the effect of clay on organic matter processing.")
-  { }
-} ClayOM_init;
+    { }
+  } clay_om_init;
+
+  register_clay_om_old_models ();
+  register_clay_om_biomod_models ();
+}
 
 // clayom.C ends here.

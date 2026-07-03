@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/organic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -40,12 +41,28 @@ OrganicMatter::OrganicMatter (const BlockModel& al)
 OrganicMatter::~OrganicMatter ()
 { }
 
-static struct OrganicInit : public DeclareComponent 
+void
+register_organic_matter_models ()
 {
-  OrganicInit ()
-    : DeclareComponent (OrganicMatter::component, "\
+  static struct OrganicInit : public DeclareComponent
+  {
+    OrganicInit ()
+      : DeclareComponent (OrganicMatter::component, "\
 Turnover of organic matter in the soil.")
-  { }
-} Organic_init;
+    { }
+  } organic_init;
+
+  register_aom_models ();
+  register_som_models ();
+  register_smb_models ();
+  register_dom_models ();
+  register_doe_models ();
+  register_domsorp_models ();
+  register_clay_om_models ();
+  register_am_models ();
+  register_bioincorporation_models ();
+  register_organic_standard_models ();
+  register_organic_none_models ();
+}
 
 // organic.C ends here.

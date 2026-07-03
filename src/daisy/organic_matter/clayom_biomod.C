@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/clayom.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
 #include "daisy/organic_matter/smb.h"
@@ -242,45 +243,49 @@ ClayOMBiomod::ClayOMBiomod (const BlockModel& al)
 ClayOMBiomod::~ClayOMBiomod ()
 { }
 
-static struct ClayOMBiomodSyntax : public DeclareModel
+void
+register_clay_om_biomod_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ClayOMBiomod (al); }
+  static struct ClayOMBiomodSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ClayOMBiomod (al); }
 
-  ClayOMBiomodSyntax ()
-    : DeclareModel (ClayOM::component, "biomod", 
-	       "Clay influence on organic matter from BIOMOD project.\n\
+    ClayOMBiomodSyntax ()
+      : DeclareModel (ClayOM::component, "biomod",
+                      "Clay influence on organic matter from BIOMOD project.\n\
 All SMB pools are affected, but not the SOM pools.  Additionally, the\n\
 ration between maintenance and turnover is also clay dependent.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "biomod", "biomod2", "pedersen2007model");
-    frame.declare ("a", Attribute::None (), Check::positive (), Attribute::Const,
-		"Maintenance parameter.");
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "biomod", "biomod2", "pedersen2007model");
+      frame.declare ("a", Attribute::None (), Check::positive (),
+                      Attribute::Const, "Maintenance parameter.");
 #ifdef OLD_VERSION
-    frame.declare ("alpha", Attribute::None (), Check::positive (), Attribute::Const,
-		"Speed parameter.");
+      frame.declare ("alpha", Attribute::None (), Check::positive (),
+                      Attribute::Const, "Speed parameter.");
 #else // !OLD_VERSION
-    frame.declare ("factor", Attribute::Fraction (), Attribute::None (),
-		Attribute::Const, "\
+      frame.declare ("factor", Attribute::Fraction (), Attribute::None (),
+                      Attribute::Const, "\
 Function of clay content, multiplied to the maintenance and turnover rates\n\
 of the SMB pools.");
-    PLF factor;
-    factor.add (0.00, 1.0);
-    factor.add (0.25, 0.5);
-    factor.add (1.00, 0.5);
-    frame.set ("factor", factor);
+      PLF factor;
+      factor.add (0.00, 1.0);
+      factor.add (0.25, 0.5);
+      factor.add (1.00, 0.5);
+      frame.set ("factor", factor);
 #endif // !OLD_VERSION
-    frame.declare_fraction ("E_SMB", Attribute::Const,
-			 "SMB efficiency in processing organic matter.\n\
+      frame.declare_fraction ("E_SMB", Attribute::Const,
+                              "SMB efficiency in processing organic matter.\n\
 Note that you must set the 'efficiency' parameter for all OM pools to\n\
 this number for the BIOMOD clay response model to work correctly.");
-    frame.declare_fraction ("f_SMB1", Attribute::Const,
-			 "Fraction of AOM pools goind to SMB1.\n\
+      frame.declare_fraction ("f_SMB1", Attribute::Const,
+                              "Fraction of AOM pools goind to SMB1.\n\
 Only the fraction of AOM going to a SMB pool count, so this is really\n\
 a fraction of the fraction coing to the SMB pools.\n\
 Note that you must set the 'fraction' parameter of all AOM pools to\n\
 reflect this for the BIOMOD clay response model to work correctly.");
-  }
-} ClayOMBiomod_syntax;
+    }
+  } clay_om_biomod_syntax;
+}

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/bioincorporation.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/frame_submodel.h"
 #include "daisy/output/log.h"
 #include "daisy/soil/transport/geometry.h"
@@ -36,20 +37,6 @@
 #include "util/mathlib.h"
 #include <algorithm>
 #include <sstream>
-
-static struct AOMSlowBioincorporationSyntax : public DeclareParam
-{
-  AOMSlowBioincorporationSyntax ()
-    : DeclareParam (AOM::component, "AOM-SLOW-BIOINCORPORATION", "AOM-SLOW", "\
-Lower C/N ration for bioincorporated matter.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    std::vector<double> CN;
-    CN.push_back (60.0);
-    frame.set ("C_per_N", CN);
-  }
-} AOMSlowBioincorporation_syntax;
 
 struct Bioincorporation::Implementation
 { 
@@ -364,8 +351,27 @@ Bioincorporation::Bioincorporation (const FrameSubmodel& al)
 Bioincorporation::~Bioincorporation ()
 { }
 
-static DeclareSubmodel
-bioincorporation_submodel (Bioincorporation::load_syntax, "Bioincorporation", "\
+void
+register_bioincorporation_models ()
+{
+  static struct AOMSlowBioincorporationSyntax : public DeclareParam
+  {
+    AOMSlowBioincorporationSyntax ()
+      : DeclareParam (AOM::component, "AOM-SLOW-BIOINCORPORATION", "AOM-SLOW", "\
+Lower C/N ration for bioincorporated matter.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      std::vector<double> CN;
+      CN.push_back (60.0);
+      frame.set ("C_per_N", CN);
+    }
+  } aom_slow_bioincorporation_syntax;
+
+  static DeclareSubmodel
+  bioincorporation_submodel (Bioincorporation::load_syntax,
+                             "Bioincorporation", "\
 Biological incorporation of organic matter in soil.");
+}
 
 // bioincorporation.C ends here.

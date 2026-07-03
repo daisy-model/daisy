@@ -22,6 +22,7 @@
 
 
 #include "daisy/organic_matter/dom.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/organic_matter/doe.h"
 #include "daisy/organic_matter/smb.h"
 #include "daisy/organic_matter/om.h"
@@ -243,5 +244,9 @@ DOM::~DOM ()
   delete &N;
 }
 
-static DeclareSubmodel dom_submodel (DOM::load_syntax, "DOM", "\
+void
+register_dom_models ()
+{
+  static DeclareSubmodel dom_submodel (DOM::load_syntax, "DOM", "\
 A single Dissolved Organic Matter pool.");
+}

@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/organic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/frame_submodel.h"
 #include "object_model/frame_model.h"
 #include "object_model/submodeler.h"
@@ -3113,31 +3114,34 @@ check_alist (const Metalib&, const Frame& al, Treelog& err)
   return ok;
 }
 
-static struct OrganicStandardSyntax : DeclareModel
+void
+register_organic_standard_models ()
 {
-  bool used_to_be_a_submodel () const
-  { return true; }
+  static struct OrganicStandardSyntax : DeclareModel
+  {
+    bool used_to_be_a_submodel () const
+    { return true; }
 
-  Model* make (const BlockModel& al) const
-  { return new OrganicStandard (al); }
+    Model* make (const BlockModel& al) const
+    { return new OrganicStandard (al); }
 
-  OrganicStandardSyntax () 
-    : DeclareModel (OrganicMatter::component, "default", "\
+    OrganicStandardSyntax ()
+      : DeclareModel (OrganicMatter::component, "default", "\
 Mineralization and immobilization in soil.")
-  { }
+    { }
 
-  static void load_layer (Frame& frame)
-  {
-    frame.declare ("end", "cm", Check::negative (), Attribute::Const, "\
+    static void load_layer (Frame& frame)
+    {
+      frame.declare ("end", "cm", Check::negative (), Attribute::Const, "\
 End point of this layer (a negative number).");
-    frame.declare ("weight", "kg C/m^2", Check::positive (), Attribute::Const, "\
+      frame.declare ("weight", "kg C/m^2", Check::positive (), Attribute::Const, "\
 Organic carbon content of this layer.");
-    frame.order ("end", "weight");
-  }
+      frame.order ("end", "weight");
+    }
 
-  void load_frame (Frame& frame) const
-  {
-    Model::load_model (frame);
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
     frame.set_strings ("cite", "daisy-fertilizer", "daisy-somnew");
     frame.add_check (check_alist);
     frame.declare_boolean ("active_underground", Attribute::Const, "\
@@ -3281,40 +3285,41 @@ If 'SOM_fractions' has been specified, the pools will be initialized\n\
 assuming the SMB pools are in equilibrium.  Otherwise, also SOM pools\n\
 expect the first will be assumed to be in equilibrium as well.",
                          OrganicStandard::Initialization::load_syntax);
-  }
-} OrganicStandard_syntax;
+    }
+  } organic_standard_syntax;
 
-static struct Organic2000Syntax : public DeclareParam
-{
-  Organic2000Syntax ()
-    : DeclareParam (OrganicMatter::component, "SOM2000", "default", "\
+  static struct Organic2000Syntax : public DeclareParam
+  {
+    Organic2000Syntax ()
+      : DeclareParam (OrganicMatter::component, "SOM2000", "default", "\
 Using pre Daisy v7 parameterization of SMB-FAST.\n\
 Also, disable respiration for bioincorporation.")
-  { }
-  void load_frame (Frame& frame) const
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST-2000");
+
+      // Overwrite Bioincorporation::respiration.
+      boost::shared_ptr<FrameSubmodel> bio
+        (new FrameSubmodelValue (frame.submodel ("Bioincorporation"),
+                                 Frame::parent_link));
+      bio->set ("respiration", 0.5);
+      frame.set ("Bioincorporation", bio);
+    }
+  } organic_2000_syntax;
+
+  static struct Organic2025 : public DeclareParam
   {
-    frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST-2000");
-
-    // Overwrite Bioincorporation::respiration.
-    boost::shared_ptr<FrameSubmodel> bio
-      (new FrameSubmodelValue (frame.submodel ("Bioincorporation"),
-			       Frame::parent_link));
-    bio->set ("respiration", 0.5);
-    frame.set ("Bioincorporation", bio);
-  }
-} Organic2000_syntax;
-
-static struct Organic2025 : public DeclareParam
-{
-  Organic2025 ()
-    : DeclareParam (OrganicMatter::component, "SOM2025", "default", "\
+    Organic2025 ()
+      : DeclareParam (OrganicMatter::component, "SOM2025", "default", "\
 Using Daisy v7 parameterization of SMB-FAST.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST");
-  }
-} Organic2025_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("smb", "SMB-SLOW", "SMB-FAST");
+    }
+  } organic_2025_syntax;
+}
 
 
 // organic_std.C ends here.

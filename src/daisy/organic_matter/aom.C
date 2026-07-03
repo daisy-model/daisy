@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/aom.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include "object_model/check.h"
@@ -297,63 +298,66 @@ AOM::AOM (const BlockModel& al)
     top_N (al.number ("top_N"))
 { }
 
-static struct AOMInit : public DeclareSolo
+void
+register_aom_models ()
 {
-  bool used_to_be_a_submodel () const
-  { return true; }
-  Model* make (const BlockModel& al) const
-  { return new AOM (al); }
-  void load_frame (Frame& frame) const
+  static struct AOMInit : public DeclareSolo
   {
-    OM::load_syntax (frame, "\
+    bool used_to_be_a_submodel () const
+    { return true; }
+    Model* make (const BlockModel& al) const
+    { return new AOM (al); }
+    void load_frame (Frame& frame) const
+    {
+      OM::load_syntax (frame, "\
 The first numbers corresponds to each of the SMB pools, the next\n\
 number to the SOM buffer, and any remaining numbers to each of\n\
 the DOM pools.  The length of the sequence should thus be the number\n\
 of SMB pools plus 1 plus optionally the number of DOM pools."); 
-    frame.declare_fraction ("initial_fraction", Attribute::OptionalConst, "\
+      frame.declare_fraction ("initial_fraction", Attribute::OptionalConst, "\
 The initial fraction of the total available carbon\n\
 allocated to this pool for AOM.  One pool should be left unspecified.");
-    frame.declare ("top_C", "g C/cm^2", Check::non_negative (), Attribute::State,
+      frame.declare ("top_C", "g C/cm^2", Check::non_negative (), Attribute::State,
                 "Carbon on top of soil.");
-    frame.set ("top_C", 0.0);
-    frame.declare ("top_N", "g N/cm^2", Check::non_negative (), Attribute::State,
+      frame.set ("top_C", 0.0);
+      frame.declare ("top_N", "g N/cm^2", Check::non_negative (), Attribute::State,
                 "Nitrogen on top of soil.");
-    frame.set ("top_N", 0.0);
-  }
-  AOMInit ()
-    : DeclareSolo (AOM::component, "\
+      frame.set ("top_N", 0.0);
+    }
+    AOMInit ()
+      : DeclareSolo (AOM::component, "\
 A single Added Organic Matter pool.")
-  { }
-} AOM_init;
+    { }
+  } aom_init;
 
-static struct AOMSlowSyntax : public DeclareParam
-{
-  AOMSlowSyntax ()
-    : DeclareParam (AOM::component, "AOM-SLOW", root_name (), "\
-Slow AOM pool parameterization by Sander Bruun.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct AOMSlowSyntax : public DeclareParam
   {
-    frame.set_strings ("cite", "daisy-somnew");
-    frame.set ("initial_fraction", 0.80);
-    std::vector<double> CN;
-    CN.push_back (90.0);
-    frame.set ("C_per_N", CN);
-    std::vector<double> efficiency1;
-    efficiency1.push_back (0.50);
-    efficiency1.push_back (0.50);
-    frame.set ("efficiency", efficiency1);
-    Rate::set_rate (frame, "turnover", 2.0e-4);
-    std::vector<double> fractions1;
-    fractions1.push_back (0.00);
-    fractions1.push_back (1.00);
-    fractions1.push_back (0.00);
-    frame.set ("fractions", fractions1);
-  }
-} AOMSlow_syntax;
+    AOMSlowSyntax ()
+      : DeclareParam (AOM::component, "AOM-SLOW", root_name (), "\
+Slow AOM pool parameterization by Sander Bruun.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "daisy-somnew");
+      frame.set ("initial_fraction", 0.80);
+      std::vector<double> CN;
+      CN.push_back (90.0);
+      frame.set ("C_per_N", CN);
+      std::vector<double> efficiency1;
+      efficiency1.push_back (0.50);
+      efficiency1.push_back (0.50);
+      frame.set ("efficiency", efficiency1);
+      Rate::set_rate (frame, "turnover", 2.0e-4);
+      std::vector<double> fractions1;
+      fractions1.push_back (0.00);
+      fractions1.push_back (1.00);
+      fractions1.push_back (0.00);
+      frame.set ("fractions", fractions1);
+    }
+  } aom_slow_syntax;
 
-static struct AOMSlowOldSyntax : public DeclareParam
-{
+  static struct AOMSlowOldSyntax : public DeclareParam
+  {
   AOMSlowOldSyntax ()
     : DeclareParam (AOM::component, "AOM-SLOW-OLD", "AOM-SLOW", "\
 Original parameterization of the slow AOM pool.")
@@ -367,10 +371,10 @@ Original parameterization of the slow AOM pool.")
     fractions1.push_back (0.00);
     frame.set ("fractions", fractions1);
   }
-} AOMSlowOld_syntax;
+  } aom_slow_old_syntax;
 
-static struct AOMFastSyntax : public DeclareParam
-{
+  static struct AOMFastSyntax : public DeclareParam
+  {
   AOMFastSyntax ()
     : DeclareParam (AOM::component, "AOM-FAST", root_name (), "\
 Fast AOM pool parameterization by Sander Bruun.")
@@ -389,10 +393,10 @@ Fast AOM pool parameterization by Sander Bruun.")
     fractions2.push_back (0.00);
     frame.set ("fractions", fractions2);
   }
-} AOMFast_syntax;
+  } aom_fast_syntax;
 
-static struct AOMDirectSyntax : public DeclareParam
-{
+  static struct AOMDirectSyntax : public DeclareParam
+  {
   AOMDirectSyntax ()
     : DeclareParam (AOM::component, "AOM-DIRECT", root_name (), "\
 Third AOM pool of already decomposed material.")
@@ -409,10 +413,10 @@ Third AOM pool of already decomposed material.")
     fractions1.push_back (1.00);
     frame.set ("fractions", fractions1);
   }
-} AOMDirect_syntax;
+  } aom_direct_syntax;
 
-static struct AOMSlowCropSyntax : public DeclareParam
-{
+  static struct AOMSlowCropSyntax : public DeclareParam
+  {
   AOMSlowCropSyntax ()
     : DeclareParam (AOM::component, "CROP-SLOW", "AOM-SLOW", "\
 Parameterization used for slow pool of some crop residuals.")
@@ -424,10 +428,10 @@ Parameterization used for slow pool of some crop residuals.")
     frame.set ("C_per_N", CN);
     Rate::set_rate (frame, "turnover", 2.917E-0004);
   }
-} AOMSlowCrop_syntax;
+  } aom_slow_crop_syntax;
 
-static struct AOMFastCropSyntax : public DeclareParam
-{
+  static struct AOMFastCropSyntax : public DeclareParam
+  {
   AOMFastCropSyntax ()
     : DeclareParam (AOM::component, "CROP-FAST", "AOM-FAST", "\
 Parameterization used for fast pool of some crop residuals.")
@@ -436,6 +440,7 @@ Parameterization used for fast pool of some crop residuals.")
   {
     Rate::set_rate (frame, "turnover", 2.917E-0003);
   }
-} AOMFastCrop_syntax;
+  } aom_fast_crop_syntax;
+}
 
 // aom.C ends here.

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/am.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/organic_matter/aom.h"
 #include "daisy/chemicals/chemical.h"
 #include "object_model/metalib.h"
@@ -1009,18 +1010,21 @@ AM::initialize (const Geometry& geo, const double max_rooting_depth)
 AM::~AM ()
 { }
 
-static struct AMInit : public DeclareComponent 
+void
+register_am_models ()
 {
-  AMInit ()
-    : DeclareComponent (AM::component, "\
+  static struct AMInit : public DeclareComponent
+  {
+    AMInit ()
+      : DeclareComponent (AM::component, "\
 The 'am' component describes various kinds of fertilizer and other\n\
 added matter such as crop residues.  In particular, it describes how\n\
 they decompose.")
-  { }
-} AM_init;
+    { }
+  } am_init;
 
-static struct AMMineralSyntax : public DeclareModel
-{
+  static struct AMMineralSyntax : public DeclareModel
+  {
   Model* make (const BlockModel&) const
   { 
     // We never use this directly, onlu the frame.
@@ -1042,12 +1046,12 @@ The remaining nitrogen is assumed to be nitrate.");
 Fraction of NH4 that evaporates on application.");
     frame.set ("volatilization", 0.0);
   }
-} AMMineral_syntax;
+  } am_mineral_syntax;
 
 // The 'base' AM base model.
 
-static struct AMBaseSyntax : public DeclareBase
-{
+  static struct AMBaseSyntax : public DeclareBase
+  {
   AMBaseSyntax ()
     : DeclareBase (AM::component, "base", "\
 Common attributes for all added organic matter models.")
@@ -1069,7 +1073,7 @@ This AM belongs to a still living plant",
                       Attribute::OptionalState, Attribute::Variable, "\
 The individual AOM pools.");
   }
-} AMBase_syntax;
+  } am_base_syntax;
 
 // The 'state' AM model.
 
@@ -1082,8 +1086,8 @@ struct AMState : public AM
   { }
 };
 
-static struct AMStateSyntax : public DeclareModel
-{
+  static struct AMStateSyntax : public DeclareModel
+  {
   Model* make (const BlockModel& al) const
   { return new AMState (al); }
   AMStateSyntax ()
@@ -1095,7 +1099,7 @@ pools, each of which have their own turnover rate.")
   { }
   void load_frame (Frame&) const
   { }
-} AMState_syntax;
+  } am_state_syntax;
 
 // The 'organic' AM model.
 
@@ -1119,8 +1123,8 @@ struct AMOrganic : public AM
   { }
 };
 
-static struct AMOrganicSyntax : public DeclareModel
-{
+  static struct AMOrganicSyntax : public DeclareModel
+  {
   Model* make (const BlockModel& al) const
   { return new AMOrganic (al); }
   AMOrganicSyntax ()
@@ -1161,7 +1165,7 @@ The remaining nitrogen is assumed to be nitrate or organic.");
 Fraction of NH4 that evaporates on application.");
     frame.set ("volatilization", 0.0);
   }
-} AMOrganic_syntax;
+  } am_organic_syntax;
 
 // The 'initial' AM model.
 
@@ -1229,8 +1233,8 @@ struct AMInitial : public AM
   { }
 };
 
-static struct AMInitialSyntax : public DeclareModel
-{
+  static struct AMInitialSyntax : public DeclareModel
+  {
   Model* make (const BlockModel& al) const
   { return new AMInitial (al); }
   AMInitialSyntax ()
@@ -1276,7 +1280,7 @@ Height where this layer ends (a negative number).");
 Carbon content in different soil layers.  The carbon is assumed to be\n \
 uniformly distributed in each layer.", load_layer);
   }
-} AMInitial_syntax;
+  } am_initial_syntax;
 
 // The 'root' AM model.
 
@@ -1310,8 +1314,8 @@ struct AMRoot : public AM
   { }
 };
 
-static struct AMRootSyntax : public DeclareModel
-{
+  static struct AMRootSyntax : public DeclareModel
+  {
   Model* make (const BlockModel& al) const
   { return new AMRoot (al); }
   AMRootSyntax ()
@@ -1362,7 +1366,7 @@ original.");
     frame.set ("total_N_fraction", 0.01);
     frame.set ("om", AM::default_AM ());
   }
-} AMRoot_syntax;
+  } am_root_syntax;
 
 // The 'AM_table' program model.
 
@@ -1424,8 +1428,8 @@ struct ProgramAM_table : public Program
   { }
 };
 
-static struct ProgramAM_tableSyntax : DeclareModel
-{
+  static struct ProgramAM_tableSyntax : DeclareModel
+  {
   Model* make (const BlockModel& al) const
   { return new ProgramAM_table (al); }
   ProgramAM_tableSyntax ()
@@ -1434,6 +1438,7 @@ Generate a table of fertilizers.")
   { }
   void load_frame (Frame& frame) const
   { }
-} ProgramAM_table_syntax;
+  } program_am_table_syntax;
+}
 
 // am.C ends here.

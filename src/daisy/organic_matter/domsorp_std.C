@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/domsorp.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/chemicals/transform.h"
 #include "daisy/organic_matter/dom.h"
@@ -129,16 +130,19 @@ struct DomsorpStandard : public Domsorp
   { }
 };
 
-static struct DomsorpStandardSyntax : public DeclareModel
+void
+register_domsorp_standard_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new DomsorpStandard (al); }
-  DomsorpStandardSyntax ()
-    : DeclareModel (Domsorp::component, "default", 
-                    "Transformation between two soil chemicals.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct DomsorpStandardSyntax : public DeclareModel
   {
+    Model* make (const BlockModel& al) const
+    { return new DomsorpStandard (al); }
+    DomsorpStandardSyntax ()
+      : DeclareModel (Domsorp::component, "default",
+                      "Transformation between two soil chemicals.")
+    { }
+    void load_frame (Frame& frame) const
+    {
     frame.declare_object ("transform", Transform::component,
                           "Tranformation process between DOM and SOM.");
     frame.declare_integer ("dom_pool", Attribute::Const,
@@ -150,5 +154,6 @@ static struct DomsorpStandardSyntax : public DeclareModel
     frame.declare ("S_N", "g N/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
                    "Carbon converted from DOM to SOM (may be negative).");
 
-  }
-} DomsorpStandard_syntax;
+    }
+  } domsorp_standard_syntax;
+}

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/clayom.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "daisy/organic_matter/smb.h"
@@ -89,17 +90,20 @@ ClayOMOld::ClayOMOld (const BlockModel& al)
 ClayOMOld::~ClayOMOld ()
 { }
 
-static struct ClayOMOldSyntax : public DeclareModel
+void
+register_clay_om_old_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ClayOMOld (al); }
-
-  ClayOMOldSyntax ()
-    : DeclareModel (ClayOM::component, "old", 
-	       "Traditional clay influence on organic matter.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ClayOMOldSyntax : public DeclareModel
   {
+    Model* make (const BlockModel& al) const
+    { return new ClayOMOld (al); }
+
+    ClayOMOldSyntax ()
+      : DeclareModel (ClayOM::component, "old",
+                      "Traditional clay influence on organic matter.")
+    { }
+    void load_frame (Frame& frame) const
+    {
 
     frame.declare ("factor", Attribute::Fraction (), Attribute::None (),
 		Attribute::Const, "\
@@ -111,7 +115,8 @@ of SMB1 and all SOM pools.");
     factor.add (1.00, 0.5);
     frame.set ("factor", factor);
 
-  }
-} ClayOMOld_syntax;
+    }
+  } clay_om_old_syntax;
+}
 
 // clayom_old.C ends here.

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/doe.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/log.h"
 #include "daisy/soil/transport/geometry.h"
 #include "object_model/librarian.h"
@@ -133,8 +134,12 @@ DOE::DOE (const FrameSubmodel& al)
 DOE::~DOE ()
 { }
 
-static DeclareSubmodel 
-dom_element_submodel (DOE::load_syntax, "DOM-Element", "\
+void
+register_doe_models ()
+{
+  static DeclareSubmodel
+  dom_element_submodel (DOE::load_syntax, "DOM-Element", "\
 A single element in a Dissolved Organic Matter pool.");
+}
 
 // doe.C ends here

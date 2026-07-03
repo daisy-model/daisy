@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/organic_matter/som.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
@@ -39,26 +40,29 @@ SOM::SOM (const BlockModel& al)
   : OM (al)
 { }
 
-static struct SOMInit : public DeclareSolo
+void
+register_som_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SOM (al); }
-  void load_frame (Frame& frame) const
+  static struct SOMInit : public DeclareSolo
   {
-    OM::load_syntax (frame, "\
+    Model* make (const BlockModel& al) const
+    { return new SOM (al); }
+    void load_frame (Frame& frame) const
+    {
+      OM::load_syntax (frame, "\
 The first numbers corresponds to each of the SMB pools, the next\n\
 numbers corresponds to the SOM pools, and the last numbers to each of\n\
 the DOM pools.  The length of the sequence should thus be the number\n\
 of SMB pools plus the number of SOM pools plus the number of DOM pools."); 
-  }
-  SOMInit ()
-    : DeclareSolo (SOM::component, "\
+    }
+    SOMInit ()
+      : DeclareSolo (SOM::component, "\
 A single Soil Organic Matter pool.")
-  { }
-} SOM_init;
+    { }
+  } som_init;
 
-static struct SOMSlowSyntax : public DeclareParam
-{
+  static struct SOMSlowSyntax : public DeclareParam
+  {
   SOMSlowSyntax ()
     : DeclareParam (SOM::component, "SOM-SLOW", root_name (), "\
 Slow SOM pool parameterization by Sander Bruun.")
@@ -79,10 +83,10 @@ Slow SOM pool parameterization by Sander Bruun.")
     fractions.push_back (0.0); // SOM3
     frame.set ("fractions", fractions);
   }
-} SOMSlow_syntax;
+  } som_slow_syntax;
 
-static struct SOMSlowOldSyntax : public DeclareParam
-{
+  static struct SOMSlowOldSyntax : public DeclareParam
+  {
   SOMSlowOldSyntax ()
     : DeclareParam (SOM::component, "SOM-SLOW-OLD", "SOM-SLOW", "\
 Original parameterization of the slow SOM pool.")
@@ -92,10 +96,10 @@ Original parameterization of the slow SOM pool.")
     frame.set_strings ("cite", "mueller-smb");
     Rate::set_rate (frame, "turnover", 2.7e-6 / 24.0 /* 1.125e-7 */);
   }
-} SOMSlowOld_syntax;
+  } som_slow_old_syntax;
 
-static struct SOMFastSyntax : public DeclareParam
-{
+  static struct SOMFastSyntax : public DeclareParam
+  {
   SOMFastSyntax ()
     : DeclareParam (SOM::component, "SOM-FAST", root_name (), "\
 Fast SOM pool parameterization by Sander Bruun.")
@@ -116,10 +120,10 @@ Fast SOM pool parameterization by Sander Bruun.")
     fractions.push_back (0.0); // SOM3
     frame.set ("fractions", fractions);
   }
-} SOMFast_syntax;
+  } som_fast_syntax;
 
-static struct SOMFastOldSyntax : public DeclareParam
-{
+  static struct SOMFastOldSyntax : public DeclareParam
+  {
   SOMFastOldSyntax ()
     : DeclareParam (SOM::component, "SOM-FAST-OLD", "SOM-FAST", "\
 Original parameterization of the fast SOM pool.")
@@ -135,10 +139,10 @@ Original parameterization of the fast SOM pool.")
     fractions.push_back (0.0); // SOM3
     frame.set ("fractions", fractions);
   }
-} SOMFastOld_syntax;
+  } som_fast_old_syntax;
 
-static struct SOMInertSyntax : public DeclareParam
-{
+  static struct SOMInertSyntax : public DeclareParam
+  {
   SOMInertSyntax ()
     : DeclareParam (SOM::component, "SOM-INERT", root_name (), "\
 Inert SOM pool parameterization.")
@@ -158,6 +162,7 @@ Inert SOM pool parameterization.")
     fractions.push_back (1.0); // SOM3
     frame.set ("fractions", fractions);
   }
-} SOMInert_syntax;
+  } som_inert_syntax;
+}
 
 // som.C ends here.
