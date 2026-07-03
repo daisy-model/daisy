@@ -295,58 +295,62 @@ struct ReactionEquilibrium : public Reaction
 const symbol
 ReactionEquilibrium::k_unit ("h^-1");
 
-static struct ReactionEquilibriumSyntax : public DeclareModel
+void
+register_reaction_equil_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionEquilibrium (al); }
-  ReactionEquilibriumSyntax ()
-    : DeclareModel (Reaction::component, "equilibrium", 
-                    "Equilibrium between two soil chemicals.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionEquilibriumSyntax : public DeclareModel
   {
+    Model* make (const BlockModel& al) const
+    { return new ReactionEquilibrium (al); }
+    ReactionEquilibriumSyntax ()
+      : DeclareModel (Reaction::component, "equilibrium", 
+                      "Equilibrium between two soil chemicals.")
+    { }
+    void load_frame (Frame& frame) const
+    {
 
-    frame.declare_string ("A", Attribute::Const,
-                   "Name of first soil component in equilibrium.");
-    frame.declare_string ("B", Attribute::Const,
-                   "Name of second soil component in equilibrium.");
-    frame.declare_object ("equilibrium", Equilibrium::component,
-                          "Function for calculating equilibrium between A and B.");
-    frame.declare_object ("k_AB", Number::component,
-                          Attribute::Const, Attribute::Singleton, 
-                          "Tranformation rate from soil component 'A' to 'B'.");
-    frame.declare_object ("k_BA", Number::component,
-                          Attribute::OptionalConst, Attribute::Singleton,
-                          "Tranformation rate from soil component 'B' to 'A'.\n\
+      frame.declare_string ("A", Attribute::Const,
+                     "Name of first soil component in equilibrium.");
+      frame.declare_string ("B", Attribute::Const,
+                     "Name of second soil component in equilibrium.");
+      frame.declare_object ("equilibrium", Equilibrium::component,
+                            "Function for calculating equilibrium between A and B.");
+      frame.declare_object ("k_AB", Number::component,
+                            Attribute::Const, Attribute::Singleton, 
+                            "Tranformation rate from soil component 'A' to 'B'.");
+      frame.declare_object ("k_BA", Number::component,
+                            Attribute::OptionalConst, Attribute::Singleton,
+                            "Tranformation rate from soil component 'B' to 'A'.\n\
 By default, this is identical to 'k_AB'.");
-    frame.declare ("surface_AB", "g/cm^2/h", Attribute::LogOnly, "\
+      frame.declare ("surface_AB", "g/cm^2/h", Attribute::LogOnly, "\
 Converted from A to B on surface this timestep (may be negative).");
-    frame.declare ("S_AB", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, "\
+      frame.declare ("S_AB", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, "\
 Converted from A to B in soil this timestep (may be negative).");
-    frame.declare_string ("colloid", Attribute::OptionalConst,
-                   "Let 'rho_b' denote content of specified chemical.\n\
+      frame.declare_string ("colloid", Attribute::OptionalConst,
+                     "Let 'rho_b' denote content of specified chemical.\n\
 This might affect the evaluation of the 'k_AB' and 'k_BA' parameter\n\
 expressions, as well as the 'equilibrium' model.\n\
 By default, 'rho_b' will be the soil dry bulk density.");
-    frame.declare_boolean ("primary", Attribute::OptionalConst,
-                   "Equilibrium should happen in the primary domain.\n\
+      frame.declare_boolean ("primary", Attribute::OptionalConst,
+                     "Equilibrium should happen in the primary domain.\n\
 If true, the content of the primary soil domain (soil-bound and\n\
 intra-aggregate pores), will be included in the reaction.\n\
 By default, this will be true if 'secondary' is false, and be false if\n\
 'secondary' is true.");
-    frame.declare_boolean ("secondary", Attribute::Const,
-                   "Equilibrium should happen in the secondary domain.\n\
+      frame.declare_boolean ("secondary", Attribute::Const,
+                     "Equilibrium should happen in the secondary domain.\n\
 There will only be a reaction when there is water in the secondary domain\n\
 (inter-aggregate pores), at both the beginning and end of the timestep.\n\
 By default, only the content of the primary domain (soil-bound and\n\
 intra-aggregate pores), will be included in the reaction.\n\
 There is no way to use this model to specify an equilibrium reaction in\n\
 the tertiary domain (biopores).");
-    frame.set ("secondary", false);
-    frame.declare_boolean ("surface", Attribute::Const,
-                   "Equilibrium should happen in the surface.");
-    frame.set ("surface", false);
-  }
-} ReactionEquilibrium_syntax;
+      frame.set ("secondary", false);
+      frame.declare_boolean ("surface", Attribute::Const,
+                     "Equilibrium should happen in the surface.");
+      frame.set ("surface", false);
+    }
+  } ReactionEquilibrium_syntax;
+}
 
 // reaction_equil.C ends here.

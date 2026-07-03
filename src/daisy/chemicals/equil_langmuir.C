@@ -118,22 +118,26 @@ EquilibriumLangmuir::check (const Units& units,
   return ok;
 }
 
-static struct EquilibriumLangmuirSyntax : public DeclareModel
+void
+register_equil_langmuir_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new EquilibriumLangmuir (al); }
-
-  EquilibriumLangmuirSyntax ()
-    : DeclareModel (Equilibrium::component,
-			 "Langmuir", "A = (my_max B) / (K + B)")
-  { }
-  void load_frame (Frame& frame) const
+  static struct EquilibriumLangmuirSyntax : public DeclareModel
   {
-    frame.declare_object ("K", Number::component, 
-                       Attribute::Const, Attribute::Singleton,
-                       "Half saturation constant [g/cm^3].");
-    frame.declare_object ("my_max", Number::component, 
-                       Attribute::Const, Attribute::Singleton,
-                       "Max equilibrium capacity [g/cm^3].");
-  }
-} EquilibriumLangmuir_syntax;
+    Model* make (const BlockModel& al) const
+    { return new EquilibriumLangmuir (al); }
+
+    EquilibriumLangmuirSyntax ()
+      : DeclareModel (Equilibrium::component,
+  			 "Langmuir", "A = (my_max B) / (K + B)")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("K", Number::component, 
+                         Attribute::Const, Attribute::Singleton,
+                         "Half saturation constant [g/cm^3].");
+      frame.declare_object ("my_max", Number::component, 
+                         Attribute::Const, Attribute::Singleton,
+                         "Max equilibrium capacity [g/cm^3].");
+    }
+  } EquilibriumLangmuir_syntax;
+}

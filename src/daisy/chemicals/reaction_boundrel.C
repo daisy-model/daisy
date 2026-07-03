@@ -69,7 +69,6 @@ struct ReactionBoundrel : public Reaction
       chemistry.find (bound).add_to_surface_transform_source (release);
   }
 
-
   // Create.
   bool check (const Geometry&, 
               const Soil&, const SoilWater&, const SoilHeat&,
@@ -107,12 +106,15 @@ struct ReactionBoundrel : public Reaction
   { }
 };
 
-static struct ReactionBoundrelSyntax : public DeclareModel
+void
+register_reaction_boundrel_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionBoundrel (al); }
-  ReactionBoundrelSyntax ()
-    : DeclareModel (Reaction::component, "bound_release", "\
+  static struct ReactionBoundrelSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ReactionBoundrel (al); }
+    ReactionBoundrelSyntax ()
+      : DeclareModel (Reaction::component, "bound_release", "\
 Release of chemicals bound to colloids from surface soil.\n\
 \n\
 This follows the generation of colloids on the surface.  The colloid\n\
@@ -124,25 +126,24 @@ chemical on the surface is released in the colloid bound form.\n\
 \n\
 This reaction must be listed after the colloid generation reaction in\n\
 the setup file.")
-  { }
-  void load_frame (Frame& frame) const
-  {
+    { }
+    void load_frame (Frame& frame) const
+    {
 
 
-    frame.declare_string ("immobile", Attribute::Const,
-                   "Immobile (or mixed form) chemical in the soil surface.");
-    frame.declare_string ("bound", Attribute::OptionalConst,
-                   "Chemical bound to colloids.\n\
+      frame.declare_string ("immobile", Attribute::Const,
+                     "Immobile (or mixed form) chemical in the soil surface.");
+      frame.declare_string ("bound", Attribute::OptionalConst,
+                     "Chemical bound to colloids.\n\
 If unspecified, the colloid bound form will not be traced.");
-    frame.declare_string ("colloid", Attribute::OptionalConst,
-                   "Name of colloid whose release we mimic.");
-    frame.set ("colloid", "colloid");
-    frame.declare ("release", "g/cm^2/h", Attribute::LogOnly,
-                   "Release rate of immobile chemical as colloids.");
-  }
-  
-} ReactionBoundrel_syntax;
+      frame.declare_string ("colloid", Attribute::OptionalConst,
+                     "Name of colloid whose release we mimic.");
+      frame.set ("colloid", "colloid");
+      frame.declare ("release", "g/cm^2/h", Attribute::LogOnly,
+                     "Release rate of immobile chemical as colloids.");
+    }
+    
+  } ReactionBoundrel_syntax;
+}
 
 // reaction_boundrel.C ends here.
-
-

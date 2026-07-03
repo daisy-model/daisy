@@ -158,24 +158,28 @@ TransformEquilibrium::initialize (const Units& units,
   k_BA_expr->initialize (units, scope, msg); 
 }
 
-static struct TransformEquilibriumSyntax : public DeclareModel
+void
+register_transform_equil_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new TransformEquilibrium (al); }
-  TransformEquilibriumSyntax ()
-    : DeclareModel (Transform::component, "equilibrium", 
-	       "Two soil components reching for equilibrium.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct TransformEquilibriumSyntax : public DeclareModel
   {
-    frame.declare_object ("equilibrium", Equilibrium::component,
-                       "Function for calculating equilibrium between A and B.");
-    frame.declare_object ("k_AB", Number::component,
-                       Attribute::Const, Attribute::Singleton, "\
+    Model* make (const BlockModel& al) const
+    { return new TransformEquilibrium (al); }
+    TransformEquilibriumSyntax ()
+      : DeclareModel (Transform::component, "equilibrium", 
+  	       "Two soil components reching for equilibrium.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("equilibrium", Equilibrium::component,
+                         "Function for calculating equilibrium between A and B.");
+      frame.declare_object ("k_AB", Number::component,
+                         Attribute::Const, Attribute::Singleton, "\
 Tranformation rate from soil component 'A' to 'B' [h^-1].");
-    frame.declare_object ("k_BA", Number::component,
-                       Attribute::OptionalConst, Attribute::Singleton, "\
+      frame.declare_object ("k_BA", Number::component,
+                         Attribute::OptionalConst, Attribute::Singleton, "\
 Tranformation rate from soil component 'B' to 'A' [h^-1].\n\
 By default, this is identical to 'k_AB'.");
-  }
-} TransformEquilibrium_syntax;
+    }
+  } TransformEquilibrium_syntax;
+}

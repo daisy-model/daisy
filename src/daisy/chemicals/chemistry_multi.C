@@ -448,7 +448,6 @@ ChemistryMulti::suggest_dt () const
   return dt;
 }
 
-
 void 
 ChemistryMulti::tick_top (const Geometry& geo, 
                           const Soil& soil, const SoilWater& soil_water, 
@@ -588,46 +587,49 @@ ChemistryMulti::ChemistryMulti (const BlockModel& al)
     chemicals (find_chemicals (combine))
 { }
 
-static struct ChemistryMultiSyntax : public DeclareModel
+void
+register_chemistry_multi_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ChemistryMulti (al); }
-  ChemistryMultiSyntax ()
-    : DeclareModel (Chemistry::component, "multi", "Handle multile chemistries.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ChemistryMultiSyntax : public DeclareModel
   {
+    Model* make (const BlockModel& al) const
+    { return new ChemistryMulti (al); }
+    ChemistryMultiSyntax ()
+      : DeclareModel (Chemistry::component, "multi", "Handle multile chemistries.")
+    { }
+    void load_frame (Frame& frame) const
+    {
 
-    frame.declare_object ("combine", Chemistry::component, 
-                          Attribute::State, Attribute::Variable, "\
+      frame.declare_object ("combine", Chemistry::component, 
+                            Attribute::State, Attribute::Variable, "\
 List of chemistry parameterizations you want to combine.");
-    frame.declare_string ("ignore", Attribute::State, Attribute::Variable,
-                          "Don't warn when spraying one of these chemicals.\n\
+      frame.declare_string ("ignore", Attribute::State, Attribute::Variable,
+                            "Don't warn when spraying one of these chemicals.\n\
 The first time an untraced chemical not on the list is sprayed on the\n\
 field, Daisy will issue a warning and add the chemical to this list.");
-    frame.set_check ("ignore", VCheck::unique ());
-    frame.set_empty ("ignore");
-    frame.declare_object ("trace", Chemical::component, 
-                          Attribute::LogOnly, Attribute::Variable, "\
+      frame.set_check ("ignore", VCheck::unique ());
+      frame.set_empty ("ignore");
+      frame.declare_object ("trace", Chemical::component, 
+                            Attribute::LogOnly, Attribute::Variable, "\
 List of chemicals in nested chemistries.");
-    frame.declare ("max_sink_total", Attribute::None (), Check::positive (), 
-                   Attribute::Const, "\
+      frame.declare ("max_sink_total", Attribute::None (), Check::positive (), 
+                     Attribute::Const, "\
 Maximum allowed sink term as a fraction of total content.\n\
 \n\
 If variable timesteps are enabled, Daisy will try to scale down the\n\
 timestep in order to ensure that no more than this fraction of the\n\
 total content is removed by drains or biopores within the timestep.");
-    frame.set ("max_sink_total", 0.5);
-    frame.declare ("max_sink_solute", Attribute::None (), Check::positive (), 
-                   Attribute::Const, "\
+      frame.set ("max_sink_total", 0.5);
+      frame.declare ("max_sink_solute", Attribute::None (), Check::positive (), 
+                     Attribute::Const, "\
 Maximum allowed sink term as a fraction of solute content.\n\
 \n\
 If variable timesteps are enabled, Daisy will try to scale down the\n\
 timestep in order to ensure that no more than this fraction of the\n\
 solute content is removed by drains or biopores within the timestep.");
-    frame.set ("max_sink_solute", 0.9);
-    frame.declare ("max_sink_secondary", Attribute::None (), Check::positive (), 
-                   Attribute::Const, "\
+      frame.set ("max_sink_solute", 0.9);
+      frame.declare ("max_sink_secondary", Attribute::None (), Check::positive (), 
+                     Attribute::Const, "\
 Maximum allowed sink term as a fraction of secondary domain content.\n\
 \n                                                                    \
 If variable timesteps are enabled, Daisy will try to scale down the\n\
@@ -635,35 +637,36 @@ timestep in order to ensure that no more than this fraction of the\n\
 secondary domain content is removed by drains or biopores within the\n\
 timestep.  This should usually be above 1 to allow for the case where\n\
 the secondary domain is emptied within a timestep.");
-    frame.set ("max_sink_secondary", 1.5);
-    
-    frame.declare ("min_sink_total", Attribute::None (), Check::positive (), 
-                   Attribute::Const, "\n\
+      frame.set ("max_sink_secondary", 1.5);
+      
+      frame.declare ("min_sink_total", Attribute::None (), Check::positive (), 
+                     Attribute::Const, "\n\
 Always allow this fraction of total content to be removed by sink term.\n\
 \n\
 This overwrites all the 'max_sink' parameters.");
-    frame.set ("min_sink_total", 0.01);
-  }
-} ChemistryMulti_syntax;
+      frame.set ("min_sink_total", 0.01);
+    }
+  } ChemistryMulti_syntax;
 
-static struct ChemistryNutrientSyntax : public DeclareParam
-{ 
-  ChemistryNutrientSyntax ()
-    : DeclareParam (Chemistry::component, "nutrient", "multi", "\
+  static struct ChemistryNutrientSyntax : public DeclareParam
+  { 
+    ChemistryNutrientSyntax ()
+      : DeclareParam (Chemistry::component, "nutrient", "multi", "\
 Include 'N' chemistry so organic matter and plants will work.")
-  { }
-  void load_frame (Frame& frame) const
-  { frame.set_strings ("combine", "N"); }
-} ChemistryNutrient_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { frame.set_strings ("combine", "N"); }
+  } ChemistryNutrient_syntax;
 
-static struct ChemistryNoneSyntax : public DeclareParam
-{ 
-  ChemistryNoneSyntax ()
-    : DeclareParam (Chemistry::component, "none", "multi", "\
+  static struct ChemistryNoneSyntax : public DeclareParam
+  { 
+    ChemistryNoneSyntax ()
+      : DeclareParam (Chemistry::component, "none", "multi", "\
 No active chemistries.")
-  { }
-  void load_frame (Frame& frame) const
-  { frame.set_empty ("combine"); }
-} ChemistryNone_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { frame.set_empty ("combine"); }
+  } ChemistryNone_syntax;
+}
 
 // chemistry_multi.C ends here

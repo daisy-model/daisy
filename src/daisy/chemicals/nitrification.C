@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/nitrification.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "daisy/soil/soil.h"
@@ -71,18 +72,24 @@ Nitrification::Nitrification (const Frame& al)
 Nitrification::~Nitrification ()
 { }
 
-static struct NitrificationInit : public DeclareComponent 
+void
+register_nitrification_models ()
 {
-  NitrificationInit ()
-    : DeclareComponent (Nitrification::component, "\
+  static struct NitrificationInit : public DeclareComponent 
+  {
+    NitrificationInit ()
+      : DeclareComponent (Nitrification::component, "\
 The nitrification process, transforming ammonium into nitrate and\n\
 nitrous oxide.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_fraction ("N2O_fraction", Attribute::Const, 
-                        "Fraction of ammonium lost as N2O.");
-    frame.set ("N2O_fraction", 0.02);
-  }
-} Nitrification_init;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_fraction ("N2O_fraction", Attribute::Const, 
+                          "Fraction of ammonium lost as N2O.");
+      frame.set ("N2O_fraction", 0.02);
+    }
+  } Nitrification_init;
 
+  register_nitrification_soil_models ();
+  register_nitrification_solute_models ();
+}

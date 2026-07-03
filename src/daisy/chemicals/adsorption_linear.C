@@ -80,54 +80,58 @@ public:
   { }
 };
 
-static struct AdsorptionLinearSyntax : DeclareModel
+void
+register_adsorption_linear_models ()
 {
-  Model* make (const BlockModel& al) const
+  static struct AdsorptionLinearSyntax : DeclareModel
   {
-    return new AdsorptionLinear (al);
-  }
+    Model* make (const BlockModel& al) const
+    {
+      return new AdsorptionLinear (al);
+    }
 
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
-  {
-    bool ok = true;
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
 
-    const bool has_K_d = al.check ("K_d");
-    const bool has_K_clay = al.check ("K_clay");
-    const bool has_K_OC = al.check ("K_OC");
-      
-    if (!has_K_d && !has_K_clay && !has_K_OC)
-      {
-	err.entry ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
-	ok = false;
-      }
-    return ok;
-  }
-  AdsorptionLinearSyntax ()
-    : DeclareModel (Adsorption::component, "linear", "M = rho K C + Theta C")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.add_check (check_alist);
-    frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
-		Attribute::OptionalConst, 
-		"Soil dependent distribution parameter.\n\
+      const bool has_K_d = al.check ("K_d");
+      const bool has_K_clay = al.check ("K_clay");
+      const bool has_K_OC = al.check ("K_OC");
+        
+      if (!has_K_d && !has_K_clay && !has_K_OC)
+        {
+  	err.entry ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
+  	ok = false;
+        }
+      return ok;
+    }
+    AdsorptionLinearSyntax ()
+      : DeclareModel (Adsorption::component, "linear", "M = rho K C + Theta C")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
+  		Attribute::OptionalConst, 
+  		"Soil dependent distribution parameter.\n\
 By default, it will be calculated from 'K_OC' and 'K_clay'.");
-    frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
-		Attribute::OptionalConst, 
-		"Clay dependent distribution parameter.\n\
+      frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
+  		Attribute::OptionalConst, 
+  		"Clay dependent distribution parameter.\n\
 It is multiplied with the soil clay fraction to get the clay part of\n\
 the 'K_d' factor.  If 'K_OC' is specified, 'K_clay' defaults to 0.");
-    frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
-		Attribute::OptionalConst, 
-		"Humus dependent distribution parameter.\n\
+      frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
+  		Attribute::OptionalConst, 
+  		"Humus dependent distribution parameter.\n\
 It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of the 'K_d' factor.  By default, 'K_OC' is equal to 'K_clay'.");
-    frame.declare ("K_AWI", "cm^3/cm^2", Check::non_negative (), 
-		Attribute::Const, 
-		"Sorption to air-water interface.");
-    frame.set ("K_AWI", 0.0);
+      frame.declare ("K_AWI", "cm^3/cm^2", Check::non_negative (), 
+  		Attribute::Const, 
+  		"Sorption to air-water interface.");
+      frame.set ("K_AWI", 0.0);
 
-  }
-} AdsorptionLinear_syntax;
+    }
+  } AdsorptionLinear_syntax;
+}
 
 // adsorption_linear.C ends here.

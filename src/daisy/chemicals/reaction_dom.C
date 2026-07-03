@@ -289,74 +289,78 @@ ReactionDOM::ReactionDOM (const BlockModel& al)
     C_per_N_goal (al.number ("C_per_N_goal"))
 { }
 
-static struct ReactionDOMSyntax : public DeclareModel
+void
+register_reaction_dom_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionDOM (al); }
-  ReactionDOMSyntax ()
-    : DeclareModel (Reaction::component, "DOM_turnover", "\
-Turnover of dissolved organic matter.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionDOMSyntax : public DeclareModel
   {
-    frame.set_strings ("cite", "garnier2003modelling");
-    frame.declare_string ("DOC_name", Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new ReactionDOM (al); }
+    ReactionDOMSyntax ()
+      : DeclareModel (Reaction::component, "DOM_turnover", "\
+Turnover of dissolved organic matter.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "garnier2003modelling");
+      frame.declare_string ("DOC_name", Attribute::Const, "\
 Name of compound representing dissolved organic carbon.");
-    frame.set ("DOC_name", Chemical::DOC ());
-    frame.declare_string ("DON_name", Attribute::Const, "\
+      frame.set ("DOC_name", Chemical::DOC ());
+      frame.declare_string ("DON_name", Attribute::Const, "\
 Name of compound representing dissolved organic nitrogen.");
-    frame.set ("DON_name", Chemical::DON ());
-    Rate::declare (frame, "turnover", "Turnover of DOM.\n\
+      frame.set ("DON_name", Chemical::DON ());
+      Rate::declare (frame, "turnover", "Turnover of DOM.\n\
 Garnier et al. (2003) table 1 (T=15 degC) 1.49*10/15) = 0.99  [d^-1]");
-    Rate::set_rate (frame, "turnover", 0.04125 /* [h^-1] */);
-    Rate::declare (frame, "max_N_depletion", "Max depeletion of N.");
-    Rate::set_rate (frame, "max_N_depletion", 0.1 /* [h^-1] */);
-    frame.declare_integer ("where", Attribute::Const, "\
+      Rate::set_rate (frame, "turnover", 0.04125 /* [h^-1] */);
+      Rate::declare (frame, "max_N_depletion", "Max depeletion of N.");
+      Rate::set_rate (frame, "max_N_depletion", 0.1 /* [h^-1] */);
+      frame.declare_integer ("where", Attribute::Const, "\
 Target for DOM turnover.\n\
 Should be a number between 0 and the number of SMB pools.\n\
 0 means the SMB1, 1 means SMB2.\n\
 If there are 2 SMB pools, 2 will mean soil buffer.");
-    frame.set ("where", 1);
-    frame.declare_fraction ("efficiency", Attribute::Const, "\
+      frame.set ("where", 1);
+      frame.declare_fraction ("efficiency", Attribute::Const, "\
 Fraction of carbon not lost as CO2 during turnover.");
-  frame.set_cited ("efficiency", 0.62, "Table 1", "garnier2003modelling");
-    frame.declare ("C_per_N_goal", "g C/g N", Check::non_negative (),
-		   Attribute::Const, "\
+    frame.set_cited ("efficiency", 0.62, "Table 1", "garnier2003modelling");
+      frame.declare ("C_per_N_goal", "g C/g N", Check::non_negative (),
+  		   Attribute::Const, "\
 Target C/N for DOM turnover.\n\
 If non-negative, mineral N will be added or removed to achieve the goal.");
-  frame.set_cited ("C_per_N_goal", 10.0, "Table 2", "garnier2003modelling");
+    frame.set_cited ("C_per_N_goal", 10.0, "Table 2", "garnier2003modelling");
 
-    frame.declare ("NH4", "g N/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of ammonium generated.");
-    frame.declare ("NO3", "g N/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of nitrate generated.");
-    frame.declare ("CO2", "g C/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of carbon dioxide generated.");
-    frame.declare ("DOC", "g C/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of dissolved organic C consumed.");
-    frame.declare ("DON", "g N/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of dissolved organic N consumed.");
-    frame.declare ("SOC", "g C/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of dissolved organic C immobilized.");
-    frame.declare ("SON", "g N/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Rate of dissolved organic N immobilized.");
-    frame.declare ("h_factor", Attribute::None (),
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Soil water potential effect on turnover rate.");
-    frame.declare ("T_factor", Attribute::None (),
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Soil temperature effect on turnover rate.");
-    frame.declare ("N_factor", Attribute::None (),
-		   Attribute::LogOnly, Attribute::SoilCells, 
-		   "Soil nitrogen effect on turnover rate.");
-  }
-} ReactionDOM_syntax;
+      frame.declare ("NH4", "g N/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of ammonium generated.");
+      frame.declare ("NO3", "g N/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of nitrate generated.");
+      frame.declare ("CO2", "g C/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of carbon dioxide generated.");
+      frame.declare ("DOC", "g C/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of dissolved organic C consumed.");
+      frame.declare ("DON", "g N/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of dissolved organic N consumed.");
+      frame.declare ("SOC", "g C/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of dissolved organic C immobilized.");
+      frame.declare ("SON", "g N/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Rate of dissolved organic N immobilized.");
+      frame.declare ("h_factor", Attribute::None (),
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Soil water potential effect on turnover rate.");
+      frame.declare ("T_factor", Attribute::None (),
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Soil temperature effect on turnover rate.");
+      frame.declare ("N_factor", Attribute::None (),
+  		   Attribute::LogOnly, Attribute::SoilCells, 
+  		   "Soil nitrogen effect on turnover rate.");
+    }
+  } ReactionDOM_syntax;
+}
 
 // reaction_dom.C ends here.

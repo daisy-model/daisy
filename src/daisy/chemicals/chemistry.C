@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/chemistry.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/chemicals/im.h"
 #include "daisy/chemicals/chemical.h"
 #include "object_model/treelog.h"
@@ -113,14 +114,31 @@ Chemistry::Chemistry (const BlockModel& al)
 Chemistry::~Chemistry ()
 { }
 
-static struct ChemistryInit : public DeclareComponent 
+void
+register_chemistry_models ()
 {
-  ChemistryInit ()
-    : DeclareComponent (Chemistry::component, "\
+  static struct ChemistryInit : public DeclareComponent 
+  {
+    ChemistryInit ()
+      : DeclareComponent (Chemistry::component, "\
 Pesticides and other chemicals.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Chemistry_init;
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Chemistry_init;
+
+  register_awi_models ();
+  register_ponddamp_models ();
+  register_rainergy_models ();
+  register_denprod_models ();
+  register_nitrification_models ();
+  register_equilibrium_models ();
+  register_transform_models ();
+  register_adsorption_models ();
+  register_reaction_models ();
+  register_chemical_models ();
+  register_chemistry_standard_models ();
+  register_chemistry_multi_models ();
+}
 
 // chemistry.C ends here.

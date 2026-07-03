@@ -265,7 +265,6 @@ ReactionStyczen88::output (Log& log) const
   output_variable (MR, log); 
 }
 
-
 void 
 ReactionStyczen88::initialize (const Geometry& geo, 
 			       const Soil& soil,
@@ -285,32 +284,36 @@ ReactionStyczen88::ReactionStyczen88 (const BlockModel& al)
     MR (-42.42e42)
 { }
 
-static struct ReactionStyczen88Syntax : public DeclareModel
+void
+register_reaction_styczen88_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionStyczen88 (al); }
-  ReactionStyczen88Syntax ()
-    : DeclareModel (Reaction::component, "colgen_Styczen88", "colgen", "\
-Colloid generation using rainfall momentum.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionStyczen88Syntax : public DeclareModel
   {
-    frame.set_strings ("cite", "styczen88");
+    Model* make (const BlockModel& al) const
+    { return new ReactionStyczen88 (al); }
+    ReactionStyczen88Syntax ()
+      : DeclareModel (Reaction::component, "colgen_Styczen88", "colgen", "\
+Colloid generation using rainfall momentum.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "styczen88");
 
-    frame.declare ("Ae", "h^2/g/cm^2", Check::positive (), Attribute::Const, 
-               "Soil resistance factor.");
-    frame.declare ("MA", Attribute::Fraction (), Attribute::OptionalConst, 
-               "Protective cover (mulch factor).\n\
+      frame.declare ("Ae", "h^2/g/cm^2", Check::positive (), Attribute::Const, 
+                 "Soil resistance factor.");
+      frame.declare ("MA", Attribute::Fraction (), Attribute::OptionalConst, 
+                 "Protective cover (mulch factor).\n\
 By default, use the cover predicted by the litter model.");
-    frame.declare ("droplet_diameter", "mm", Check::positive (), Attribute::Const, 
-               "Size of droplets from vegetation.");
-    frame.declare ("DH", "kg^2/m/s^2", Attribute::LogOnly, 
-               "Squared vegetation droplet momentum.");
-    frame.declare ("CM", Attribute::Fraction (), Attribute::LogOnly, 
-               "Vegetation factor.");
-    frame.declare ("MR", "(N s)^2/m^2/s", Attribute::LogOnly, 
-               "Squared direct rainfall momentum.");
-  }
-} ReactionStyczen88syntax;
+      frame.declare ("droplet_diameter", "mm", Check::positive (), Attribute::Const, 
+                 "Size of droplets from vegetation.");
+      frame.declare ("DH", "kg^2/m/s^2", Attribute::LogOnly, 
+                 "Squared vegetation droplet momentum.");
+      frame.declare ("CM", Attribute::Fraction (), Attribute::LogOnly, 
+                 "Vegetation factor.");
+      frame.declare ("MR", "(N s)^2/m^2/s", Attribute::LogOnly, 
+                 "Squared direct rainfall momentum.");
+    }
+  } ReactionStyczen88syntax;
+}
 
 // reaction_Styczen88.C ends here.

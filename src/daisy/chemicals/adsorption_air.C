@@ -88,38 +88,42 @@ public:
   { }
 };
 
-static struct AdsorptionAirSyntax : DeclareModel
+void
+register_adsorption_air_models ()
 {
-  Model* make (const BlockModel& al) const
+  static struct AdsorptionAirSyntax : DeclareModel
   {
-    return new AdsorptionAir (al);
-  }
+    Model* make (const BlockModel& al) const
+    {
+      return new AdsorptionAir (al);
+    }
 
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
-  {
-    bool ok = true;
-    return ok;
-  }
-  AdsorptionAirSyntax ()
-    : DeclareModel (Adsorption::component, "air", "\
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
+      return ok;
+    }
+    AdsorptionAirSyntax ()
+      : DeclareModel (Adsorption::component, "air", "\
 Henry's law, fixed ratio between concentration in air and water.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "henry2023");
-    frame.add_check (check_alist);
-    frame.declare ("K_wa", Attribute::None (), Check::positive (),
-		   Attribute::Const,
-		   "Ratio between concentration in air and in water.\n\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "henry2023");
+      frame.add_check (check_alist);
+      frame.declare ("K_wa", Attribute::None (), Check::positive (),
+  		   Attribute::Const,
+  		   "Ratio between concentration in air and in water.\n\
 K_wa = Ca / Cw\n\
 where Ca is mass per volume air, and Cw is mass per volume water.");
-    frame.declare ("T_ref", "dg C", Check::none (), Attribute::Const, 
-		   "Temperature at which K_aw is valid.");
-    frame.set ("T_ref", 25.0);
-    frame.declare ("B", "K", Check::none (), Attribute::Const, 
-		   "Temperature effect coefficient.");
+      frame.declare ("T_ref", "dg C", Check::none (), Attribute::Const, 
+  		   "Temperature at which K_aw is valid.");
+      frame.set ("T_ref", 25.0);
+      frame.declare ("B", "K", Check::none (), Attribute::Const, 
+  		   "Temperature effect coefficient.");
 
-  }
-} AdsorptionAir_syntax;
+    }
+  } AdsorptionAir_syntax;
+}
 
 // adsorption_air.C ends here.

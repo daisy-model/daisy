@@ -124,61 +124,9 @@ Adsorption_vS_S::M_to_C (const Soil& soil, const Chemical& chemical,
   return C;
 }
 
-static struct Adsorption_vS_SSyntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new Adsorption_vS_S (al); }
-  Adsorption_vS_SSyntax ()
-    : DeclareModel (Adsorption::component, "vS_S", "\
-Double langmuir description of NH4-N sorption to clay.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "van1963potassium");
-    frame.declare ("S_planar", "g N/g clay", Check::non_negative (), Attribute::Const, "\
-Absorption capacity of the clay planar sites.");
-    frame.declare ("S_edge", "g N/g clay", Check::non_negative (), Attribute::Const, "\
-Absorption capacity of the clay edge sites.");
-    frame.declare ("K_planar", "g N/cm^3", Check::non_negative (), Attribute::Const, "\
-Half-saturation constant of the clay planer sites.");
-    frame.declare ("K_edge", "g N/cm^3", Check::non_negative (), Attribute::Const, "\
-Half-saturation constant of the clay edge sites.");
-  }
-} Adsorption_vS_S_syntax;
-
 // The 'vS_S_Hansen' parameterization.
 
-static struct AdsorptionvS_S_HansenSyntax : public DeclareParam
-{ 
-  AdsorptionvS_S_HansenSyntax ()
-    : DeclareParam (Adsorption::component, "vS_S_Hansen", "vS_S", "\
-.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("S_planar", 5.964e-3);
-    frame.set ("S_edge",  0.308e-3);
-    frame.set ("K_planar", 6.3e-5);
-    frame.set ("K_edge", 1.372e-5);
-  }
-} AdsorptionvS_S_Hansen_syntax;
-
 // The 'vS_S_Styczen' parameterization.
-
-static struct AdsorptionvS_S_StyczenSyntax : public DeclareParam
-{ 
-  AdsorptionvS_S_StyczenSyntax ()
-    : DeclareParam (Adsorption::component, "vS_S_Styczen", "vS_S", "\
-Parameter update..")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("S_planar", 5.964e-3);
-    frame.set ("S_edge", 0.2801e-3);
-    frame.set ("K_planar", 6.338e-4);
-    frame.set ("K_edge", 1.369e-5);
-  }
-} AdsorptionvS_S_Styczen_syntax;
 
 // The 'vS_S_old' model.
 
@@ -269,18 +217,74 @@ Adsorption_vS_S_old::M_to_C (const Soil& soil, const Chemical& chemical,
   return C;
 }
 
-static struct Adsorption_vS_S_oldSyntax : DeclareModel
+void
+register_adsorption_vS_S_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new Adsorption_vS_S_old (al); }
-  Adsorption_vS_S_oldSyntax ()
-    : DeclareModel (Adsorption::component, "vS_S_old", "\
+  static struct Adsorption_vS_SSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new Adsorption_vS_S (al); }
+    Adsorption_vS_SSyntax ()
+      : DeclareModel (Adsorption::component, "vS_S", "\
+Double langmuir description of NH4-N sorption to clay.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "van1963potassium");
+      frame.declare ("S_planar", "g N/g clay", Check::non_negative (), Attribute::Const, "\
+Absorption capacity of the clay planar sites.");
+      frame.declare ("S_edge", "g N/g clay", Check::non_negative (), Attribute::Const, "\
+Absorption capacity of the clay edge sites.");
+      frame.declare ("K_planar", "g N/cm^3", Check::non_negative (), Attribute::Const, "\
+Half-saturation constant of the clay planer sites.");
+      frame.declare ("K_edge", "g N/cm^3", Check::non_negative (), Attribute::Const, "\
+Half-saturation constant of the clay edge sites.");
+    }
+  } Adsorption_vS_S_syntax;
+
+  static struct AdsorptionvS_S_HansenSyntax : public DeclareParam
+  { 
+    AdsorptionvS_S_HansenSyntax ()
+      : DeclareParam (Adsorption::component, "vS_S_Hansen", "vS_S", "\
+.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("S_planar", 5.964e-3);
+      frame.set ("S_edge",  0.308e-3);
+      frame.set ("K_planar", 6.3e-5);
+      frame.set ("K_edge", 1.372e-5);
+    }
+  } AdsorptionvS_S_Hansen_syntax;
+
+  static struct AdsorptionvS_S_StyczenSyntax : public DeclareParam
+  { 
+    AdsorptionvS_S_StyczenSyntax ()
+      : DeclareParam (Adsorption::component, "vS_S_Styczen", "vS_S", "\
+Parameter update..")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("S_planar", 5.964e-3);
+      frame.set ("S_edge", 0.2801e-3);
+      frame.set ("K_planar", 6.338e-4);
+      frame.set ("K_edge", 1.369e-5);
+    }
+  } AdsorptionvS_S_Styczen_syntax;
+
+  static struct Adsorption_vS_S_oldSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new Adsorption_vS_S_old (al); }
+    Adsorption_vS_S_oldSyntax ()
+      : DeclareModel (Adsorption::component, "vS_S_old", "\
 Buggy implementation included as vS_S before Daisy 6.47.\n\
 Included here as reference.\n\
 Note, linear sorption was used as default for NH4 as long as memory serve.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} Adsorption_vS_S_old_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } Adsorption_vS_S_old_syntax;
+}
 
 // adsorption_vS_S.C ends here.

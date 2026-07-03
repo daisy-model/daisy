@@ -104,32 +104,6 @@ NitrificationSoil::NitrificationSoil (const Frame& al)
     water_factor (al.plf ("water_factor"))
 { }
 
-static struct NitrificationSoilSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new NitrificationSoil (al); }
-  NitrificationSoilSyntax ()
-    : DeclareModel (Nitrification::component, "soil", 
-               "k_10 * M / (k + M).  Michaelis-Menten kinetics,\n\
-with nitrification based on total ammonium content.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("k", "g N/cm^3", Check::positive (), Attribute::Const, 
-                "Half saturation constant.");
-    frame.set ("k", 5.0e-5); // [g N/cm^3]
-    frame.declare ("k_10", "g N/cm^3/h", Check::non_negative (), Attribute::Const,
-                "Max rate.");
-    frame.set ("k_10", 2.08333333333e-7); // 5e-6/24 [1/h]
-    frame.declare ("heat_factor", "dg C", Attribute::None (), Attribute::Const,
-                "Heat factor.");
-    frame.set ("heat_factor", PLF::empty ());
-    frame.declare ("water_factor", "cm", Attribute::None (), Attribute::Const,
-                "Water potential factor.");
-    frame.set ("water_factor", PLF::empty ());
-  }
-} NitrificationSoil_syntax;
-
 std::unique_ptr<Nitrification> 
 Nitrification::create_default ()
 {
@@ -137,6 +111,36 @@ Nitrification::create_default ()
   daisy_assert (library.check ("soil"));
   const FrameModel& frame = library.model ("soil");
   return std::unique_ptr<Nitrification> (new NitrificationSoil (frame));
+}
+
+void
+register_nitrification_soil_models ()
+{
+  static struct NitrificationSoilSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new NitrificationSoil (al); }
+    NitrificationSoilSyntax ()
+      : DeclareModel (Nitrification::component, "soil", 
+                 "k_10 * M / (k + M).  Michaelis-Menten kinetics,\n\
+with nitrification based on total ammonium content.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("k", "g N/cm^3", Check::positive (), Attribute::Const, 
+                  "Half saturation constant.");
+      frame.set ("k", 5.0e-5); // [g N/cm^3]
+      frame.declare ("k_10", "g N/cm^3/h", Check::non_negative (), Attribute::Const,
+                  "Max rate.");
+      frame.set ("k_10", 2.08333333333e-7); // 5e-6/24 [1/h]
+      frame.declare ("heat_factor", "dg C", Attribute::None (), Attribute::Const,
+                  "Heat factor.");
+      frame.set ("heat_factor", PLF::empty ());
+      frame.declare ("water_factor", "cm", Attribute::None (), Attribute::Const,
+                  "Water potential factor.");
+      frame.set ("water_factor", PLF::empty ());
+    }
+  } NitrificationSoil_syntax;
 }
 
 // nitrification_soil.C ends here.

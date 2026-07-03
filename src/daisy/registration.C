@@ -31,6 +31,7 @@ register_daisy_models ()
   register_column_models ();
   register_action_models ();
   register_organic_matter_models ();
+  register_chemistry_models ();
   register_output_models ();
   register_daisy_program_models ();
 }

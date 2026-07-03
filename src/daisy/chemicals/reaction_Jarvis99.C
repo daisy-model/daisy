@@ -174,7 +174,6 @@ ReactionJarvis99::output (Log& log) const
   output_variable (E, log); 
 }
 
-
 void 
 ReactionJarvis99::initialize (const Geometry& geo,
                               const Soil& soil, const SoilWater&, 
@@ -256,57 +255,61 @@ ReactionJarvis99::ReactionJarvis99 (const BlockModel& al)
     E (0.0)
 { }
 
-static struct ReactionJarvis99Syntax : public DeclareModel
+void
+register_reaction_jarvis99_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionJarvis99 (al); }
-  ReactionJarvis99Syntax ()
-    : DeclareModel (Reaction::component, "colgen_Jarvis99", "colgen", "\
-Colloid generation emulating the MACRO model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionJarvis99Syntax : public DeclareModel
   {
-    frame.set ("ponddamp", "none");
-    frame.set_strings ("cite", "macro-colloid", "mmax");
-    frame.declare_object ("rainergy", Rainergy::component,
-                      Attribute::Const, Attribute::Singleton,
-                      "Model for calculating energy in rain.");
-    frame.set ("rainergy", "Brown87");
-    frame.declare_boolean ("tillage_replenish_all", Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new ReactionJarvis99 (al); }
+    ReactionJarvis99Syntax ()
+      : DeclareModel (Reaction::component, "colgen_Jarvis99", "colgen", "\
+Colloid generation emulating the MACRO model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("ponddamp", "none");
+      frame.set_strings ("cite", "macro-colloid", "mmax");
+      frame.declare_object ("rainergy", Rainergy::component,
+                        Attribute::Const, Attribute::Singleton,
+                        "Model for calculating energy in rain.");
+      frame.set ("rainergy", "Brown87");
+      frame.declare_boolean ("tillage_replenish_all", Attribute::Const, "\
 Set Ms = Mmax after tillage.");
-    frame.set ("tillage_replenish_all", false);
-    frame.declare ("Mmax", "g/g", Check::non_negative (), 
-                   Attribute::OptionalConst, "\
+      frame.set ("tillage_replenish_all", false);
+      frame.declare ("Mmax", "g/g", Check::non_negative (), 
+                     Attribute::OptionalConst, "\
 Maximum amount of detachable particles.\n\
 By default, method 1 of Brubaker et al, 1992, will be used.");
-    // frame.set ("Mmax", 0.165);
-    frame.declare ("Mmax_tillage_factor", "d", Attribute::None (), 
-                   Check::non_negative (), Attribute::Const, "\
+      // frame.set ("Mmax", 0.165);
+      frame.declare ("Mmax_tillage_factor", "d", Attribute::None (), 
+                     Check::non_negative (), Attribute::Const, "\
 Factor to modify Mmax with as a fuction of days after tillage.");
-    frame.set ("Mmax_tillage_factor", PLF::always_1 ());
+      frame.set ("Mmax_tillage_factor", PLF::always_1 ());
 
-    frame.declare ("kd", "g/J", Check::non_negative (), Attribute::Const,
-                "Detachment rate coefficient.");
-    // frame.set ("kd", 15.0);
-    frame.declare ("kr", "g/cm^2/h", Check::non_negative (), Attribute::Const,
-                "Replenishment rate coefficient.");
-    // frame.declare ("kr", 0.1 /* [g/m^2/h] */ / (100.0 /* [cm/m] */ * 100.0));
-    frame.declare ("zi", "cm", Check::positive (), Attribute::OptionalConst,
-                   "Thickness of surface soil layer.\n\
+      frame.declare ("kd", "g/J", Check::non_negative (), Attribute::Const,
+                  "Detachment rate coefficient.");
+      // frame.set ("kd", 15.0);
+      frame.declare ("kr", "g/cm^2/h", Check::non_negative (), Attribute::Const,
+                  "Replenishment rate coefficient.");
+      // frame.declare ("kr", 0.1 /* [g/m^2/h] */ / (100.0 /* [cm/m] */ * 100.0));
+      frame.declare ("zi", "cm", Check::positive (), Attribute::OptionalConst,
+                     "Thickness of surface soil layer.\n\
 By default, the value of 'z_mixing' from 'Surface' is used.");
-    // frame.set ("zi", 0.1);
-    frame.declare ("Ms", "g/g", Check::non_negative (), Attribute::OptionalState,
-                "Current concentration of detachable particles in top soil.\n\
+      // frame.set ("zi", 0.1);
+      frame.declare ("Ms", "g/g", Check::non_negative (), Attribute::OptionalState,
+                  "Current concentration of detachable particles in top soil.\n\
 By default, 10% of Mmax.");
-    frame.declare ("As", "g/cm^2", Attribute::LogOnly, 
-                "Current amount of detachable particles in top soil.");
-    frame.declare ("P", "g/cm^2/h", Attribute::LogOnly, 
-                "Replenishment of detachable particles to top soil.");
-    frame.declare ("KE", "J/cm^2/h", Attribute::LogOnly, 
-               "Kinertic energy avalable for colloid generation.");
-    frame.declare ("E", "J/cm^2/mm", Attribute::LogOnly, 
-                "Kinetic energy in rain.");
-  }
-} ReactionJarvis99syntax;
+      frame.declare ("As", "g/cm^2", Attribute::LogOnly, 
+                  "Current amount of detachable particles in top soil.");
+      frame.declare ("P", "g/cm^2/h", Attribute::LogOnly, 
+                  "Replenishment of detachable particles to top soil.");
+      frame.declare ("KE", "J/cm^2/h", Attribute::LogOnly, 
+                 "Kinertic energy avalable for colloid generation.");
+      frame.declare ("E", "J/cm^2/mm", Attribute::LogOnly, 
+                  "Kinetic energy in rain.");
+    }
+  } ReactionJarvis99syntax;
+}
 
 // reaction_Jarvis99.C ends here.

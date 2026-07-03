@@ -111,24 +111,28 @@ struct ReactionStandard : public Reaction
   { }
 };
 
-static struct ReactionStandardSyntax : public DeclareModel
+void
+register_reaction_std_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionStandard (al); }
-  ReactionStandardSyntax ()
-    : DeclareModel (Reaction::component, "default", 
-	       "Transformation between two soil chemicals.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionStandardSyntax : public DeclareModel
   {
-    frame.declare_object ("transform", Transform::component,
-                       "Tranformation process between 'A' to 'B'.");
-    frame.declare_string ("A", Attribute::Const,
-		"Name of first soil component in equilibrium.");
-    frame.declare_string ("B", Attribute::Const,
-		"Name of second soil component in equilibrium.");
-    frame.declare ("S_AB", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-		"Converted from A to B this timestep (may be negative).");
+    Model* make (const BlockModel& al) const
+    { return new ReactionStandard (al); }
+    ReactionStandardSyntax ()
+      : DeclareModel (Reaction::component, "default", 
+  	       "Transformation between two soil chemicals.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("transform", Transform::component,
+                         "Tranformation process between 'A' to 'B'.");
+      frame.declare_string ("A", Attribute::Const,
+  		"Name of first soil component in equilibrium.");
+      frame.declare_string ("B", Attribute::Const,
+  		"Name of second soil component in equilibrium.");
+      frame.declare ("S_AB", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+  		"Converted from A to B this timestep (may be negative).");
 
-  }
-} ReactionStandard_syntax;
+    }
+  } ReactionStandard_syntax;
+}

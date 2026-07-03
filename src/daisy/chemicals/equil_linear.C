@@ -104,18 +104,22 @@ EquilibriumLinear::check (const Units& units, const Scope& scope, Treelog& msg) 
   return ok;
 }
 
-static struct EquilibriumLinearSyntax : public DeclareModel
+void
+register_equil_linear_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new EquilibriumLinear (al); }
-
-  EquilibriumLinearSyntax ()
-    : DeclareModel (Equilibrium::component, "linear", "A = K B")
-  { }
-  void load_frame (Frame& frame) const
+  static struct EquilibriumLinearSyntax : public DeclareModel
   {
-    frame.declare_object ("K", Number::component, Attribute::Const, 
-                       Attribute::Singleton, "The ratio A/B at equilibrium [].");
+    Model* make (const BlockModel& al) const
+    { return new EquilibriumLinear (al); }
 
-  }
-} EquilibriumLinear_syntax;
+    EquilibriumLinearSyntax ()
+      : DeclareModel (Equilibrium::component, "linear", "A = K B")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("K", Number::component, Attribute::Const, 
+                         Attribute::Singleton, "The ratio A/B at equilibrium [].");
+
+    }
+  } EquilibriumLinear_syntax;
+}

@@ -545,52 +545,56 @@ ChemistryStandard::ChemistryStandard (const BlockModel& al)
     reactions (Librarian::build_vector<Reaction> (al, "reaction"))
 { }
 
-static struct ChemistryStandardSyntax : public DeclareModel
+void
+register_chemistry_standard_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ChemistryStandard (al); }
-  ChemistryStandardSyntax ()
-    : DeclareModel (Chemistry::component, "default", "\
+  static struct ChemistryStandardSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ChemistryStandard (al); }
+    ChemistryStandardSyntax ()
+      : DeclareModel (Chemistry::component, "default", "\
 Handle chemicals and reactions.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.declare_object ("trace", Chemical::component, 
-                      Attribute::State, Attribute::Variable, "\
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.declare_object ("trace", Chemical::component, 
+                        Attribute::State, Attribute::Variable, "\
 List of chemicals you want to trace in the simulation.");
-    frame.set_check ("trace", VCheck::unique ());
-    frame.set_empty ("trace");
-    frame.declare_object ("reaction", Reaction::component, 
-                      Attribute::State, Attribute::Variable, "\
+      frame.set_check ("trace", VCheck::unique ());
+      frame.set_empty ("trace");
+      frame.declare_object ("reaction", Reaction::component, 
+                        Attribute::State, Attribute::Variable, "\
 List of chemical reactions you want to simulate.");
-    frame.set_empty ("reaction");
-  }
-} ChemistryStandard_syntax;
+      frame.set_empty ("reaction");
+    }
+  } ChemistryStandard_syntax;
 
-static struct ChemistryNitrogenSyntax : public DeclareParam
-{
-  ChemistryNitrogenSyntax ()
-    : DeclareParam (Chemistry::component, "N", "default", "\
+  static struct ChemistryNitrogenSyntax : public DeclareParam
+  {
+    ChemistryNitrogenSyntax ()
+      : DeclareParam (Chemistry::component, "N", "default", "\
 Inorganic nitrogen.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("trace", "NO3", "NH4");
-    frame.set_strings ("reaction", "nitrification", "denitrification");
-  }
-} ChemistryNitrogen_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("trace", "NO3", "NH4");
+      frame.set_strings ("reaction", "nitrification", "denitrification");
+    }
+  } ChemistryNitrogen_syntax;
 
-static struct ChemistryDOMSyntax : public DeclareParam
-{
-  ChemistryDOMSyntax ()
-    : DeclareParam (Chemistry::component, "DOM", "default", "\
-Disolved organic matter.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ChemistryDOMSyntax : public DeclareParam
   {
-    frame.set_strings ("trace", "DON", "DOC");
-    frame.set_strings ("reaction", "DOM_turnover");
-  }
-} ChemistryDOM_syntax;
+    ChemistryDOMSyntax ()
+      : DeclareParam (Chemistry::component, "DOM", "default", "\
+Disolved organic matter.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("trace", "DON", "DOC");
+      frame.set_strings ("reaction", "DOM_turnover");
+    }
+  } ChemistryDOM_syntax;
+}
 
 // chemistry_std.C ends her.

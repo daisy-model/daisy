@@ -249,35 +249,38 @@ public:
   { }
 };
 
-static struct AdsorptionPythonSyntax : DeclareModel
+void
+register_adsorption_python_models ()
 {
-  Model* make (const BlockModel& al) const
+  static struct AdsorptionPythonSyntax : DeclareModel
   {
-    return new AdsorptionPython (al);
-  }
-  AdsorptionPythonSyntax ()
-    : DeclareModel (Adsorption::component, "Python", "\
+    Model* make (const BlockModel& al) const
+    {
+      return new AdsorptionPython (al);
+    }
+    AdsorptionPythonSyntax ()
+      : DeclareModel (Adsorption::component, "Python", "\
 Adsorption defined in user specified Python module.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_string ("module", Attribute::Const, "\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("module", Attribute::Const, "\
 Python module to find the functions.");
-    frame.declare_string ("C_to_M", Attribute::Const, "\
+      frame.declare_string ("C_to_M", Attribute::Const, "\
 Name of function to convert concentration to mass.\n\
 C_to_M (C, *extra*)\n\
 -> [g CHEMICAL/cm^3 SPACE] total content in soil/water/air.\n\
 \n\
 where *extra* is the extra parameters specified by 'extra'.");
-    frame.declare_string ("M_to_C", Attribute::OptionalConst, "\
+      frame.declare_string ("M_to_C", Attribute::OptionalConst, "\
 Name of the function to convert mass to concentration.\n\
 M_to_C (M *extra*)\n\
 -> [g CHEMICAL/cm^3 WATER] concentration in soil water.\n\
 \n\
 where *extra* is the extra parameters specified by 'extra'.\n\
 By default this will use C_to_M and bisection between 0 and 1.");
-    frame.declare_string ("extra",
-			  Attribute::Const, Attribute::Variable, "\
+      frame.declare_string ("extra",
+  			  Attribute::Const, Attribute::Variable, "\
 Extra input parameters to Python soil function.\n\
 \n\
 Options include:\n\
@@ -291,24 +294,25 @@ Options include:\n\
   area_AWI [cm^2/cm^3]: air-water interface area\n\
   molar_mass [g/mol]: molar mass of compound\n\
   T [dg C]: soil temperature.");
-    static struct ExtraCheck : public VCheck::Enum
-    {
-      ExtraCheck ()
-	: VCheck::Enum ()
+      static struct ExtraCheck : public VCheck::Enum
       {
-	add ("Theta_sat");
-	add ("Theta");
-	add ("rho_b");
-	add ("f_OC");
-	add ("f_clay");
-	add ("d50");
-	add ("area_AWI");
-	add ("molar_mass");
-	add ("T");
-      }
-    } extra_check;
-    frame.set_check ("extra", extra_check);
-  }
-} AdsorptionPython_syntax;
+        ExtraCheck ()
+  	: VCheck::Enum ()
+        {
+  	add ("Theta_sat");
+  	add ("Theta");
+  	add ("rho_b");
+  	add ("f_OC");
+  	add ("f_clay");
+  	add ("d50");
+  	add ("area_AWI");
+  	add ("molar_mass");
+  	add ("T");
+        }
+      } extra_check;
+      frame.set_check ("extra", extra_check);
+    }
+  } AdsorptionPython_syntax;
+}
 
 // adsorption_Python.C ends here.

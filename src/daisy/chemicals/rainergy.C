@@ -43,16 +43,6 @@ Rainergy::Rainergy ()
 Rainergy::~Rainergy ()
 { }
 
-static struct RainergyInit : public DeclareComponent 
-{
-  RainergyInit ()
-    : DeclareComponent (Rainergy::component, "\
-Energy in rain.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Rainergy_init;
-
 // The 'Brown87' model.
 
 struct RainergyBrown87 : public Rainergy
@@ -75,21 +65,6 @@ struct RainergyBrown87 : public Rainergy
   ~RainergyBrown87 ()
   { }
 };
-
-static struct RainergyBrown87Syntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new RainergyBrown87 (al); }
-  RainergyBrown87Syntax ()
-    : DeclareModel (Rainergy::component, "Brown87", "\
-Energy as a semi-empirical function of rain intensity.\n\
-The energy content in the fraction that hits the canopy is ignored.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set_strings ("cite", "brown87");
-  }
-} RainergyBrown87_syntax;
 
 // The 'EUROSEM' model.
 
@@ -127,16 +102,45 @@ struct RainergyEUROSEM : public Rainergy
   { }
 };
 
-static struct RainergyEUROSEMSyntax : DeclareModel
+void
+register_rainergy_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new RainergyEUROSEM (al); }
-  RainergyEUROSEMSyntax ()
-    : DeclareModel (Rainergy::component, "EUROSEM", "\
+  static struct RainergyInit : public DeclareComponent 
+  {
+    RainergyInit ()
+      : DeclareComponent (Rainergy::component, "\
+Energy in rain.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Rainergy_init;
+
+  static struct RainergyBrown87Syntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new RainergyBrown87 (al); }
+    RainergyBrown87Syntax ()
+      : DeclareModel (Rainergy::component, "Brown87", "\
+Energy as a semi-empirical function of rain intensity.\n\
+The energy content in the fraction that hits the canopy is ignored.")
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.set_strings ("cite", "brown87");
+    }
+  } RainergyBrown87_syntax;
+
+  static struct RainergyEUROSEMSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new RainergyEUROSEM (al); }
+    RainergyEUROSEMSyntax ()
+      : DeclareModel (Rainergy::component, "EUROSEM", "\
 Kinetic energy model taking vegetation into account.")
-  { }
-  void load_frame (Frame& frame) const
-  { frame.set_strings ("cite", "EUROSEM"); }
-} RainergyEUROSEM_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { frame.set_strings ("cite", "EUROSEM"); }
+  } RainergyEUROSEM_syntax;
+}
 
 // rainergy.C ends here.

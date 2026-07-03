@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/transform.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -51,15 +52,21 @@ Transform::Transform (const BlockModel&)
 Transform::~Transform ()
 { }
 
-static struct TransformInit : public DeclareComponent 
+void
+register_transform_models ()
 {
-  void load_frame (Frame& frame) const
-  { 
-    Model::load_model (frame);
-  }
+  static struct TransformInit : public DeclareComponent 
+  {
+    void load_frame (Frame& frame) const
+    { 
+      Model::load_model (frame);
+    }
 
-  TransformInit ()
-    : DeclareComponent (Transform::component, "\
+    TransformInit ()
+      : DeclareComponent (Transform::component, "\
 Generic transformations between soil components.")
-  { }
-} Transform_init;
+    { }
+  } Transform_init;
+
+  register_transform_equil_models ();
+}

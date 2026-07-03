@@ -20,8 +20,8 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/equil.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -41,12 +41,20 @@ Equilibrium::Equilibrium (const BlockModel& al) // FIXME: Why is al not used?
 Equilibrium::~Equilibrium ()
 { }
 
-static struct EquilibriumInit : public DeclareComponent 
+void
+register_equilibrium_models ()
 {
-  EquilibriumInit ()
-    : DeclareComponent (Equilibrium::component, "\
+  static struct EquilibriumInit : public DeclareComponent 
+  {
+    EquilibriumInit ()
+      : DeclareComponent (Equilibrium::component, "\
 Find equilibrium between two soil chemicals.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Equilibrium_init;
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Equilibrium_init;
+
+  register_equil_goal_models ();
+  register_equil_langmuir_models ();
+  register_equil_linear_models ();
+}

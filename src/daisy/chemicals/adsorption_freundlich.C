@@ -134,54 +134,58 @@ AdsorptionFreundlich::M_to_C (const Soil& soil, const Chemical& chemical,
   return (min_C + max_C) / 2.0;
 }
 
-static struct AdsorptionFreundlichSyntax : DeclareModel
+void
+register_adsorption_freundlich_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new AdsorptionFreundlich (al); }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+  static struct AdsorptionFreundlichSyntax : DeclareModel
   {
-    bool ok = true;
+    Model* make (const BlockModel& al) const
+    { return new AdsorptionFreundlich (al); }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
 
-    const bool has_K_clay = al.check ("K_clay");
-    const bool has_K_OC = al.check ("K_OC");
+      const bool has_K_clay = al.check ("K_clay");
+      const bool has_K_OC = al.check ("K_OC");
 
-    if (!has_K_clay && !has_K_OC)
-      {
-        err.entry ("You must specify either 'K_clay' or 'K_OC'");
-        ok = false;
-      }
-    return ok;
-  }
-  AdsorptionFreundlichSyntax ()
-    : DeclareModel (Adsorption::component, "Freundlich", "\
+      if (!has_K_clay && !has_K_OC)
+        {
+          err.entry ("You must specify either 'K_clay' or 'K_OC'");
+          ok = false;
+        }
+      return ok;
+    }
+    AdsorptionFreundlichSyntax ()
+      : DeclareModel (Adsorption::component, "Freundlich", "\
 M = rho K C_ref (C / C_ref)^m + Theta C.\n\
 Formula from FOCUS page 93.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.add_check (check_alist);
-    frame.set_strings ("cite", "freundlich1939adsorption", "focus2000");
-    frame.declare ("K_clay", "cm^3/g", Check::non_negative (),
-                   Attribute::OptionalConst, 
-                   "Clay dependent distribution parameter.\n\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.set_strings ("cite", "freundlich1939adsorption", "focus2000");
+      frame.declare ("K_clay", "cm^3/g", Check::non_negative (),
+                     Attribute::OptionalConst, 
+                     "Clay dependent distribution parameter.\n\
 It is multiplied with the soil clay fraction to get the clay part of\n  \
 the 'K' factor.  If 'K_OC' is specified, 'K_clay' defaults to 0.");
-    frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
-                   Attribute::OptionalConst, 
-                   "Humus dependent distribution parameter.\n\
+      frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
+                     Attribute::OptionalConst, 
+                     "Humus dependent distribution parameter.\n\
 It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of the 'K' factor.  By default, 'K_OC' is equal to 'K_clay'.");
-    frame.declare_number_cited ("m", Attribute::None (), Check::positive (),
-				Attribute::Const, Attribute::Singleton, "\
+      frame.declare_number_cited ("m", Attribute::None (), Check::positive (),
+  				Attribute::Const, Attribute::Singleton, "\
 Freundlich parameter (1/n).\n\
 If not known, FOCUS recommend a value of 0.9 (page 93).",
-				"focus2000");
-    frame.declare_number_cited ("C_ref", "g/cm^3", Check::positive (),
-				Attribute::Const, Attribute::Singleton, "\
+  				"focus2000");
+      frame.declare_number_cited ("C_ref", "g/cm^3", Check::positive (),
+  				Attribute::Const, Attribute::Singleton, "\
 Reference concentration for determining the other parameters.\n\
 According to FOCUS, the usual value is 1 mg/L (page 93).",
-				"focus2000");
-  }
-} AdsorptionFreundlich_syntax;
+  				"focus2000");
+    }
+  } AdsorptionFreundlich_syntax;
+}
 
 // adsorption_freundlich.C ends here.

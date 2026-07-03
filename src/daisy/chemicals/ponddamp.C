@@ -47,16 +47,6 @@ Ponddamp::Ponddamp ()
 Ponddamp::~Ponddamp ()
 { }
 
-static struct PonddampInit : public DeclareComponent 
-{
-  PonddampInit ()
-    : DeclareComponent (Ponddamp::component, "\
-Dampening affect of ponding on soil erosion from rain.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Ponddamp_init;
-
 // The 'EUROSEM' model.
 
 struct PonddampEUROSEM : public Ponddamp
@@ -74,25 +64,6 @@ struct PonddampEUROSEM : public Ponddamp
   ~PonddampEUROSEM ()
   { }
 };
-
-static struct PonddampEUROSEMSyntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new PonddampEUROSEM (al); }
-  PonddampEUROSEMSyntax ()
-    : DeclareModel (Ponddamp::component, "EUROSEM", "\
-KH = exp (-b h)")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set_strings ("cite", "EUROSEM");
-    frame.declare ("b", "mm^-1", Attribute::Const, "\
-Exponential degradation coefficient.\n\
-The range of 'b' is from 0.9 to 3.1, a default value of 2 is proposed\n\
-by the EUROSEM project.");
-    frame.set ("b", 2.0);
-  }
-} PonddampEUROSEM_syntax;
 
 // The 'Park82' model.
 
@@ -112,20 +83,6 @@ struct PonddampPark82 : public Ponddamp
   ~PonddampPark82 ()
   { }
 };
-
-static struct PonddampPark82Syntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new PonddampPark82 (al); }
-  PonddampPark82Syntax ()
-    : DeclareModel (Ponddamp::component, "Park82", "\
-KH = 2.7183 * exp (-h / dds)")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set_strings ("cite", "park82");
-  }
-} PonddampPark82_syntax;
 
 // The 'Hairsine91' model.
 
@@ -147,20 +104,6 @@ struct PonddampHairsine91 : public Ponddamp
   { }
 };
 
-static struct PonddampHairsine91Syntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new PonddampHairsine91 (al); }
-  PonddampHairsine91Syntax ()
-    : DeclareModel (Ponddamp::component, "Hairsine91", "\
-KH = (h / dds)^-0.8")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set_strings ("cite", "hairsine91");
-  }
-} PonddampHairsine91_syntax;
-
 // The 'none' model.
 
 struct PonddampNone : public Ponddamp
@@ -176,16 +119,77 @@ struct PonddampNone : public Ponddamp
   { }
 };
 
-static struct PonddampNoneSyntax : DeclareModel
+void
+register_ponddamp_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new PonddampNone (al); }
-  PonddampNoneSyntax ()
-    : DeclareModel (Ponddamp::component, "none", "\
+  static struct PonddampInit : public DeclareComponent 
+  {
+    PonddampInit ()
+      : DeclareComponent (Ponddamp::component, "\
+Dampening affect of ponding on soil erosion from rain.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Ponddamp_init;
+
+  static struct PonddampEUROSEMSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new PonddampEUROSEM (al); }
+    PonddampEUROSEMSyntax ()
+      : DeclareModel (Ponddamp::component, "EUROSEM", "\
+KH = exp (-b h)")
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.set_strings ("cite", "EUROSEM");
+      frame.declare ("b", "mm^-1", Attribute::Const, "\
+Exponential degradation coefficient.\n\
+The range of 'b' is from 0.9 to 3.1, a default value of 2 is proposed\n\
+by the EUROSEM project.");
+      frame.set ("b", 2.0);
+    }
+  } PonddampEUROSEM_syntax;
+
+  static struct PonddampPark82Syntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new PonddampPark82 (al); }
+    PonddampPark82Syntax ()
+      : DeclareModel (Ponddamp::component, "Park82", "\
+KH = 2.7183 * exp (-h / dds)")
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.set_strings ("cite", "park82");
+    }
+  } PonddampPark82_syntax;
+
+  static struct PonddampHairsine91Syntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new PonddampHairsine91 (al); }
+    PonddampHairsine91Syntax ()
+      : DeclareModel (Ponddamp::component, "Hairsine91", "\
+KH = (h / dds)^-0.8")
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.set_strings ("cite", "hairsine91");
+    }
+  } PonddampHairsine91_syntax;
+
+  static struct PonddampNoneSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new PonddampNone (al); }
+    PonddampNoneSyntax ()
+      : DeclareModel (Ponddamp::component, "none", "\
 KH = 1.0")
-  { }
-  void load_frame (Frame&) const
-  { }
-} PonddampNone_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } PonddampNone_syntax;
+}
 
 // ponddamp.C ends here.

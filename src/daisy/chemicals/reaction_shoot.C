@@ -127,38 +127,6 @@ struct ReactionShoot : public Reaction
   }
 };
 
-static struct ReactionShootSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new ReactionShoot (al); }
-  ReactionShootSyntax ()
-    : DeclareModel (Reaction::component, "shoot", "Pool based on shoot DM.\n\
-Generate chemical (M) on canopy up to maximum (M_max).\n\
-M_max depends on the shoot DM and DS.\n\
-dM/dt = fill_rate * (M_max - M).")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_string ("chemical", Attribute::Const, "\
-Chemical to generate.");
-    static VCheck::InLibrary is_chemical (Chemical::component);
-    frame.set_check ("chemical", is_chemical);
-    frame.declare_string ("crop", Attribute::Const, "\
-Crop whose shoot is used as basis.\n\
-Special value 'all' means all crops on the field.");
-    frame.set ("crop", Vegetation::all_crops ());
-    frame.set_check ("crop", Crop::check_all ());
-    Rate::declare (frame, "fill", "Pool fill rate.");
-    frame.declare ("M_max", "g/cm^2", "g/cm^2", Check::non_negative (),
-		   Attribute::Const, "\
-Maximum amount of chemical per shoot DM.");
-    frame.declare ("DS_factor", "DS", Attribute::None (),
-		   Check::non_negative (), Attribute::Const, "\
-Influence of DS on M_max.");
-    frame.set ("DS_factor", PLF::always_1 ());
-  }
-} ReactionShoot_syntax;
-
 // The 'shoot2' reaction model.
 
 struct ReactionShoot2 : public Reaction
@@ -188,7 +156,6 @@ struct ReactionShoot2 : public Reaction
     const double M_max_1 = M_max (DM1) * DS_factor (DS1); // [g/cm^2]
     if (M_max_1 < 1e-99 || fill_rate < 1e-99)
       return;
-
 
     daisy_assert (std::isfinite (M_max_1));
     daisy_assert (M_max_1 > 0.0);
@@ -269,45 +236,81 @@ struct ReactionShoot2 : public Reaction
   }
 };
 
-static struct ReactionShoot2Syntax : public DeclareModel
+void
+register_reaction_shoot_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionShoot2 (al); }
-  ReactionShoot2Syntax ()
-    : DeclareModel (Reaction::component, "shoot2", "Pool based on shoot DM.\n\
+  static struct ReactionShootSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ReactionShoot (al); }
+    ReactionShootSyntax ()
+      : DeclareModel (Reaction::component, "shoot", "Pool based on shoot DM.\n\
+Generate chemical (M) on canopy up to maximum (M_max).\n\
+M_max depends on the shoot DM and DS.\n\
+dM/dt = fill_rate * (M_max - M).")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("chemical", Attribute::Const, "\
+Chemical to generate.");
+      static VCheck::InLibrary is_chemical (Chemical::component);
+      frame.set_check ("chemical", is_chemical);
+      frame.declare_string ("crop", Attribute::Const, "\
+Crop whose shoot is used as basis.\n\
+Special value 'all' means all crops on the field.");
+      frame.set ("crop", Vegetation::all_crops ());
+      frame.set_check ("crop", Crop::check_all ());
+      Rate::declare (frame, "fill", "Pool fill rate.");
+      frame.declare ("M_max", "g/cm^2", "g/cm^2", Check::non_negative (),
+  		   Attribute::Const, "\
+Maximum amount of chemical per shoot DM.");
+      frame.declare ("DS_factor", "DS", Attribute::None (),
+  		   Check::non_negative (), Attribute::Const, "\
+Influence of DS on M_max.");
+      frame.set ("DS_factor", PLF::always_1 ());
+    }
+  } ReactionShoot_syntax;
+
+  static struct ReactionShoot2Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ReactionShoot2 (al); }
+    ReactionShoot2Syntax ()
+      : DeclareModel (Reaction::component, "shoot2", "Pool based on shoot DM.\n\
 Generate chemical (M) on canopy up to maximum (M_max).\n\
 M_max depends on the shoot DM and DS.\n\
 \n\
 dM/dt = growth_rate + fill_rate * (M_max - M).\n\
 \n\
 growth_rate = max (0.0, (M_max (t1) - M_max (t0)) / (t1 - t0))")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "jorgensen2020novel",
-		       "GARCIAJORGENSEN2024170658");
-    frame.declare_string ("chemical", Attribute::Const, "\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "jorgensen2020novel",
+  		       "GARCIAJORGENSEN2024170658");
+      frame.declare_string ("chemical", Attribute::Const, "\
 Chemical to generate.");
-    static VCheck::InLibrary is_chemical (Chemical::component);
-    frame.set_check ("chemical", is_chemical);
-    frame.declare_string ("crop", Attribute::Const, "\
+      static VCheck::InLibrary is_chemical (Chemical::component);
+      frame.set_check ("chemical", is_chemical);
+      frame.declare_string ("crop", Attribute::Const, "\
 Crop whose shoot is used as basis.\n\
 Special value 'all' means all crops on the field.");
-    frame.set ("crop", Vegetation::all_crops ());
-    frame.set_check ("crop", Crop::check_all ());
-    Rate::declare (frame, "fill", "Pool fill rate.");
-    frame.declare ("M_max", "g/cm^2", "g/cm^2", Check::non_negative (),
-		   Attribute::Const, "\
+      frame.set ("crop", Vegetation::all_crops ());
+      frame.set_check ("crop", Crop::check_all ());
+      Rate::declare (frame, "fill", "Pool fill rate.");
+      frame.declare ("M_max", "g/cm^2", "g/cm^2", Check::non_negative (),
+  		   Attribute::Const, "\
 Maximum amount of chemical per shoot DM.");
-    frame.declare ("DS_factor", "DS", Attribute::None (),
-		   Check::non_negative (), Attribute::Const, "\
+      frame.declare ("DS_factor", "DS", Attribute::None (),
+  		   Check::non_negative (), Attribute::Const, "\
 Influence of DS on M_max.");
-    frame.set ("DS_factor", PLF::always_1 ());
-    frame.declare ("M_pot", "g/cm^2", Check::non_negative (),
-		   Attribute::State,
-		   "Potential chemical content.");
-    frame.set ("M_pot", 0.0);
-  }
-} ReactionShoot2_syntax;
+      frame.set ("DS_factor", PLF::always_1 ());
+      frame.declare ("M_pot", "g/cm^2", Check::non_negative (),
+  		   Attribute::State,
+  		   "Potential chemical content.");
+      frame.set ("M_pot", 0.0);
+    }
+  } ReactionShoot2_syntax;
+}
 
 // reaction_shoot.C ends here.

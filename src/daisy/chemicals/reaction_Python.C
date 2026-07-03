@@ -414,68 +414,71 @@ struct ReactionPython : public Reaction
   { }
 };
 
-static struct ReactionPythonSyntax : public DeclareModel
+void
+register_reaction_python_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionPython (al); }
-  ReactionPythonSyntax ()
-    : DeclareModel (Reaction::component, "Python", "\
-Python interface for chemical reactions above and below ground.")
-  { }
-  static void load_in (Frame& frame)
+  static struct ReactionPythonSyntax : public DeclareModel
   {
-    frame.declare_string ("chemical", Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new ReactionPython (al); }
+    ReactionPythonSyntax ()
+      : DeclareModel (Reaction::component, "Python", "\
+Python interface for chemical reactions above and below ground.")
+    { }
+    static void load_in (Frame& frame)
+    {
+      frame.declare_string ("chemical", Attribute::Const, "\
 Name of chemical.");
-    static const VCheck::InLibrary is_chemical (Chemical::component);
-    frame.set_check ("chemical", is_chemical);
-    frame.declare_string ("handle", Attribute::OptionalConst, "\
+      static const VCheck::InLibrary is_chemical (Chemical::component);
+      frame.set_check ("chemical", is_chemical);
+      frame.declare_string ("handle", Attribute::OptionalConst, "\
 How to access it.\n\
 One of 'C_primary', 'C_secondary', 'C_average',\n\
 'M_primary', 'M_secondary', or 'M_total'.");
-    static const VCheck::Enum is_handle
-      ("C_primary", "C_secondary", "C_average",
-       "M_primary", "M_secondary", "M_total");
-    frame.set_check ("handle", is_handle);
-    frame.declare_string ("tag", Attribute::OptionalConst, "\
+      static const VCheck::Enum is_handle
+        ("C_primary", "C_secondary", "C_average",
+         "M_primary", "M_secondary", "M_total");
+      frame.set_check ("handle", is_handle);
+      frame.declare_string ("tag", Attribute::OptionalConst, "\
 Nmae to use as a Python parameter.");
-    frame.order ("chemical", "handle", "tag");
-  }
+      frame.order ("chemical", "handle", "tag");
+    }
 
-  static void load_texture (Frame& frame)
-  {
-    frame.declare_string ("tag", Attribute::Const, "\
+    static void load_texture (Frame& frame)
+    {
+      frame.declare_string ("tag", Attribute::Const, "\
 Name of Python parameter.");
-    frame.declare ("size", "um", Attribute::Const, "\
+      frame.declare ("size", "um", Attribute::Const, "\
 Include particles below this size.");
-    frame.order ("tag", "size");
-  }
+      frame.order ("tag", "size");
+    }
 
-  static void load_out (Frame& frame)
-  {
-    frame.declare_string ("chemical", Attribute::Const, "\
+    static void load_out (Frame& frame)
+    {
+      frame.declare_string ("chemical", Attribute::Const, "\
 Name of chemical.");
-    frame.declare_string ("handle", Attribute::OptionalConst, "\
+      frame.declare_string ("handle", Attribute::OptionalConst, "\
 Where to add it.\n\
 One of 'primary', 'secondary'.");
-    static const VCheck::Enum is_handle ("primary", "secondary", "none");
-    frame.set_check ("handle", is_handle);
-    frame.declare_string ("tag", Attribute::OptionalConst, "\
+      static const VCheck::Enum is_handle ("primary", "secondary", "none");
+      frame.set_check ("handle", is_handle);
+      frame.declare_string ("tag", Attribute::OptionalConst, "\
 Name to use both for logging and as Python output.");
-    frame.order ("chemical", "handle", "tag");
-  }
+      frame.order ("chemical", "handle", "tag");
+    }
 
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_string ("module", Attribute::Const, "\
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("module", Attribute::Const, "\
 Python module to find the functions.");
-    frame.declare_string ("soil", Attribute::OptionalConst, "\
+      frame.declare_string ("soil", Attribute::OptionalConst, "\
 Name of Python function for soil reactions.");
-    frame.declare_submodule_sequence ("in", Attribute::Const, "\
+      frame.declare_submodule_sequence ("in", Attribute::Const, "\
 List of solutes to pass to Python as input.", load_in);
-    frame.declare_submodule_sequence ("texture", Attribute::Const, "\
+      frame.declare_submodule_sequence ("texture", Attribute::Const, "\
 List of texture classes to pass to Python.", load_texture);
-    frame.declare_string ("extra",
-			  Attribute::Const, Attribute::Variable, "\
+      frame.declare_string ("extra",
+  			  Attribute::Const, Attribute::Variable, "\
 Extra input parameters to Python soil function.\n\
 \n\
 Options include:\n\
@@ -493,31 +496,32 @@ Options include:\n\
   SMB_C [g C/cm^3 V]: Fast pool SMB carbon per system volume.\n\
   ORG_C [g C/cm^3 V]: Stationary carbon per system volume.\n\
 ");
-    static struct ExtraCheck : public VCheck::Enum
-    {
-      ExtraCheck ()
-	: VCheck::Enum ()
+      static struct ExtraCheck : public VCheck::Enum
       {
-	add ("z");
-	add ("rho_b");
-	add ("Theta_sat");
-	add ("Theta");
-	add ("Theta_primary");
-	add ("Theta_secondary");
-	add ("h");
-	add ("T");
-	add ("CO2_C");
-	add ("CO2_C_fast");
-	add ("SMB_C");
-	add ("ORG_C");
-      }
-    } extra_check;
-    frame.set_check ("extra", extra_check);
-    frame.declare_submodule_sequence ("out", Attribute::Const, "\
+        ExtraCheck ()
+  	: VCheck::Enum ()
+        {
+  	add ("z");
+  	add ("rho_b");
+  	add ("Theta_sat");
+  	add ("Theta");
+  	add ("Theta_primary");
+  	add ("Theta_secondary");
+  	add ("h");
+  	add ("T");
+  	add ("CO2_C");
+  	add ("CO2_C_fast");
+  	add ("SMB_C");
+  	add ("ORG_C");
+        }
+      } extra_check;
+      frame.set_check ("extra", extra_check);
+      frame.declare_submodule_sequence ("out", Attribute::Const, "\
 List of Python as output.", load_out);
-    frame.declare_string ("top", Attribute::OptionalConst, "\
+      frame.declare_string ("top", Attribute::OptionalConst, "\
 Name of Python function for above ground reactions.");
-  }
-} ReactionPython_syntax;
+    }
+  } ReactionPython_syntax;
+}
 
 // reaction_Python.C ends here.
