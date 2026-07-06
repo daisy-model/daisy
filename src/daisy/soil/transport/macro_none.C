@@ -21,6 +21,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/soil/transport/macro.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"

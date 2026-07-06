@@ -2,7 +2,7 @@ if (${BUILD_CXX_TESTS})
   find_package(GTest REQUIRED)
   include(GoogleTest)
 
-  add_library(ut_core SHARED
+  add_library(ut_core STATIC
     ${CMAKE_SOURCE_DIR}/src/daisy/daisy_time.C
     ${CMAKE_SOURCE_DIR}/src/daisy/timestep.C
     ${CMAKE_SOURCE_DIR}/src/object_model/attribute.C
@@ -49,10 +49,11 @@ if (${BUILD_CXX_TESTS})
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
   target_compile_options(ut_core PRIVATE ${COMPILE_OPTIONS})
   target_link_options(ut_core PRIVATE ${LINKER_OPTIONS})
-  target_link_libraries(ut_core PUBLIC
-    Boost::filesystem
-    Boost::system
-  )
+  set(_ut_core_boost_libs Boost::filesystem)
+  if(TARGET Boost::system)
+    list(APPEND _ut_core_boost_libs Boost::system)
+  endif()
+  target_link_libraries(ut_core PUBLIC ${_ut_core_boost_libs})
 
   # function(cxx_unit_test_mock name)
   #   add_executable(${name} ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/tests/${name}.C ${ARGN})

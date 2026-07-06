@@ -21,6 +21,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/chemicals/adsorption.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/soil.h"

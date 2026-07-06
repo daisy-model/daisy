@@ -21,6 +21,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/soil/transport/uzmodel.h"
 #include "daisy/soil/soil.h"
 #include "util/mathlib.h"

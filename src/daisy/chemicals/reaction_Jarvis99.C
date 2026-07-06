@@ -20,6 +20,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/chemicals/reaction_colgen.h"
 #include "util/mathlib.h"
 #include "object_model/check.h"

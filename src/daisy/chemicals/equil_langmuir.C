@@ -20,6 +20,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/chemicals/equil.h"
 #include "object_model/block_model.h"
 #include "object_model/parameter_types/number.h"

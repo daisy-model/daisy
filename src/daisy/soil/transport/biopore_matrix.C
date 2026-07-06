@@ -20,6 +20,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/soil/transport/biopore.h"
 #include "daisy/chemicals/imvec.h"
 #include "daisy/chemicals/im.h"
