@@ -800,7 +800,7 @@ UZRichard2::~UZRichard2 ()
 { }
 
 // Add the UZRichard2 syntax to the syntax table.
-static struct UZRichard2Syntax : DeclareModel
+struct UZRichard2Syntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZRichard2 (al); }
@@ -848,6 +848,11 @@ Maximum relative difference in 'h' values for convergence.");
 The default model is 'geometric' if there are macropores, and\n\
 'arithmetic' otherwise.");
   }
-} UZRichard2_syntax;
+};
 
+void
+register_uzrichard2_models ()
+{
+  static UZRichard2Syntax UZRichard2_syntax;
+}
 // uzrichards2.C ends here.

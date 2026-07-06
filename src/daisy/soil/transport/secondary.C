@@ -52,7 +52,7 @@ Secondary::Secondary (const symbol name_)
 Secondary::~Secondary ()
 { }
 
-static struct SecondaryInit : public DeclareComponent 
+struct SecondaryInit : public DeclareComponent 
 {
   SecondaryInit ()
     : DeclareComponent (Secondary::component, "\
@@ -70,7 +70,7 @@ applied to the surface to reach deeper soil layers much faster than it\n\
 would otherwise, and it protects solutes in the soil matrix from being\n\
 washed out with fast moving new water.")
   { }
-} Secondary_init;
+};
 
 // "none" model.
 
@@ -98,7 +98,7 @@ std::unique_ptr<Secondary>
 Secondary::create_none ()
 { return std::unique_ptr<Secondary> (new SecondaryNone ());  }
 
-static struct SecondaryNoneSyntax : public DeclareModel
+struct SecondaryNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SecondaryNone (al); }
@@ -111,7 +111,7 @@ matrix pores.")
   void load_frame (Frame& frame) const
   {
   }
-} SecondaryNone_syntax;
+};
 
 // "alpha" model.
 
@@ -128,7 +128,7 @@ struct SecondaryAlpha : public Secondary
   {}
 };
 
-static struct SecondaryAlphaSyntax : public DeclareBase
+struct SecondaryAlphaSyntax : public DeclareBase
 {
   SecondaryAlphaSyntax ()
     : DeclareBase (Secondary::component, "alpha", 
@@ -139,7 +139,7 @@ static struct SecondaryAlphaSyntax : public DeclareBase
     frame.declare ("alpha", "h^-1", Attribute::Const, "\
 Exchange rate between primary and secondary water."); 
   }
-} SecondaryAlpha_syntax;
+};
 
 // "pressure" model.
 
@@ -170,7 +170,7 @@ struct SecondaryPressure : public SecondaryAlpha
   {}
 };
 
-static struct SecondaryPressureSyntax : public DeclareModel
+struct SecondaryPressureSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SecondaryPressure (al); }
@@ -195,7 +195,7 @@ Divide soil matrix into two domains for solute transport.\n\
 Set this to false to make h_lim affect only the conductivity curve.");
     frame.set ("use_secondary", true);
   }
-} SecondaryPressure_syntax;
+};
 
 // "cracks" model.
 
@@ -275,7 +275,7 @@ struct SecondaryCracks : public SecondaryAlpha
   { }
 };
 
-static struct SecondaryCracksSyntax : public DeclareModel
+struct SecondaryCracksSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SecondaryCracks (al); }
@@ -307,6 +307,15 @@ Divide soil matrix into two domains for solute transport.\n\
 Set this to false to make cracks affect only the conductivity curve.");
     frame.set ("use_secondary", true);
   }
-} SecondaryCracks_syntax;
+};
 
+void
+register_secondary_models ()
+{
+  static SecondaryInit Secondary_init;
+  static SecondaryNoneSyntax SecondaryNone_syntax;
+  static SecondaryAlphaSyntax SecondaryAlpha_syntax;
+  static SecondaryPressureSyntax SecondaryPressure_syntax;
+  static SecondaryCracksSyntax SecondaryCracks_syntax;
+}
 // secondary.C ends here.

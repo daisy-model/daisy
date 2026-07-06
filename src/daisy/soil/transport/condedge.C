@@ -44,13 +44,13 @@ Condedge::Condedge ()
 Condedge::~Condedge ()
 { }
 
-static struct CondedgeInit : public DeclareComponent 
+struct CondedgeInit : public DeclareComponent 
 {
   CondedgeInit ()
     : DeclareComponent (Condedge::component, "\
 Find the hydraulic conductivity between two cells.")
   { }
-} Condedge_init;
+};
 
 // The 'arithmetic' model.
 
@@ -70,7 +70,7 @@ struct CondedgeArithmetic : public Condedge
   { }
 };
 
-static struct CondedgeArithmeticSyntax : DeclareModel
+struct CondedgeArithmeticSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CondedgeArithmetic (al); }
@@ -80,7 +80,7 @@ Use the arithmetic average of the conductivity in the two cells.")
   { }
   void load_frame (Frame& frame) const
   { }
-} CondedgeArithmetic_syntax;
+};
 
 
 std::unique_ptr<const Condedge>
@@ -103,7 +103,7 @@ struct CondedgeHarmonic : public Condedge
   { }
 };
 
-static struct CondedgeHarmonicSyntax : DeclareModel
+struct CondedgeHarmonicSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CondedgeHarmonic (al); }
@@ -114,7 +114,7 @@ This corresponds to using the average hydraulic resistence.")
   { }
   void load_frame (Frame& frame) const
   { }
-} CondedgeHarmonic_syntax;
+};
 
 // The 'geometric' model.
 
@@ -135,7 +135,7 @@ struct CondedgeGeometric : public Condedge
   { }
 };
 
-static struct CondedgeGeometricSyntax : DeclareModel
+struct CondedgeGeometricSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CondedgeGeometric (al); }
@@ -145,7 +145,7 @@ Geometric average 'sqrt(a*b)'.")
   { }
   void load_frame (Frame& frame) const
   { }
-} CondedgeGeometric_syntax;
+};
 
 std::unique_ptr<const Condedge>
 Condedge::build_geometric ()
@@ -327,7 +327,7 @@ struct CondedgePressure : public Condedge
   { }
 };
 
-static struct CondedgePressureSyntax : DeclareModel
+struct CondedgePressureSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CondedgePressure (al); }
@@ -354,6 +354,15 @@ If false, use the pressure at end of the small timestep.");
     frame.declare ("h_lim", "cm", Attribute::Const, "\
 Lower pressure limit for fast downward flow.");    
   }
-} CondedgePressure_syntax;
+};
 
+void
+register_condedge_models ()
+{
+  static CondedgeInit Condedge_init;
+  static CondedgeArithmeticSyntax CondedgeArithmetic_syntax;
+  static CondedgeHarmonicSyntax CondedgeHarmonic_syntax;
+  static CondedgeGeometricSyntax CondedgeGeometric_syntax;
+  static CondedgePressureSyntax CondedgePressure_syntax;
+}
 // condedge.C ends here.

@@ -290,7 +290,7 @@ UZ1DRichard::UZ1DRichard (const BlockModel& al)
 UZ1DRichard::~UZ1DRichard ()
 { }
 
-static struct UZ1DRichardSyntax : DeclareModel
+struct UZ1DRichardSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZ1DRichard (al); }
@@ -321,6 +321,11 @@ Maximum relative difference in 'h' values for convergence.");
                        "Model for calculating average K between cells.");
     frame.set ("K_average", "arithmetic");
   }
-} UZ1DRichard_syntax;
+};
 
+void
+register_uz1d_richard_models ()
+{
+  static UZ1DRichardSyntax UZ1DRichard_syntax;
+}
 // uz1d_richard.C ends here.

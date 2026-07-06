@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/volume.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/transport/geometry.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
@@ -84,12 +85,19 @@ Volume::Volume (const char *const id)
 Volume::~Volume ()
 { }
 
-static struct VolumeInit : public DeclareComponent 
+struct VolumeInit : public DeclareComponent 
 {
   VolumeInit ()
     : DeclareComponent (Volume::component, "\
 A subset of 3D space.")
   { }
-} Volume_init;
+};
 
+void
+register_volume_models ()
+{
+  static VolumeInit Volume_init;
+
+  register_volume_box_models ();
+}
 // volume.C ends here.

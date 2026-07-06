@@ -318,7 +318,7 @@ Macro::create (const double depth)
 }
 
 
-static struct MacroStandardSyntax : public DeclareModel
+struct MacroStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MacroStandard (al); }
@@ -422,6 +422,11 @@ Maximum height of ponding before spilling into macropores.\n\
 After macropores are activated pond will have this height.");
     frame.set ("pond_max", MacroStandard::default_pond_max);
   }
-} MacroStandard_syntax;
+};
 
+void
+register_macro_std_models ()
+{
+  static MacroStandardSyntax MacroStandard_syntax;
+}
 // macro_std.C ends here.

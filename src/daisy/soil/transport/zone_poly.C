@@ -132,7 +132,7 @@ ZonePoly::ZonePoly (const BlockModel& al)
 ZonePoly::~ZonePoly ()
 { }
 
-static struct Zone_PolySyntax : public DeclareModel
+struct Zone_PolySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ZonePoly (al); }
@@ -171,6 +171,11 @@ Points surrounding the polygon in clockwise order.",
     static VCheck::MinSize min_size_3 (3);
     frame.set_check ("outer", min_size_3);
   }
-} ZonePoly_syntax;
+};
 
+void
+register_zone_poly_models ()
+{
+  static Zone_PolySyntax ZonePoly_syntax;
+}
 // zone_poly.C ends here.

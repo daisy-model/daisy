@@ -73,7 +73,7 @@ HeatrectLinear::solve (const GeometryRect& geo,
     T[c] = plf (geo.cell_z (c));
 }
 
-static struct HeatrectLinearSyntax : public DeclareModel
+struct HeatrectLinearSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HeatrectLinear (al); }
@@ -84,7 +84,7 @@ Linear temperature interpolation between top and bottom.")
   { }
   void load_frame (Frame&) const
   { }
-} HeatrectLinear_syntax;
+};
 
 // The 'top' model.
 
@@ -129,7 +129,7 @@ HeatrectTop::solve (const GeometryRect& geo,
     T[c] = T_top;
 }
 
-static struct HeatrectTopSyntax : public DeclareModel
+struct HeatrectTopSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HeatrectTop (al); }
@@ -141,6 +141,12 @@ This can be used for a poorly isolated soil column.")
   { }
   void load_frame (Frame&) const
   { }
-} HeatrectTop_syntax;
+};
 
+void
+register_heatrect_linear_models ()
+{
+  static HeatrectLinearSyntax HeatrectLinear_syntax;
+  static HeatrectTopSyntax HeatrectTop_syntax;
+}
 // heatrect_linear.C ends here.

@@ -256,7 +256,7 @@ TertiaryOld::TertiaryOld (const BlockModel& al)
     mactrans  (Librarian::build_item<Mactrans> (al, "mactrans"))
 { }
 
-static struct TertiaryOldSyntax : DeclareModel
+struct TertiaryOldSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TertiaryOld (al); }
@@ -277,6 +277,11 @@ amount of humus and clay in the top horizon is above 5%.");
                       "Solute transport model in macropores.");
     frame.set ("mactrans", "default");
   }
-} TertiaryOld_syntax;
+};
 
+void
+register_tertiary_old_models ()
+{
+  static TertiaryOldSyntax TertiaryOld_syntax;
+}
 // tertiary_old.C ends here.

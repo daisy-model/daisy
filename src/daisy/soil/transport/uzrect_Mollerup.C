@@ -1121,7 +1121,7 @@ UZRectMollerup::UZRectMollerup (const BlockModel& al)
 UZRectMollerup::~UZRectMollerup ()
 { }
 
-static struct UZRectMollerupSyntax : DeclareModel
+struct UZRectMollerupSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZRectMollerup (al); }
@@ -1192,6 +1192,11 @@ Conductivity between cells.\n\
 The value logged is the value used for the last small timestep in\n\
 the previous large timestep.");
     }
-} UZRectMollerup_syntax;
+};
 
+void
+register_uzrect_Mollerup_models ()
+{
+  static UZRectMollerupSyntax UZRectMollerup_syntax;
+}
 // uzrect_Mollerup.C ends here.

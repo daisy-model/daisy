@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/uzmodel.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -41,12 +42,25 @@ UZmodel::library_id () const
   return id;
 }
 
-static struct UZmodelInit : public DeclareComponent 
+struct UZmodelInit : public DeclareComponent 
 {
   UZmodelInit ()
     : DeclareComponent (UZmodel::component, "\
 The 'uzmodel' component handles the vertical water movement in the\n\
 unsaturated zone soil matrix.")
   { }
-} UZmodel_init;
+};
 
+
+void
+register_uzmodel_models ()
+{
+  static UZmodelInit UZmodel_init;
+
+  register_uzlr_models ();
+  register_uznone_models ();
+  register_uzrichard_models ();
+  register_uzrichard2_models ();
+}
+
+// uzmodel.C ends here.

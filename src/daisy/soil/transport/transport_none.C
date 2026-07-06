@@ -110,7 +110,7 @@ TransportNone::TransportNone (const BlockModel& al)
 TransportNone::~TransportNone ()
 { }
 
-static struct TransportNoneSyntax : DeclareModel
+struct TransportNoneSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TransportNone (al); }
@@ -120,6 +120,11 @@ static struct TransportNoneSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} TransportNone_syntax;
+};
 
+void
+register_transport_none_models ()
+{
+  static TransportNoneSyntax TransportNone_syntax;
+}
 // transport_none.C ends here.

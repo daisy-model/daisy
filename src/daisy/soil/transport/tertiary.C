@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/tertiary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/soil_water.h"
 #include "object_model/block_model.h"
@@ -49,13 +50,13 @@ Tertiary::Tertiary (const BlockModel& al)
 Tertiary::~Tertiary ()
 { }
 
-static struct TertiaryInit : public DeclareComponent 
+struct TertiaryInit : public DeclareComponent 
 {
   TertiaryInit ()
     : DeclareComponent (Tertiary::component, "\
 Transport of water and solute outside the matrix.")
   { }
-} Tertiary_init;
+};
 
 // The 'none' model.
 
@@ -99,7 +100,7 @@ public:
   { }
 };
 
-static struct TertiaryNoneSyntax : public DeclareModel
+struct TertiaryNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TertiaryNone (al); }
@@ -109,6 +110,15 @@ static struct TertiaryNoneSyntax : public DeclareModel
   void load_frame (Frame& frame) const
   {
   }
-} TertiaryNone_syntax;
+};
 
+void
+register_tertiary_models ()
+{
+  static TertiaryInit Tertiary_init;
+  static TertiaryNoneSyntax TertiaryNone_syntax;
+
+  register_tertiary_biopores_models ();
+  register_tertiary_old_models ();
+}
 // tertiary.C ends here.

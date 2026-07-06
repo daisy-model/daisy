@@ -890,7 +890,7 @@ MovementSolute::MovementSolute (const BlockModel& al)
     sink_sorbed (al.flag ("sink_sorbed"))
 { }
 
-static struct MovementSoluteSyntax : public DeclareBase
+struct MovementSoluteSyntax : public DeclareBase
 {
   MovementSoluteSyntax ()
     : DeclareBase (Movement::component, "solute", "\
@@ -911,7 +911,12 @@ Matrix solute transport model used for fully sorbed constituents.");
                            "Substract sink term from sorbed matter.");
     frame.set ("sink_sorbed", true);
   }
-} MovementSolute_syntax;
+};
 
+void
+register_movement_solute_models ()
+{
+  static MovementSoluteSyntax MovementSolute_syntax;
+}
 // movement_solute.C ends here.
 

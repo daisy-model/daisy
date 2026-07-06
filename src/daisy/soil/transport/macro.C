@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/macro.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -49,11 +50,22 @@ Macro::Macro (const symbol id)
 Macro::~Macro ()
 { }
 
-static struct MacroInit : public DeclareComponent 
+struct MacroInit : public DeclareComponent 
 {
   MacroInit ()
     : DeclareComponent (Macro::component, "\
 Preferention flow in soil macro pores.")
   { }
-} Macro_init;
+};
 
+
+void
+register_macro_models ()
+{
+  static MacroInit Macro_init;
+
+  register_macro_none_models ();
+  register_macro_std_models ();
+}
+
+// macro.C ends here.

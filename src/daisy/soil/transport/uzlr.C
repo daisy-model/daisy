@@ -355,7 +355,7 @@ UZlr::UZlr (const BlockModel& al)
 UZlr::~UZlr ()
 { }
 
-static struct UZlrSyntax : DeclareModel
+struct UZlrSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZlr (al); }
@@ -377,6 +377,11 @@ If true, warn the first time the soil profile is oversaturated.");
                "Depth of layer where upward water movement is possible.");
     frame.set ("z_top", -10.0);
   }
-} UZlr_syntax;
+};
 
+void
+register_uzlr_models ()
+{
+  static UZlrSyntax UZlr_syntax;
+}
 // uzlr.C ends here.

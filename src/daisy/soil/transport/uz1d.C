@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/uz1d.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "util/assertion.h"
@@ -175,13 +176,21 @@ UZ1D::UZ1D (const BlockModel& al)
 UZ1D::~UZ1D ()
 { }
 
-static struct UZ1DInit : public DeclareComponent 
+struct UZ1DInit : public DeclareComponent 
 {
   UZ1DInit ()
     : DeclareComponent (UZ1D::component, "\
 The 'uz1d' component handles the horizontal water movement in the\n\
 unsaturated zone soil matrix.")
   { }
-} UZ1D_init;
+};
 
+void
+register_uz1d_models ()
+{
+  static UZ1DInit UZ1D_init;
+
+  register_uz1d_none_models ();
+  register_uz1d_richard_models ();
+}
 // uz1d.C ends here.

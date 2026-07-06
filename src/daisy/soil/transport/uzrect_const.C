@@ -93,7 +93,7 @@ UZRectConst::UZRectConst (const BlockModel& al)
 UZRectConst::~UZRectConst ()
 { }
 
-static struct UZRectConstSyntax : DeclareModel
+struct UZRectConstSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZRectConst (al); }
@@ -110,6 +110,11 @@ Horizontal flow.");
 Vertical flow upwards.");
     frame.set ("q_z", 0.0); 
   }
-} UZRectConst_syntax;
+};
 
+void
+register_uzrect_const_models ()
+{
+  static UZRectConstSyntax UZRectConst_syntax;
+}
 // uzrect_const.C ends here.

@@ -105,7 +105,7 @@ ZoneBox::ZoneBox (const BlockModel& al)
 ZoneBox::~ZoneBox ()
 { }
 
-static struct Zone_BoxSyntax : public DeclareModel
+struct Zone_BoxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ZoneBox (al); }
@@ -142,6 +142,11 @@ setting the parameters.")
                           "Upper boundary on the y-axis.");
     frame.set ("back", "empty");
   }
-} ZoneBox_syntax;
+};
 
+void
+register_zone_box_models ()
+{
+  static Zone_BoxSyntax ZoneBox_syntax;
+}
 // zone_box.C ends here.

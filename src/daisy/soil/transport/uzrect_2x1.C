@@ -347,7 +347,7 @@ UZRect2x1::~UZRect2x1 ()
   sequence_delete (horizontal.begin (), horizontal.end ());
 }
 
-static struct UZRect2x1Syntax : DeclareModel
+struct UZRect2x1Syntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZRect2x1 (al); }
@@ -372,6 +372,11 @@ If none succeeds, the simulation ends.");
     // The 'richards' model doesn't work :-(
     frame.set_strings ("horizontal", "none");
   }
-} UZRect2x1_syntax;
+};
 
+void
+register_uzrect_2x1_models ()
+{
+  static UZRect2x1Syntax UZRect2x1_syntax;
+}
 // uzrect_2x1.C ends here.

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/mactrans.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -45,12 +46,19 @@ Mactrans::Mactrans (const symbol n)
 Mactrans::~Mactrans ()
 { }
 
-static struct MactransInit : public DeclareComponent 
+struct MactransInit : public DeclareComponent 
 {
   MactransInit ()
     : DeclareComponent (Mactrans::component, "\
 Macropore transportation of solutes.")
   { }
-} Mactrans_init;
+};
 
+void
+register_mactrans_models ()
+{
+  static MactransInit Mactrans_init;
+
+  register_mactrans_std_models ();
+}
 // mactrans.C ends here.

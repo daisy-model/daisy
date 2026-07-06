@@ -328,7 +328,7 @@ MovementRect::MovementRect (const BlockModel& al)
 MovementRect::~MovementRect ()
 { }
 
-static struct MovementRectSyntax : DeclareModel
+struct MovementRectSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MovementRect (al); }
@@ -368,6 +368,11 @@ Heat transport model.");
     frame.set ("heat", "Mollerup");
 
   }
-} MovementRect_syntax;
+};
 
+void
+register_movement_rect_models ()
+{
+  static MovementRectSyntax MovementRect_syntax;
+}
 // movement_rect.C ends here.

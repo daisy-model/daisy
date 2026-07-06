@@ -41,7 +41,7 @@ struct UZ1DNone : public UZ1D
   { }
 };
 
-static struct UZ1DNoneSyntax : DeclareModel
+struct UZ1DNoneSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UZ1DNone (al); }
@@ -50,6 +50,11 @@ static struct UZ1DNoneSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} UZ1DNone_syntax;
+};
 
+void
+register_uz1d_none_models ()
+{
+  static UZ1DNoneSyntax UZ1DNone_syntax;
+}
 // uz1d_none.C ends here.

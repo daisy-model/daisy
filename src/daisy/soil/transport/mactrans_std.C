@@ -195,7 +195,7 @@ This tertiary solute transport model only works with vertical geometries");
   return ok; 
 }
 
-static struct MactransStandardSyntax : public DeclareModel
+struct MactransStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new MactransStandard (al); }
@@ -205,6 +205,11 @@ static struct MactransStandardSyntax : public DeclareModel
   void load_frame (Frame& frame) const
     {
     }
-} MactransStandard_syntax;
+};
 
+void
+register_mactrans_std_models ()
+{
+  static MactransStandardSyntax MactransStandard_syntax;
+}
 // mactrans_std.C ends here.
