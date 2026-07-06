@@ -26,6 +26,7 @@
 #include "daisy/timestep.h"
 #include "object_model/block_model.h"
 #include "object_model/submodeler.h"
+#include "daisy/daisy_registration_internal.h"
 
 struct WSourceTime : public WSourceIndirect
 {
@@ -73,7 +74,7 @@ struct WSourceTime : public WSourceIndirect
   { }
 };
 
-static struct WSourceTimeSyntax : public DeclareModel
+struct WSourceTimeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceTime (al); }
@@ -115,6 +116,12 @@ Year in weather data.");
 Year in simulation.");
     frame.set_check ("to", VCheck::valid_year ());
   }
-} WSourceTime_syntax;
+};
+
+void
+register_wsource_time_models ()
+{
+  static WSourceTimeSyntax WSourceTime_syntax;
+}
 
 // wsource_time.C ends here.

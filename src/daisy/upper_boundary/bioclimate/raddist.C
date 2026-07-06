@@ -24,6 +24,7 @@
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Raddist::component = "raddist";
 
@@ -82,12 +83,21 @@ Raddist::Raddist (const BlockModel& al)
 Raddist::~Raddist ()
 { }
 
-static struct RaddistInit : public DeclareComponent 
+struct RaddistInit : public DeclareComponent 
 {
   RaddistInit ()
     : DeclareComponent (Raddist::component, "\
 The 'raddist' component calculates the radiation distribution in the canopy.")
   { }
-} Raddist_init;
+};
+
+void
+register_raddist_models ()
+{
+  static RaddistInit Raddist_init;
+
+  register_raddist_DPF_models ();
+  register_raddist_standard_models ();
+}
 
 // raddist.C ends here.

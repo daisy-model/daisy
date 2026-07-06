@@ -28,6 +28,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'makkink' model.
 
@@ -76,7 +77,7 @@ struct PetMakkinkOld : public Pet
     { }
 };
 
-static struct PetMakkinkOldSyntax : public DeclareModel
+struct PetMakkinkOldSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new PetMakkinkOld (al); }
@@ -86,7 +87,7 @@ static struct PetMakkinkOldSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} PetMakkinkOld_syntax;
+};
 
 // The 'Makkink' model.
 
@@ -163,7 +164,7 @@ struct PetMakkink : public Pet
     { }
 };
 
-static struct PetMakkinkSyntax : public DeclareModel
+struct PetMakkinkSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new PetMakkink (al); }
@@ -190,11 +191,11 @@ Makkink parameter");
     frame.declare ("beta_M1", Attribute::None (), Attribute::Const, "\
 Makkink parameter");
   }
-} PetMakkink_syntax;
+};
 
 // The 'Makkink57' parameterization.
 
-static struct ChemicalMakkink57Syntax : public DeclareParam
+struct ChemicalMakkink57Syntax : public DeclareParam
 { 
   ChemicalMakkink57Syntax ()
     : DeclareParam (Pet::component, "Makkink57", "Makkink", "\
@@ -206,11 +207,11 @@ Original parameterization.")
     frame.set ("beta_M0", -0.12);
     frame.set ("beta_M1", 0.61);
   }
-} ChemicalMakkink57_syntax;
+};
 
 // The 'AslyngHansen82' parameterization.
 
-static struct ChemicalAslyngHansen82Syntax : public DeclareParam
+struct ChemicalAslyngHansen82Syntax : public DeclareParam
 { 
   ChemicalAslyngHansen82Syntax ()
     : DeclareParam (Pet::component, "AslyngHansen82", "Makkink", "\
@@ -222,11 +223,11 @@ Danish calibration.")
     frame.set ("beta_M0", 0.0);
     frame.set ("beta_M1", 0.7);
   }
-} ChemicalAslyngHansen82_syntax;
+};
 
 // The 'deBruin87' parameterization.
 
-static struct ChemicaldeBruin87Syntax : public DeclareParam
+struct ChemicaldeBruin87Syntax : public DeclareParam
 { 
   ChemicaldeBruin87Syntax ()
     : DeclareParam (Pet::component, "deBruin87", "Makkink", "\
@@ -238,6 +239,16 @@ Dutch calibration.")
     frame.set ("beta_M0", 0.0);
     frame.set ("beta_M1", 0.65);
   }
-} ChemicaldeBruin87_syntax;
+};
+
+void
+register_pet_makkink_models ()
+{
+  static PetMakkinkOldSyntax PetMakkinkOld_syntax;
+  static PetMakkinkSyntax PetMakkink_syntax;
+  static ChemicalMakkink57Syntax ChemicalMakkink57_syntax;
+  static ChemicalAslyngHansen82Syntax ChemicalAslyngHansen82_syntax;
+  static ChemicaldeBruin87Syntax ChemicaldeBruin87_syntax;
+}
 
 // pet_makkink.C ends here.

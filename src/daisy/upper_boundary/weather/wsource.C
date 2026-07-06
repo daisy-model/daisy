@@ -25,6 +25,7 @@
 #include "daisy/daisy_time.h"
 #include "object_model/librarian.h"
 #include "util/assertion.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The "weather" component.
 
@@ -48,13 +49,28 @@ WSource::WSource (const symbol name)
 WSource::~WSource ()
 { }
 
-static struct WSourceInit : public DeclareComponent
+struct WSourceInit : public DeclareComponent
 {
   WSourceInit ()
     : DeclareComponent (WSource::component, "\
 A 'wsource' is a source of raw weatherdata.")
   { }
-} WSource_init;
+};
+
+void
+register_wsource_models ()
+{
+  static WSourceInit WSource_init;
+
+  register_wsource_base_models ();
+  register_wsource_weather_models ();
+  register_wsource_const_models ();
+  register_wsource_time_models ();
+  register_wsource_combine_models ();
+  register_wsource_indirect_models ();
+  register_wsource_table_models ();
+  register_wsource_standard_models ();
+}
 
 // wsource.C ends here.
 

@@ -28,6 +28,7 @@
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "util/mathlib.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'max_exfiltration' component.
 
@@ -39,7 +40,7 @@ MaxExfiltration::MaxExfiltration (const BlockModel&)
 MaxExfiltration::~MaxExfiltration ()
 { }
 
-static struct MaxExfiltrationInit : public DeclareComponent 
+struct MaxExfiltrationInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -47,7 +48,7 @@ static struct MaxExfiltrationInit : public DeclareComponent
     : DeclareComponent (MaxExfiltration::component, "\
 Soil limited maximum exfiltration.")
   { }
-} MaxExfiltration_init;
+};
 
 // The 'Hansen' model.
 
@@ -76,7 +77,7 @@ struct MaxExfiltrationHansen : public MaxExfiltration
   { }
 };
 
-static struct MaxExfiltrationHansenSyntax : public DeclareModel
+struct MaxExfiltrationHansenSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MaxExfiltrationHansen (al); }
@@ -86,7 +87,7 @@ Darcy formulated for water content with mimimum water at surface.")
   { }
   void load_frame (Frame&) const
   { }
-} MaxExfiltrationHansen_syntax;
+};
 
 // The 'gradient' model.
 
@@ -111,7 +112,7 @@ struct MaxExfiltrationGradient : public MaxExfiltration
   { }
 };
 
-static struct MaxExfiltrationGradientSyntax : public DeclareModel
+struct MaxExfiltrationGradientSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MaxExfiltrationGradient (al); }
@@ -127,7 +128,7 @@ Darcy formulated for water content with mimimum water at surface.")
 The gradient is assumed from center of top node to surface of top node.");
     frame.order ("max_exfiltration_gradient");
   }
-} MaxExfiltrationGradient_syntax;
+};
 
 // The 'Theta' model.
 
@@ -163,7 +164,7 @@ struct MaxExfiltrationTheta : public MaxExfiltration
   { }
 };
 
-static struct MaxExfiltrationThetaSyntax : public DeclareModel
+struct MaxExfiltrationThetaSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MaxExfiltrationTheta (al); }
@@ -178,7 +179,7 @@ Darcy formulated for water content with mimimum water at surface.")
 		   "Surface potential for soil limited evaporation.\n\
 If positive, use atmospheric potential (Kelvin's equation).");
   }
-} MaxExfiltrationTheta_syntax;
+};
 
 // The 'steady-state' model.
 
@@ -211,7 +212,7 @@ struct MaxExfiltrationSteadyState : public MaxExfiltration
   { }
 };
 
-static struct MaxExfiltrationSteadyStateSyntax : public DeclareModel
+struct MaxExfiltrationSteadyStateSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new MaxExfiltrationSteadyState (al); }
@@ -226,6 +227,16 @@ Steady state flow from top cell to surface.")
 		   "Surface potential for soil limited evaporation.\n\
 If positive, use atmospheric potential (Kelvin's equation).");
   }
-} MaxExfiltrationSteadyState_syntax;
+};
+
+void
+register_max_exfiltration_models ()
+{
+  static MaxExfiltrationInit MaxExfiltration_init;
+  static MaxExfiltrationHansenSyntax MaxExfiltrationHansen_syntax;
+  static MaxExfiltrationGradientSyntax MaxExfiltrationGradient_syntax;
+  static MaxExfiltrationThetaSyntax MaxExfiltrationTheta_syntax;
+  static MaxExfiltrationSteadyStateSyntax MaxExfiltrationSteadyState_syntax;
+}
 
 // max_exfiltration.C ends here.

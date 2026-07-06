@@ -31,6 +31,7 @@
 #include "object_model/treelog.h"
 #include "util/mathlib.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 // The 'retention' component.
 
@@ -52,13 +53,13 @@ Retention::~Retention ()
 
 // The 'PASTIS' model.
 
-static struct RetentionInit : public DeclareComponent 
+struct RetentionInit : public DeclareComponent 
 {
   RetentionInit ()
     : DeclareComponent (Retention::component, "\
 Specify a retention or a halftime.")
   { }
-} Retention_init;
+};
 
 // The 'PASTIS' model.
 
@@ -93,7 +94,7 @@ RetentionPASTIS::~RetentionPASTIS ()
 { }
 
 
-static struct RetentionPASTISSyntax : DeclareModel
+struct RetentionPASTISSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RetentionPASTIS (al); }
@@ -104,7 +105,7 @@ h (Theta) = -(-h_min)^(1-((Theta - Theta_res) / (2/3 Theta_sat - Theta_res)))")
   { }
   void load_frame (Frame&) const
   { }
-} RetentionPASTIS_syntax;
+};
 
 // The 'Exponential' model.
 
@@ -158,7 +159,7 @@ RetentionExponential::RetentionExponential (const BlockModel& al)
 RetentionExponential::~RetentionExponential ()
 { }
 
-static struct RetentionExponentialSyntax : DeclareModel
+struct RetentionExponentialSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RetentionExponential (al); }
@@ -180,6 +181,14 @@ Pressure below residual water.");
     frame.declare_fraction ("Theta_sat", Attribute::OptionalConst, "\
 Residual water.");
   }
-} RetentionExponential_syntax;
+};
+
+void
+register_retention_models ()
+{
+  static RetentionInit Retention_init;
+  static RetentionPASTISSyntax RetentionPASTIS_syntax;
+  static RetentionExponentialSyntax RetentionExponential_syntax;
+}
 
 // retention.C ends here.

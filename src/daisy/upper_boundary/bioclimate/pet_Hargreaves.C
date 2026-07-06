@@ -28,6 +28,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include "object_model/treelog.h"
+#include "daisy/daisy_registration_internal.h"
 
 struct PetHargreaves : public Pet
 {
@@ -101,7 +102,7 @@ struct PetHargreaves : public Pet
     { }
 };
 
-static struct PetHargreavesSyntax : public DeclareModel
+struct PetHargreavesSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new PetHargreaves (al); }
@@ -111,6 +112,12 @@ Potential evopotranspiration based on temperature.")
   { }
   void load_frame (Frame& frame) const
   { frame.set_strings ("cite", "hargreaves1985reference"); }
-} PetHargreaves_syntax;
+};
+
+void
+register_pet_Hargreaves_models ()
+{
+  static PetHargreavesSyntax PetHargreaves_syntax;
+}
 
 // pet_Hargreaves.C ends here.

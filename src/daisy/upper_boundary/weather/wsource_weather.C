@@ -40,6 +40,7 @@
 #include <map>
 #include <deque>
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 class WSourceWeather::Implementation
 {
@@ -1216,7 +1217,7 @@ WSourceWeather::Implementation::check (const Time& from, const Time& to,
     return false;
 
   // Required parameters.
-  static struct required_t : public std::vector<symbol>
+  struct required_t : public std::vector<symbol>
   {
     required_t ()
     {
@@ -1231,8 +1232,8 @@ WSourceWeather::Implementation::check (const Time& from, const Time& to,
       push_back (Weatherdata::Station ());
       push_back (Weatherdata::Surface ());
     }
-  } required;
-
+  };
+  static required_t required;
   for (size_t i = 0; i < required.size (); i++)
     if (!source.check (required[i]))
       {
@@ -1630,7 +1631,7 @@ WSourceWeather::~WSourceWeather ()
 { }
 
 // Add the WSourceWeather syntax to the syntax table.
-static struct WSourceWeatherSyntax : public DeclareBase
+struct WSourceWeatherSyntax : public DeclareBase
 {
   WSourceWeatherSyntax ()
     : DeclareBase (WSource::component, "weather",
@@ -1702,7 +1703,12 @@ Fraction of sky covered by clouds, 1 = clear sky.");
 Total atmospheric deposition.", load_flux);
     
   }
-} WSourceWeather_syntax;
+};
+
+void
+register_wsource_weather_models ()
+{
+  static WSourceWeatherSyntax WSourceWeather_syntax;
+}
 
 // wsource_weather.C ends here.
-

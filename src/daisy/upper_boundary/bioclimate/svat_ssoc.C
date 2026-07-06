@@ -44,6 +44,7 @@
 #include "daisy/soil/soil_water.h"
 #include <memory>
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct SVAT_SSOC : public SVAT
 {
@@ -1163,7 +1164,7 @@ SVAT_SSOC::SVAT_SSOC (const BlockModel& al)
     initialized_canopy (false)
 { }
 
-static struct SVAT_SSOCSyntax : public DeclareModel
+struct SVAT_SSOCSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SVAT_SSOC (al); }
@@ -1295,6 +1296,13 @@ to reference height (screen height).");
 		   "Net longwave radiation from soil and canopy.");
     
   }
-} SVAT_ssoc_syntax;
+};
 
 // svat_ssoc.C ends here
+
+void
+register_svat_ssoc_models ()
+{
+  static SVAT_SSOCSyntax SVAT_ssoc_syntax;
+}
+

@@ -27,6 +27,7 @@
 #include "util/assertion.h"
 #include "util/mathlib.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 symbol 
 WSourceTable::title () const
@@ -417,7 +418,7 @@ WSourceTable::WSourceTable (const BlockModel& al)
 WSourceTable::~WSourceTable ()
 { }
 
-static struct WSourceTableSyntax : public DeclareModel
+struct WSourceTableSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceTable (al); }
@@ -429,6 +430,12 @@ static struct WSourceTableSyntax : public DeclareModel
   { 
     LexerTable::load_syntax (frame);
   }
-} WSourceTable_syntax;
+};
+
+void
+register_wsource_table_models ()
+{
+  static WSourceTableSyntax WSourceTable_syntax;
+}
 
 // wsource_table.C ends here.

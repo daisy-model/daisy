@@ -25,6 +25,7 @@
 #include "object_model/librarian.h"
 #include "daisy/upper_boundary/weather/weather.h"
 #include "daisy/soil/soil_heat.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'ghf' component.
 
@@ -36,7 +37,7 @@ GHF::GHF (const BlockModel&)
 GHF::~GHF ()
 { }
 
-static struct GHFInit : public DeclareComponent 
+struct GHFInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -44,7 +45,7 @@ static struct GHFInit : public DeclareComponent
     : DeclareComponent (GHF::component, "\
 Ground heat flux.")
   { }
-} GHF_init;
+};
 
 // The 'const' model.
 
@@ -65,7 +66,7 @@ struct GHFConst : public GHF
   { }
 };
 
-static struct GHFConstSyntax : public DeclareModel
+struct GHFConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GHFConst (al); }
@@ -79,11 +80,11 @@ static struct GHFConstSyntax : public DeclareModel
 The ground heat flux never changes.");
     frame.order ("G");
   }
-} GHFConst_syntax;
+};
 
 // The 'none' parameterization.
 
-static struct GHFNoneSyntax : public DeclareParam
+struct GHFNoneSyntax : public DeclareParam
 {
   GHFNoneSyntax ()
     : DeclareParam (GHF::component, "none", "const", "No ground heat flux.")
@@ -92,7 +93,7 @@ static struct GHFNoneSyntax : public DeclareParam
   {
     frame.set ("G", 0.0);
   }
-} GHFNone_syntax;
+};
 
 
 // The 'weather' model
@@ -112,7 +113,7 @@ struct GHFWeather : public GHF
   { }
 };
 
-static struct GHFWeatherSyntax : public DeclareModel
+struct GHFWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GHFWeather (al); }
@@ -122,7 +123,7 @@ static struct GHFWeatherSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} GHFWeather_syntax;
+};
 
 // The 'old' model
 
@@ -140,7 +141,7 @@ struct GHFOld : public GHF
   { }
 };
 
-static struct GHFOldSyntax : public DeclareModel
+struct GHFOldSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GHFOld (al); }
@@ -151,7 +152,7 @@ The model used in Daisy 6.08 and earlier, should not be used.")
   { }
   void load_frame (Frame&) const
   { }
-} GHFOld_syntax;
+};
 
 // The 'surface' model
 
@@ -169,7 +170,7 @@ struct GHFSurface : public GHF
   { }
 };
 
-static struct GHFSurfaceSyntax : public DeclareModel
+struct GHFSurfaceSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GHFSurface (al); }
@@ -180,7 +181,7 @@ Calculated from previous timestep.")
   { }
   void load_frame (Frame&) const
   { }
-} GHFSurface_syntax;
+};
 
 // The 'FAO56' model
 
@@ -203,7 +204,7 @@ struct GHFFAO56 : public GHF
   { }
 };
 
-static struct GHFFAO56Syntax : public DeclareModel
+struct GHFFAO56Syntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GHFFAO56 (al); }
@@ -215,7 +216,19 @@ Ground heat flux is 10 % of Rn during day, and 50 % of Rn during night.")
   {
     frame.set_strings ("cite", "FAO-PM");
   }
-} GHFFAO56_syntax;
+};
 
+
+void
+register_ghf_models ()
+{
+  static GHFInit GHF_init;
+  static GHFConstSyntax GHFConst_syntax;
+  static GHFNoneSyntax GHFNone_syntax;
+  static GHFWeatherSyntax GHFWeather_syntax;
+  static GHFOldSyntax GHFOld_syntax;
+  static GHFSurfaceSyntax GHFSurface_syntax;
+  static GHFFAO56Syntax GHFFAO56_syntax;
+}
 
 // ghf.C ends here.

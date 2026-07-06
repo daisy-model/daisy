@@ -29,6 +29,7 @@
 #include "daisy/upper_boundary/surface/surface.h"
 #include "object_model/librarian.h"
 #include "util/mathlib.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Pet::component = "pet";
 
@@ -91,7 +92,7 @@ Pet::Pet (const BlockModel& al)
 Pet::~Pet ()
 { }
 
-static struct PetInit : public DeclareComponent 
+struct PetInit : public DeclareComponent 
 {
   PetInit ()
     : DeclareComponent (Pet::component, "\
@@ -108,6 +109,19 @@ from meteorological data, as well as the crop and soil state.")
     frame.declare ("reference_evapotranspiration", "mm/h", Attribute::LogOnly, 
                    "Reference evapotranspiration for a dry system.");
   }
-} Pet_init;
+};
+
+void
+register_pet_models ()
+{
+  static PetInit Pet_init;
+
+  register_pet_FAO_PM_models ();
+  register_pet_FAO_PM_hourly_models ();
+  register_pet_Hargreaves_models ();
+  register_pet_makkink_models ();
+  register_pet_PM_models ();
+  register_pet_weather_models ();
+}
 
 // pet.C ends here.

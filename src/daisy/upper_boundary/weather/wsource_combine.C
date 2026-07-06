@@ -33,6 +33,7 @@
 #include <boost/noncopyable.hpp>
 #include <sstream>
 #include <iterator>
+#include "daisy/daisy_registration_internal.h"
 
 struct WSourceCombine : public WSourceWeather
 {
@@ -190,7 +191,7 @@ By default, use data until end of source.", Time::load_syntax);
 List of weather data to use from source.\n\
 Specify 'Any' to use all present weather data.");
   frame.set_strings ("use", Any ());
-  static struct UseCheck : public VCheck
+  struct UseCheck : public VCheck
   {
     bool verify (const Metalib&, const Frame& frame, const symbol key, 
                  Treelog& msg) const
@@ -213,7 +214,8 @@ Specify 'Any' to use all present weather data.");
           }
       return ok;
     }
-  } use_check;
+  };
+  static UseCheck use_check;
   static VCheck::All use_unique (use_check, VCheck::unique ());
   frame.set_check ("use", use_unique);
 }
@@ -477,7 +479,7 @@ WSourceCombine::source_check (Treelog& msg) const
   return more_data_available;
 }
 
-static struct WSourceCombineSyntax : public DeclareModel
+struct WSourceCombineSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceCombine (al); }
@@ -494,7 +496,12 @@ List of weather sources.", WSourceCombine::Entry::load_syntax);
 Reserve weather model to use when no source match.");
   frame.set ("reserve", "null");
   }
-} WSourceCombine_syntax;
+};
+
+void
+register_wsource_combine_models ()
+{
+  static WSourceCombineSyntax WSourceCombine_syntax;
+}
 
 // wsource_combine.C ends here.
-

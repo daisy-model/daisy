@@ -27,6 +27,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct DifradBRL : public Difrad
 {
@@ -78,7 +79,7 @@ struct DifradBRL : public Difrad
     { }
 };
 
-static struct DifradBRLSyntax : public DeclareModel
+struct DifradBRLSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DifradBRL (al); }
@@ -101,4 +102,11 @@ Last predictor (persistence) is not taken into account.")
     frame.declare ("beta4", Attribute::None (), Attribute::Const, "5th parameter (daily clearness index) of BRL model.");
     frame.set ("beta4", 1.028);
   }
-} DifradBRL_syntax;
+};
+
+void
+register_difrad_BRL_models ()
+{
+  static DifradBRLSyntax DifradBRL_syntax;
+}
+

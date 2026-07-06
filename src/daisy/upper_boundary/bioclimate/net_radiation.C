@@ -29,6 +29,7 @@
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'net_radiation' component.
 
@@ -48,7 +49,7 @@ NetRadiation::NetRadiation (const BlockModel& al)
 NetRadiation::~NetRadiation ()
 { }
 
-static struct NetRadiationInit : public DeclareComponent 
+struct NetRadiationInit : public DeclareComponent 
 {
   NetRadiationInit ()
     : DeclareComponent (NetRadiation::component, "\
@@ -58,7 +59,7 @@ Calculate net radiation from meteorological data.")
   {
     Model::load_model (frame);
   }
-} NetRadiation_init;
+};
 
 // The 'brunt' model.
 
@@ -79,7 +80,7 @@ struct NetRadiationBrunt : public NetRadiation
   { }
 };
 
-static struct NetRadiationBruntSyntax : public DeclareModel
+struct NetRadiationBruntSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationBrunt (al); }
@@ -100,7 +101,7 @@ FAO recommendation.")
 		   "Brunt 'B' parameter (vapor pressure factor).");
     frame.set ("B", 0.044);
   }
-} NetRadiationBrunt_syntax;
+};
 
 // The 'idso_jackson' model.
 
@@ -118,7 +119,7 @@ struct NetRadiationIdsoJackson : public NetRadiation
   { }
 };
 
-static struct NetRadiationIJSyntax : public DeclareModel
+struct NetRadiationIJSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationIdsoJackson (al); }
@@ -128,7 +129,7 @@ static struct NetRadiationIJSyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   { }
-} NetRadiationIH_syntax;
+};
 
 // The 'brutsaert' model.
 
@@ -145,7 +146,7 @@ struct NetRadiationBrutsaert : public NetRadiation
   { }
 };
 
-static struct NetRadiationBrutsaertSyntax : public DeclareModel
+struct NetRadiationBrutsaertSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationBrutsaert (al); }
@@ -155,7 +156,7 @@ static struct NetRadiationBrutsaertSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NetRadiationBrutsaert_syntax;
+};
 
 // The 'swinbank' model.
 
@@ -172,7 +173,7 @@ struct NetRadiationSwinbank : public NetRadiation
   { }
 };
 
-static struct NetRadiationSwinbankSyntax : public DeclareModel
+struct NetRadiationSwinbankSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationSwinbank (al); }
@@ -182,7 +183,7 @@ static struct NetRadiationSwinbankSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NetRadiationSwinbank_syntax;
+};
 
 // The 'satterlund' model.
 
@@ -200,7 +201,7 @@ struct NetRadiationSatterlund : public NetRadiation
   { }
 };
 
-static struct NetRadiationSatterlundSyntax : public DeclareModel
+struct NetRadiationSatterlundSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationSatterlund (al); }
@@ -210,7 +211,7 @@ static struct NetRadiationSatterlundSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NetRadiationSatterlund_syntax;
+};
 
 // The 'prata' model.
 
@@ -229,7 +230,7 @@ struct NetRadiationPrata : public NetRadiation
   { }
 };
 
-static struct NetRadiationPrataSyntax : public DeclareModel
+struct NetRadiationPrataSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NetRadiationPrata (al); }
@@ -239,6 +240,19 @@ static struct NetRadiationPrataSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NetRadiationPrata_syntax;
+};
 
 // net_radiation.C ends here
+
+void
+register_net_radiation_models ()
+{
+  static NetRadiationInit NetRadiation_init;
+  static NetRadiationBruntSyntax NetRadiationBrunt_syntax;
+  static NetRadiationIJSyntax NetRadiationIH_syntax;
+  static NetRadiationBrutsaertSyntax NetRadiationBrutsaert_syntax;
+  static NetRadiationSwinbankSyntax NetRadiationSwinbank_syntax;
+  static NetRadiationSatterlundSyntax NetRadiationSatterlund_syntax;
+  static NetRadiationPrataSyntax NetRadiationPrata_syntax;
+}
+

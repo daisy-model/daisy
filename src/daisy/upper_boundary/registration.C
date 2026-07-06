@@ -1,4 +1,4 @@
-// registration.C -- Explicit registration for Daisy models.
+// registration.C -- Explicit upper boundary registration.
 //
 // Copyright 2026 The Daisy Authors.
 //
@@ -18,22 +18,16 @@
 // along with Daisy; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-#include "daisy/daisy_registration.h"
 #include "daisy/daisy_registration_internal.h"
 
 void
-register_daisy_models ()
+register_upper_boundary_models ()
 {
-  register_daisy_time_models ();
-  register_timestep_models ();
-  register_condition_models ();
-  register_groundwater_models ();
-  register_column_models ();
-  register_action_models ();
-  register_crop_models ();
-  register_organic_matter_models ();
-  register_chemistry_models ();
-  register_upper_boundary_models ();
-  register_output_models ();
-  register_daisy_program_models ();
+  register_weather_models ();
+  register_bioclimate_models ();
+  register_litter_models ();
+  register_surface_models ();
+  register_vegetation_models ();
 }
+
+// registration.C ends here.

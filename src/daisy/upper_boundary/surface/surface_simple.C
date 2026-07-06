@@ -26,10 +26,11 @@
 #include "object_model/librarian.h"
 #include "util/assertion.h"
 #include "object_model/block_model.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'simple' base model.
 
-static struct SurfaceSimpleSyntax : DeclareBase
+struct SurfaceSimpleSyntax : DeclareBase
 {
   SurfaceSimpleSyntax () 
     : DeclareBase (Surface::component, "simple", "\
@@ -38,7 +39,7 @@ Don't keep track of surface stuff.")
 
   void load_frame (Frame&) const
   { }
-} SurfaceSimple_syntax;
+};
 
 // The 'const_flux' model.
 
@@ -66,7 +67,7 @@ struct SurfaceConstFlux : public SurfaceSimple
   { }
 };
 
-static struct SurfaceConstFluxSyntax : DeclareModel
+struct SurfaceConstFluxSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SurfaceConstFlux (al); }
@@ -82,11 +83,11 @@ Constant flux upper boundary for soil.")
 Flux up from soil.");
     frame.order ("flux");
   }
-} SurfaceConstFlux_syntax;
+};
 
 // The 'none' parameterization.
 
-static struct SurfaceNoneSyntax : public DeclareParam
+struct SurfaceNoneSyntax : public DeclareParam
 { 
   SurfaceNoneSyntax ()
     : DeclareParam (Surface::component, "none", "const_flux", "\
@@ -94,7 +95,7 @@ Zero flux upper boundary for soil.")
   { }
   void load_frame (Frame& frame) const
   { frame.set ("flux", 0.0); }
-} SurfaceNone_syntax;
+};
 
 // The 'const_pressure' model.
 
@@ -120,7 +121,7 @@ struct SurfaceConstPressure : public SurfaceSimple
   { }
 };
 
-static struct SurfaceConstPressureSyntax : DeclareModel
+struct SurfaceConstPressureSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SurfaceConstPressure (al); }
@@ -136,6 +137,15 @@ Constant pressure upper boundary for soil.")
 Soil upper boundary pressure.");
     frame.order ("pressure");
   }
-} SurfaceConstPressure_syntax;
+};
+
+void
+register_surface_simple_models ()
+{
+  static SurfaceSimpleSyntax SurfaceSimple_syntax;
+  static SurfaceConstFluxSyntax SurfaceConstFlux_syntax;
+  static SurfaceNoneSyntax SurfaceNone_syntax;
+  static SurfaceConstPressureSyntax SurfaceConstPressure_syntax;
+}
 
 // surface_simple.C ends here.

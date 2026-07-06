@@ -53,6 +53,7 @@
 # include "util/nrutil.h"  // from Num Rec
 #undef vector
 #include "object_model/frame.h"
+#include "daisy/daisy_registration_internal.h"
 # define SWAP(a,b) {temp=(a);(a)=(b);(b)=temp;} // from gaussj function
 # define NP 20 // from xgaussj driver program
 # define MP 20 // from xgaussj driver program
@@ -1841,7 +1842,7 @@ SVAT_PMSW::~SVAT_PMSW() // destructor
   free_matrix(astar,1,NP,1,NP);
 }
 
-static struct SVAT_PMSWSyntax : public DeclareModel
+struct SVAT_PMSWSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SVAT_PMSW (al); }
@@ -2048,6 +2049,12 @@ static struct SVAT_PMSWSyntax : public DeclareModel
                 "iteration accuracy in Newton-Raphson method");
     frame.set ("acc", 0.01);
   }
-} SVAT_PMSW_syntax;
+};
+
+void
+register_svat_pmsw_models ()
+{
+  static SVAT_PMSWSyntax SVAT_PMSW_syntax;
+}
 
 // svat_pmsw.C ends here.

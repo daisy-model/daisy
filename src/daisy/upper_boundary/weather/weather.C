@@ -23,11 +23,19 @@
 
 #include "daisy/upper_boundary/weather/weather.h"
 #include "daisy/upper_boundary/bioclimate/astronomy.h"
+#include "daisy/daisy_registration_internal.h"
 
 Weather::Weather ()
 { }
 
 Weather::~Weather ()
 { }
+
+void
+register_weather_models ()
+{
+  register_deposition_models ();
+  register_wsource_models ();
+}
 
 // weather.C ends here.

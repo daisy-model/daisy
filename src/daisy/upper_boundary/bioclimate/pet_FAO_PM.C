@@ -36,6 +36,7 @@
 #include "util/mathlib.h"
 #include <sstream>
 #include <memory>
+#include "daisy/daisy_registration_internal.h"
 
 class PetFAO_PM : public Pet
 {
@@ -168,7 +169,7 @@ PetFAO_PM::tick (const Weather& weather,
                                    reference_evapotranspiration_wet);
  }
 
- static struct PetFAO_PMSyntax : public DeclareModel
+ struct PetFAO_PMSyntax : public DeclareModel
  {
    Model* make (const BlockModel& al) const
    { return new PetFAO_PM (al); }
@@ -198,6 +199,12 @@ especially when feed with daily weather data.");
                     "Boundary layer resistance for wet surface.");
      frame.set ("rb", 20.0);
    }
-} PetFAO_PM_syntax;
+};
+
+void
+register_pet_FAO_PM_models ()
+{
+  static PetFAO_PMSyntax PetFAO_PM_syntax;
+}
 
 // pet_FAO_PM.C ends here.

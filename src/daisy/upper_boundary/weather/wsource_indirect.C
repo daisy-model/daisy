@@ -22,6 +22,7 @@
 #include "daisy/upper_boundary/weather/wsource_indirect.h"
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"
+#include "daisy/daisy_registration_internal.h"
 
 void
 WSourceIndirect::entries (std::set<symbol>& e) const
@@ -156,7 +157,7 @@ WSourceIndirect::WSourceIndirect (const BlockModel& al)
 WSourceIndirect::~WSourceIndirect ()
 { }
 
-static struct WSourceIndirectSyntax : public DeclareModel
+struct WSourceIndirectSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceIndirect (al); }
@@ -170,7 +171,13 @@ static struct WSourceIndirectSyntax : public DeclareModel
                           Attribute::State, Attribute::Singleton, "\
 Use this weather source.");
   }
-} WSourceIndirect_syntax;
+};
+
+void
+register_wsource_indirect_models ()
+{
+  static WSourceIndirectSyntax WSourceIndirect_syntax;
+}
 
 // wsource_indirect.C ends here.
 

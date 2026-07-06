@@ -32,6 +32,7 @@
 #include "daisy/timestep.h"
 #include "util/mathlib.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 // The 'source_flux' model.
 
@@ -172,7 +173,7 @@ struct SurfaceSourceFlux : public SurfaceSimple
   { }
 };
 
-static struct SurfaceSourceFluxSyntax : DeclareModel
+struct SurfaceSourceFluxSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SurfaceSourceFlux (al); }
@@ -191,7 +192,13 @@ Flux time series.");
 If true, interpolate values.  If false, use last read.");
     frame.set ("interpolate", false);
   }
-} SurfaceSourceFlux_syntax;
+};
 
+
+void
+register_surface_source_models ()
+{
+  static SurfaceSourceFluxSyntax SurfaceSourceFlux_syntax;
+}
 
 // surface_source.C ends here.

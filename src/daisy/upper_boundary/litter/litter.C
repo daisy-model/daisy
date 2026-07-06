@@ -25,6 +25,7 @@
 #include "object_model/librarian.h"
 #include "object_model/check.h"
 #include "daisy/output/log.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'litter' component.
 
@@ -70,7 +71,7 @@ Litter::Litter  (const BlockModel& al)
 Litter::~Litter ()
 { }
 
-static struct LitterInit : public DeclareComponent 
+struct LitterInit : public DeclareComponent 
 {
   LitterInit ()
     : DeclareComponent (Litter::component, "\
@@ -82,7 +83,7 @@ Litter, surface residuals, or mulch below canopy.")
     frame.declare_fraction ("cover", Attribute::LogOnly, "\
 Fraction of surface area covered by litter.");
   }
-} Litter_init;
+};
 
 // The 'none' model.
 
@@ -112,7 +113,7 @@ struct LitterNone : public Litter
   { }
 };
 
-static struct LitterNoneSyntax : DeclareModel
+struct LitterNoneSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new LitterNone (al); }
@@ -122,7 +123,7 @@ The effect of surface residuals is ignored by the model.")
   { }
   void load_frame (Frame&) const
   { }
-} LitterNone_syntax;
+};
 
 // The 'permanent' model.
 
@@ -160,7 +161,7 @@ struct LitterPermanent : public Litter
   { }
 };
 
-static struct LitterPermanentSyntax : DeclareModel
+struct LitterPermanentSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new LitterPermanent (al); }
@@ -179,7 +180,19 @@ Reduction factor for potential evaporation below litter.");
                    Attribute::OptionalConst, "Reflection factor.\n\
 By default, the surface albedo will be used.");
   }
-} LitterPermanent_syntax;
+};
 
+
+void
+register_litter_models ()
+{
+  static LitterInit Litter_init;
+  static LitterNoneSyntax LitterNone_syntax;
+  static LitterPermanentSyntax LitterPermanent_syntax;
+
+  register_retention_models ();
+  register_litter_mulch_models ();
+  register_litter_residue_models ();
+}
 
 // litter.C ends here.

@@ -32,6 +32,7 @@
 #include <map>
 
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct WSourceBase::Implementation : public FrameSubmodelValue
 {
@@ -204,7 +205,7 @@ WSourceBase::WSourceBase (const BlockModel& al)
 WSourceBase::~WSourceBase ()
 { }
 
-static struct WSourceBaseSyntax : public DeclareBase
+struct WSourceBaseSyntax : public DeclareBase
 {
   WSourceBaseSyntax ()
     : DeclareBase (WSource::component, "base", "weather",
@@ -222,7 +223,13 @@ static struct WSourceBaseSyntax : public DeclareBase
                              "Only use data before this date.",
                              Time::load_syntax);
   }
-} WSourceBase_syntax;
+};
+
+void
+register_wsource_base_models ()
+{
+  static WSourceBaseSyntax WSourceBase_syntax;
+}
 
 // wsource_base.C ends here.
 

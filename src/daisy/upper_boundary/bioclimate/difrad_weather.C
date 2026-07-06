@@ -26,6 +26,7 @@
 #include "object_model/librarian.h"
 #include "object_model/treelog.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct DifradWeather : public Difrad
 {
@@ -60,7 +61,7 @@ struct DifradWeather : public Difrad
   { }
 };
 
-static struct DifradWeatherSyntax : public DeclareModel
+struct DifradWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DifradWeather (al); }
@@ -70,4 +71,11 @@ static struct DifradWeatherSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} DifradWeather_syntax;
+};
+
+void
+register_difrad_weather_models ()
+{
+  static DifradWeatherSyntax DifradWeather_syntax;
+}
+

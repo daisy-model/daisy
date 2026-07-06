@@ -25,6 +25,7 @@
 #include "object_model/treelog.h"
 #include "daisy/daisy_time.h"
 #include "object_model/frame.h"
+#include "daisy/daisy_registration_internal.h"
 
 struct WSourceConst : public WSourceBase
 {
@@ -67,7 +68,7 @@ struct WSourceConst : public WSourceBase
   { }
 };
 
-static struct WSourceConstSyntax : public DeclareModel
+struct WSourceConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceConst (al); }
@@ -77,9 +78,9 @@ Weather that does not change during the simulation.")
   { }
   void load_frame (Frame&) const
   { }
-} WSourceConst_syntax;
+};
 
-static struct WSourceNoneSyntax : public DeclareParam
+struct WSourceNoneSyntax : public DeclareParam
 { 
   WSourceNoneSyntax ()
     : DeclareParam (WSource::component, "none", "const", "\
@@ -106,9 +107,9 @@ controled, constant weather conditions.")
     frame.set ("GlobRad", 0.0);
     frame.set ("AirTemp", 10.0);
   }
-} WSourceNone_syntax;
+};
 
-static struct WSourceMissingSyntax : public DeclareParam
+struct WSourceMissingSyntax : public DeclareParam
 { 
   WSourceMissingSyntax ()
     : DeclareParam (WSource::component, "null", "const", "\
@@ -117,6 +118,14 @@ Use for indicating no weather data available.")
   { }
   void load_frame (Frame&) const
   { }
-} WSourceMissing_syntax;
+};
+
+void
+register_wsource_const_models ()
+{
+  static WSourceConstSyntax WSourceConst_syntax;
+  static WSourceNoneSyntax WSourceNone_syntax;
+  static WSourceMissingSyntax WSourceMissing_syntax;
+}
 
 // wsource_const.C ends here.

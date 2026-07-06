@@ -27,6 +27,7 @@
 #include "daisy/output/log.h"
 #include "util/mathlib.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 // The 'cloudiness' component.
 
@@ -50,7 +51,7 @@ Cloudiness::Cloudiness (const BlockModel& al)
 Cloudiness::~Cloudiness ()
 { }
 
-static struct CloudinessInit : public DeclareComponent 
+struct CloudinessInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -58,7 +59,7 @@ static struct CloudinessInit : public DeclareComponent
     : DeclareComponent (Cloudiness::component, "\
 Calculate cloudiness from meterological data.")
   { }
-} Cloudiness_init;
+};
 
 // The 'const' model.
 
@@ -81,7 +82,7 @@ struct CloudinessConst : public Cloudiness
   { }
 };
 
-static struct CloudinessConstSyntax : public DeclareModel
+struct CloudinessConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CloudinessConst (al); }
@@ -95,7 +96,7 @@ static struct CloudinessConstSyntax : public DeclareModel
 The cloudiness never changes.");
     frame.order ("cloudiness");
   }
-} CloudinessConst_syntax;
+};
 
 // The 'weather' model
 
@@ -130,7 +131,7 @@ struct CloudinessWeather : public Cloudiness
   { }
 };
 
-static struct CloudinessWeatherSyntax : public DeclareModel
+struct CloudinessWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new CloudinessWeather (al); }
@@ -143,7 +144,7 @@ static struct CloudinessWeatherSyntax : public DeclareModel
     frame.declare_fraction ("cloudiness", Attribute::LogOnly, "\
 Cloudiness. 1 represent clear sky, 0 total eclipse.");
   }
-} CloudinessWeather_syntax;
+};
 
 // The 'clear_sky' base model
 
@@ -211,7 +212,7 @@ struct CloudinessClear : public Cloudiness
   { }
 };
 
-static struct CloudinessClearSyntax : public DeclareBase
+struct CloudinessClearSyntax : public DeclareBase
 {
   CloudinessClearSyntax ()
     : DeclareBase (Cloudiness::component, "clear_sky", "\
@@ -252,7 +253,7 @@ Cloudiness.");
     frame.declare ("clear_sky_radiation", "W/m^2", Attribute::LogOnly, "\
 Global radiation with clear sky conditions.");
   }
-} CloudinessClear_syntax;
+};
 
 // The 'FAO56' model.
 
@@ -269,7 +270,7 @@ struct CloudinessFAO56 : public CloudinessClear
   { }
 };
   
-static struct CloudinessFAO56Syntax : public DeclareModel
+struct CloudinessFAO56Syntax : public DeclareModel
 {
   CloudinessFAO56Syntax ()
     : DeclareModel (Cloudiness::component, "FAO56", "clear_sky",
@@ -282,11 +283,11 @@ static struct CloudinessFAO56Syntax : public DeclareModel
     frame.set_strings ("cite", "FAO-PM");
     frame.set_cited ("a", 1.35, "Unnamed constant in equation 39.", "FAO-PM");
   }
-} CloudinessFAO56_syntax;
+};
   
 // The 'Kjaersgaard' parameterization.
 
-static struct CloudinessKjaersgaardSyntax : public DeclareParam
+struct CloudinessKjaersgaardSyntax : public DeclareParam
 {
   CloudinessKjaersgaardSyntax ()
     : DeclareParam (Cloudiness::component, "Kjaersgaard", "FAO56",
@@ -301,7 +302,7 @@ Table 1, equation 6, calibrated value for Taastrup.",
     frame.set ("min_solar_elevation_angle", 0.0);
     frame.set ("min_extraterrestrial_radiation", 25.0);
   }
-} CloudinessKjaersgaard_syntax;
+};
 
 // The 'ASCE' model.
 
@@ -343,7 +344,7 @@ struct CloudinessASCE : public CloudinessClear
   { }
 };
   
-static struct CloudinessASCESyntax : public DeclareModel
+struct CloudinessASCESyntax : public DeclareModel
 {
   CloudinessASCESyntax ()
     : DeclareModel (Cloudiness::component, "ASCE", "clear_sky",
@@ -360,11 +361,11 @@ Turbidity coefficient, 1 = clean air, <= 0.5 extremely unclean.");
     frame.declare ("W", "mm", Attribute::LogOnly, "\
 Precipitable water in atmosphere.");
   }
-} CloudinessASCE_syntax;
+};
 
 // The 'Taastrup' parameterization.
 
-static struct CloudinessTaastrupSyntax : public DeclareParam
+struct CloudinessTaastrupSyntax : public DeclareParam
 {
   CloudinessTaastrupSyntax ()
     : DeclareParam (Cloudiness::component, "Taastrup", "ASCE",
@@ -379,6 +380,19 @@ Table 1, equation 6, calibrated value for Taastrup.",
     frame.set ("min_solar_elevation_angle", 0.0);
     frame.set ("min_extraterrestrial_radiation", 25.0);
   }
-} CloudinessTaastrup_syntax;
+};
+
+void
+register_cloudiness_models ()
+{
+  static CloudinessInit Cloudiness_init;
+  static CloudinessConstSyntax CloudinessConst_syntax;
+  static CloudinessWeatherSyntax CloudinessWeather_syntax;
+  static CloudinessClearSyntax CloudinessClear_syntax;
+  static CloudinessFAO56Syntax CloudinessFAO56_syntax;
+  static CloudinessKjaersgaardSyntax CloudinessKjaersgaard_syntax;
+  static CloudinessASCESyntax CloudinessASCE_syntax;
+  static CloudinessTaastrupSyntax CloudinessTaastrup_syntax;
+}
 
 // cloudiness.C ends here.

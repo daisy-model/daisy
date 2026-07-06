@@ -36,6 +36,7 @@
 #include "object_model/library.h"
 #include <sstream>
 #include <deque>
+#include "daisy/daisy_registration_internal.h"
 
 struct VegetationCrops : public Vegetation
 {
@@ -1051,7 +1052,7 @@ VegetationCrops::~VegetationCrops ()
     delete *i;
 }
 
-static struct VegetationCropsSyntax : public DeclareModel
+struct VegetationCropsSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new VegetationCrops (al); }
@@ -1082,6 +1083,12 @@ emerged.  If no crops have emerged on the field, it will be ignored.",
     frame.declare_submodule_sequence ("harvest", Attribute::LogOnly, "\
 Harvest current timestep.", Harvest::load_syntax);
   }
-} VegetationCrops_syntax;
+};
+
+void
+register_vegetation_crops_models ()
+{
+  static VegetationCropsSyntax VegetationCrops_syntax;
+}
 
 // vegetation_crops.C ends here.

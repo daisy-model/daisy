@@ -54,6 +54,7 @@
 #include "util/memutils.h"
 #include "object_model/units.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct BioclimateStandard : public Bioclimate
 { 
@@ -1538,7 +1539,7 @@ void
 BioclimateStandard::add_tillage_water (double amount)
 { tillage_water += amount; }
 
-static struct BioclimateStandardSyntax : DeclareModel
+struct BioclimateStandardSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BioclimateStandard (al); }
@@ -1831,11 +1832,11 @@ use these (the weather difrad model). Otherwise Daisy wil use the DPF model.");
 			  Attribute::State, Attribute::Variable,
 			  "Deposition models.");
   }
-} BioclimateStandard_syntax;
+};
 
 // The 'default' parametrization.
 
-static struct BioclimateDefaultSyntax : DeclareParam
+struct BioclimateDefaultSyntax : DeclareParam
 {
   BioclimateDefaultSyntax ()
     : DeclareParam (Bioclimate::component, "default", "base", "\
@@ -1852,11 +1853,11 @@ Use best models given available data.")
     // Choose 'difrad' based on weather data.
     frame.set_strings ("deposition", "weather");
   }
-} BioclimateDefault_syntax;
+};
 
 // The 'FAO56_daily' parametrization.
 
-static struct BioclimateFAO56_dailySyntax : DeclareParam
+struct BioclimateFAO56_dailySyntax : DeclareParam
 {
   BioclimateFAO56_dailySyntax ()
     : DeclareParam (Bioclimate::component, "FAO56_daily", "default", "\
@@ -1869,11 +1870,11 @@ Follow FAO56 for daily data.")
     frame.set ("ghf", "none");
     frame.set ("pet", "FAO_PM");
   }
-} BioclimateFAO56_daily_syntax;
+};
 
 // The 'FAO56_hourly' parametrization.
 
-static struct BioclimateFAO56_hourlySyntax : DeclareParam
+struct BioclimateFAO56_hourlySyntax : DeclareParam
 {
   BioclimateFAO56_hourlySyntax ()
     : DeclareParam (Bioclimate::component, "FAO56_hourly", "default", "\
@@ -1886,11 +1887,11 @@ Follow FAO56 for hourly data.")
     frame.set ("ghf", "FAO56");
     frame.set ("pet", "FAO_PM_hourly");
   }
-} BioclimateFAO56_hourly_syntax;
+};
 
 // The 'SSOC' parametrization.
 
-static struct BioclimateSSOCSyntax : DeclareParam
+struct BioclimateSSOCSyntax : DeclareParam
 {
   BioclimateSSOCSyntax ()
     : DeclareParam (Bioclimate::component, "SSOC", "default", "\
@@ -1901,6 +1902,17 @@ The SSOC SVAT model.")
     frame.set ("svat", "none");
     frame.set ("raddist", "sun-shade");
   }
-} BioclimateSSOC_syntax;
+};
 
 // bioclimate_std.C ends here
+
+void
+register_bioclimate_standard_models ()
+{
+  static BioclimateStandardSyntax BioclimateStandard_syntax;
+  static BioclimateDefaultSyntax BioclimateDefault_syntax;
+  static BioclimateFAO56_dailySyntax BioclimateFAO56_daily_syntax;
+  static BioclimateFAO56_hourlySyntax BioclimateFAO56_hourly_syntax;
+  static BioclimateSSOCSyntax BioclimateSSOC_syntax;
+}
+
