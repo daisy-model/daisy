@@ -67,7 +67,7 @@ public:
 };
 
 // Add the UZNone syntax to the syntax table.
-static struct UZNoneSyntax : public DeclareModel
+struct UZNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     {
@@ -80,4 +80,10 @@ static struct UZNoneSyntax : public DeclareModel
   void load_frame (Frame& frame) const
     {
     }
-} UZNone_syntax;
+};
+
+void
+register_uznone_models ()
+{
+  static UZNoneSyntax UZNone_syntax;
+}

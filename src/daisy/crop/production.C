@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/production.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/crpn.h"
 #include "daisy/crop/partition.h"
 #include "daisy/organic_matter/organic.h"
@@ -1036,8 +1037,13 @@ Production::Production (const FrameSubmodel& al)
 Production::~Production ()
 { }
 
-static DeclareSubmodel 
-production_submodel (Production::load_syntax, "Production", "\
+void
+register_production_models ()
+{
+  static DeclareSubmodel 
+  production_submodel (Production::load_syntax, "Production", "\
 Crop production in the default crop model.");
+}
 
 // production.C ends here.
+

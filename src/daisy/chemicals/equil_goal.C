@@ -153,31 +153,34 @@ EquilibriumGoal_A::check (const Units& units,
   return ok;
 }
 
-static struct EquilibriumGoal_ASyntax : public DeclareModel
+void
+register_equil_goal_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new EquilibriumGoal_A (al); }
-
-  EquilibriumGoal_ASyntax ()
-    : DeclareModel (Equilibrium::component, "goal_A", "Attempt to maintain A at at fixed level.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct EquilibriumGoal_ASyntax : public DeclareModel
   {
-    frame.declare_object ("goal_A", Number::component, Attribute::Const, 
-                       Attribute::Singleton, "The desired level of A [g/cm^3].");
-    frame.declare_boolean ("A_solute", Attribute::Const, 
-                "True iff 'goal_A' is in solute (mass per volume water).\n\
-If false, the unit is assumed to be mass per volume space.");
-    frame.declare_object ("min_B", Number::component, Attribute::Const, 
-                       Attribute::Singleton, "\
-Do not convert B to A if B is smaller than this [g/cm^3].");
-    frame.declare_boolean ("B_solute", Attribute::Const, 
-                "True iff 'min_B' is in solute (mass per volume water).\n\
-If false, the unit is assumed to be mass per volume space.");
-    frame.declare_integer ("debug_cell", Attribute::Const,
-                "Print debug information for this cell.\n\
-Set it to a negative number to disable it.");
-    frame.set ("debug_cell", -1);
-  }
-} EquilibriumGoal_A_syntax;
+    Model* make (const BlockModel& al) const
+    { return new EquilibriumGoal_A (al); }
 
+    EquilibriumGoal_ASyntax ()
+      : DeclareModel (Equilibrium::component, "goal_A", "Attempt to maintain A at at fixed level.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("goal_A", Number::component, Attribute::Const, 
+                         Attribute::Singleton, "The desired level of A [g/cm^3].");
+      frame.declare_boolean ("A_solute", Attribute::Const, 
+                  "True iff 'goal_A' is in solute (mass per volume water).\n\
+If false, the unit is assumed to be mass per volume space.");
+      frame.declare_object ("min_B", Number::component, Attribute::Const, 
+                         Attribute::Singleton, "\
+Do not convert B to A if B is smaller than this [g/cm^3].");
+      frame.declare_boolean ("B_solute", Attribute::Const, 
+                  "True iff 'min_B' is in solute (mass per volume water).\n\
+If false, the unit is assumed to be mass per volume space.");
+      frame.declare_integer ("debug_cell", Attribute::Const,
+                  "Print debug information for this cell.\n\
+Set it to a negative number to disable it.");
+      frame.set ("debug_cell", -1);
+    }
+  } EquilibriumGoal_A_syntax;
+}

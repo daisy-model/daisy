@@ -42,6 +42,7 @@
 #include "daisy/upper_boundary/litter/retention.h"
 #include "daisy/organic_matter/smb.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct LitterMulch : public LitterResidue 
 {
@@ -401,7 +402,7 @@ struct LitterMulch : public LitterResidue
   { }
 };
 
-static struct LitterMulchSyntax : DeclareModel
+struct LitterMulchSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new LitterMulch (al); }
@@ -594,6 +595,12 @@ Stationary organic carbon generated from turnover.");
     frame.declare ("SON_gen", "g/cm^2/h", Attribute::LogOnly, "\
 Stationary organic nitrogen generated from turnover.");
   }
-} LitterMulch_syntax;
+};
+
+void
+register_litter_mulch_models ()
+{
+  static LitterMulchSyntax LitterMulch_syntax;
+}
 
 // litter.C ends here.

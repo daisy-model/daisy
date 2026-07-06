@@ -26,6 +26,7 @@
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/units.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'deposition' component.
 
@@ -54,7 +55,7 @@ Deposition::Deposition (const BlockModel& al)
 Deposition::~Deposition ()
 { }
 
-static struct DepositionInit : public DeclareComponent 
+struct DepositionInit : public DeclareComponent 
 {
   static void load_flux (Frame& frame)
   { IM::add_syntax (frame, Attribute::LogOnly, IM::flux_unit ()); }
@@ -68,7 +69,7 @@ Total atmospheric deposition.", load_flux);
     : DeclareComponent (Deposition::component, "\
 Deposition of inorganic material from atmosphere.")
   { }
-} Deposition_init;
+};
 
 // The 'weather' model.
 
@@ -82,7 +83,7 @@ struct DepositionWeather : public Deposition
   { }
 };
 
-static struct DepositionWeatherSyntax : public DeclareModel
+struct DepositionWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepositionWeather (al); }
@@ -92,7 +93,7 @@ Rely solely on weather model for deposition.")
   { }
   void load_frame (Frame& frame) const
   { }
-} DepositionWeather_syntax;
+};
 
 // The 'const' model.
 
@@ -136,7 +137,7 @@ struct DepositionConst : public Deposition
   { }
 };
 
-static struct DepositionConstSyntax : public DeclareModel
+struct DepositionConstSyntax : public DeclareModel
 {
   static const symbol dry_deposit_unit ()
   {
@@ -169,6 +170,14 @@ Solutes in precipitaion.", load_ppm);
 Dry deposition.", load_dry);
     frame.set_empty ("dry");
 }
-} DepositionConst_syntax;
+};
+
+void
+register_deposition_models ()
+{
+  static DepositionInit Deposition_init;
+  static DepositionWeatherSyntax DepositionWeather_syntax;
+  static DepositionConstSyntax DepositionConst_syntax;
+}
 
 // deposition.C ends here.

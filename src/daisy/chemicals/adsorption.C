@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/adsorption.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/soil.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
@@ -152,7 +153,6 @@ Adsorption::M_to_C_bisect (const Soil& soil, const Chemical& chemical,
     }
 }
 
-
 Adsorption::Adsorption (const char *const type)
   : ModelDerived (symbol (type))
 { }
@@ -163,18 +163,6 @@ Adsorption::Adsorption (const BlockModel& al)
 
 Adsorption::~Adsorption ()
 { }
-
-static struct AdsorptionInit : public DeclareComponent
-{
-  AdsorptionInit () 
-    : DeclareComponent (Adsorption::component, "\
-This component describes the adsorption of a chemical to the soil,\n\
-which among other things affects how large a fraction can be\n\
-transported with the water.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Adsorption_init;
 
 // "none" model.
 
@@ -206,18 +194,6 @@ Adsorption::none ()
   return none;
 }
 
-static struct AdsorptionNoneSyntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new AdsorptionNone (al); }
-  AdsorptionNoneSyntax ()
-    : DeclareModel (Adsorption::component, "none", "No adsorption.\n\
-Used for solutes that are not adsorped to the soil.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} AdsorptionNone_syntax;
-
 // "full" model.
 
 class AdsorptionFull : public Adsorption
@@ -247,17 +223,52 @@ public:
   { }
 };
 
-static struct AdsorptionFullSyntax : DeclareModel
+void
+register_adsorption_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new AdsorptionFull (al); }
-  AdsorptionFullSyntax ()
-    : DeclareModel (Adsorption::component, "full", "Full adsorption.\n\
+  static struct AdsorptionInit : public DeclareComponent
+  {
+    AdsorptionInit () 
+      : DeclareComponent (Adsorption::component, "\
+This component describes the adsorption of a chemical to the soil,\n\
+which among other things affects how large a fraction can be\n\
+transported with the water.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Adsorption_init;
+
+  static struct AdsorptionNoneSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new AdsorptionNone (al); }
+    AdsorptionNoneSyntax ()
+      : DeclareModel (Adsorption::component, "none", "No adsorption.\n\
+Used for solutes that are not adsorped to the soil.")
+    { }
+    void load_frame (Frame&) const
+    { }
+  } AdsorptionNone_syntax;
+
+  static struct AdsorptionFullSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new AdsorptionFull (al); }
+    AdsorptionFullSyntax ()
+      : DeclareModel (Adsorption::component, "full", "Full adsorption.\n\
 Used for non-solutes, fully adsorped in the soil.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} AdsorptionFull_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } AdsorptionFull_syntax;
+
+  register_adsorption_air_models ();
+  register_adsorption_freundlich_models ();
+  register_adsorption_guo2020_models ();
+  register_adsorption_langmuir_models ();
+  register_adsorption_linear_models ();
+  register_adsorption_python_models ();
+  register_adsorption_vS_S_models ();
+}
 
 // adsorption.C ends here.
-

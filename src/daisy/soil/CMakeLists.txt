@@ -29,6 +29,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   hydraulic_table.C
   hydraulic_wepp.C
   hydraulic_yolo.C
+  registration.C
   soil.C
   soil_heat.C
   soil_water.C

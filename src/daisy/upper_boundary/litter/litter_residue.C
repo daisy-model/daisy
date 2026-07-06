@@ -27,6 +27,7 @@
 #include "object_model/check.h"
 #include "daisy/output/log.h"
 #include "daisy/organic_matter/organic.h"
+#include "daisy/daisy_registration_internal.h"
 
 // The 'residue' model.
 
@@ -64,7 +65,7 @@ LitterResidue::LitterResidue (const BlockModel& al)
 LitterResidue::~LitterResidue ()
 { }
 
-static struct LitterResidueSyntax : DeclareModel
+struct LitterResidueSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new LitterResidue (al); }
@@ -101,11 +102,11 @@ By default, the surface albedo will be used.");
     frame.declare ("mass", "kg DM/m^2", Attribute::LogOnly, "\
 Total mass of mulch layer.");
   }
-} LitterResidue_syntax;
+};
 
 // The 'Millet' parameterization.
   
-static struct LitterMilletsyntax : public DeclareParam
+struct LitterMilletsyntax : public DeclareParam
 { 
   LitterMilletsyntax ()
     : DeclareParam (Litter::component, "Millet", "residue", "\
@@ -119,11 +120,11 @@ Millet crop residues in Planaltina.")
     frame.set ("specific_AI", 3.9);
     frame.set ("extinction_coefficent", 0.45);
   }
-} LitterMillet_syntax;
+};
 
 // The 'Maize' parameterization.
 
-static struct LitterMaizesyntax : public DeclareParam
+struct LitterMaizesyntax : public DeclareParam
 { 
   LitterMaizesyntax ()
     : DeclareParam (Litter::component, "Maize", "residue", "\
@@ -137,6 +138,14 @@ Maize crop residues in La Tinaja.")
     frame.set ("specific_AI", 3.7);
     frame.set ("extinction_coefficent", 0.80);
   }
-} LitterMaize_syntax;
+};
+
+void
+register_litter_residue_models ()
+{
+  static LitterResidueSyntax LitterResidue_syntax;
+  static LitterMilletsyntax LitterMillet_syntax;
+  static LitterMaizesyntax LitterMaize_syntax;
+}
 
 // litter_residue.C ends here.

@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/daisy_time.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/timestep.h"
 #include "util/assertion.h"
 #include "daisy/output/log.h"
@@ -654,9 +655,12 @@ Time::Time (const FrameSubmodel& al)
                               al.integer ("microsecond")))
 { }
 
-static DeclareSubmodel 
-time_submodel (Time::load_syntax, "Time", "\
+void
+register_daisy_time_models ()
+{
+  static DeclareSubmodel time_submodel (Time::load_syntax, "Time", "\
 Year, month, day and hour, minute, second and microsecond.");
+}
 
 // @ Construct.
 

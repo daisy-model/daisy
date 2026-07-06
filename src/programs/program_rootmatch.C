@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "daisy/crop/root/GP2D.h"
 #include "util/iterative.h"
 #include "util/lexer_table.h"
@@ -707,7 +708,7 @@ plot '-' using 2:1:3 notitle with xerrorbars, '-' using 2:1 notitle with lines\n
 const symbol 
 ProgramRootmatch::dens_dim_to ("cm/cm^3");
 
-static struct ProgramRootmatchSyntax : public DeclareModel
+struct ProgramRootmatchSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramRootmatch (al); }
@@ -780,6 +781,12 @@ Irrigation model for first season.  If missing, don't irrigate.",
                              ProgramRootmatch::Gnuplot::load_syntax);
     
   }
-} ProgramRootmatch_syntax;
+};
+
+void
+register_program_rootmatch_models ()
+{
+  static ProgramRootmatchSyntax program_rootmatch_syntax;
+}
 
 // program_rootmatch.C ends here.

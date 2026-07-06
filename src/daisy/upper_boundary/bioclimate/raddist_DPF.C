@@ -31,6 +31,7 @@
 #include "object_model/frame.h"
 #include "object_model/plf.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct RaddistDPF : public Raddist
 {
@@ -379,7 +380,7 @@ RaddistDPF::output(Log& log) const
 
 }
 
-static struct RaddistDPFSyntax : public DeclareModel
+struct RaddistDPFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RaddistDPF (al); }
@@ -426,6 +427,12 @@ Effect of soil water on Ps_BIR.");
     frame.declare ("Pscb_NIR", "", Attribute::LogOnly, "Canopy-soil reflection coefficeint of beam NIR for uniform leaf-angel distribution");
     frame.declare ("Pscd_NIR", "", Attribute::LogOnly, "Canopy-soil reflection coefficeint of diffuse NIR for uniform leaf-angel distribution");
   }
-} RaddistDPF_syntax;
+};
 
+
+void
+register_raddist_DPF_models ()
+{
+  static RaddistDPFSyntax RaddistDPF_syntax;
+}
 

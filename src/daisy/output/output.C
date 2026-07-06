@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/output.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/daisy.h"
 #include "daisy/output/log_all.h"
 #include "object_model/treelog.h"
@@ -232,6 +233,17 @@ Prefix for log file names.  Set it to 'log/' to put all files in a subdir.");
    frame.declare_string ("log_suffix", Attribute::Const, "\
 Suffix for log file names.  Set it to '.csv' to make Excel happy.");
    frame.set ("log_suffix", "");
+}
+
+void
+register_output_models ()
+{
+  register_fetch_models ();
+  register_fetch_pretty_models ();
+  register_harvest_models ();
+  register_select_models ();
+  register_summary_models ();
+  register_log_models ();
 }
 
 // output.C ends here.

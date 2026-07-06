@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "daisy/field.h"
@@ -1026,7 +1027,7 @@ ActionCrop::~ActionCrop ()
 }
 
 // Add the ActionCrop syntax to the syntax table.
-static struct ActionCropSyntax : public DeclareModel
+struct ActionCropSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionCrop (al); }
@@ -1112,6 +1113,12 @@ Negative number means it hasn't started yet.");
 This is set at each irrigation, to avoid multiple applications.");
       
   }
-} ActionCrop_syntax;
+};
+
+void
+register_action_crop_models ()
+{
+  static ActionCropSyntax action_crop_syntax;
+}
 
 // action_crop.C ends here.

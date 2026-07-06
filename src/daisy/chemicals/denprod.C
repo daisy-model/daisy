@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/denprod.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"
 
@@ -42,12 +43,18 @@ Denprod::Denprod (const BlockModel& al)
 Denprod::~Denprod ()
 { }
 
-static struct DenprodInit : public DeclareComponent 
+void
+register_denprod_models ()
 {
-  DenprodInit ()
-    : DeclareComponent (Denprod::component, "\
+  static struct DenprodInit : public DeclareComponent 
+  {
+    DenprodInit ()
+      : DeclareComponent (Denprod::component, "\
 Find products (gasses) produced by denitrification.")
-  { }
-} Denprod_init;
+    { }
+  } Denprod_init;
+
+  register_denprod_parton1996_models ();
+}
 
 // denprod.C ends here.

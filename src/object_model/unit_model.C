@@ -23,6 +23,7 @@
 #include "object_model/unit_model.h"
 #include "object_model/check.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
@@ -54,7 +55,7 @@ MUnit::MUnit (const BlockModel& al, const symbol base)
 MUnit::~MUnit ()
 { }
 
-static struct UnitInit : public DeclareComponent 
+struct UnitInit : public DeclareComponent 
 {
   UnitInit ()
     : DeclareComponent (MUnit::component, "\
@@ -67,7 +68,7 @@ defined by SI) unit for that dimension.")
   { }
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
-} Unit_init;
+};
 
 // Base model 'SI'.
 
@@ -128,7 +129,7 @@ UnitSI::find_base (const BlockModel& al)
   return symbol (tmp.str ());
 }
 
-static struct UnitSISyntax : public DeclareBase
+struct UnitSISyntax : public DeclareBase
 {
   UnitSISyntax ()
     : DeclareBase (MUnit::component, "SI", "\
@@ -146,7 +147,7 @@ Dimension, base unit [" + unit + "].");
         frame.set (dimension, 0);
       }
   }
-} UnitSI_syntax;
+};
 
 // Model 'SIfactor'.
 
@@ -235,7 +236,7 @@ struct DeclareSIFactor : public DeclareParam
   }
 };
 
-static struct UnitSIFactorSyntax : public DeclareModel
+struct UnitSIFactorSyntax : public DeclareModel
 {
   auto_vector<const DeclareSIFactor*> declarations;
 
@@ -800,7 +801,7 @@ Connvert to SI base units by multiplying with a factor.")
     frame.declare ("factor", Attribute::None (), Check::non_zero (), Attribute::Const, "\
 Factor to multiply with to get base unit.");
   }
-} UnitSIFactor_syntax;
+};
 
 // Model 'pF'.
 
@@ -820,7 +821,7 @@ struct UnitpF : public MUnit
   { }
 };
 
-static struct UnitpFSyntax : public DeclareModel
+struct UnitpFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitpF (al); }
@@ -832,7 +833,7 @@ static struct UnitpFSyntax : public DeclareModel
   {
     // Add the 'pF' base model.
   }
-} UnitpF_syntax;
+};
 
 // Model 'base'.
 
@@ -853,7 +854,7 @@ struct UnitBase : public MUnit
 };
 
 
-static struct UnitBaseSyntax : public DeclareModel
+struct UnitBaseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitBase (al); }
@@ -863,7 +864,7 @@ static struct UnitBaseSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} UnitBase_syntax;
+};
 
 struct DeclareBaseUnit : public DeclareParam
 {
@@ -875,23 +876,6 @@ struct DeclareBaseUnit : public DeclareParam
 };
 
 // Angles
-static DeclareBaseUnit Base_rad ("rad", "Radians");
-
-// Add geographical coordinates.
-static DeclareBaseUnit Base_dgEast ("dgEast", "Degrees East of Greenwich.");
-static DeclareBaseUnit Base_dgNorth ("dgNorth", "Degrees North of Equator.");
-
-// Soil fraction.
-static DeclareBaseUnit Base_DS_fraction (Units::dry_soil_fraction (), 
-                                         "Fraction of dry soil.");
-
-// Unknown unit.
-static DeclareBaseUnit Base_unknown (Attribute::Unknown (), "\
-Nothing is known about the dimension of this unit.");
-static DeclareBaseUnit Base_error (Units::error_symbol (), "Bogus unit.");
-
-// Model 'factor'.
-
 struct UnitFactor : public MUnit
 {
   const double factor;
@@ -911,7 +895,7 @@ struct UnitFactor : public MUnit
   { }
 };
 
-static struct UnitFactorSyntax : public DeclareModel
+struct UnitFactorSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitFactor (al); }
@@ -928,7 +912,7 @@ Base unit to convert to and from.");
     frame.declare ("factor", Attribute::None (), Check::non_zero (), Attribute::Const, "\
 Factor to multiply with to get base unit.");
   }
-} UnitFactor_syntax;
+};
 
 struct DeclareBaseFactor : public DeclareParam
 {
@@ -948,24 +932,6 @@ struct DeclareBaseFactor : public DeclareParam
 };
 
 // Add angles.
-static DeclareBaseFactor Base_dg ("dg", M_PI / 180.0, "rad", "\
-Degrees");
-static DeclareBaseFactor Base_new_dg ("new dg", M_PI / 200.0, "rad", "\
-New degrees");
-
-// Add geographical coordinates.
-static DeclareBaseFactor Base_dg_West ("dgWest", -1.0, "dgEast", "\
-Degrees West of Greenwich.");
-static DeclareBaseFactor Base_dgSouth ("dgSouth", -1.0, "dgNorth", "\
-Degrees North of Equator.");
-
-// Add dry soil.
-static DeclareBaseFactor Base_DS_ppm ("ppm dry soil", 1e-6, 
-                                      Units::dry_soil_fraction (), "\
-Part per million in dry soil.");
-
-// Model 'offset'.
-
 struct UnitOffset : public MUnit
 {
   const double factor;
@@ -987,7 +953,7 @@ struct UnitOffset : public MUnit
   { }
 };
 
-static struct UnitOffsetSyntax : public DeclareModel
+struct UnitOffsetSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitOffset (al); }
@@ -1009,7 +975,7 @@ Factor to multiply with to get base unit.");
 Offset to add after multiplying with factor to get base unit.");
     frame.set ("offset", 0.0);
   }
-} UnitOffset_syntax;
+};
 
 struct DeclareBaseOffset : public DeclareParam
 {
@@ -1032,12 +998,43 @@ struct DeclareBaseOffset : public DeclareParam
   }
 };
 
-
-static DeclareBaseOffset Base_Celcius ("dg C", 1.0, 273.15, "K", "\
+void
+register_unit_models ()
+{
+  static UnitInit unit_init;
+  static UnitSISyntax unit_si_syntax;
+  static UnitSIFactorSyntax unit_si_factor_syntax;
+  static UnitpFSyntax unit_pf_syntax;
+  static UnitBaseSyntax unit_base_syntax;
+  static DeclareBaseUnit base_rad ("rad", "Radians");
+  static DeclareBaseUnit base_dg_east ("dgEast",
+                                       "Degrees East of Greenwich.");
+  static DeclareBaseUnit base_dg_north ("dgNorth",
+                                        "Degrees North of Equator.");
+  static DeclareBaseUnit base_ds_fraction (Units::dry_soil_fraction (),
+                                           "Fraction of dry soil.");
+  static DeclareBaseUnit base_unknown (Attribute::Unknown (), "\
+Nothing is known about the dimension of this unit.");
+  static DeclareBaseUnit base_error (Units::error_symbol (), "Bogus unit.");
+  static UnitFactorSyntax unit_factor_syntax;
+  static DeclareBaseFactor base_dg ("dg", M_PI / 180.0, "rad", "\
+Degrees");
+  static DeclareBaseFactor base_new_dg ("new dg", M_PI / 200.0, "rad", "\
+New degrees");
+  static DeclareBaseFactor base_dg_west ("dgWest", -1.0, "dgEast", "\
+Degrees West of Greenwich.");
+  static DeclareBaseFactor base_dg_south ("dgSouth", -1.0, "dgNorth", "\
+Degrees North of Equator.");
+  static DeclareBaseFactor base_ds_ppm ("ppm dry soil", 1e-6,
+                                        Units::dry_soil_fraction (), "\
+Part per million in dry soil.");
+  static UnitOffsetSyntax unit_offset_syntax;
+  static DeclareBaseOffset base_celcius ("dg C", 1.0, 273.15, "K", "\
 degree Celcius.");
-// Absolute zero is -459.67 degree Fahrenheit.
-static DeclareBaseOffset Base_Fahrenheit ("dg F", 
-                                          5.0/9.0, 459.67 * 5.0 / 9.0, "K", "\
+  static DeclareBaseOffset base_fahrenheit ("dg F",
+                                            5.0 / 9.0,
+                                            459.67 * 5.0 / 9.0, "K", "\
 degree Fahrenheit.");
+}
 
 // unit_model.C ends here.

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/solupt.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "util/mathlib.h"
@@ -58,16 +59,6 @@ Solupt::Solupt (const BlockModel& al)
 Solupt::~Solupt ()
 { }
 
-static struct SoluptInit : public DeclareComponent
-{
-  SoluptInit () 
-    : DeclareComponent (Solupt::component, "\
-The 'solute_uptake' component calculates uptake of nitrogen through roots.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Solupt_init;
-
 // The 'none' model.
 
 struct SoluptNone final : public Solupt
@@ -99,17 +90,6 @@ struct SoluptNone final : public Solupt
   ~SoluptNone ()
   { }
 };
-
-static struct SoluptNoneSyntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new SoluptNone (al); }
-  SoluptNoneSyntax ()
-    : DeclareModel (Solupt::component, "none", "No uptake.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} SoluptNone_syntax;
 
 // The 'diffusion' base model.
 
@@ -237,40 +217,6 @@ SoluptDiffusion::diffusion (const Geometry& geo, const Soil& soil,
     }
 }
 
-static struct SoluteDiffusionSyntax : DeclareBase
-{
-  SoluteDiffusionSyntax ()
-    : DeclareBase (Solupt::component, "diffusion", "\
-N is transported to the root surface based on diffusion and convection.\n\
-\n\
-The convection is based on concentration in the soil, while the\n\
-diffusion is based on concentration in both soil and at root surfaces.\n\
-\n\
-This base model find variables 'A' and 'B', so the transport of\n\
-nitrogen to the root surface is calculated as A - B * CRoot, where\n\
-CRoot is the concentration at the root surface.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.set_strings ("cite", "daisyN");
-    frame.declare ("D", "cm^2/h", Check::none (), 
-                   Attribute::LogOnly, Attribute::SoilCells,
-                   "Diffusion variable.");
-    frame.declare ("alpha", Attribute::None (), Check::none (), 
-                   Attribute::LogOnly, Attribute::SoilCells,
-                   "Internal variable.");
-    frame.declare ("beta", Attribute::None (), Check::none (), 
-                   Attribute::LogOnly, Attribute::SoilCells,
-                   "Internal variable.");
-    frame.declare ("A", Attribute::None (), Check::none (), 
-                   Attribute::LogOnly, Attribute::SoilCells,
-                   "CRoot independent N uptake.");
-    frame.declare ("B", Attribute::None (), Check::none (), 
-                   Attribute::LogOnly, Attribute::SoilCells,
-                   "CRoot dependent N uptake factor.");
-  }
-} SoluteDiffusion_syntax;
-
 // The 'fixed_sink' model.
 
 struct SoluptFixed final : public SoluptDiffusion
@@ -378,21 +324,6 @@ SoluptFixed::value (const Geometry& geo, const Soil& soil,
   // gN/cmÂ³/h -> gN/mÂ²/h
   return geo.total_surface (uptake) * 1.0e4;
 }
-
-static struct SoluptFixedSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new SoluptFixed (al); }
-  SoluptFixedSyntax ()
-    : DeclareModel (Solupt::component, "fixed_sink", "diffusion", "\
-Find the highest value of 'CRoot' that meets the N demand.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("CRoot", "g N/cm^3", Check::none (), Attribute::LogOnly, 
-                   "Nitrogen concentration at root surface.");
-  }
-} SoluptFixed_syntax;
 
 // The 'variable_sink' model.
 
@@ -571,57 +502,6 @@ SoluptVariable::value (const Geometry& geo, const Soil& soil,
 
   return std::min (max_uptake, PotNUpt);
 }
-
-static struct SoluptVariableSyntax : public DeclareModel
-{
-  SoluptVariableSyntax ()
-    : DeclareModel (Solupt::component, "variable_sink", "diffusion", "\
-Nitrogen uptake limited by the root ability to assimilate N.\n\
-\n\
-The transport of N to the root surface is given as \n\
-\n\
-  A - B C\n\
-\n\
-The assimilation of N from root surface is given as\n\
-\n\
-  F1 C / (K1 + C) + F2 C / (K2 + C)  \n\
-\n\
-We find the C for which \n\
-\n\
-  A - B C = F1 C / (K1 + C) + F2 C / (K2 + C)\n\
-\n\
-If this is higher than the demand, uptake is scaled down.")
-  { }
-  Model* make (const BlockModel& al) const
-  { return new SoluptVariable (al); }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "tsay2007nitrate", "miller2005root");
-    frame.declare ("K1", "g N/cm^3", Check::positive (), Attribute::Const,
-                   "K parameter for high affinity uptake.");
-    frame.set_cited ("K1", 0.7e-6, "50 uM", "tsay2007nitrate");
-    frame.declare ("K2", "g N/cm^3", Check::positive (), Attribute::Const,
-                   "K parameter for low affinity uptake.");
-    frame.set_cited ("K2", 70.0e-6, "5 mM", "tsay2007nitrate");
-    frame.declare_fraction ("F_relative", Attribute::Const, "\
-Fraction of max uptake accounted for by high affinity uptake.");
-    frame.set ("F_relative", 0.1);
-    frame.declare ("C1", "g N/cm^3", Check::none (), Attribute::LogOnly,
-                   Attribute::SoilCells,
-                   "CRoot calculated assuming C >> K1.\n\
-Solution to A - B C = F1 + F2 C / (K2 + C).");
-    frame.declare ("C2", "g N/cm^3", Check::none (), Attribute::LogOnly,
-                   Attribute::SoilCells,
-                   "CRoot calculated assuming C << K2.\n\
-Solution to A - B C = F1 C / (K1 + C) + F2 C / K2.");
-    frame.declare ("CEst", "g N/cm^3", Check::none (), Attribute::LogOnly,
-                   Attribute::SoilCells,
-                   "Best of C1 or C2..");
-    frame.declare ("CRoot", "g N/cm^3", Check::none (), Attribute::LogOnly,
-                   Attribute::SoilCells,
-                   "Nitrogen concentration at root surface.");
-  }
-} SoluptVariable_syntax;
 
 // The 'solute_uptake' Number model
 
@@ -980,36 +860,6 @@ Concentration at root surface.");
       has_value (false)
   { }
 };
-
-static struct NumberSoluteUptakeSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new NumberSoluteUptake (al); }
-  NumberSoluteUptakeSyntax()
-    : DeclareModel (Number::component, "solute_uptake", 
-                    "Find root nitrogen uptake.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_object ("Theta", Number::component, "See root system.");
-    frame.declare_object ("Theta_sat", Number::component, "See root system.");
-    frame.declare_object ("S_w", Number::component, "See root system.");
-    frame.declare_object ("C_l", Number::component, "See root system.");
-    frame.declare_object ("PotNUpt", Number::component, "See root system.");
-    frame.declare_object ("L", Number::component, "See root system.");
-    frame.declare_object ("I_max", Number::component, "See root system.");
-    frame.declare_object ("C_root_min", Number::component, "See root system.");
-    frame.declare_object ("diffusion_coef", Number::component, "See root system.");
-    frame.declare_object ("volume", Number::component, "See root system.");
-    frame.declare_object ("Rad", Number::component, "See root system.");
-    frame.declare_object ("value", Number::component, "Value to return\n\
-One of 'uptake', 'C_root', 'D', 'alpha', 'beta'.");
-  }
-} NumberSoluteUptake_syntax;
-
-static DeclareSubmodel solute_uptake_submodel (NumberSoluteUptake::result_syntax,
-                                               "SoluteUptakeResult", "\
-Result of the 'solute_uptake' number model.");
 
 // The 'solute_uptake2' Number model
 
@@ -1413,35 +1263,183 @@ Concentration at root surface (mechanism 2 dominating).");
   { }
 };
 
-static struct NumberSoluteUptake2Syntax : public DeclareModel
+void
+register_solupt_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new NumberSoluteUptake2 (al); }
-  NumberSoluteUptake2Syntax()
-    : DeclareModel (Number::component, "solute_uptake2", 
-                    "Find root nitrogen uptake.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct SoluptInit : public DeclareComponent
   {
-    frame.declare_object ("Theta", Number::component, "See root system.");
-    frame.declare_object ("Theta_sat", Number::component, "See root system.");
-    frame.declare_object ("S_w", Number::component, "See root system.");
-    frame.declare_object ("C_l", Number::component, "See root system.");
-    frame.declare_object ("L", Number::component, "See root system.");
-    frame.declare_object ("F1", Number::component, "See root system.");
-    frame.declare_object ("K1", Number::component, "See root system.");
-    frame.declare_object ("F2", Number::component, "See root system.");
-    frame.declare_object ("K2", Number::component, "See root system.");
-    frame.declare_object ("diffusion_coef", Number::component, "See root system.");
-    frame.declare_object ("volume", Number::component, "See root system.");
-    frame.declare_object ("Rad", Number::component, "See root system.");
-    frame.declare_object ("value", Number::component, "Value to return\n\
+    SoluptInit () 
+      : DeclareComponent (Solupt::component, "\
+The 'solute_uptake' component calculates uptake of nitrogen through roots.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Solupt_init;
+  static struct SoluptNoneSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SoluptNone (al); }
+    SoluptNoneSyntax ()
+      : DeclareModel (Solupt::component, "none", "No uptake.")
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } SoluptNone_syntax;
+  static struct SoluteDiffusionSyntax : DeclareBase
+  {
+    SoluteDiffusionSyntax ()
+      : DeclareBase (Solupt::component, "diffusion", "\
+N is transported to the root surface based on diffusion and convection.\n\
+\n\
+The convection is based on concentration in the soil, while the\n\
+diffusion is based on concentration in both soil and at root surfaces.\n\
+\n\
+This base model find variables 'A' and 'B', so the transport of\n\
+nitrogen to the root surface is calculated as A - B * CRoot, where\n\
+CRoot is the concentration at the root surface.")
+    { }
+    void load_frame (Frame& frame) const
+    { 
+      frame.set_strings ("cite", "daisyN");
+      frame.declare ("D", "cm^2/h", Check::none (), 
+                     Attribute::LogOnly, Attribute::SoilCells,
+                     "Diffusion variable.");
+      frame.declare ("alpha", Attribute::None (), Check::none (), 
+                     Attribute::LogOnly, Attribute::SoilCells,
+                     "Internal variable.");
+      frame.declare ("beta", Attribute::None (), Check::none (), 
+                     Attribute::LogOnly, Attribute::SoilCells,
+                     "Internal variable.");
+      frame.declare ("A", Attribute::None (), Check::none (), 
+                     Attribute::LogOnly, Attribute::SoilCells,
+                     "CRoot independent N uptake.");
+      frame.declare ("B", Attribute::None (), Check::none (), 
+                     Attribute::LogOnly, Attribute::SoilCells,
+                     "CRoot dependent N uptake factor.");
+    }
+  } SoluteDiffusion_syntax;
+  static struct SoluptFixedSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SoluptFixed (al); }
+    SoluptFixedSyntax ()
+      : DeclareModel (Solupt::component, "fixed_sink", "diffusion", "\
+Find the highest value of 'CRoot' that meets the N demand.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("CRoot", "g N/cm^3", Check::none (), Attribute::LogOnly, 
+                     "Nitrogen concentration at root surface.");
+    }
+  } SoluptFixed_syntax;
+  static struct SoluptVariableSyntax : public DeclareModel
+  {
+    SoluptVariableSyntax ()
+      : DeclareModel (Solupt::component, "variable_sink", "diffusion", "\
+Nitrogen uptake limited by the root ability to assimilate N.\n\
+\n\
+The transport of N to the root surface is given as \n\
+\n\
+  A - B C\n\
+\n\
+The assimilation of N from root surface is given as\n\
+\n\
+  F1 C / (K1 + C) + F2 C / (K2 + C)  \n\
+\n\
+We find the C for which \n\
+\n\
+  A - B C = F1 C / (K1 + C) + F2 C / (K2 + C)\n\
+\n\
+If this is higher than the demand, uptake is scaled down.")
+    { }
+    Model* make (const BlockModel& al) const
+    { return new SoluptVariable (al); }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "tsay2007nitrate", "miller2005root");
+      frame.declare ("K1", "g N/cm^3", Check::positive (), Attribute::Const,
+                     "K parameter for high affinity uptake.");
+      frame.set_cited ("K1", 0.7e-6, "50 uM", "tsay2007nitrate");
+      frame.declare ("K2", "g N/cm^3", Check::positive (), Attribute::Const,
+                     "K parameter for low affinity uptake.");
+      frame.set_cited ("K2", 70.0e-6, "5 mM", "tsay2007nitrate");
+      frame.declare_fraction ("F_relative", Attribute::Const, "\
+Fraction of max uptake accounted for by high affinity uptake.");
+      frame.set ("F_relative", 0.1);
+      frame.declare ("C1", "g N/cm^3", Check::none (), Attribute::LogOnly,
+                     Attribute::SoilCells,
+                     "CRoot calculated assuming C >> K1.\n\
+Solution to A - B C = F1 + F2 C / (K2 + C).");
+      frame.declare ("C2", "g N/cm^3", Check::none (), Attribute::LogOnly,
+                     Attribute::SoilCells,
+                     "CRoot calculated assuming C << K2.\n\
+Solution to A - B C = F1 C / (K1 + C) + F2 C / K2.");
+      frame.declare ("CEst", "g N/cm^3", Check::none (), Attribute::LogOnly,
+                     Attribute::SoilCells,
+                     "Best of C1 or C2..");
+      frame.declare ("CRoot", "g N/cm^3", Check::none (), Attribute::LogOnly,
+                     Attribute::SoilCells,
+                     "Nitrogen concentration at root surface.");
+    }
+  } SoluptVariable_syntax;
+  static struct NumberSoluteUptakeSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new NumberSoluteUptake (al); }
+    NumberSoluteUptakeSyntax()
+      : DeclareModel (Number::component, "solute_uptake", 
+                      "Find root nitrogen uptake.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("Theta", Number::component, "See root system.");
+      frame.declare_object ("Theta_sat", Number::component, "See root system.");
+      frame.declare_object ("S_w", Number::component, "See root system.");
+      frame.declare_object ("C_l", Number::component, "See root system.");
+      frame.declare_object ("PotNUpt", Number::component, "See root system.");
+      frame.declare_object ("L", Number::component, "See root system.");
+      frame.declare_object ("I_max", Number::component, "See root system.");
+      frame.declare_object ("C_root_min", Number::component, "See root system.");
+      frame.declare_object ("diffusion_coef", Number::component, "See root system.");
+      frame.declare_object ("volume", Number::component, "See root system.");
+      frame.declare_object ("Rad", Number::component, "See root system.");
+      frame.declare_object ("value", Number::component, "Value to return\n\
+One of 'uptake', 'C_root', 'D', 'alpha', 'beta'.");
+    }
+  } NumberSoluteUptake_syntax;
+  static DeclareSubmodel solute_uptake_submodel (NumberSoluteUptake::result_syntax,
+                                                 "SoluteUptakeResult", "\
+Result of the 'solute_uptake' number model.");
+  static struct NumberSoluteUptake2Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new NumberSoluteUptake2 (al); }
+    NumberSoluteUptake2Syntax()
+      : DeclareModel (Number::component, "solute_uptake2", 
+                      "Find root nitrogen uptake.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("Theta", Number::component, "See root system.");
+      frame.declare_object ("Theta_sat", Number::component, "See root system.");
+      frame.declare_object ("S_w", Number::component, "See root system.");
+      frame.declare_object ("C_l", Number::component, "See root system.");
+      frame.declare_object ("L", Number::component, "See root system.");
+      frame.declare_object ("F1", Number::component, "See root system.");
+      frame.declare_object ("K1", Number::component, "See root system.");
+      frame.declare_object ("F2", Number::component, "See root system.");
+      frame.declare_object ("K2", Number::component, "See root system.");
+      frame.declare_object ("diffusion_coef", Number::component, "See root system.");
+      frame.declare_object ("volume", Number::component, "See root system.");
+      frame.declare_object ("Rad", Number::component, "See root system.");
+      frame.declare_object ("value", Number::component, "Value to return\n\
 One of 'uptake', 'C_root', 'C1', 'C2', 'D', 'alpha', 'beta', 'A', 'B'.");
-  }
-} NumberSoluteUptake2_syntax;
-
-static DeclareSubmodel solute_uptake2_submodel (NumberSoluteUptake2::result_syntax,
-                                                "SoluteUptake2Result", "\
+    }
+  } NumberSoluteUptake2_syntax;
+  static DeclareSubmodel solute_uptake2_submodel (NumberSoluteUptake2::result_syntax,
+                                                  "SoluteUptake2Result", "\
 Result of the 'solute_uptake2' number model.");
+}
 
 // solupt.C ends here
+

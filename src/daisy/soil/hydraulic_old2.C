@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/plf.h"
 #include "object_model/librarian.h"
@@ -174,7 +175,7 @@ HydraulicOld2::~HydraulicOld2 ()
 
 // Add the HydraulicOld2 syntax to the syntax table.
 
-static struct HydraulicOld2Syntax : public DeclareModel
+struct HydraulicOld2Syntax : public DeclareModel
 {
   HydraulicOld2Syntax ()
     : DeclareModel (Hydraulic::component, "old2", "\
@@ -202,6 +203,12 @@ Increment in pF between each line in the file.");
     frame.declare_string ("file", Attribute::Const, "The file to read.");
     frame.order ("file");
   }
-} hydraulicOld2_syntax;
+};
+
+void
+register_hydraulic_old2_models ()
+{
+  static HydraulicOld2Syntax hydraulicOld2_syntax;
+}
 
 // hydraulic_old2.C ends here.

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
@@ -41,11 +42,19 @@ RubiscoNdist::RubiscoNdist (const BlockModel& al)
 RubiscoNdist::~RubiscoNdist ()
 { }
 
-static struct RubiscoNdistInit : public DeclareComponent 
+void
+register_rubiscoNdist_models ()
 {
-  RubiscoNdistInit ()
-    : DeclareComponent (RubiscoNdist::component, "\
+  static struct RubiscoNdistInit : public DeclareComponent 
+  {
+    RubiscoNdistInit ()
+      : DeclareComponent (RubiscoNdist::component, "\
 The 'rubiscoNdist' component calculates the rubisco N distribution for photosynthesis in the canopy.")
-  { }
-} RubiscoNdist_init;
+    { }
+  } RubiscoNdist_init;
 
+  register_rubiscoNdist_DPF_models ();
+  register_rubiscoNdist_expr_models ();
+  register_rubiscoNdist_forced_models ();
+  register_rubiscoNdist_uniform_models ();
+}

@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/photo.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/crop/canopy_std.h"
 #include "daisy/crop/phenology.h"
@@ -157,35 +158,40 @@ PhotoGL::assimilate (const Units&, const double, const double, const double,
   return (molWeightCH2O / molWeightCO2) * Teff * Ass;
 }
 
-static struct Photo_GLSyntax : public DeclareModel
+void
+register_photo_GL_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new PhotoGL (al); }
-  void load_frame (Frame& frame) const
-  { 
-    PLF DS_null_eff;
-    DS_null_eff.add (0.0, 1.00);
-    DS_null_eff.add (2.0, 1.00);
-
-    frame.declare ("Qeff", "(g CO2/m^2/h)/(W/m^2)", Attribute::Const,
-                "Quantum efficiency at low light.");
-    frame.declare ("Fm", "g CO2/m^2/h", Check::positive (), Attribute::Const,
-                "Maximum assimilation rate.");
-    frame.declare ("TempEff", "dg C", Attribute::None (), Check::non_negative (),
-                Attribute::Const,
-                "Temperature factor for assimilate production.");
-    frame.declare ("DSEff", "DS", Attribute::None (), Check::non_negative (),
-                Attribute::Const, "\
+  static struct Photo_GLSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new PhotoGL (al); }
+    void load_frame (Frame& frame) const
+    { 
+      PLF DS_null_eff;
+      DS_null_eff.add (0.0, 1.00);
+      DS_null_eff.add (2.0, 1.00);
+  
+      frame.declare ("Qeff", "(g CO2/m^2/h)/(W/m^2)", Attribute::Const,
+                  "Quantum efficiency at low light.");
+      frame.declare ("Fm", "g CO2/m^2/h", Check::positive (), Attribute::Const,
+                  "Maximum assimilation rate.");
+      frame.declare ("TempEff", "dg C", Attribute::None (), Check::non_negative (),
+                  Attribute::Const,
+                  "Temperature factor for assimilate production.");
+      frame.declare ("DSEff", "DS", Attribute::None (), Check::non_negative (),
+                  Attribute::Const, "\
 Development stage factor for assimilate production.");
-    frame.set ("DSEff",DS_null_eff);
-    frame.declare ("DAPEff", "d", Attribute::None (), Check::non_negative (),
-                Attribute::Const, "Age factor for assimilate production.\n\
+      frame.set ("DSEff",DS_null_eff);
+      frame.declare ("DAPEff", "d", Attribute::None (), Check::non_negative (),
+                  Attribute::Const, "Age factor for assimilate production.\n\
 Age is given as day after planting.");
-    frame.set ("DAPEff",DS_null_eff);
-  }
-  Photo_GLSyntax () 
-    : DeclareModel (Photo::component, "GL", "Goudriaan and Laar, 1978.")
-  { }
-} PhotoGL_syntax;
+      frame.set ("DAPEff",DS_null_eff);
+    }
+    Photo_GLSyntax () 
+      : DeclareModel (Photo::component, "GL", "Goudriaan and Laar, 1978.")
+    { }
+  } PhotoGL_syntax;
+}
 
 // photo_GL.C ends here.
+

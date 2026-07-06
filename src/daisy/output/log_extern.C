@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/log_extern.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
@@ -308,28 +309,32 @@ LogExtern::LogExtern (const BlockModel& al)
 LogExtern::~LogExtern ()
 { }
 
-static struct LogExternSyntax : public DeclareModel
+void
+register_log_extern_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new LogExtern (al); }
+  static struct LogExternSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new LogExtern (al); }
 
-  LogExternSyntax ()
-    : DeclareModel (Log::component, "extern", "select", "\
+    LogExternSyntax ()
+      : DeclareModel (Log::component, "extern", "select", "\
 Log simulation state for extern use.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.declare_submodule_sequence ("numbers", Attribute::OptionalState, "\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_submodule_sequence ("numbers", Attribute::OptionalState, "\
 Inititial numeric values.  By default, none.", 
                                   LogExtern::NumEntry::load_syntax);
-    frame.declare_string ("where", Attribute::OptionalConst,
+      frame.declare_string ("where", Attribute::OptionalConst,
                 "Name of the extern log to use.\n\
 By default, use the model name.");
-    // Disable initial line as it might put "missing" values in
-    // initialized flux variables.  TODO: Make 'numbers' be default
-    // values, rather than initial values.
-    frame.set ("print_initial", false);
-  }
-} LogExtern_syntax;
+      // Disable initial line as it might put "missing" values in
+      // initialized flux variables.  TODO: Make 'numbers' be default
+      // values, rather than initial values.
+      frame.set ("print_initial", false);
+    }
+  } log_extern_syntax;
+}
 
 // log_extern.C ends here.

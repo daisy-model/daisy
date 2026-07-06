@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -529,84 +530,89 @@ RootdensLocal::RootdensLocal (const BlockModel& al)
     D_tot (0.0)
 { }
 
-static struct RootdensLocalSyntax : public DeclareModel
+void
+register_rootdens_local_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new RootdensLocal (al); }
-  RootdensLocalSyntax ()
-    : DeclareModel (Rootdens::component, "local", "\
-Dynamic root growth model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct RootdensLocalSyntax : public DeclareModel
   {
-    frame.declare ("row_position", "cm", Check::non_negative (),
-                   Attribute::Const, "\
+    Model* make (const BlockModel& al) const
+    { return new RootdensLocal (al); }
+    RootdensLocalSyntax ()
+      : DeclareModel (Rootdens::component, "local", "\
+Dynamic root growth model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("row_position", "cm", Check::non_negative (),
+                     Attribute::Const, "\
 Horizontal position of row crops.");
-    frame.set ("row_position", 0.0);
-    frame.declare ("row_distance", "cm", Attribute::OptionalConst, 
-                   "Distance between rows of crops.");
-    frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
-                "Root density at (potential) penetration depth.");
-    frame.set ("DensRtTip", 0.1);
-    frame.declare ("depth_factor", "cm", Attribute::None (),
-		   Check::non_negative (), Attribute::Const, "\
+      frame.set ("row_position", 0.0);
+      frame.declare ("row_distance", "cm", Attribute::OptionalConst, 
+                     "Distance between rows of crops.");
+      frame.declare ("DensRtTip", "cm/cm^3", Check::positive (), Attribute::Const,
+                  "Root density at (potential) penetration depth.");
+      frame.set ("DensRtTip", 0.1);
+      frame.declare ("depth_factor", "cm", Attribute::None (),
+  		   Check::non_negative (), Attribute::Const, "\
 Depth (negative) affect on root growth.\n\
 Specify a value less than one to decrease root growth, and larger\n\
 than one to increase root growth at the specified depth.");
-    frame.set ("depth_factor", PLF::always_1 ());
-    frame.declare ("neighbor_effect", "cm/d", Check::non_negative (),
-		   Attribute::Const, "\
+      frame.set ("depth_factor", PLF::always_1 ());
+      frame.declare ("neighbor_effect", "cm/d", Check::non_negative (),
+  		   Attribute::Const, "\
 How fast root density in neighbor cells affect growth.\n\
 After expansion, excess roots are distributed propertional to existing\n\
 root desinity in each cell, plus a part of the neighbor cells.");
-    frame.set ("neighbor_effect", 0.0);
-    frame.declare ("max_internal_growth_rate", "d^-1", Check::non_negative (),
-		   Attribute::Const, "\
+      frame.set ("neighbor_effect", 0.0);
+      frame.declare ("max_internal_growth_rate", "d^-1", Check::non_negative (),
+  		   Attribute::Const, "\
 Root density within root zone cannot grow faster than this.");
-    frame.set ("max_internal_growth_rate", 0.1);
-    frame.declare ("h_threshold", "cm", Check::none (), Attribute::Const, "\
+      frame.set ("max_internal_growth_rate", 0.1);
+      frame.declare ("h_threshold", "cm", Check::none (), Attribute::Const, "\
 Root starts dying if pressure is above this threshold.");
-    frame.set ("h_threshold", 0.0);
-    frame.declare ("death_rate", "h", "h^-1", Attribute::Const, "\
+      frame.set ("h_threshold", 0.0);
+      frame.declare ("death_rate", "h", "h^-1", Attribute::Const, "\
 Death rate as function of temperature modified time flooded.");
-    PLF death_rate;
-    death_rate.add (36.0, 0.0);
-    death_rate.add (60.0, 0.1);
-    frame.set ("death_rate", death_rate);
-    frame.declare_function ("death_T_factor", "dg C", Attribute::None (), "\
+      PLF death_rate;
+      death_rate.add (36.0, 0.0);
+      death_rate.add (60.0, 0.1);
+      frame.set ("death_rate", death_rate);
+      frame.declare_function ("death_T_factor", "dg C", Attribute::None (), "\
 Temperature effect on flooding.");
-    frame.set ("death_T_factor", "T_min_15");
-    frame.declare_boolean ("emerging", Attribute::State, "\
+      frame.set ("death_T_factor", "T_min_15");
+      frame.declare_boolean ("emerging", Attribute::State, "\
 True until root mass is large enough to sustain root length in RZ.\n\
 Until then, L within RZ is set to DensRtTip.");
-    frame.set ("emerging", true);
-    frame.declare ("Depth", "cm",
-                   Check::non_negative (), Attribute::OptionalState,
-                   "Expected depth of root zone (positive).");
-    frame.declare ("Width", "cm",
-                   Check::non_negative (), Attribute::OptionalState,
-                   "Expected width of root zone.");
-    frame.declare ("flooded", "h",
-		   Attribute::OptionalState, Attribute::SoilCells, "\
+      frame.set ("emerging", true);
+      frame.declare ("Depth", "cm",
+                     Check::non_negative (), Attribute::OptionalState,
+                     "Expected depth of root zone (positive).");
+      frame.declare ("Width", "cm",
+                     Check::non_negative (), Attribute::OptionalState,
+                     "Expected width of root zone.");
+      frame.declare ("flooded", "h",
+  		   Attribute::OptionalState, Attribute::SoilCells, "\
 Time flooded, adjusted for temperature.\n\
 The temperature adjustment is the same used for mineralization.");
-    frame.declare ("E", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
-		   "Expansion");
-    frame.declare ("expansion_volume", "cm^3", Attribute::LogOnly, "\
+      frame.declare ("E", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
+  		   "Expansion");
+      frame.declare ("expansion_volume", "cm^3", Attribute::LogOnly, "\
 Expansion volume.");
-    frame.declare ("E_tot", "cm/d", Attribute::LogOnly, "\
+      frame.declare ("E_tot", "cm/d", Attribute::LogOnly, "\
 Total expansion root length.");
-    frame.declare ("A_tot", "cm^2", Attribute::LogOnly, "\
+      frame.declare ("A_tot", "cm^2", Attribute::LogOnly, "\
 Total expansion area.");
-    frame.declare ("I", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
-		   "Internal adjustment.");
-    frame.declare ("I_tot", "cm/d", Attribute::LogOnly, "\
+      frame.declare ("I", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
+  		   "Internal adjustment.");
+      frame.declare ("I_tot", "cm/d", Attribute::LogOnly, "\
 Total internal adjustment root length.");
-    frame.declare ("D", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
-		   "Death.");
-    frame.declare ("D_tot", "cm/d", Attribute::LogOnly, "\
+      frame.declare ("D", "cm/cm^3/d", Attribute::LogOnly, Attribute::SoilCells,
+  		   "Death.");
+      frame.declare ("D_tot", "cm/d", Attribute::LogOnly, "\
 Total death root length.");
-    }
-} RootdensLocal_syntax;
+      }
+  } RootdensLocal_syntax;
+}
 
 // rootdens_local.C ends here.
+

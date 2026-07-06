@@ -25,6 +25,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -158,7 +159,7 @@ HydraulicM_vGip::~HydraulicM_vGip()
 
 // Add the HydraulicM_vGip syntax to the syntax table.
 
-static struct HydraulicM_vGipSyntax : public DeclareModel
+struct HydraulicM_vGipSyntax : public DeclareModel
 {
 	Model* make(const BlockModel& al) const
 	{
@@ -185,4 +186,11 @@ static struct HydraulicM_vGipSyntax : public DeclareModel
 			"Bubbling pressure.");
 		frame.set("he", -2.0);
 	}
-} hydraulicM_vGip_syntax;
+};
+
+void
+register_hydraulic_M_vGip_models ()
+{
+  static HydraulicM_vGipSyntax hydraulicM_vGip_syntax;
+}
+

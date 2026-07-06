@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
@@ -86,7 +87,7 @@ GroundwaterStatic::GroundwaterStatic (const BlockModel& al)
 GroundwaterStatic::~GroundwaterStatic ()
 { }
 
-static struct GroundwaterStaticSyntax : public DeclareModel
+struct GroundwaterStaticSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { 
@@ -108,6 +109,12 @@ Provided for backward compatibility, use 'deep' or 'fixed' instead.")
 Positive numbers indicate free drainage.");
     frame.set ("table", 1.0);
   }
-} GroundwaterStatic_syntax;
+};
+
+void
+register_groundwater_static_models ()
+{
+  static GroundwaterStaticSyntax groundwater_static_syntax;
+}
 
 // groundwater_static.C ends here.

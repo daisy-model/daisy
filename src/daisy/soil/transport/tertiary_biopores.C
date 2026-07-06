@@ -749,7 +749,7 @@ TertiaryBiopores::TertiaryBiopores (const BlockModel& al)
     ddt (-42.42e42)
 { }
 
-static struct TertiaryBioporesSyntax : public DeclareModel
+struct TertiaryBioporesSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TertiaryBiopores (al); }
@@ -828,6 +828,11 @@ Automatically set when matrix pressure is in a disarray, such as after\n\
 tillage operations, or calls to reserve models.");
     frame.set ("deactivate_steps", 3);
   }
-} TertiaryBiopores_syntax;
+};
 
+void
+register_tertiary_biopores_models ()
+{
+  static TertiaryBioporesSyntax TertiaryBiopores_syntax;
+}
 // tertiary_biopores.C ends here.

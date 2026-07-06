@@ -42,6 +42,7 @@
 #include "object_model/block_model.h"
 #include <sstream>
 #include <deque>
+#include "daisy/daisy_registration_internal.h"
 
 struct VegetationPermanent : public Vegetation
 {
@@ -435,7 +436,7 @@ VegetationPermanent::VegetationPermanent (const BlockModel& al)
 VegetationPermanent::~VegetationPermanent ()
 { }
 
-static struct VegetationPermanentSyntax : public DeclareModel
+struct VegetationPermanentSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new VegetationPermanent (al); }
@@ -491,6 +492,12 @@ Litter AOM parameters.");
 		"Reflection factor.");
     frame.set ("Albedo", 0.2);
   }
-} VegetationPermanent_syntax;
+};
+
+void
+register_vegetation_permanent_models ()
+{
+  static VegetationPermanentSyntax VegetationPermanent_syntax;
+}
 
 // vegetation_permanent.C ends here.

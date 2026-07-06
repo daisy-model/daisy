@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/uzrect.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -50,12 +51,21 @@ UZRect::UZRect (const BlockModel& al)
 UZRect::~UZRect ()
 { }
 
-static struct UZRectInit : public DeclareComponent 
+struct UZRectInit : public DeclareComponent 
 {
   UZRectInit ()
     : DeclareComponent (UZRect::component, "\
 2D water movement in a rectangular grid.")
   { }
-} UZRect_init;
+};
 
+void
+register_uzrect_models ()
+{
+  static UZRectInit UZRect_init;
+
+  register_uzrect_2x1_models ();
+  register_uzrect_Mollerup_models ();
+  register_uzrect_const_models ();
+}
 // uzrect.C ends here.

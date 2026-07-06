@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -103,7 +104,7 @@ HydraulicYolo::~HydraulicYolo ()
 
 // Add the HydraulicYolo syntax to the syntax table.
 
-static struct HydraulicYoloSyntax : public DeclareModel
+struct HydraulicYoloSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicYolo (al); }
@@ -116,4 +117,11 @@ static struct HydraulicYoloSyntax : public DeclareModel
                 "Number of intervals for numeric integration of K.");
     frame.set ("M_intervals", 500);
   }
-} hydraulicYolo_syntax;
+};
+
+void
+register_hydraulic_yolo_models ()
+{
+  static HydraulicYoloSyntax hydraulicYolo_syntax;
+}
+

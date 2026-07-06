@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/cstage.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
@@ -48,18 +49,6 @@ CStage::CStage (const BlockModel& al)
 
 CStage::~CStage ()
 { }
-
-static struct CStageInit : public DeclareComponent 
-{
-  CStageInit ()
-    : DeclareComponent (CStage::component, "\
-Crop phenological stage.\n\
-The 'default' crop model uses a continius development stage [-1:2]\n	\
-in order to track the phenological age of a crop.\n\
-The 'cstage' library allows translation of the internal model to\n\
-other phenological models.")
-  { }
-} CStage_init;
 
 // The 'table' model.
 
@@ -130,75 +119,89 @@ Message to display when entering this stage.");
   { }
 };
 
-static struct CStageTableSyntax : DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new CStageTable (al); }
-  CStageTableSyntax ()
-    : DeclareModel (CStage::component, "table", "\
-A table mapping Daisy DS to other model.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-      frame.declare ("DS", "DS", Check::DS (), Attribute::State, "\
-Last Daisy development stage.");
-      frame.set ("DS", -1.0);
-      frame.declare ("value", Attribute::Unknown (), Check::none (),
-		     Attribute::State, "\
-Current stage in this phenological model.");
-    frame.declare_submodule_sequence ("table", Attribute::Const, "\
-List of Daisy and other model stages", CStageTable::Entry::load_syntax);
-  }
-} CStageTable_syntax;
-
 // The 'Daisy' parameterization.
-
-static struct CStageDaisySyntax : public DeclareParam
-{
-  CStageDaisySyntax ()
-    : DeclareParam (CStage::component, "Daisy", "table", "\
-DS 0, 1, and 2 have meaning.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("value", -1.0);
-    const FrameSubmodel& default_frame = *frame.default_frame ("table");
-    boost::shared_ptr<FrameSubmodel> DS0
-      (new FrameSubmodelValue (default_frame, Frame::parent_link));
-    DS0->set ("DS", 0.0);
-    DS0->set ("value", 0.0);
-    DS0->set ("message", "Emerging");
-    boost::shared_ptr<FrameSubmodel> DS1
-      (new FrameSubmodelValue (default_frame, Frame::parent_link));
-    DS1->set ("DS", 1.0);
-    DS1->set ("value", 1.0);
-    DS1->set ("message", "Flowering");
-    boost::shared_ptr<FrameSubmodel> DS2
-      (new FrameSubmodelValue (default_frame, Frame::parent_link));
-    DS2->set ("DS", 2.0);
-    DS2->set ("value", 2.0);
-    DS2->set ("message", "Ripe");
-    std::vector<boost::shared_ptr<const FrameSubmodel>/**/>
-      sequence;
-    sequence.push_back (DS0);
-    sequence.push_back (DS1);
-    sequence.push_back (DS2);
-    frame.set ("table", sequence);
-  }
-} CStageDaisy_syntax;
 
 // The 'BBCH' base parameterization.
 
-static struct CStageBBCHSyntax : public DeclareParam
+void
+register_cstage_models ()
 {
-  CStageBBCHSyntax ()
-    : DeclareParam (CStage::component, "BBCH", "table", "\
-Parent paramterization for all BBCH derived cropstage definitions.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct CStageInit : public DeclareComponent 
   {
-    frame.set ("value", 0.0);
-  }
-} CStageBBCH_syntax;
+    CStageInit ()
+      : DeclareComponent (CStage::component, "\
+Crop phenological stage.\n\
+The 'default' crop model uses a continius development stage [-1:2]\n	\
+in order to track the phenological age of a crop.\n\
+The 'cstage' library allows translation of the internal model to\n\
+other phenological models.")
+    { }
+  } CStage_init;
+  static struct CStageTableSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new CStageTable (al); }
+    CStageTableSyntax ()
+      : DeclareModel (CStage::component, "table", "\
+A table mapping Daisy DS to other model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+        frame.declare ("DS", "DS", Check::DS (), Attribute::State, "\
+Last Daisy development stage.");
+        frame.set ("DS", -1.0);
+        frame.declare ("value", Attribute::Unknown (), Check::none (),
+  		     Attribute::State, "\
+Current stage in this phenological model.");
+      frame.declare_submodule_sequence ("table", Attribute::Const, "\
+List of Daisy and other model stages", CStageTable::Entry::load_syntax);
+    }
+  } CStageTable_syntax;
+  static struct CStageDaisySyntax : public DeclareParam
+  {
+    CStageDaisySyntax ()
+      : DeclareParam (CStage::component, "Daisy", "table", "\
+DS 0, 1, and 2 have meaning.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("value", -1.0);
+      const FrameSubmodel& default_frame = *frame.default_frame ("table");
+      boost::shared_ptr<FrameSubmodel> DS0
+        (new FrameSubmodelValue (default_frame, Frame::parent_link));
+      DS0->set ("DS", 0.0);
+      DS0->set ("value", 0.0);
+      DS0->set ("message", "Emerging");
+      boost::shared_ptr<FrameSubmodel> DS1
+        (new FrameSubmodelValue (default_frame, Frame::parent_link));
+      DS1->set ("DS", 1.0);
+      DS1->set ("value", 1.0);
+      DS1->set ("message", "Flowering");
+      boost::shared_ptr<FrameSubmodel> DS2
+        (new FrameSubmodelValue (default_frame, Frame::parent_link));
+      DS2->set ("DS", 2.0);
+      DS2->set ("value", 2.0);
+      DS2->set ("message", "Ripe");
+      std::vector<boost::shared_ptr<const FrameSubmodel>/**/>
+        sequence;
+      sequence.push_back (DS0);
+      sequence.push_back (DS1);
+      sequence.push_back (DS2);
+      frame.set ("table", sequence);
+    }
+  } CStageDaisy_syntax;
+  static struct CStageBBCHSyntax : public DeclareParam
+  {
+    CStageBBCHSyntax ()
+      : DeclareParam (CStage::component, "BBCH", "table", "\
+Parent paramterization for all BBCH derived cropstage definitions.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("value", 0.0);
+    }
+  } CStageBBCH_syntax;
+}
 
 // cstage.C ends here.
+

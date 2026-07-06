@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "object_model/parameter_types/number.h"
@@ -154,7 +155,7 @@ XYSourceXYCombine::XYSourceXYCombine (const BlockModel& al)
     style_ (al.integer ("style", -1))
 { }
 
-static struct XYSourceXYCombineSyntax : public DeclareModel
+struct XYSourceXYCombineSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceXYCombine (al); }
@@ -181,6 +182,12 @@ Either the x or y for all sourcses must be identical.");
 Expression for calculating the value for this source. The\n\
 expression may refer to the value of each source by its title.");
   }
-} XYSourceXYCombine_syntax;
+};
+
+void
+register_gnuplot_xysource_xycombine_models ()
+{
+  static XYSourceXYCombineSyntax xysource_xycombine_syntax;
+}
 
 // xysource_xycombine.C ends here.

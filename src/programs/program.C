@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -72,7 +73,7 @@ Program::Program (const BlockModel& al)
 Program::~Program ()
 { }
 
-static struct ProgramInit : public DeclareComponent
+struct ProgramInit : public DeclareComponent
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -80,6 +81,12 @@ static struct ProgramInit : public DeclareComponent
     : DeclareComponent (Program::component, "\
 Run a program.")
   { }
-} Program_init;
+};
+
+void
+register_program_core_models ()
+{
+  static ProgramInit program_init;
+}
 
 // program.C ends here.

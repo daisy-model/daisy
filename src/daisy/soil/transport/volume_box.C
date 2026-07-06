@@ -328,7 +328,7 @@ std::unique_ptr<Volume>
 Volume::build_none ()
 { return std::unique_ptr<Volume> (new VolumeBox ("none")); }
 
-static struct Volume_BoxSyntax : public DeclareModel
+struct Volume_BoxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new VolumeBox (al); }
@@ -366,6 +366,11 @@ setting the parameters.")
                           "Upper boundary on the y-axis.");
     frame.set ("back", "empty");
   }
-} VolumeBox_syntax;
+};
 
+void
+register_volume_box_models ()
+{
+  static Volume_BoxSyntax VolumeBox_syntax;
+}
 // volume_box.C ends here.

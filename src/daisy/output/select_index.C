@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select_value.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
@@ -48,20 +49,24 @@ struct SelectIndex : public SelectValue
   { }
 };
 
-static struct SelectIndexSyntax : public DeclareModel
+void
+register_select_index_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectIndex (al); }
-  SelectIndexSyntax ()
-    : DeclareModel (Select::component, "index", "value", "\
+  static struct SelectIndexSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectIndex (al); }
+    SelectIndexSyntax ()
+      : DeclareModel (Select::component, "index", "value", "\
 Extract content at specified array index.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.declare_integer ("index", Attribute::Const,
-                           "Specify array index to select.");
-    frame.set_check ("index", VCheck::non_negative ());
-  }
-} SelectIndex_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_integer ("index", Attribute::Const,
+                             "Specify array index to select.");
+      frame.set_check ("index", VCheck::non_negative ());
+    }
+  } select_index_syntax;
+}
 
 // select_index.C ends here.

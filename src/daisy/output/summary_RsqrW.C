@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/summary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/destination.h"
 #include "daisy/output/select.h"
 #include "object_model/block_submodel.h"
@@ -395,51 +396,55 @@ SummaryRsqrW::summarize (Treelog& msg) const
   msg.message (pds.str ());
 }
 
-static struct SummaryRsqrWSyntax : public DeclareModel
+void
+register_summary_RsqrW_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SummaryRsqrW (al); }
-  SummaryRsqrWSyntax ()
-    : DeclareModel (Summary::component, "RsqrW", "\
-Calculate coefficient of determination.")
-  { }
-  static bool check_alist (const Metalib&, const Frame& frame, Treelog& msg)
+  static struct SummaryRsqrWSyntax : public DeclareModel
   {
-    bool ok = true;
+    Model* make (const BlockModel& al) const
+    { return new SummaryRsqrW (al); }
+    SummaryRsqrWSyntax ()
+      : DeclareModel (Summary::component, "RsqrW", "\
+Calculate coefficient of determination.")
+    { }
+    static bool check_alist (const Metalib&, const Frame& frame, Treelog& msg)
+    {
+      bool ok = true;
 
-    const std::vector<boost::shared_ptr<const FrameSubmodel>/**/>& measure 
-      = frame.submodel_sequence ("measure");
-    std::set<Time> found;
-    for (size_t i = 0; i < measure.size (); i++)
-      {
-        if (!measure[i]->check ("time"))
-          {
-            msg.error ("All measures must contain time");
-            return false;
-          }
-        const Time time (measure[i]->submodel ("time"));
-        const std::set<Time>::const_iterator j = found.find (time);
-        if (j != found.end ())
-          {
-            msg.error (time.print () + ": duplicate time");
-            ok = false;
-          }
-        else
-          found.insert (time);
-      }
-    return ok;
-  }
-  void load_frame (Frame& frame) const
-  { 
-    frame.add_check (check_alist);
-    frame.declare_submodule_sequence ("measure", Attribute::Const, "\
-Measured data.", 
-                                      SummaryRsqrW::Measure::load_syntax);
-    frame.set_check ("measure", VCheck::min_size_1 ());
-    frame.declare_boolean ("print_data", Attribute::Const, "\
+      const std::vector<boost::shared_ptr<const FrameSubmodel>/**/>& measure
+        = frame.submodel_sequence ("measure");
+      std::set<Time> found;
+      for (size_t i = 0; i < measure.size (); i++)
+        {
+          if (!measure[i]->check ("time"))
+            {
+              msg.error ("All measures must contain time");
+              return false;
+            }
+          const Time time (measure[i]->submodel ("time"));
+          const std::set<Time>::const_iterator j = found.find (time);
+          if (j != found.end ())
+            {
+              msg.error (time.print () + ": duplicate time");
+              ok = false;
+            }
+          else
+            found.insert (time);
+        }
+      return ok;
+    }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.declare_submodule_sequence ("measure", Attribute::Const, "\
+Measured data.",
+                                        SummaryRsqrW::Measure::load_syntax);
+      frame.set_check ("measure", VCheck::min_size_1 ());
+      frame.declare_boolean ("print_data", Attribute::Const, "\
 Print a table with all data in the summary.");
-    frame.set ("print_data", false);
-  }
-} SummaryRsqrW_syntax;
+      frame.set ("print_data", false);
+    }
+  } summary_RsqrW_syntax;
+}
 
 // summary_RsqrW.C ends here.

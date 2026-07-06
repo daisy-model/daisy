@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/organic_matter/organic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/transport/geometry.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -133,17 +134,21 @@ struct OrganicNone : public OrganicMatter
   { }
 };
 
-static struct OrganicNoneSyntax : public DeclareModel
+void
+register_organic_none_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new OrganicNone (al); }
+  static struct OrganicNoneSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new OrganicNone (al); }
 
-  OrganicNoneSyntax ()
-    : DeclareModel (OrganicMatter::component, "none", "\
+    OrganicNoneSyntax ()
+      : DeclareModel (OrganicMatter::component, "none", "\
 Ignore all soil organic matter dynamics.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} OrganicNone_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } organic_none_syntax;
+}
 
 // organic_none.C ends here.

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/biopore.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "object_model/librarian.h"
@@ -310,7 +311,7 @@ Biopore::Biopore (const BlockModel& al)
 Biopore::~Biopore ()
 { }
 
-static struct BioporeInit : public DeclareComponent 
+struct BioporeInit : public DeclareComponent 
 {
   BioporeInit ()
     : DeclareComponent (Biopore::component, "\
@@ -355,6 +356,14 @@ Water flow in this biopore class.");
     frame.declare_submodule_sequence ("J", Attribute::LogOnly, "\
 Solute flux between cells.", load_J);
   }
-} Biopore_init;
+};
 
+void
+register_biopore_models ()
+{
+  static BioporeInit Biopore_init;
+
+  register_biopore_drain_models ();
+  register_biopore_matrix_models ();
+}
 // biopore.C ends here.

@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select_value.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
@@ -135,43 +136,47 @@ struct SelectContent : public SelectValue
   { }
 };
 
-static struct SelectContentSyntax : public DeclareModel
+void
+register_select_content_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectContent (al); }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
+  static struct SelectContentSyntax : public DeclareModel
   {
-    if (al.check ("z") && al.check ("height"))
-      msg.warning ("Paramater 'z' overwrites 'height'");
+    Model* make (const BlockModel& al) const
+    { return new SelectContent (al); }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
+    {
+      if (al.check ("z") && al.check ("height"))
+        msg.warning ("Paramater 'z' overwrites 'height'");
 
-    return true;
-  }
-  SelectContentSyntax ()
-    : DeclareModel (Select::component, "content", "value", "\
+      return true;
+    }
+    SelectContentSyntax ()
+      : DeclareModel (Select::component, "content", "value", "\
 Extract content at specified location.\n\
 The \"location\" may be a line, plane or volume if one or more dimension\n\
 parameters are left out.  In that case, the weighted average is used.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.add_check (check_alist);
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
 
-    frame.declare ("height", "cm", Check::non_positive (), Attribute::OptionalConst,
-		"OBSOLETE: Use 'z' instead.");
-    frame.declare ("z", "cm", Attribute::OptionalConst,
-		"Specify height (negative below surface) to measure content.\n\
+      frame.declare ("height", "cm", Check::non_positive (),
+                      Attribute::OptionalConst,
+                      "OBSOLETE: Use 'z' instead.");
+      frame.declare ("z", "cm", Attribute::OptionalConst,
+                      "Specify height (negative below surface) to measure content.\n\
 The value will be a weighted average of all cells containing height.\n\
 By default, cell in all heights will be included.");
-    frame.declare ("x", "cm", Attribute::OptionalConst,
-		"Specify width (distance from left side) to measure content.\n\
+      frame.declare ("x", "cm", Attribute::OptionalConst,
+                      "Specify width (distance from left side) to measure content.\n\
 The value will be a weighted average of all cells containing width.\n\
 By default, cell in all widths will be included.");
-    frame.declare ("y", "cm", Attribute::OptionalConst,
-		"Specify length (distance from front) to measure content.\n\
+      frame.declare ("y", "cm", Attribute::OptionalConst,
+                      "Specify length (distance from front) to measure content.\n\
 The value will be a weighted average of all cells containing length.\n\
 By default, cell in all lengths will be included.");
-  }
-} SelectContent_syntax;
+    }
+  } select_content_syntax;
+}
 
 // select_content.C ends here.
-

@@ -25,6 +25,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
 #include "util/mathlib.h"
@@ -129,7 +130,7 @@ HydraulicM_BaC_Bimodal::~HydraulicM_BaC_Bimodal ()
 
 // Add the HydraulicM_BaC_Bimodal syntax to the syntax table.
 
-static struct HydraulicM_BaC_BimodalSyntax : public DeclareModel
+struct HydraulicM_BaC_BimodalSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicM_BaC_Bimodal (al); }
@@ -154,4 +155,11 @@ Bimodal hydraulic conductivity curve.")
                 "Water conductivity at 'h_b'.");
 
   }
-} HydraulicM_BaC_Bimodal_syntax;
+};
+
+void
+register_hydraulic_M_BaC_Bimodal_models ()
+{
+  static HydraulicM_BaC_BimodalSyntax HydraulicM_BaC_Bimodal_syntax;
+}
+

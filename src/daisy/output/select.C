@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/select.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/condition.h"
 #include "object_model/block_model.h"
 #include "daisy/column.h"
@@ -723,62 +724,65 @@ Select::Select (const BlockModel& al)
 Select::~Select ()
 { }
 
-static struct SelectInit : public DeclareComponent 
+void
+register_select_models ()
 {
-  SelectInit ()
-    : DeclareComponent (Select::component, Select::description)
-  { }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+  static struct SelectInit : public DeclareComponent
   {
-    bool ok = true;
-    if (al.check ("spec"))
-      {
-        if (!approximate (al.number ("factor"), 1.0, 1e-7))
-          err.warning ("Specifying both 'spec' and 'factor' may conflict");
-        else if (std::isnormal (al.number ("offset")))
-          err.warning ("Specifying both 'spec' and 'offset' may conflict");
-      }
-    if (al.check ("expr"))
-      {
-        if (!approximate (al.number ("factor"), 1.0, 1e-7))
-          {
-            err.error ("Can't specify both 'expr' and 'factor'");
-            ok = false;
-          }
-        else if (std::isnormal (al.number ("offset")))
-          {
-            err.error ("Can't specify both 'expr' and 'offset'");
-            ok = false;
-          }
-      }
+    SelectInit ()
+      : DeclareComponent (Select::component, Select::description)
+    { }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
+      if (al.check ("spec"))
+        {
+          if (!approximate (al.number ("factor"), 1.0, 1e-7))
+            err.warning ("Specifying both 'spec' and 'factor' may conflict");
+          else if (std::isnormal (al.number ("offset")))
+            err.warning ("Specifying both 'spec' and 'offset' may conflict");
+        }
+      if (al.check ("expr"))
+        {
+          if (!approximate (al.number ("factor"), 1.0, 1e-7))
+            {
+              err.error ("Can't specify both 'expr' and 'factor'");
+              ok = false;
+            }
+          else if (std::isnormal (al.number ("offset")))
+            {
+              err.error ("Can't specify both 'expr' and 'offset'");
+              ok = false;
+            }
+        }
 
-    static bool has_warned_about_when = false;
-    if (!has_warned_about_when && al.check ("when"))
-      {
-        err.warning ("The 'when' select parametere is obsolete.\n\
+      static bool has_warned_about_when = false;
+      if (!has_warned_about_when && al.check ("when"))
+        {
+          err.warning ("The 'when' select parametere is obsolete.\n\
 Set the 'handle' parameter instead.");
-        has_warned_about_when = true;
-      }
-    return ok;
-  }
+          has_warned_about_when = true;
+        }
+      return ok;
+    }
 
-  void load_frame (Frame& frame) const
-  {
-    Model::load_model (frame);
-    frame.add_check (check_alist);
-    frame.declare_string ("documentation", Attribute::OptionalConst, "\
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.add_check (check_alist);
+      frame.declare_string ("documentation", Attribute::OptionalConst, "\
 Documentation for this entry.");
-    frame.declare_string ("tag", Attribute::OptionalConst,
+      frame.declare_string ("tag", Attribute::OptionalConst,
                    "Tag to identify the column.\n\
 These will be printed in the first line of the log file.\n\
 The default tag is the last element in the path.");
-    frame.declare_string ("dimension", Attribute::OptionalConst,
+      frame.declare_string ("dimension", Attribute::OptionalConst,
                    "The unit for numbers in this column.\n\
 These will be printed in the second line of the log file.\n\
 The character '&' will be replaced with the log timestep.\n\
 If you do not specify the dimension explicitly, a value will\n\
 be interfered from 'spec' if available.");
-    frame.declare_string ("path", Attribute::Const, Attribute::Variable, "\
+      frame.declare_string ("path", Attribute::Const, Attribute::Variable, "\
 Sequence of attribute names leading to the variable you want to log in\n\
 this column.  The first name should be one of the attributes of the\n\
 daisy component itself.  What to specify as the next name depends on\n\
@@ -811,15 +815,15 @@ simulation, if the model is used at several places.  Also, there is no\n\
 wildcards, so only a single model can be matches.  The spec is used for\n\
 helping Daisy establish a unique dimension and description for the\n\
 attribute.", Select::Implementation::Spec::load_syntax);
-    frame.declare_object ("when", Condition::component,
+      frame.declare_object ("when", Condition::component,
                           Attribute::OptionalConst, Attribute::Singleton,
                           "\
 OBSOLETE.  If you set this variable, 'flux' will be set to true.\n\
 This overwrites any direct setting of 'flux'.");
-    frame.declare_boolean ("flux", Attribute::OptionalConst, "\
+      frame.declare_boolean ("flux", Attribute::OptionalConst, "\
 OBSOLETE.  This value will be used if 'handle' is not specified.\
 A value of true then means 'sum', and false means 'current'.");
-    frame.declare_string ("handle", Attribute::OptionalConst, "\
+      frame.declare_string ("handle", Attribute::OptionalConst, "\
 This option determine how the specified variable should be logged.  \n\
 \n\
 min: Log the smallest value seen since last time the variable was logged.\n\
@@ -840,10 +844,10 @@ If 'accumulate' is true, accumulate since the start of the log.\n\
 \n\
 current: Log the current value for the variable.\n\
 If 'accumulate' is true, the printed values will be accumulated.");
-    static VCheck::Enum handle_check ("min", "max", "average", 
+      static VCheck::Enum handle_check ("min", "max", "average",
                                       "sum", "content_sum", "current");
-    frame.set_check ("handle", handle_check);
-    frame.declare_string ("multi", Attribute::OptionalConst, "\
+      frame.set_check ("handle", handle_check);
+      frame.declare_string ("multi", Attribute::OptionalConst, "\
 This option determine how to handle mutiple matches within a timestep.\n\
 This could be two crops on the same column, or one crop on two columns.\n \
 \n\
@@ -853,32 +857,42 @@ max: Use largest value\n\
 \n\
 sum: Use the sum of all matches, weighted by relative column area if\n\
 the matches are from different columns.");
-    frame.set_check ("multi", Select::multi_check ());
-    frame.set ("multi", "sum");
-    frame.declare_boolean ("interesting_content", Attribute::OptionalConst, "\
+      frame.set_check ("multi", Select::multi_check ());
+      frame.set ("multi", "sum");
+      frame.declare_boolean ("interesting_content", Attribute::OptionalConst, "\
 True if the content of this column is interesting enough to warrent an\n\
 initial line in the log file.\n\
 By default, this is true iff 'handle' is 'current'.");
-    frame.declare_object ("expr", Number::component, 
+      frame.declare_object ("expr", Number::component,
                           Attribute::OptionalConst, Attribute::Singleton, "\
 Expression for findig the value for the log file, given the internal\n\
 value 'x'.  For example '(expr (ln x))' will give you the natural\n\
 logarithm of the value.");  
-    frame.declare ("factor", Attribute::Unknown (), Check::none (), Attribute::Const, "\
+      frame.declare ("factor", Attribute::Unknown (), Check::none (), Attribute::Const, "\
 Factor to multiply the calculated value with, before logging.\n\
 OBSOLETE: Use 'expr' instead.");
-    frame.set ("factor", 1.0);
-    frame.declare ("offset", Attribute::Unknown (), Check::none (), Attribute::Const, "\
+      frame.set ("factor", 1.0);
+      frame.declare ("offset", Attribute::Unknown (), Check::none (), Attribute::Const, "\
 Offset to add to the calculated value, before logging.\n\
 OBSOLETE: Use 'expr' instead.");
-    frame.set ("offset", 0.0);
-    frame.declare_boolean ("negate", Attribute::Const, "\
+      frame.set ("offset", 0.0);
+      frame.declare_boolean ("negate", Attribute::Const, "\
 Switch sign of value.  I.e. upward fluxes become downward fluxes.");
-    frame.set ("negate", false);
-    frame.declare_boolean ("accumulate", Attribute::Const,
+      frame.set ("negate", false);
+      frame.declare_boolean ("accumulate", Attribute::Const,
                    "Log accumulated values.");
-    frame.set ("accumulate", false);
-  }
-} Select_init;
+      frame.set ("accumulate", false);
+    }
+  } select_init;
+
+  register_select_value_models ();
+  register_select_content_models ();
+  register_select_number_models ();
+  register_select_index_models ();
+  register_select_array_models ();
+  register_select_quiver_models ();
+  register_select_flow_models ();
+  register_select_volume_models ();
+}
 
 // select.C ends here.

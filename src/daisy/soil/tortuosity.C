@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/tortuosity.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -45,7 +46,7 @@ Tortuosity::Tortuosity (const symbol name_)
 Tortuosity::~Tortuosity ()
 { }
 
-static struct TortuosityInit : public DeclareComponent 
+struct TortuosityInit : public DeclareComponent 
 {
   TortuosityInit ()
     : DeclareComponent (Tortuosity::component, "\
@@ -59,4 +60,14 @@ the soils tortuosity factor.")
   {
     Model::load_model (frame);
   }  
-} Tortuosity_init;
+};
+
+void
+register_tortuosity_models ()
+{
+  static TortuosityInit tortuosity_init;
+
+  register_tortuosity_M_Q_models ();
+  register_tortuosity_linear_models ();
+}
+

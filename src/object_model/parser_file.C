@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "object_model/parser_file.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/metalib.h"
 #include "object_model/library.h"
 #include "object_model/block_model.h"
@@ -1845,7 +1846,9 @@ ParserFile::ParserFile (const BlockModel& al)
 ParserFile::~ParserFile ()
 { }
 
-static struct ParserFileSyntax : public DeclareModel
+namespace
+{
+struct ParserFileSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ParserFile (al); }
@@ -1860,6 +1863,13 @@ static struct ParserFileSyntax : public DeclareModel
 		"File to read from.");
     frame.order ("where");
   }
-} ParserFile_syntax;
+};
+}
+
+void
+register_parser_file_models ()
+{
+  static ParserFileSyntax parser_file_syntax;
+}
 
 // parser_file.C ends here.

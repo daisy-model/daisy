@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/abiotic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "util/assertion.h"
 #include "object_model/block_model.h"
@@ -236,7 +237,7 @@ struct FunctionTScale : public FunctionPlotable
   { }
 };
 
-static struct FunctionTScaleSyntax : public DeclareBase
+struct FunctionTScaleSyntax : public DeclareBase
 {
   FunctionTScaleSyntax ()
     : DeclareBase (Function::component, "T_scale", 
@@ -249,7 +250,7 @@ Temperature at which the function is one.");
     frame.set ("domain", Units::dgC ());
     frame.set ("range", Attribute::None ());
   }
-} FunctionTScale_syntax;
+};
 
 // The 'T_min' model.
 
@@ -265,7 +266,7 @@ struct FunctionTMin : public FunctionTScale
   { }
 };
 
-static struct FunctionTMinSyntax : public DeclareModel
+struct FunctionTMinSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionTMin (al); }
@@ -280,11 +281,11 @@ to 0 at 60 dg C, according to J.A. van Veen and M.J.Frissel.")
     frame.set ("ref", 10.0);
     frame.set_strings ("cite", "daisy-def");
   }
-} FunctionTMin_syntax;
+};
 
 // The 'T_min_15' parameterization.
 
-static struct FunctionTMin15Syntax : public DeclareParam
+struct FunctionTMin15Syntax : public DeclareParam
 {
   FunctionTMin15Syntax ()
     : DeclareParam (Function::component, "T_min_15", "T_min",
@@ -294,7 +295,7 @@ static struct FunctionTMin15Syntax : public DeclareParam
   {
     frame.set ("ref", 15.0);
   }
-} FunctionTMin15_syntax;
+};
 
 // The 'T_nit' model.
 
@@ -310,7 +311,7 @@ struct FunctionTNit : public FunctionTScale
   { }
 };
 
-static struct FunctionTNitSyntax : public DeclareModel
+struct FunctionTNitSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionTNit (al); }
@@ -325,6 +326,15 @@ to 0 at 60 dg C, according to J.A. van Veen and M.J.Frissel.")
     frame.set ("ref", 10.0);
     frame.set_strings ("cite", "daisy-def");
   }
-} FunctionTNit_syntax;
+};
+
+void
+register_abiotic_models ()
+{
+  static FunctionTScaleSyntax function_t_scale_syntax;
+  static FunctionTMinSyntax function_t_min_syntax;
+  static FunctionTMin15Syntax function_t_min15_syntax;
+  static FunctionTNitSyntax function_t_nit_syntax;
+}
 
 // abiotic.C ends here.

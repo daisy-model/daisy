@@ -268,7 +268,7 @@ TransportConvection::TransportConvection (const BlockModel& al)
 TransportConvection::~TransportConvection ()
 { }
 
-static struct TransportConvectionSyntax : DeclareModel
+struct TransportConvectionSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TransportConvection (al); }
@@ -280,7 +280,12 @@ J[edge] = q[edge] * C_old[upstream]")
   { }
   void load_frame (Frame&) const
   { }
-} TransportConvection_syntax;
+};
 
+void
+register_transport_convection_models ()
+{
+  static TransportConvectionSyntax TransportConvection_syntax;
+}
 // transport_convection.C ends here.
 

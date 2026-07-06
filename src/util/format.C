@@ -227,12 +227,4 @@ Format::Format (const BlockModel& al) // FIXME: Why does this take a BlockModel?
 Format::~Format ()
 { daisy_safe_assert (nest.empty ()); }
 
-static struct FormatInit : public DeclareComponent 
-{
-  FormatInit ()
-    : DeclareComponent (Format::component, "\
-Text formatting component.")
-  { }
-} Format_init;
-
 // format.C ends here.

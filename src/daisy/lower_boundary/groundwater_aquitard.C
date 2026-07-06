@@ -1,5 +1,6 @@
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater_aquitard.h"
 
 GroundwaterAquitard::GroundwaterAquitard (const BlockModel& al)
@@ -101,7 +102,7 @@ void GroundwaterAquitard::set_h_aquifer (const Geometry& geo)
     h_aquifer = pressure_table->operator()() - aquitard_bottom;
 }
 
-static struct GroundwaterAquitardSyntax : public DeclareModel
+struct GroundwaterAquitardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterAquitard (al); }
@@ -134,6 +135,12 @@ number).  This is different from the actual groundwater table, because\n\
 the aquitart block the water, and the pipes lead the water away.\n\
 You can alternatively specify the pressure directly, with 'h_aquifer'.");
     }
-} GroundwaterAquitard_syntax;
+};
+
+void
+register_groundwater_aquitard_models ()
+{
+  static GroundwaterAquitardSyntax groundwater_aquitard_syntax;
+}
 
 // groundwater_aquitard.C ends here.

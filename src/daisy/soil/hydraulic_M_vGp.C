@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -150,7 +151,7 @@ HydraulicM_vGp::~HydraulicM_vGp ()
 
 // Add the HydraulicM_vGp syntax to the syntax table.
 
-static struct HydraulicM_vGpSyntax : public DeclareModel
+struct HydraulicM_vGpSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicM_vGp (al); }
@@ -184,6 +185,12 @@ X = 1 cm^-1")
                 "Macropores conductivity curve shape parameter.");
 
   }
-} hydraulicM_vGp_syntax;
+};
+
+void
+register_hydraulic_M_vGp_models ()
+{
+  static HydraulicM_vGpSyntax hydraulicM_vGp_syntax;
+}
 
 // hydraulic_M_vGp.C ends here.

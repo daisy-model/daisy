@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "util/scope.h"
 #include "object_model/block_model.h"
@@ -94,7 +95,7 @@ struct ActionIrrigate : public Action
   { }
 };
 
-static struct ActionIrrigateBaseSyntax : public DeclareBase
+struct ActionIrrigateBaseSyntax : public DeclareBase
 {
   ActionIrrigateBaseSyntax ()
     : DeclareBase (Action::component, "irrigate_base", "\
@@ -143,7 +144,7 @@ Setting this overrides the 'days' and 'hours' parameters.");
 Solutes in irrigation water.", load_ppm);
     frame.set_empty ("solute");
   }
-} ActionIrrigateBase_syntax;
+};
 
 const symbol ActionIrrigate::mm_per_h ("mm/h");
 
@@ -189,7 +190,7 @@ struct ActionIrrigateSubsoil : public ActionIrrigate
   { }
 };
 
-static struct ActionIrrigateOverheadSyntax : DeclareModel
+struct ActionIrrigateOverheadSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionIrrigateOverhead (al); }
@@ -199,9 +200,9 @@ Irrigate the field from above.")
   { }
   void load_frame (Frame&) const
   { }
-} ActionIrrigateOverhead_syntax;
+};
 
-static struct ActionIrrigateSurfaceSyntax : DeclareModel
+struct ActionIrrigateSurfaceSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionIrrigateSurface (al); }
@@ -211,9 +212,9 @@ Irrigate the field directly on the soil surface, bypassing the canopy.")
   { }
   void load_frame (Frame&) const
   { }
-} ActionIrrigateSurface_syntax;
+};
 
-static struct ActionIrrigateSubsoilSyntax : DeclareModel
+struct ActionIrrigateSubsoilSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionIrrigateSubsoil (al); }
@@ -255,6 +256,15 @@ OBSOLETE: Use (volume box (top FROM)) instead.");
 Height where you want to end the incorporation (a negative number).\n\
 OBSOLETE: Use (volume box (bottom TO)) instead.");
   }
-} ActionIrrigateSubsoil_syntax;
+};
+
+void
+register_action_irrigate_models ()
+{
+  static ActionIrrigateBaseSyntax action_irrigate_base_syntax;
+  static ActionIrrigateOverheadSyntax action_irrigate_overhead_syntax;
+  static ActionIrrigateSurfaceSyntax action_irrigate_surface_syntax;
+  static ActionIrrigateSubsoilSyntax action_irrigate_subsoil_syntax;
+}
 
 // action_irrigate.C ends here.

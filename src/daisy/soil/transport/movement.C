@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/movement.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "daisy/soil/transport/tertiary.h"
@@ -197,7 +198,7 @@ Movement::Movement (const BlockModel& al)
 Movement::~Movement ()
 { }
 
-static struct MovementInit : public DeclareComponent 
+struct MovementInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   {
@@ -217,6 +218,15 @@ the second succeded.");
     : DeclareComponent (Movement::component, "\
 This component handles the movement in the soil.")
   { }
-} Movement_init;
+};
 
+void
+register_movement_models ()
+{
+  static MovementInit Movement_init;
+
+  register_movement_solute_models ();
+  register_movement_1D_models ();
+  register_movement_rect_models ();
+}
 // movement.C ends here.

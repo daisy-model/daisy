@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "util/scope_model.h"
+#include "util/util_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
@@ -49,12 +50,21 @@ MScope::MScope (const BlockModel& al)
 MScope::~MScope ()
 { }
 
-static struct MScopeInit : public DeclareComponent 
+namespace
+{
+struct MScopeInit : public DeclareComponent 
 {
   MScopeInit ()
     : DeclareComponent (MScope::component, "\
 A scope maps names to values.")
   { }
-} MScope_init;
+};
+}
+
+void
+register_scope_models ()
+{
+  static MScopeInit scope_init;
+}
 
 // scope_model.C ends here

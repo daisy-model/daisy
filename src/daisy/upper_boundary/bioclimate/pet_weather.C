@@ -26,6 +26,7 @@
 #include "daisy/output/log.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
+#include "daisy/daisy_registration_internal.h"
 
 struct PetWeather : public Pet
 {
@@ -69,7 +70,7 @@ struct PetWeather : public Pet
   { }
 };
 
-static struct PetWeatherSyntax : public DeclareModel
+struct PetWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new PetWeather (al); }
@@ -79,6 +80,12 @@ static struct PetWeatherSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} PetWeather_syntax;
+};
+
+void
+register_pet_weather_models ()
+{
+  static PetWeatherSyntax PetWeather_syntax;
+}
 
 // pet_weather.C ends here.

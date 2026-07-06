@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "util/lexer_table.h"
 #include "util/scope_table.h"
 #include "gnuplot/gnuplot_utils.h"
@@ -252,7 +253,7 @@ XYSourceExpr::~XYSourceExpr ()
 { }
 
 
-static struct XYSourceExprSyntax : public DeclareModel
+struct XYSourceExprSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceExpr (al); }
@@ -295,6 +296,12 @@ for that column.");
 Ignore entries if this boolean expression is false.");
     frame.set ("valid", "true");
   }
-} XYSourceExpr_syntax;
+};
+
+void
+register_gnuplot_xysource_expr_models ()
+{
+  static XYSourceExprSyntax xysource_expr_syntax;
+}
 
 // xysource_expr.C ends here.

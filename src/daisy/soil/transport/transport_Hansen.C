@@ -339,7 +339,7 @@ This primary solute transport model only works with 'vertical' movement");
   return ok;
 }
 
-static struct TransportHansenSyntax : DeclareModel
+struct TransportHansenSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   {
@@ -352,6 +352,11 @@ static struct TransportHansenSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} TransportHansen_syntax;
+};
 
+void
+register_transport_Hansen_models ()
+{
+  static TransportHansenSyntax TransportHansen_syntax;
+}
 // transport_Hansen.C ends here.

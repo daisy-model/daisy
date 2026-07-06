@@ -29,6 +29,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct DifradDPF : public Difrad
 {
@@ -87,7 +88,7 @@ struct DifradDPF : public Difrad
     { }
 };
 
-static struct DifradDPFSyntax : public DeclareModel
+struct DifradDPFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DifradDPF (al); }
@@ -108,6 +109,12 @@ Value around 0.6-0.9 depending on dust particles.");
     frame.set_described ("a", 0.72, "Table 5 in cited paper.");
     
   }
-} DifradDPF_syntax;
+};
+
+void
+register_difrad_DPF_models ()
+{
+  static DifradDPFSyntax DifradDPF_syntax;
+}
 
 // difrad_DPF.C ends here.

@@ -440,7 +440,7 @@ Movement*
 Movement::build_vertical (const BlockModel& al)
 { return new Movement1D (al); }
 
-static struct Movement1DSyntax : DeclareModel
+struct Movement1DSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Movement1D (al); }
@@ -465,6 +465,11 @@ If none succeeds, the simulation ends.");
     frame.set_strings ("matrix_water", "richards", "lr");
  
   }
-} Movement1D_syntax;
+};
 
+void
+register_movement_1D_models ()
+{
+  static Movement1DSyntax Movement1D_syntax;
+}
 // movement_1D.C ends here.

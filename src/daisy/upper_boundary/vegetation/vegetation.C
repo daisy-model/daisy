@@ -26,6 +26,7 @@
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Vegetation::component = "vegetation";
 
@@ -84,7 +85,7 @@ Vegetation::Vegetation (const BlockModel& al)
 Vegetation::~Vegetation ()
 { }
 
-static struct VegetationInit : public DeclareComponent 
+struct VegetationInit : public DeclareComponent 
 {
   VegetationInit ()
     : DeclareComponent (Vegetation::component, "\
@@ -136,6 +137,16 @@ Canopy adsorbtion fraction of unreached potential soil evaporation.");
     frame.declare ("sunlit_stomata_conductance", "m/s", Attribute::LogOnly,
                    "Field based stomata conductance of sunlit leaves.");
   }
-} Vegetation_init;
+};
+
+void
+register_vegetation_models ()
+{
+  static VegetationInit Vegetation_init;
+
+  register_vegetation_afforestation_models ();
+  register_vegetation_crops_models ();
+  register_vegetation_permanent_models ();
+}
 
 // vegetation.C ends here.

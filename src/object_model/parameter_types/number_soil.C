@@ -29,6 +29,7 @@
 #include "daisy/soil/hydraulic.h"
 #include "daisy/daisy_time.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "util/scope.h"
 #include "object_model/units.h"
 #include "object_model/treelog.h"
@@ -116,7 +117,7 @@ struct NumberByDepth : public Number
   }
 };
 
-static struct NumberDepthSyntax : public DeclareBase
+struct NumberDepthSyntax : public DeclareBase
 {
   NumberDepthSyntax ()
     : DeclareBase (Number::component, "depth", 
@@ -131,7 +132,7 @@ The tension we want to compare with.");
     frame.declare_object ("z", Number::component, "\
 The height we want to compare with.");
   }
-} NumberDepth_syntax;
+};
 
 struct NumberDepthTheta : public NumberByDepth
 {
@@ -155,7 +156,7 @@ struct NumberDepthTheta : public NumberByDepth
   { }
 };
 
-static struct NumberDepthThetaSyntax : public DeclareModel
+struct NumberDepthThetaSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberDepthTheta (al); }
@@ -165,7 +166,7 @@ static struct NumberDepthThetaSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberDepthTheta_syntax;
+};
 
 struct NumberDepthK : public NumberByDepth
 {
@@ -189,7 +190,7 @@ struct NumberDepthK : public NumberByDepth
   { }
 };
 
-static struct NumberDepthKSyntax : public DeclareModel
+struct NumberDepthKSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberDepthK (al); }
@@ -199,7 +200,7 @@ static struct NumberDepthKSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberDepthK_syntax;
+};
 
 struct NumberByTension : public Number
 {
@@ -249,7 +250,7 @@ struct NumberByTension : public Number
                          al.msg ()); }
 };
 
-static struct NumberHorizonSyntax : public DeclareBase
+struct NumberHorizonSyntax : public DeclareBase
 {
   NumberHorizonSyntax ()
     : DeclareBase (Number::component, "horizon", 
@@ -264,7 +265,7 @@ The tension we want to compare with.");
     frame.declare_boolean ("top_soil", Attribute::Const, "\
 Set this to true for the A horizon.");
   }
-} NumberHorizon_syntax;
+};
 
 
 struct NumberSoilTheta : public NumberByTension
@@ -287,7 +288,7 @@ struct NumberSoilTheta : public NumberByTension
   { }
 };
 
-static struct NumberSoilThetaSyntax : public DeclareModel
+struct NumberSoilThetaSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSoilTheta (al); }
@@ -297,7 +298,7 @@ static struct NumberSoilThetaSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSoilTheta_syntax;
+};
 
 struct NumberSoilK : public NumberByTension
 {
@@ -321,7 +322,7 @@ struct NumberSoilK : public NumberByTension
   { }
 };
 
-static struct NumberSoilKSyntax : public DeclareModel
+struct NumberSoilKSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSoilK (al); }
@@ -331,7 +332,7 @@ static struct NumberSoilKSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSoilK_syntax;
+};
 
 struct NumberSoilHeatCapacity : public NumberByTension
 {
@@ -356,7 +357,7 @@ struct NumberSoilHeatCapacity : public NumberByTension
   { }
 };
 
-static struct NumberSoilHeatCapacitySyntax : public DeclareModel
+struct NumberSoilHeatCapacitySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSoilHeatCapacity (al); }
@@ -366,7 +367,7 @@ static struct NumberSoilHeatCapacitySyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSoilHeatCapacity_syntax;
+};
 
 struct NumberSoilHeatConductivity : public NumberByTension
 {
@@ -391,7 +392,7 @@ struct NumberSoilHeatConductivity : public NumberByTension
   { }
 };
 
-static struct NumberSoilHeatConductivitySyntax : public DeclareModel
+struct NumberSoilHeatConductivitySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSoilHeatConductivity (al); }
@@ -401,7 +402,7 @@ static struct NumberSoilHeatConductivitySyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSoilHeatConductivity_syntax;
+};
 
 struct NumberTensionByTheta : public Number
 {
@@ -456,7 +457,7 @@ struct NumberTensionByTheta : public Number
                          al.msg ()); }
 };
 
-static struct NumberTensionByThetaSyntax : public DeclareModel
+struct NumberTensionByThetaSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberTensionByTheta (al); }
@@ -474,6 +475,21 @@ The water content we want to compare with.");
     frame.declare_boolean ("top_soil", Attribute::Const, "\
 Set this to true for the A horizon.");
   }
-} NumberTensionByTheta_syntax;
+};
+
+void
+register_number_soil_models ()
+{
+  static NumberDepthSyntax number_depth_syntax;
+  static NumberDepthThetaSyntax number_depth_theta_syntax;
+  static NumberDepthKSyntax number_depth_k_syntax;
+  static NumberHorizonSyntax number_horizon_syntax;
+  static NumberSoilThetaSyntax number_soil_theta_syntax;
+  static NumberSoilKSyntax number_soil_k_syntax;
+  static NumberSoilHeatCapacitySyntax number_soil_heat_capacity_syntax;
+  static NumberSoilHeatConductivitySyntax
+    number_soil_heat_conductivity_syntax;
+  static NumberTensionByThetaSyntax number_tension_by_theta_syntax;
+}
 
 // number_soil.C ends here

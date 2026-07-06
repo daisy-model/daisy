@@ -667,7 +667,6 @@ ChemicalBase::add_to_source_secondary (const std::vector<double>& v)
     }
 }
 
-
 void
 ChemicalBase::add_to_source_primary (const std::vector<double>& v)
 {
@@ -1051,8 +1050,6 @@ ChemicalBase::tick_top (const Vegetation& vegetation,
   residuals /= dt;
   surface_tillage /= dt;
   litter_tillage /= dt;
-
-
 
   const double old_storage = snow_storage + canopy_storage + litter_storage;
 
@@ -1575,7 +1572,6 @@ ChemicalBase::decompose (const Geometry& geo,
 					     organic_matter);
       decompose_factor[c] = factor;
       rate_primary = rate_secondary = decompose_rate * factor;
-
 
       // Adjust for concentration.
       if (decompose_conc_factor.size () > 0)
@@ -2192,372 +2188,6 @@ struct NumberInitialC : public Number
   { }
 };
 
-static struct NumberInitialCSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new NumberInitialC (al); }
-  NumberInitialCSyntax ()
-    : DeclareModel (Number::component, "initial_C", "\
-Find initial content from concentration.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-
-    frame.declare ("C", "g/cm^3", Attribute::Const, "\
-Initial concentration in soil water with sorbtion ignored.\n\
-That is M = C * Theta.");
-    frame.order ("C");
-  }
-} NumberInitialC_syntax;
-
-static struct InitialZeroSyntax : public DeclareParam
-{ 
-  InitialZeroSyntax ()
-    : DeclareParam (Number::component, "initial_zero", "const", "\
-Initial zero content.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("value", 0.0, "g/cm^3");
-  }
-} InitialZero_syntax;
-
-static struct ZeroGradientSyntax : public DeclareParam
-{ 
-  ZeroGradientSyntax ()
-    : DeclareParam (Number::component, "zero_gradient", "const", "\
-Assume same concentration in groundwater as in the bottom of the soil profile.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("value", -1.0, "g/cm^3");
-  }
-} ZeroGradient_syntax;
-
-static struct ChemicalBaseSyntax : public DeclareBase
-{
-  ChemicalBaseSyntax ()
-    : DeclareBase (Chemical::component, "base", "\
-Read chemical properties as normal Daisy parameters.")
-  { }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
-  { 
-    bool ok = true;
-    return ok;
-  }
-
-  static void load_C (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Concentration in water."); }
-
-  static void load_C_secondary (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Concentration in secondary domain."); }
-
-  static void load_C_primary (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Concentration in primary domain."); }
-
-  static void load_M (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Total mass per volume water, soil, and air."); }
-
-  static void load_M_secondary (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Secondary domain mass per volume water, soil, and air."); }
-
-  static void load_M_primary (Frame& frame)
-  { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
-			 Attribute::Const, "\
-Primary domain mass per volume water, soil, and air."); }
-
-  static void load_Ms (Frame& frame)
-  { Geometry::add_layer (frame, Attribute::Fraction (), Check::none (),
-			 Attribute::Const, "\
-Mass in dry soil.\n\
-This include all matter in both soil and water, relative to the\n\
-dry matter weight.\n\
-Only for initialization of the 'M' parameter."); }
-
-  void load_frame (Frame& frame) const
-  {
-    frame.add_check (check_alist);
-    Model::load_model (frame);
-
-    // Surface parameters.
-    frame.declare ("molar_mass", "g/mol",
-		   Check::non_negative (), Attribute::OptionalConst, "\
-Molar mass of the chemical.");
-    frame.declare ("solubility", "g/cm^3", 
-                   Check::non_negative (), Attribute::Const, "\
-Maximal concentration in water at 20 dg C.");
-    frame.set ("solubility", 1.0);
-    frame.declare ("solubility_infiltration_factor", Attribute::None (),
-                   Check::non_negative (), Attribute::Const, "\
-Adjustment for maximum concentration in infiltrated water.");
-    frame.set ("solubility_infiltration_factor", 1.0);
-    frame.declare_fraction ("crop_uptake_reflection_factor", 
-                            Attribute::Const, "\
-How much of the chemical is reflected at crop uptake.");
-    frame.set ("crop_uptake_reflection_factor", 1.0);
-    Rate::declare (frame, "canopy_dissipation", "\
-How fast does the chemical dissipate on canopy.");
-    frame.declare_fraction ("canopy_washoff_coefficient", Attribute::Const, "\
-Fraction of the chemical that follows the water off the canopy.");
-    Rate::declare_optional (frame, "surface_decompose", "\
-How fast does the chemical decompose on surface.\n\
-Defaults to 'canopy_dissipation' rate.");
-    Rate::declare_optional (frame, "litter_decompose", "\
-How fast does the chemical decompose on litter.\n\
-Default to 'canopy_dissipation' rate.");
-    frame.declare_fraction ("litter_washoff_coefficient", Attribute::Const, "\
-Fraction of the chemical that follows the water off the litter.");
-    frame.set ("litter_washoff_coefficient", 1.0);
-    Rate::declare (frame, "litter_diffusion", "\
-How fast chemical diffuse to water passing on surface.");
-    Rate::set_rate (frame, "litter_diffusion", 0.0);
-
-    // Soil parameters.
-    frame.declare ("diffusion_coefficient", "cm^2/s", Check::non_negative (),
-                   Attribute::Const, "Diffusion coefficient.");
-    Rate::declare (frame, "decompose", "\
-How fast the chemical is being decomposed in the soil.");
-    frame.declare ("decompose_conc_factor", "g/cm^3 H2O", Attribute::None (),
-                   Attribute::Const,
-                   "Concentration development factor on decomposition.");
-    frame.set ("decompose_conc_factor", PLF::empty ());
-    frame.declare ("decompose_lag_increment", 
-                   "g/cm^3", "h^-1", Attribute::Const,
-                   "Increment lag with the value of this PLF for the current\n\
-concentration each hour.  When lag in any cell reaches 1.0,\n\
-decomposition begins.  It can never be more than 1.0 or less than 0.0.\n\
-By default, there is no lag.");
-    frame.set ("decompose_lag_increment", PLF::empty ());
-    frame.declare_boolean ("enable_surface_products", Attribute::Const, "\
-True if metabolites of this chemical can be generated on the surface.");
-    frame.set ("enable_surface_products", false);
-    frame.declare_boolean ("soil_affects_surface_decompose",
-			   Attribute::Const, "\
-True if soil conditions affect surface decomposition.");
-    frame.set ("soil_affects_surface_decompose", false);
-    
-    frame.declare_boolean ("drain_secondary", Attribute::Const, "\
-Concentration in secondary soil water user for drainage.\n\
-If you set this to true the concentration in the secondary domain is used\n\
-for concentration in drain water.  Otherwise, the average concentration is\n\
-the matix is used.  Using the secondary domain is more physically correct,\n\
-but also more likely to give unstable results.");
-    frame.set ("drain_secondary", false);
-    frame.declare_object ("C_below", Number::component, 
-                          Attribute::Const, Attribute::Singleton, "\
-Concentration below the layer of soil being examined.\n\
-Use a negative number to indicate same concentration as in lowest cell.");
-    frame.declare_submodule_sequence ("decompose_products", Attribute::Const, "\
-List of products from decomposition.", ChemicalBase::Product::load_syntax);
-    frame.set_empty ("decompose_products");
-    frame.set ("C_below", "zero_gradient");
-    frame.declare_object ("initial", Number::component, 
-                          Attribute::Const, Attribute::Singleton, "\
-Initial content (M) if otherwise unspecified. [g/cm^3].");
-    frame.set ("initial", "initial_zero");
-    frame.declare_object ("adsorption", Adsorption::component, 
-                          Attribute::Const, Attribute::Singleton, "\
-Instant equilibrium between sorbed and solute phases.\n\
-\n\
-Specify the equilibrium model here for chemicals where the sorbed and\n\
-solute phases typically reaches equilibrium within a single timestep.\n\
-Slower adsorption processes should be modelled as two chemicals, one\n\
-with 'none' adsorption and one with 'full' adsorption, and an\n\
-'adsorption' reaction between them.");
-    frame.set ("adsorption", "none");
-
-    // Management and climate fluxes.
-    frame.declare ("deposit", "g/m^2/h", Attribute::LogOnly,
-                   "Amount deposited from the atmosphere.");
-    frame.declare ("spray_overhead", "g/m^2/h", Attribute::LogOnly,
-                   "Amount currently being applied above canopy.");
-    frame.declare ("spray_surface", "g/m^2/h", Attribute::LogOnly,
-                   "Amount currently being applied below canopy.");
-    frame.declare ("spray", "g/m^2/h", Attribute::LogOnly,
-                   "Amount currently being applied.");
-    frame.declare ("surface_tillage", "g/m^2/h", Attribute::LogOnly, 
-                   "Amount removed from surface due to tillage operations.");
-    frame.declare ("litter_tillage", "g/m^2/h", Attribute::LogOnly, 
-                   "Amount removed from litter due to tillage operations.");
-
-    // Surface variables.
-    frame.declare ("snow_storage", "g/m^2", Attribute::State, 
-                   "Stored in the snow pack.");
-    frame.set ("snow_storage", 0.0);
-    frame.declare ("snow_in", "g/m^2/h", Attribute::LogOnly, 
-                   "Entering snow pack.");
-    frame.declare ("snow_out", "g/m^2/h", Attribute::LogOnly, 
-                   "Leaking from snow pack.");
-
-    frame.declare ("canopy_storage", "g/m^2", Attribute::State, 
-                   "Stored on the canopy.");
-    frame.set ("canopy_storage", 0.0);
-    frame.declare ("canopy_in", "g/m^2/h", Attribute::LogOnly, 
-                   "Entering canopy.");
-    frame.declare ("canopy_dissipate", "g/m^2/h", Attribute::LogOnly, 
-                   "Dissipating from canopy.");
-    frame.declare ("canopy_out", "g/m^2/h", Attribute::LogOnly, 
-                   "Falling through or off the canopy.");
-    frame.declare ("canopy_transform", "g/m^2/h", Attribute::LogOnly, 
-                   "Added through transformation to canopy.");
-    frame.declare ("canopy_harvest", "g/m^2/h", Attribute::LogOnly, 
-                   "Amount removed with crop harvest.");
-
-    frame.declare ("litter_storage", "g/m^2", Attribute::State, 
-                   "Stored in the litter (mulch, surface residuals).");
-    frame.set ("litter_storage", 0.0);
-    frame.declare ("litter_in", "g/m^2/h", Attribute::LogOnly, 
-                   "Entering litter .");
-    frame.declare ("litter_decomposed", "g/m^2/h", Attribute::LogOnly, 
-                   "Decomposed from the litter.");
-    frame.declare ("litter_transform", "g/m^2/h", Attribute::LogOnly, 
-                   "Added through transformation in litter layer.");
-    frame.declare ("litter_out", "g/m^2/h", Attribute::LogOnly, 
-                   "Leaking from litter.");
-    frame.declare ("litter_leak", "g/m^2/h", Attribute::LogOnly, 
-                   "Leaking from bottom litter.");
-    frame.declare ("litter_diffuse", "g/m^2/h", Attribute::LogOnly, 
-                   "Diffusing from litter to water passing on surface.");
-
-    frame.declare ("surface_storage", "g/m^2", Attribute::State, 
-                   "Stored on the soil surface.\n\
-This includes the mixing layer, and constitute 'surface_solute'\n\
-and 'surface_immobile'.");
-    frame.set ("surface_storage", 0.0);
-    frame.declare ("surface_solute", "g/m^2", Attribute::LogOnly, 
-                   "Stored in the soil water of the mixing layer.\n\
-This is part of 'surface_storage'.");
-    frame.declare ("surface_immobile", "g/m^2", Attribute::LogOnly, 
-                   "Bound to soil particles in the mixing layer.\n\
-This is part of 'surface_storage'.");
-    frame.declare ("surface_in", "g/m^2/h", Attribute::LogOnly, 
-                   "Falling on the bare soil surface.");
-    frame.declare ("surface_runoff", "g/m^2/h", Attribute::LogOnly, 
-                   "Removed through lateral movement on the soil.");
-    frame.declare ("surface_decomposed", "g/m^2/h", Attribute::LogOnly, 
-                   "Decomposed from the surface.");
-    frame.declare ("surface_transform", "g/m^2/h", Attribute::LogOnly, 
-                   "Added through transformation to surface.");
-    frame.declare ("surface_mixture", "g/m^2/h", Attribute::LogOnly, 
-                   "Entering the soil through mixture with ponded water.");
-    frame.declare ("surface_out", "g/m^2/h", Attribute::LogOnly, 
-                   "Entering the soil with water infiltration.");
-    frame.declare ("surface_release", Attribute::Fraction (), Attribute::LogOnly, "\
-Fraction of available soil particles released as colloids this timestep.\n\
-Only relevant for chemicals representing colloids.\n\
-\n\
-The idea behind this is that reactions that generate colloids will set the\n\
-value of this variable, and then reactions that convert immobile chemicals\n\
-into colloid bound chemicals will use it.  For this to work, the reactions\n\
-that set the variable must be listed before the reactions that us it.\n\
-\n\
-Note that the value is relative to the current timestep.");
-    frame.declare ("top_storage", "g/m^2", Attribute::LogOnly, "\
-Sum of above ground (surface, liter, snow, canopy) storage.");
-    frame.declare ("top_loss", "g/m^2/h", Attribute::LogOnly, "\
-Amount lost from the system from the surface.\n                         \
-This includes runoff, canopy dissipation and harvest, but not soil\n    \
-infiltration.  It also includes the net loss through transformation,\n  \
-which can be negative.");
-
-    // Soil variables.
-    Geometry::add_layer (frame, Attribute::OptionalState, "C", load_C);
-    Geometry::add_layer (frame, Attribute::OptionalState, "C_secondary",
-                         load_C_secondary);
-    Geometry::add_layer (frame, Attribute::LogOnly, "C_primary", 
-                         load_C_primary);
-    Geometry::add_layer (frame, Attribute::OptionalState, "M", load_M);
-    Geometry::add_layer (frame, Attribute::OptionalState, "M_secondary",
-                         load_M_secondary);
-    Geometry::add_layer (frame, Attribute::LogOnly, "M_primary", 
-                         load_M_primary);
-    Geometry::add_layer (frame, Attribute::OptionalConst, "Ms", load_Ms);
-#if 0
-    frame.declare ("M_secondary", "g/cm^3", 
-                   Attribute::LogOnly, Attribute::SoilCells, 
-                   "Mass in secondary domain.");
-#endif
-    frame.declare ("M_error", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 
-                   "Mass substracted to avoid negative values.");
-    frame.declare ("M_tertiary", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 
-                   "Mass in tertiary domain (biopores).");
-    frame.declare ("S_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Secondary matrix source term.");
-    frame.declare ("S_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Primary matrix source term.");
-    frame.declare ("S_exchange", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Exchange from primary to secondary domain.");
-    frame.declare ("S_indirect_drain", "g/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, "\
-Added to the soil matrix from drains indirectly via biopores.\n\
-This can be non-zero whereever there are drain connected biopores.");
-    frame.declare ("S_soil_drain", "g/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, "\
-Added to the soil matrix from drains directly, not via biopores.\n\
-This is only non-zero in drain nodes.");
-    frame.declare ("S_p_drain", "g/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, "\
-Removed from the biopores to the drain.\n\
-This is only non-zero in drain nodes.");
-    frame.declare ("S_B2M", "g/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, "\
-Biopores to matrix.");
-    frame.declare ("S_M2B", "g/cm^3/h",
-		   Attribute::LogOnly, Attribute::SoilCells, "\
-Matrix to biopores (negative matrix source).\n\
-Does not count flow to drain connected biopores.");
-    frame.declare ("S_external", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "External source, such as incorporated fertilizer.");
-    frame.declare ("S_permanent", "g/cm^3/h", Attribute::State, Attribute::SoilCells,
-                   "Permanent external source, e.g. subsoil irrigation.");
-    std::vector<double> empty;
-    frame.set ("S_permanent", empty);
-    frame.declare ("S_root", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Source term (root uptake only, always negative).");
-    frame.declare ("S_decompose", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Source term for decompose, is never positive.");
-    frame.declare ("S_decompose_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Source term for decompose in primary domain, is never positive.");
-    frame.declare ("S_decompose_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Source term for decompose in secondary domain, is never positive.");
-    frame.declare ("S_transform", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Source term for transformations other than sorption.");
-    frame.declare ("decompose_factor", Attribute::None (), Attribute::LogOnly, Attribute::SoilCells,
-                   "Decompose factor due to soil conditions.");
-    frame.declare ("surface_decompose_factor", Attribute::None (),
-		   Attribute::LogOnly, 
-                   "Decompose factor due to soil conditions near surface.");
-    frame.declare ("J_primary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
-                   "Transportation in primary matrix water (positive up).");
-    frame.declare ("J_secondary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
-                   "Transportation in secondary matrix water (positive up).");
-    frame.declare ("J_matrix", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
-                   "Transportation in matrix (positive up).");
-    frame.declare ("J_tertiary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
-                   "Transportation in tertiary water (positive up).");
-    frame.declare ("tillage", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Changes during tillage.");
-    frame.declare ("lag", Attribute::None (), Attribute::OptionalState, 
-                   Attribute::SoilCells,
-                   "This state variable grows with lag_increment (C) each hour.\n\
-When it reached 1.0, decomposition begins."); 
-    frame.declare ("dt", "h", Attribute::LogOnly, "\
-Suggested timestep length based on sink terms.");
-    frame.declare_integer ("sink_cell", Attribute::LogOnly, "\
-Cell with largest forward sink compared to available matter.");
-  }
-} ChemicalBase_syntax;
-
 // The 'default' chemical model.
 
 struct ChemicalStandard : public ChemicalBase 
@@ -2670,28 +2300,6 @@ ChemicalStandard::decompose_soil_factor
   return factor;
 }
 
-static struct ChemicalStandardSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new ChemicalStandard (al); }
-  void load_frame (Frame& frame) const
-  {
-    Abiotic::load_frame (frame);
-    frame.declare ("decompose_CO2_factor", "g CO2-C/cm^3/h", Attribute::None (),
-                   Attribute::Const,
-                   "CO2 development factor on decomposition.");
-    frame.set ("decompose_CO2_factor", PLF::empty ());
-    frame.declare ("decompose_depth_factor", "cm", Attribute::None (),
-                   Attribute::Const,
-                   "Depth influence on decomposition.");
-    frame.set ("decompose_depth_factor", PLF::always_1 ());
-  }
-  ChemicalStandardSyntax ()
-    : DeclareModel (Chemical::component, "default", "base", "\
-Read chemical properties as normal Daisy parameters.")
-  { }
-} ChemicalStandard_syntax;
-
 // The 'FOCUS' chemical model.
 
 struct ChemicalFOCUS : public ChemicalBase 
@@ -2770,67 +2378,6 @@ ChemicalFOCUS::decompose_soil_factor (size_t c,
   return depth_factor * water_factor * heat_factor;
 }
 
-static struct ChemicalFOCUSSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new ChemicalFOCUS (al); }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "focusgw2002", "focussw2002");
-    frame.declare ("B", Attribute::None (), Check::none (),
-		   Attribute::Const, "Soil moisture effect parameter.");
-    frame.set_cited ("B", 0.49, "Section 7.4.5", "focussw2002");
-    frame.declare ("T_ref", "dg C", Check::none (),
-		   Attribute::Const, "Reference temperature.");
-    frame.set_cited ("T_ref", 20.0, "Section 7.4.2", "focussw2002");
-    frame.declare ("alpha", "K^-1", Check::none (),
-		   Attribute::Const, "Temperature effect parameter.");
-    frame.set_cited ("alpha", 0.0948, "Section 7.4.4", "focussw2002");
-    frame.declare ("z", "cm", Check::negative (), Attribute::Const,
-		   Attribute::Variable, "\
-End of each interval.");
-    frame.set_check ("z", VCheck::decreasing ());
-    frame.set ("z", std::vector<double> ({ -30.0, -60.0, -100.0 }));
-    frame.declare ("z_factor", Attribute::None (), Check::non_negative (),
-		   Attribute::Const, Attribute::Variable, "\
-Factor to apply to decompose rate at each interval.");
-    frame.set ("z_factor", std::vector<double> ({1.0, 0.5, 0.3}));
-
-    // 'base' paramaters.
-    Rate::set_halftime_cited (frame, "canopy_dissipation", 10.0 * 24.0,
-			      "Section 7.4.10", "focussw2002");
-    frame.set_cited ("canopy_washoff_coefficient", 0.075, "\
-Washoff in FOCUS use FEXTRC = 0.05.\n\
-CWC = IC * FEXTRC\n\
-CWC = canopy_washoff_coefficient in Daisy\n\
-IC = intercepted water in Daisy\n\
-Default interception capacity in Daisy is LAI * 0.5 mm\n\
-The FEXTRC parameter is based on an experiment with mature cotton.\n\
-If we assume this is LAI=3, then corresponding CWC is 0.075.",
-		     "focussw2002");
-    frame.set_cited ("crop_uptake_reflection_factor", 1.0,
-		     "Recommended value.", "focusgw2002");
-    frame.set_cited ("diffusion_coefficient", 5e-6,
-		     "Section 7.3.5", "focussw2002");
-  }
-  ChemicalFOCUSSyntax ()
-    : DeclareModel (Chemical::component, "FOCUS", "base", "\
-Pesticides inspired by FOCUS surface water.\n\
-\n\
-Depth, moisture, and heat effect according to the FOCUS Surface Water WG.\n\
-\n\
-Water factor is zero below 0.5 Theta_wp, one above field capacity, and \n\
-((Theta - 0.5 Theta_wp) / (Theta_fc - 0.5 Theta_wp))^B\n\
-otherwise. From MACRO 5.2.\n\
-\n\
-Heat factor is zero below zero degrees,\n\
-0.2 T e^(alpha (5 - T_ref)) below 5 dg C, and\n\
-and e^(alpha (T - T_ref)) above 5 dg C. From MACRO 5.0.\n\
-\n\
-Depth factor is specified by 'z' and 'z_factor'.")
-  { }
-} ChemicalFOCUS_syntax;
-
 // The 'nutrient' chemical model.
 
 struct ChemicalNutrient : public ChemicalBase 
@@ -2845,163 +2392,616 @@ struct ChemicalNutrient : public ChemicalBase
   { }
 };
 
-static struct ChemicalNutrientSyntax : public DeclareModel
+void
+register_chemical_standard_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ChemicalNutrient (al); }
-  void load_frame (Frame& frame) const
+  static struct NumberInitialCSyntax : public DeclareModel
   {
-    frame.set ("crop_uptake_reflection_factor", 1.0); // Specific uptake code.
-    Rate::set_rate (frame, "canopy_dissipation", 0.0);
-    frame.set ("canopy_washoff_coefficient", 1.0);
-    Rate::set_rate (frame, "decompose", 0.0);
-  }
-  ChemicalNutrientSyntax ()
-    : DeclareModel (Chemical::component, "nutrient", "base", "\
+    Model* make (const BlockModel& al) const
+    { return new NumberInitialC (al); }
+    NumberInitialCSyntax ()
+      : DeclareModel (Number::component, "initial_C", "\
+Find initial content from concentration.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+
+      frame.declare ("C", "g/cm^3", Attribute::Const, "\
+Initial concentration in soil water with sorbtion ignored.\n\
+That is M = C * Theta.");
+      frame.order ("C");
+    }
+  } NumberInitialC_syntax;
+
+  static struct InitialZeroSyntax : public DeclareParam
+  { 
+    InitialZeroSyntax ()
+      : DeclareParam (Number::component, "initial_zero", "const", "\
+Initial zero content.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("value", 0.0, "g/cm^3");
+    }
+  } InitialZero_syntax;
+
+  static struct ZeroGradientSyntax : public DeclareParam
+  { 
+    ZeroGradientSyntax ()
+      : DeclareParam (Number::component, "zero_gradient", "const", "\
+Assume same concentration in groundwater as in the bottom of the soil profile.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("value", -1.0, "g/cm^3");
+    }
+  } ZeroGradient_syntax;
+
+  static struct ChemicalBaseSyntax : public DeclareBase
+  {
+    ChemicalBaseSyntax ()
+      : DeclareBase (Chemical::component, "base", "\
+Read chemical properties as normal Daisy parameters.")
+    { }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
+    { 
+      bool ok = true;
+      return ok;
+    }
+
+    static void load_C (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Concentration in water."); }
+
+    static void load_C_secondary (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Concentration in secondary domain."); }
+
+    static void load_C_primary (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Concentration in primary domain."); }
+
+    static void load_M (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Total mass per volume water, soil, and air."); }
+
+    static void load_M_secondary (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Secondary domain mass per volume water, soil, and air."); }
+
+    static void load_M_primary (Frame& frame)
+    { Geometry::add_layer (frame, "g/cm^3", Check::non_negative (),
+  			 Attribute::Const, "\
+Primary domain mass per volume water, soil, and air."); }
+
+    static void load_Ms (Frame& frame)
+    { Geometry::add_layer (frame, Attribute::Fraction (), Check::none (),
+  			 Attribute::Const, "\
+Mass in dry soil.\n\
+This include all matter in both soil and water, relative to the\n\
+dry matter weight.\n\
+Only for initialization of the 'M' parameter."); }
+
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      Model::load_model (frame);
+
+      // Surface parameters.
+      frame.declare ("molar_mass", "g/mol",
+  		   Check::non_negative (), Attribute::OptionalConst, "\
+Molar mass of the chemical.");
+      frame.declare ("solubility", "g/cm^3", 
+                     Check::non_negative (), Attribute::Const, "\
+Maximal concentration in water at 20 dg C.");
+      frame.set ("solubility", 1.0);
+      frame.declare ("solubility_infiltration_factor", Attribute::None (),
+                     Check::non_negative (), Attribute::Const, "\
+Adjustment for maximum concentration in infiltrated water.");
+      frame.set ("solubility_infiltration_factor", 1.0);
+      frame.declare_fraction ("crop_uptake_reflection_factor", 
+                              Attribute::Const, "\
+How much of the chemical is reflected at crop uptake.");
+      frame.set ("crop_uptake_reflection_factor", 1.0);
+      Rate::declare (frame, "canopy_dissipation", "\
+How fast does the chemical dissipate on canopy.");
+      frame.declare_fraction ("canopy_washoff_coefficient", Attribute::Const, "\
+Fraction of the chemical that follows the water off the canopy.");
+      Rate::declare_optional (frame, "surface_decompose", "\
+How fast does the chemical decompose on surface.\n\
+Defaults to 'canopy_dissipation' rate.");
+      Rate::declare_optional (frame, "litter_decompose", "\
+How fast does the chemical decompose on litter.\n\
+Default to 'canopy_dissipation' rate.");
+      frame.declare_fraction ("litter_washoff_coefficient", Attribute::Const, "\
+Fraction of the chemical that follows the water off the litter.");
+      frame.set ("litter_washoff_coefficient", 1.0);
+      Rate::declare (frame, "litter_diffusion", "\
+How fast chemical diffuse to water passing on surface.");
+      Rate::set_rate (frame, "litter_diffusion", 0.0);
+
+      // Soil parameters.
+      frame.declare ("diffusion_coefficient", "cm^2/s", Check::non_negative (),
+                     Attribute::Const, "Diffusion coefficient.");
+      Rate::declare (frame, "decompose", "\
+How fast the chemical is being decomposed in the soil.");
+      frame.declare ("decompose_conc_factor", "g/cm^3 H2O", Attribute::None (),
+                     Attribute::Const,
+                     "Concentration development factor on decomposition.");
+      frame.set ("decompose_conc_factor", PLF::empty ());
+      frame.declare ("decompose_lag_increment", 
+                     "g/cm^3", "h^-1", Attribute::Const,
+                     "Increment lag with the value of this PLF for the current\n\
+concentration each hour.  When lag in any cell reaches 1.0,\n\
+decomposition begins.  It can never be more than 1.0 or less than 0.0.\n\
+By default, there is no lag.");
+      frame.set ("decompose_lag_increment", PLF::empty ());
+      frame.declare_boolean ("enable_surface_products", Attribute::Const, "\
+True if metabolites of this chemical can be generated on the surface.");
+      frame.set ("enable_surface_products", false);
+      frame.declare_boolean ("soil_affects_surface_decompose",
+  			   Attribute::Const, "\
+True if soil conditions affect surface decomposition.");
+      frame.set ("soil_affects_surface_decompose", false);
+      
+      frame.declare_boolean ("drain_secondary", Attribute::Const, "\
+Concentration in secondary soil water user for drainage.\n\
+If you set this to true the concentration in the secondary domain is used\n\
+for concentration in drain water.  Otherwise, the average concentration is\n\
+the matix is used.  Using the secondary domain is more physically correct,\n\
+but also more likely to give unstable results.");
+      frame.set ("drain_secondary", false);
+      frame.declare_object ("C_below", Number::component, 
+                            Attribute::Const, Attribute::Singleton, "\
+Concentration below the layer of soil being examined.\n\
+Use a negative number to indicate same concentration as in lowest cell.");
+      frame.declare_submodule_sequence ("decompose_products", Attribute::Const, "\
+List of products from decomposition.", ChemicalBase::Product::load_syntax);
+      frame.set_empty ("decompose_products");
+      frame.set ("C_below", "zero_gradient");
+      frame.declare_object ("initial", Number::component, 
+                            Attribute::Const, Attribute::Singleton, "\
+Initial content (M) if otherwise unspecified. [g/cm^3].");
+      frame.set ("initial", "initial_zero");
+      frame.declare_object ("adsorption", Adsorption::component, 
+                            Attribute::Const, Attribute::Singleton, "\
+Instant equilibrium between sorbed and solute phases.\n\
+\n\
+Specify the equilibrium model here for chemicals where the sorbed and\n\
+solute phases typically reaches equilibrium within a single timestep.\n\
+Slower adsorption processes should be modelled as two chemicals, one\n\
+with 'none' adsorption and one with 'full' adsorption, and an\n\
+'adsorption' reaction between them.");
+      frame.set ("adsorption", "none");
+
+      // Management and climate fluxes.
+      frame.declare ("deposit", "g/m^2/h", Attribute::LogOnly,
+                     "Amount deposited from the atmosphere.");
+      frame.declare ("spray_overhead", "g/m^2/h", Attribute::LogOnly,
+                     "Amount currently being applied above canopy.");
+      frame.declare ("spray_surface", "g/m^2/h", Attribute::LogOnly,
+                     "Amount currently being applied below canopy.");
+      frame.declare ("spray", "g/m^2/h", Attribute::LogOnly,
+                     "Amount currently being applied.");
+      frame.declare ("surface_tillage", "g/m^2/h", Attribute::LogOnly, 
+                     "Amount removed from surface due to tillage operations.");
+      frame.declare ("litter_tillage", "g/m^2/h", Attribute::LogOnly, 
+                     "Amount removed from litter due to tillage operations.");
+
+      // Surface variables.
+      frame.declare ("snow_storage", "g/m^2", Attribute::State, 
+                     "Stored in the snow pack.");
+      frame.set ("snow_storage", 0.0);
+      frame.declare ("snow_in", "g/m^2/h", Attribute::LogOnly, 
+                     "Entering snow pack.");
+      frame.declare ("snow_out", "g/m^2/h", Attribute::LogOnly, 
+                     "Leaking from snow pack.");
+
+      frame.declare ("canopy_storage", "g/m^2", Attribute::State, 
+                     "Stored on the canopy.");
+      frame.set ("canopy_storage", 0.0);
+      frame.declare ("canopy_in", "g/m^2/h", Attribute::LogOnly, 
+                     "Entering canopy.");
+      frame.declare ("canopy_dissipate", "g/m^2/h", Attribute::LogOnly, 
+                     "Dissipating from canopy.");
+      frame.declare ("canopy_out", "g/m^2/h", Attribute::LogOnly, 
+                     "Falling through or off the canopy.");
+      frame.declare ("canopy_transform", "g/m^2/h", Attribute::LogOnly, 
+                     "Added through transformation to canopy.");
+      frame.declare ("canopy_harvest", "g/m^2/h", Attribute::LogOnly, 
+                     "Amount removed with crop harvest.");
+
+      frame.declare ("litter_storage", "g/m^2", Attribute::State, 
+                     "Stored in the litter (mulch, surface residuals).");
+      frame.set ("litter_storage", 0.0);
+      frame.declare ("litter_in", "g/m^2/h", Attribute::LogOnly, 
+                     "Entering litter .");
+      frame.declare ("litter_decomposed", "g/m^2/h", Attribute::LogOnly, 
+                     "Decomposed from the litter.");
+      frame.declare ("litter_transform", "g/m^2/h", Attribute::LogOnly, 
+                     "Added through transformation in litter layer.");
+      frame.declare ("litter_out", "g/m^2/h", Attribute::LogOnly, 
+                     "Leaking from litter.");
+      frame.declare ("litter_leak", "g/m^2/h", Attribute::LogOnly, 
+                     "Leaking from bottom litter.");
+      frame.declare ("litter_diffuse", "g/m^2/h", Attribute::LogOnly, 
+                     "Diffusing from litter to water passing on surface.");
+
+      frame.declare ("surface_storage", "g/m^2", Attribute::State, 
+                     "Stored on the soil surface.\n\
+This includes the mixing layer, and constitute 'surface_solute'\n\
+and 'surface_immobile'.");
+      frame.set ("surface_storage", 0.0);
+      frame.declare ("surface_solute", "g/m^2", Attribute::LogOnly, 
+                     "Stored in the soil water of the mixing layer.\n\
+This is part of 'surface_storage'.");
+      frame.declare ("surface_immobile", "g/m^2", Attribute::LogOnly, 
+                     "Bound to soil particles in the mixing layer.\n\
+This is part of 'surface_storage'.");
+      frame.declare ("surface_in", "g/m^2/h", Attribute::LogOnly, 
+                     "Falling on the bare soil surface.");
+      frame.declare ("surface_runoff", "g/m^2/h", Attribute::LogOnly, 
+                     "Removed through lateral movement on the soil.");
+      frame.declare ("surface_decomposed", "g/m^2/h", Attribute::LogOnly, 
+                     "Decomposed from the surface.");
+      frame.declare ("surface_transform", "g/m^2/h", Attribute::LogOnly, 
+                     "Added through transformation to surface.");
+      frame.declare ("surface_mixture", "g/m^2/h", Attribute::LogOnly, 
+                     "Entering the soil through mixture with ponded water.");
+      frame.declare ("surface_out", "g/m^2/h", Attribute::LogOnly, 
+                     "Entering the soil with water infiltration.");
+      frame.declare ("surface_release", Attribute::Fraction (), Attribute::LogOnly, "\
+Fraction of available soil particles released as colloids this timestep.\n\
+Only relevant for chemicals representing colloids.\n\
+\n\
+The idea behind this is that reactions that generate colloids will set the\n\
+value of this variable, and then reactions that convert immobile chemicals\n\
+into colloid bound chemicals will use it.  For this to work, the reactions\n\
+that set the variable must be listed before the reactions that us it.\n\
+\n\
+Note that the value is relative to the current timestep.");
+      frame.declare ("top_storage", "g/m^2", Attribute::LogOnly, "\
+Sum of above ground (surface, liter, snow, canopy) storage.");
+      frame.declare ("top_loss", "g/m^2/h", Attribute::LogOnly, "\
+Amount lost from the system from the surface.\n                         \
+This includes runoff, canopy dissipation and harvest, but not soil\n    \
+infiltration.  It also includes the net loss through transformation,\n  \
+which can be negative.");
+
+      // Soil variables.
+      Geometry::add_layer (frame, Attribute::OptionalState, "C", load_C);
+      Geometry::add_layer (frame, Attribute::OptionalState, "C_secondary",
+                           load_C_secondary);
+      Geometry::add_layer (frame, Attribute::LogOnly, "C_primary", 
+                           load_C_primary);
+      Geometry::add_layer (frame, Attribute::OptionalState, "M", load_M);
+      Geometry::add_layer (frame, Attribute::OptionalState, "M_secondary",
+                           load_M_secondary);
+      Geometry::add_layer (frame, Attribute::LogOnly, "M_primary", 
+                           load_M_primary);
+      Geometry::add_layer (frame, Attribute::OptionalConst, "Ms", load_Ms);
+  #if 0
+      frame.declare ("M_secondary", "g/cm^3", 
+                     Attribute::LogOnly, Attribute::SoilCells, 
+                     "Mass in secondary domain.");
+  #endif
+      frame.declare ("M_error", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 
+                     "Mass substracted to avoid negative values.");
+      frame.declare ("M_tertiary", "g/cm^3", Attribute::LogOnly, Attribute::SoilCells, 
+                     "Mass in tertiary domain (biopores).");
+      frame.declare ("S_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Secondary matrix source term.");
+      frame.declare ("S_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Primary matrix source term.");
+      frame.declare ("S_exchange", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Exchange from primary to secondary domain.");
+      frame.declare ("S_indirect_drain", "g/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, "\
+Added to the soil matrix from drains indirectly via biopores.\n\
+This can be non-zero whereever there are drain connected biopores.");
+      frame.declare ("S_soil_drain", "g/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, "\
+Added to the soil matrix from drains directly, not via biopores.\n\
+This is only non-zero in drain nodes.");
+      frame.declare ("S_p_drain", "g/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, "\
+Removed from the biopores to the drain.\n\
+This is only non-zero in drain nodes.");
+      frame.declare ("S_B2M", "g/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, "\
+Biopores to matrix.");
+      frame.declare ("S_M2B", "g/cm^3/h",
+  		   Attribute::LogOnly, Attribute::SoilCells, "\
+Matrix to biopores (negative matrix source).\n\
+Does not count flow to drain connected biopores.");
+      frame.declare ("S_external", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "External source, such as incorporated fertilizer.");
+      frame.declare ("S_permanent", "g/cm^3/h", Attribute::State, Attribute::SoilCells,
+                     "Permanent external source, e.g. subsoil irrigation.");
+      std::vector<double> empty;
+      frame.set ("S_permanent", empty);
+      frame.declare ("S_root", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Source term (root uptake only, always negative).");
+      frame.declare ("S_decompose", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Source term for decompose, is never positive.");
+      frame.declare ("S_decompose_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Source term for decompose in primary domain, is never positive.");
+      frame.declare ("S_decompose_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Source term for decompose in secondary domain, is never positive.");
+      frame.declare ("S_transform", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Source term for transformations other than sorption.");
+      frame.declare ("decompose_factor", Attribute::None (), Attribute::LogOnly, Attribute::SoilCells,
+                     "Decompose factor due to soil conditions.");
+      frame.declare ("surface_decompose_factor", Attribute::None (),
+  		   Attribute::LogOnly, 
+                     "Decompose factor due to soil conditions near surface.");
+      frame.declare ("J_primary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
+                     "Transportation in primary matrix water (positive up).");
+      frame.declare ("J_secondary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
+                     "Transportation in secondary matrix water (positive up).");
+      frame.declare ("J_matrix", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
+                     "Transportation in matrix (positive up).");
+      frame.declare ("J_tertiary", "g/cm^2/h", Attribute::LogOnly, Attribute::SoilEdges,
+                     "Transportation in tertiary water (positive up).");
+      frame.declare ("tillage", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Changes during tillage.");
+      frame.declare ("lag", Attribute::None (), Attribute::OptionalState, 
+                     Attribute::SoilCells,
+                     "This state variable grows with lag_increment (C) each hour.\n\
+When it reached 1.0, decomposition begins."); 
+      frame.declare ("dt", "h", Attribute::LogOnly, "\
+Suggested timestep length based on sink terms.");
+      frame.declare_integer ("sink_cell", Attribute::LogOnly, "\
+Cell with largest forward sink compared to available matter.");
+    }
+  } ChemicalBase_syntax;
+
+  static struct ChemicalStandardSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ChemicalStandard (al); }
+    void load_frame (Frame& frame) const
+    {
+      Abiotic::load_frame (frame);
+      frame.declare ("decompose_CO2_factor", "g CO2-C/cm^3/h", Attribute::None (),
+                     Attribute::Const,
+                     "CO2 development factor on decomposition.");
+      frame.set ("decompose_CO2_factor", PLF::empty ());
+      frame.declare ("decompose_depth_factor", "cm", Attribute::None (),
+                     Attribute::Const,
+                     "Depth influence on decomposition.");
+      frame.set ("decompose_depth_factor", PLF::always_1 ());
+    }
+    ChemicalStandardSyntax ()
+      : DeclareModel (Chemical::component, "default", "base", "\
+Read chemical properties as normal Daisy parameters.")
+    { }
+  } ChemicalStandard_syntax;
+
+  static struct ChemicalFOCUSSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ChemicalFOCUS (al); }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "focusgw2002", "focussw2002");
+      frame.declare ("B", Attribute::None (), Check::none (),
+  		   Attribute::Const, "Soil moisture effect parameter.");
+      frame.set_cited ("B", 0.49, "Section 7.4.5", "focussw2002");
+      frame.declare ("T_ref", "dg C", Check::none (),
+  		   Attribute::Const, "Reference temperature.");
+      frame.set_cited ("T_ref", 20.0, "Section 7.4.2", "focussw2002");
+      frame.declare ("alpha", "K^-1", Check::none (),
+  		   Attribute::Const, "Temperature effect parameter.");
+      frame.set_cited ("alpha", 0.0948, "Section 7.4.4", "focussw2002");
+      frame.declare ("z", "cm", Check::negative (), Attribute::Const,
+  		   Attribute::Variable, "\
+End of each interval.");
+      frame.set_check ("z", VCheck::decreasing ());
+      frame.set ("z", std::vector<double> ({ -30.0, -60.0, -100.0 }));
+      frame.declare ("z_factor", Attribute::None (), Check::non_negative (),
+  		   Attribute::Const, Attribute::Variable, "\
+Factor to apply to decompose rate at each interval.");
+      frame.set ("z_factor", std::vector<double> ({1.0, 0.5, 0.3}));
+
+      // 'base' paramaters.
+      Rate::set_halftime_cited (frame, "canopy_dissipation", 10.0 * 24.0,
+  			      "Section 7.4.10", "focussw2002");
+      frame.set_cited ("canopy_washoff_coefficient", 0.075, "\
+Washoff in FOCUS use FEXTRC = 0.05.\n\
+CWC = IC * FEXTRC\n\
+CWC = canopy_washoff_coefficient in Daisy\n\
+IC = intercepted water in Daisy\n\
+Default interception capacity in Daisy is LAI * 0.5 mm\n\
+The FEXTRC parameter is based on an experiment with mature cotton.\n\
+If we assume this is LAI=3, then corresponding CWC is 0.075.",
+  		     "focussw2002");
+      frame.set_cited ("crop_uptake_reflection_factor", 1.0,
+  		     "Recommended value.", "focusgw2002");
+      frame.set_cited ("diffusion_coefficient", 5e-6,
+  		     "Section 7.3.5", "focussw2002");
+    }
+    ChemicalFOCUSSyntax ()
+      : DeclareModel (Chemical::component, "FOCUS", "base", "\
+Pesticides inspired by FOCUS surface water.\n\
+\n\
+Depth, moisture, and heat effect according to the FOCUS Surface Water WG.\n\
+\n\
+Water factor is zero below 0.5 Theta_wp, one above field capacity, and \n\
+((Theta - 0.5 Theta_wp) / (Theta_fc - 0.5 Theta_wp))^B\n\
+otherwise. From MACRO 5.2.\n\
+\n\
+Heat factor is zero below zero degrees,\n\
+0.2 T e^(alpha (5 - T_ref)) below 5 dg C, and\n\
+and e^(alpha (T - T_ref)) above 5 dg C. From MACRO 5.0.\n\
+\n\
+Depth factor is specified by 'z' and 'z_factor'.")
+    { }
+  } ChemicalFOCUS_syntax;
+
+  static struct ChemicalNutrientSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ChemicalNutrient (al); }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("crop_uptake_reflection_factor", 1.0); // Specific uptake code.
+      Rate::set_rate (frame, "canopy_dissipation", 0.0);
+      frame.set ("canopy_washoff_coefficient", 1.0);
+      Rate::set_rate (frame, "decompose", 0.0);
+    }
+    ChemicalNutrientSyntax ()
+      : DeclareModel (Chemical::component, "nutrient", "base", "\
 Plants eat this stuff.")
-  { }
-} ChemicalNutrient_syntax;
+    { }
+  } ChemicalNutrient_syntax;
 
-static struct ChemicalNitrogenSyntax : public DeclareParam
-{
-  ChemicalNitrogenSyntax ()
-    : DeclareParam (Chemical::component, "N", "nutrient", "\
+  static struct ChemicalNitrogenSyntax : public DeclareParam
+  {
+    ChemicalNitrogenSyntax ()
+      : DeclareParam (Chemical::component, "N", "nutrient", "\
 Nitrogen.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} ChemicalNitrogen_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } ChemicalNitrogen_syntax;
 
-static struct ChemicalMINSyntax : public DeclareParam
-{
-  ChemicalMINSyntax ()
-    : DeclareParam (Chemical::component, "MIN", "N", "\
+  static struct ChemicalMINSyntax : public DeclareParam
+  {
+    ChemicalMINSyntax ()
+      : DeclareParam (Chemical::component, "MIN", "N", "\
 Non-organic nitrogen.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} ChemicalMIN_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } ChemicalMIN_syntax;
 
-static struct InitialNO3Syntax : public DeclareParam
-{ 
-  InitialNO3Syntax ()
-    : DeclareParam (Number::component, "initial_NO3", "initial_C", "\
+  static struct InitialNO3Syntax : public DeclareParam
+  { 
+    InitialNO3Syntax ()
+      : DeclareParam (Number::component, "initial_NO3", "initial_C", "\
 Initial NO3 concentration in soil water.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    // We initialize to approximatey half the allowed content in
-    // drinking water [ 0.5 * 50 mg NO3/l ~= 5.0e-6 g NO3-N/cm^3 ]
-    frame.set ("C", 5e-6); 
-  }
-} InitialNO3_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      // We initialize to approximatey half the allowed content in
+      // drinking water [ 0.5 * 50 mg NO3/l ~= 5.0e-6 g NO3-N/cm^3 ]
+      frame.set ("C", 5e-6); 
+    }
+  } InitialNO3_syntax;
 
-static struct ChemicalNO3Syntax : public DeclareParam
-{ 
-  ChemicalNO3Syntax ()
-    : DeclareParam (Chemical::component, "NO3", "MIN", "\
+  static struct ChemicalNO3Syntax : public DeclareParam
+  { 
+    ChemicalNO3Syntax ()
+      : DeclareParam (Chemical::component, "NO3", "MIN", "\
 Nitrate-N.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("diffusion_coefficient", 2.0e-5);
-    frame.set ("initial", "initial_NO3");
-  }
-} ChemicalNO3_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("diffusion_coefficient", 2.0e-5);
+      frame.set ("initial", "initial_NO3");
+    }
+  } ChemicalNO3_syntax;
 
-static struct AdsorptionNH4Syntax : public DeclareParam
-{ 
-  AdsorptionNH4Syntax ()
-    : DeclareParam (Adsorption::component, "NH4", "linear", "\
+  static struct AdsorptionNH4Syntax : public DeclareParam
+  { 
+    AdsorptionNH4Syntax ()
+      : DeclareParam (Adsorption::component, "NH4", "linear", "\
 Adsorption of ammonium, fitted by Styczen for Daisy 7.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("K_clay", 28.);
-    frame.set ("K_OC", 213.);
-  }
-} AdsorptionNH4_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("K_clay", 28.);
+      frame.set ("K_OC", 213.);
+    }
+  } AdsorptionNH4_syntax;
 
-static struct AdsorptionNH4_HansenSyntax : public DeclareParam
-{ 
-  AdsorptionNH4_HansenSyntax ()
-    : DeclareParam (Adsorption::component, "NH4_Hansen", "linear", "\
+  static struct AdsorptionNH4_HansenSyntax : public DeclareParam
+  { 
+    AdsorptionNH4_HansenSyntax ()
+      : DeclareParam (Adsorption::component, "NH4_Hansen", "linear", "\
 Adsorption of ammonium, traditional value.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("K_clay", 117.116);
-    frame.set ("K_OC", 117.116);
-  }
-} AdsorptionNH4_Hansen_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("K_clay", 117.116);
+      frame.set ("K_OC", 117.116);
+    }
+  } AdsorptionNH4_Hansen_syntax;
 
-static struct InitialNH4Syntax : public DeclareParam
-{ 
-  InitialNH4Syntax ()
-    : DeclareParam (Number::component, "initial_NH4", "initial_C", "\
+  static struct InitialNH4Syntax : public DeclareParam
+  { 
+    InitialNH4Syntax ()
+      : DeclareParam (Number::component, "initial_NH4", "initial_C", "\
 Initial NH4 concentration in soil water.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    // We initialize to approximatey 5% of the N corresponding to the
-    // allowed content of NO3 in drinking water.
-    // [ 0.05 * 50 mg/l = 0.5e-6 g/cm^3 ]
-    frame.set ("C", 0.55e-6); 
-  }
-} InitialNH4_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      // We initialize to approximatey 5% of the N corresponding to the
+      // allowed content of NO3 in drinking water.
+      // [ 0.05 * 50 mg/l = 0.5e-6 g/cm^3 ]
+      frame.set ("C", 0.55e-6); 
+    }
+  } InitialNH4_syntax;
 
-static struct ChemicalNH4Syntax : public DeclareParam
-{ 
-  ChemicalNH4Syntax ()
-    : DeclareParam (Chemical::component, "NH4", "MIN", "\
+  static struct ChemicalNH4Syntax : public DeclareParam
+  { 
+    ChemicalNH4Syntax ()
+      : DeclareParam (Chemical::component, "NH4", "MIN", "\
 Ammonium-N.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("adsorption", "NH4");
-    frame.set ("diffusion_coefficient", 1.8e-5);
-    frame.set ("initial", "initial_NH4");
-  }
-} ChemicalNH4_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("adsorption", "NH4");
+      frame.set ("diffusion_coefficient", 1.8e-5);
+      frame.set ("initial", "initial_NH4");
+    }
+  } ChemicalNH4_syntax;
 
-static struct ChemicalDONSyntax : public DeclareParam
-{ 
-  ChemicalDONSyntax ()
-    : DeclareParam (Chemical::component, "DON", "N", "\
+  static struct ChemicalDONSyntax : public DeclareParam
+  { 
+    ChemicalDONSyntax ()
+      : DeclareParam (Chemical::component, "DON", "N", "\
 Nitrate-N.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
-		     "hendry2003geochemical");
-    // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
-    Rate::set_rate (frame, "litter_diffusion_rate", 1.5); 
-  }
-} ChemicalDON_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
+  		     "hendry2003geochemical");
+      // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
+      Rate::set_rate (frame, "litter_diffusion_rate", 1.5); 
+    }
+  } ChemicalDON_syntax;
 
-static struct ChemicalCarbonSyntax : public DeclareParam
-{
-  ChemicalCarbonSyntax ()
-    : DeclareParam (Chemical::component, "C", "nutrient", "\
+  static struct ChemicalCarbonSyntax : public DeclareParam
+  {
+    ChemicalCarbonSyntax ()
+      : DeclareParam (Chemical::component, "C", "nutrient", "\
 Carbon.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} ChemicalCarbon_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } ChemicalCarbon_syntax;
 
-static struct ChemicalDOCSyntax : public DeclareParam
-{ 
-  ChemicalDOCSyntax ()
-    : DeclareParam (Chemical::component, "DOC", "C", "\
+  static struct ChemicalDOCSyntax : public DeclareParam
+  { 
+    ChemicalDOCSyntax ()
+      : DeclareParam (Chemical::component, "DOC", "C", "\
 Nitrate-N.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
-		     "hendry2003geochemical");
-    // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
-    Rate::set_rate (frame, "litter_diffusion", 1.5); 
-  }
-} ChemicalDOC_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_cited ("diffusion_coefficient", 1.9e-6, "900 Da, 2.5 nm",
+  		     "hendry2003geochemical");
+      // Max. for Dp, optimized at 1.46 h-1 for glyphosate. JV 2021-10-27
+      Rate::set_rate (frame, "litter_diffusion", 1.5); 
+    }
+  } ChemicalDOC_syntax;
+}
 
 // chemical_std.C ends here.

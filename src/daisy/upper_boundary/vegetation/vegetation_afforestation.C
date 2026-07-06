@@ -44,6 +44,7 @@
 #include "object_model/metalib.h"
 #include <sstream>
 #include <deque>
+#include "daisy/daisy_registration_internal.h"
 
 struct VegetationAfforestation : public Vegetation
 {
@@ -472,7 +473,7 @@ VegetationAfforestation::VegetationAfforestation (const BlockModel& al)
 VegetationAfforestation::~VegetationAfforestation ()
 { }
 
-static struct VegetationAfforestationSyntax : public DeclareModel
+struct VegetationAfforestationSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new VegetationAfforestation (al); }
@@ -584,6 +585,12 @@ Rhizodeposition AOM parameters.");
     frame.declare_submodule("Canopy", Attribute::State, "Canopy.",
                             CanopySimple::load_syntax);
   }
-} VegetationAfforestation_syntax;
+};
+
+void
+register_vegetation_afforestation_models ()
+{
+  static VegetationAfforestationSyntax VegetationAfforestation_syntax;
+}
 
 // vegetation_afforestation.C ends here.

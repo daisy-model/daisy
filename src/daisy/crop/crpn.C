@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/crpn.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/production.h"
 #include "daisy/crop/root/root_system.h"
 #include "object_model/block_submodel.h"
@@ -331,7 +332,6 @@ Actual nitrogen content of shoot divided by critical nitrogen content.\n\
 Will be less than one for a stressed plant.\n\
 For now, the storage organ is counted as part of the shoot.");
 
-
   // Fixation.
   frame.declare ("DS_fixate", Attribute::None (), Attribute::Const,
 	      "DS at which to start fixation of atmospheric N.");
@@ -390,8 +390,13 @@ CrpN::CrpN (const BlockSubmodel& al)
 CrpN::~CrpN ()
 { }
 
-static DeclareSubmodel 
-crpn_submodel (CrpN::load_syntax, "CrpN", "\
+void
+register_crpn_models ()
+{
+  static DeclareSubmodel 
+  crpn_submodel (CrpN::load_syntax, "CrpN", "\
 Default crop nitrogen parameters.");
+}
 
 // crpn.C ends here.
+

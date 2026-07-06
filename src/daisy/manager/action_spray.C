@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -60,7 +61,7 @@ struct ActionSpray : public Action
 };
 
 // Add the ActionSpray syntax to the syntax table.
-static struct ActionSpraySyntax : DeclareModel
+struct ActionSpraySyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSpray (al); }
@@ -78,7 +79,7 @@ Spray a chemical (typically a pesticide) on the field.")
 		"Amount of pesticide to spray.");
     frame.order ("chemical", "amount");
   }
-} ActionSpray_syntax;
+};
 
 struct ActionSpraySurface : public Action
 {
@@ -108,7 +109,7 @@ struct ActionSpraySurface : public Action
 };
 
 // Add the ActionSpraySurface syntax to the syntax table.
-static struct ActionSpraySurfaceSyntax : DeclareModel
+struct ActionSpraySurfaceSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSpraySurface (al); }
@@ -126,7 +127,7 @@ Spray a chemical (typically a pesticide) on the field below the canopy.")
 		"Amount of pesticide to spray.");
     frame.order ("chemical", "amount");
   }
-} ActionSpraySurface_syntax;
+};
 
 struct ActionRemoveSolute : public Action
 {
@@ -155,7 +156,7 @@ struct ActionRemoveSolute : public Action
 };
 
 // Add the ActionRemoveSolute syntax to the syntax table.
-static struct ActionRemoveSoluteSyntax : DeclareModel
+struct ActionRemoveSoluteSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionRemoveSolute (al); }
@@ -171,6 +172,14 @@ Remove a specific chemical from the field.")
     frame.set_check ("chemical", Chemical::check_buildable ());
     frame.order ("chemical");
   }
-} ActionRemoveSolute_syntax;
+};
+
+void
+register_action_spray_models ()
+{
+  static ActionSpraySyntax action_spray_syntax;
+  static ActionSpraySurfaceSyntax action_spray_surface_syntax;
+  static ActionRemoveSoluteSyntax action_remove_solute_syntax;
+}
 
 // action_spray.C ends here.

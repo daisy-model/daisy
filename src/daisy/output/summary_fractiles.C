@@ -19,8 +19,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-
 #include "daisy/output/summary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/destination.h"
 #include "daisy/output/select.h"
 #include "object_model/block_submodel.h"
@@ -181,24 +181,28 @@ SummaryFractiles::summarize (Treelog& msg) const
   msg.message (tmp.str ());
 }
 
-static struct SummaryFractilesSyntax : public DeclareModel
+void
+register_summary_fractiles_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SummaryFractiles (al); }
-  SummaryFractilesSyntax ()
-    : DeclareModel (Summary::component, "fractiles", "\
+  static struct SummaryFractilesSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SummaryFractiles (al); }
+    SummaryFractilesSyntax ()
+      : DeclareModel (Summary::component, "fractiles", "\
 Show fractiles for specified tags.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.declare_string ("tags", Attribute::Const, Attribute::Variable, "\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("tags", Attribute::Const, Attribute::Variable, "\
 List of tags to summarize.");
-    frame.declare_fraction ("fractiles",
-                            Attribute::Const, Attribute::Variable, "\
+      frame.declare_fraction ("fractiles",
+                              Attribute::Const, Attribute::Variable, "\
 List of fractiles to summarize.");
-    frame.declare_string ("first", Attribute::OptionalConst, "\
+      frame.declare_string ("first", Attribute::OptionalConst, "\
 If set, put this in the first column of the summary.");
-  }
-} SummaryFractiles_syntax;
+    }
+  } summary_fractiles_syntax;
+}
 
 // summary_fractiles.C ends here.

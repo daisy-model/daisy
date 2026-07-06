@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/vernalization.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 #include "daisy/output/log.h"
 #include "object_model/frame.h"
@@ -45,13 +46,6 @@ Vernalization::Vernalization (const BlockModel& al)
 Vernalization::~Vernalization ()
 { }
 
-static struct VernalizationInit : public DeclareComponent 
-{
-  VernalizationInit ()
-    : DeclareComponent (Vernalization::component, "\
-Requirement for a cold period before flowering.")
-  { }
-} Vernalization_init;
 // The 'default' vernalization model.
 
 struct VernalizationStandard : public Vernalization
@@ -86,26 +80,6 @@ struct VernalizationStandard : public Vernalization
   { }
 };
 
-static struct VernalizationStandardSyntax : public DeclareModel
-{
-  // We can't use "used_to_be_a_submodel" since the default model is "none".
-  Model* make (const BlockModel& al) const
-  { return new VernalizationStandard (al); }
-  VernalizationStandardSyntax ()
-    : DeclareModel (Vernalization::component, "default", "\
-Temperature sum dependent vernalization.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("DSLim", "DS", Attribute::Const,
-               "Development stage at vernalization.");
-    frame.declare ("TaLim", "dg C", Attribute::Const,
-               "Vernalization temperature threshold.");
-    frame.declare ("TaSum", "dg C d", Attribute::State,
-               "Vernalization temperature-sum requirement.");
-  }
-} standard_vernalization_syntax;
-
 // The 'none' vernalization model.
 
 struct VernalizationNone : public Vernalization
@@ -123,16 +97,47 @@ struct VernalizationNone : public Vernalization
   { }
 };
 
-static struct VernalizationNoneSyntax : public DeclareModel
+void
+register_vernalization_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new VernalizationNone (al); }
-  VernalizationNoneSyntax ()
-    : DeclareModel (Vernalization::component, "none", "\
+  static struct VernalizationInit : public DeclareComponent 
+  {
+    VernalizationInit ()
+      : DeclareComponent (Vernalization::component, "\
+Requirement for a cold period before flowering.")
+    { }
+  } Vernalization_init;
+  static struct VernalizationStandardSyntax : public DeclareModel
+  {
+    // We can't use "used_to_be_a_submodel" since the default model is "none".
+    Model* make (const BlockModel& al) const
+    { return new VernalizationStandard (al); }
+    VernalizationStandardSyntax ()
+      : DeclareModel (Vernalization::component, "default", "\
+Temperature sum dependent vernalization.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("DSLim", "DS", Attribute::Const,
+                 "Development stage at vernalization.");
+      frame.declare ("TaLim", "dg C", Attribute::Const,
+                 "Vernalization temperature threshold.");
+      frame.declare ("TaSum", "dg C d", Attribute::State,
+                 "Vernalization temperature-sum requirement.");
+    }
+  } standard_vernalization_syntax;
+  static struct VernalizationNoneSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new VernalizationNone (al); }
+    VernalizationNoneSyntax ()
+      : DeclareModel (Vernalization::component, "none", "\
 No vernalization.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} none_vernalization_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } none_vernalization_syntax;
+}
 
 // vernalization.C ends here.
+

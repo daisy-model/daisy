@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -127,7 +128,7 @@ struct ConditionBBCH : public Condition
   { }
 };
 
-static struct ConditionBBCHSyntax : public DeclareModel
+struct ConditionBBCHSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionBBCH (al); }
@@ -147,6 +148,12 @@ Otherwise, the interval begins when the crop leaves the specified BBCH.");
     frame.declare_string ("crop", Attribute::Const, "\
 Name of crop to use BBCH number for.");
   }
-} ConditionBBCH_syntax;
+};
+
+void
+register_condition_BBCH_models ()
+{
+  static ConditionBBCHSyntax condition_bbch_syntax;
+}
 
 // condition_BBCH.C ends here.

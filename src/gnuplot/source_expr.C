@@ -19,7 +19,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
 #include "gnuplot/source_file.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "util/scope_table.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/parameter_types/number.h"
@@ -137,7 +139,7 @@ SourceExpr::~SourceExpr ()
 { }
 
 
-static struct SourceExprSyntax : public DeclareModel
+struct SourceExprSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SourceExpr (al); }
@@ -162,6 +164,12 @@ for that column.");
 Ignore entries if this boolean expression is false.");
     frame.set ("valid", "true");
   }
-} SourceExpr_syntax;
+};
+
+void
+register_gnuplot_source_expr_models ()
+{
+  static SourceExprSyntax source_expr_syntax;
+}
 
 // source_expr.C ends here.

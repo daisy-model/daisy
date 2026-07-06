@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/treelog.h"
 #include "object_model/librarian.h"
@@ -435,7 +436,7 @@ struct ProgramNwaps : public Program
   {  }
 };
 
-static struct ProgramNwapsSyntax : public DeclareModel
+struct ProgramNwapsSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramNwaps (al); }
@@ -497,6 +498,12 @@ Fractiles to include in summary.");
     const std::vector<double> fractiles {0.0, 0.1, 0.5, 0.9, 1.0};
     frame.set ("fractiles", fractiles);
   }
-} ProgramNwaps_syntax;
+};
+
+void
+register_program_nwaps_models ()
+{
+  static ProgramNwapsSyntax program_nwaps_syntax;
+}
 
 // program_nwaps.C ends here.

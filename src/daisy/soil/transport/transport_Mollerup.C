@@ -1397,7 +1397,7 @@ TransportMollerup::TransportMollerup (const BlockModel& al)
 TransportMollerup::~TransportMollerup ()
 { }
 
-static struct TransportMollerupSyntax : DeclareModel
+struct TransportMollerupSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TransportMollerup (al); }
@@ -1438,6 +1438,11 @@ Upstream weighting factor: 1 = full upstream formulation, 0.5 = equal weight.");
     frame.set ("upstream_weight", 1.0);
  
   }
-} TransportMollerup_syntax;
+};
 
+void
+register_transport_Mollerup_models ()
+{
+  static TransportMollerupSyntax TransportMollerup_syntax;
+}
 // transport_Mollerup.C ends here.

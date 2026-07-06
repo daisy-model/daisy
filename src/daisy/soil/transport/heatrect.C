@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/heatrect.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -40,12 +41,22 @@ Heatrect::Heatrect (const BlockModel& al)
 Heatrect::~Heatrect ()
 { }
 
-static struct HeatrectInit : public DeclareComponent 
+struct HeatrectInit : public DeclareComponent 
 {
   HeatrectInit ()
     : DeclareComponent (Heatrect::component, "\
 Heat transport in rectangular grid.")
   { }
-} Heatrect_init;
+};
 
-// heatrect.C ends here
+void
+register_heatrect_models ()
+{
+  static HeatrectInit Heatrect_init;
+
+  register_heatrect_linear_models ();
+  register_heatrect_Mollerup_models ();
+  register_heatrect_none_models ();
+}
+
+// heatrect.C ends here.

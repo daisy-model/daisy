@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/harvesting.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/production.h"
 #include "daisy/organic_matter/am.h"
 #include "daisy/organic_matter/aom.h"
@@ -342,7 +343,6 @@ Harvesting::harvest (const symbol column_name,
 					  crop_name, root_symbol, 
 					  AM::Unlocked /* inorganic */, msg);
 
-
       // Add crop to residuals.
       double extra_C = production.CH2OPool * (12./30.);
       double extra_N = 0.0;
@@ -438,7 +438,6 @@ Harvesting::harvest (const symbol column_name,
 
       daisy_assert (approximate (total_old_N,
 				 total_new_N + Crop_N_Yield + Crop_N_Loss));
-
 
       // Unlock and remove locked AM's.
       if (production.AM_root->locked ())
@@ -632,8 +631,13 @@ Harvesting::Harvesting (const Block& al)
 Harvesting::~Harvesting ()
 {  }
 
-static DeclareSubmodel 
-soil_submodel (Harvesting::load_syntax, "Harvesting", "\
+void
+register_harvesting_models ()
+{
+  static DeclareSubmodel 
+  soil_submodel (Harvesting::load_syntax, "Harvesting", "\
 Information about what happens to the crop at harvest and cut.");
+}
 
 // harvesting.C ends here.
+

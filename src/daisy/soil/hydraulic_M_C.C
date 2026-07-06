@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
 #include "util/mathlib.h"
@@ -115,7 +116,7 @@ HydraulicM_C::~HydraulicM_C ()
 
 // Add the HydraulicM_C syntax to the syntax table.
 
-static struct HydraulicM_CSyntax : public DeclareModel
+struct HydraulicM_CSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   {
@@ -161,6 +162,12 @@ static struct HydraulicM_CSyntax : public DeclareModel
 		   Attribute::OptionalConst, "\
 Hydraulic conductivity form parameter. By default p=l+2+2*b.");
   }
-} hydraulicM_C_syntax;
+};
+
+void
+register_hydraulic_M_C_models ()
+{
+  static HydraulicM_CSyntax hydraulicM_C_syntax;
+}
 
 // hydraulic_M_C.C ends here.

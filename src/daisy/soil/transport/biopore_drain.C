@@ -269,7 +269,7 @@ BioporeDrain::BioporeDrain (const BlockModel& al)
     S_chem_to_drain (al, "S_chem_to_drain")
 { }
 
-static struct BioporeDrainSyntax : DeclareModel
+struct BioporeDrainSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BioporeDrain (al); }
@@ -294,6 +294,11 @@ Biopore to drain term for solutes.", load_S_chem);
 		   "Height pipes are placed in the soil (a negative number).\n\
 By default, use the height specified for pipes in the column.");
   }
-} BioporeDrain_syntax;
+};
 
+void
+register_biopore_drain_models ()
+{
+  static BioporeDrainSyntax BioporeDrain_syntax;
+}
 // biopore_drain.C ends here.

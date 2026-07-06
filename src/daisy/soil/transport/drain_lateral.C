@@ -297,7 +297,7 @@ DrainLateral::DrainLateral (const BlockModel& al)
     height (al.number ("height", pipe_position))
 { }
 
-static struct DrainLateralSyntax : DeclareModel
+struct DrainLateralSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DrainLateral (al); }
@@ -355,6 +355,11 @@ anisotropy of the horizon.");
     frame.declare ("S", "cm^3/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
                    "Pipe drainage.");
   }
-} DrainLateral_syntax;
+};
 
+void
+register_drain_lateral_models ()
+{
+  static DrainLateralSyntax DrainLateral_syntax;
+}
 // drain_Lateral.C ends here.

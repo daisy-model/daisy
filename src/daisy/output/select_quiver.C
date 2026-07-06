@@ -23,6 +23,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select.h"
 #include "daisy/soil/soil.h"
 #include "daisy/output/bdconv.h"
@@ -321,16 +322,20 @@ struct SelectQuiver : public Select
   { }
 };
 
-static struct SelectQuiverSyntax : public DeclareModel
+void
+register_select_quiver_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectQuiver (al); }
-  SelectQuiverSyntax ()
-    : DeclareModel (Select::component, "quiver", "\
+  static struct SelectQuiverSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectQuiver (al); }
+    SelectQuiverSyntax ()
+      : DeclareModel (Select::component, "quiver", "\
 Convert edge flow to node based flow vectors.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} SelectQuiver_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } select_quiver_syntax;
+}
 
 // select_quiver.C ends here.

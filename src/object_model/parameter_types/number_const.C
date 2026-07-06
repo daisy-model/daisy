@@ -28,6 +28,7 @@
 #include "util/assertion.h"
 #include "object_model/librarian.h"
 #include "object_model/library.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/frame.h"
 #include <sstream>
@@ -82,7 +83,7 @@ struct NumberConst : public Number
   }
 };
 
-static struct NumberConstSyntax : public DeclareModel
+struct NumberConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberConst (al); }
@@ -97,7 +98,7 @@ static struct NumberConstSyntax : public DeclareModel
 		"Fixed value for this number.");
     frame.order ("value");
   }
-} NumberConst_syntax;
+};
 
 // The 'x' model.
 
@@ -149,7 +150,7 @@ struct NumberX : public Number
 
 const symbol NumberX::name ("x");
 
-static struct NumberXSyntax : public DeclareModel
+struct NumberXSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberX (al); }
@@ -159,7 +160,7 @@ The value of the symbol 'x' in the current scope.")
   { }
   void load_frame (Frame& frame) const
   { }
-} NumberX_syntax;
+};
 
 struct NumberGet : public Number
 {
@@ -243,7 +244,7 @@ struct NumberGet : public Number
   { }
 };
 
-static struct NumberGetSyntax : public DeclareModel
+struct NumberGetSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberGet (al); }
@@ -260,7 +261,7 @@ static struct NumberGetSyntax : public DeclareModel
                 "Expected dimension for the symbol.");
     frame.order ("name", "dimension");
   }
-} NumberGet_syntax;
+};
 
 struct NumberFetchGet : public Number
 {
@@ -444,7 +445,7 @@ struct NumberFetch : public Number
   { }
 };
 
-static struct NumberFetchSyntax : public DeclareModel
+struct NumberFetchSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberFetch (al); }
@@ -459,7 +460,7 @@ static struct NumberFetchSyntax : public DeclareModel
                 "Name of a the symbol.");
     frame.order ("name");
   }
-} NumberFetch_syntax;
+};
 
 struct NumberChild : public Number
 {
@@ -479,7 +480,7 @@ struct NumberChild : public Number
   { }
 };
 
-static struct NumberChildSyntax : public DeclareBase
+struct NumberChildSyntax : public DeclareBase
 {
   NumberChildSyntax ()
     : DeclareBase (Number::component, "child", "\
@@ -490,7 +491,7 @@ Numbers based on another number.")
     frame.declare_object ("value", Number::component,
                        "Operand for this function.");
   }
-} NumberChild_syntax;
+};
 
 struct NumberIdentity : public NumberChild
 {
@@ -544,7 +545,7 @@ struct NumberIdentity : public NumberChild
   { }
 };
 
-static struct NumberIdentitySyntax : public DeclareModel
+struct NumberIdentitySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberIdentity (al); }
@@ -558,7 +559,7 @@ Pass value unchanged.")
     frame.declare_string ("dimension", Attribute::OptionalConst,
 		"Dimension of this value.");
   }
-} NumberIdentity_syntax;
+};
 
 struct NumberConvert : public NumberChild
 {
@@ -604,7 +605,7 @@ struct NumberConvert : public NumberChild
   { }
 };
 
-static struct NumberConvertSyntax : public DeclareModel
+struct NumberConvertSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberConvert (al); }
@@ -619,7 +620,7 @@ Convert to specified dimension.")
 		"Dimension to convert to.");
     frame.order ("value", "dimension");
   }
-} NumberConvert_syntax;
+};
 
 struct NumberDim : public NumberChild
 {
@@ -658,7 +659,7 @@ struct NumberDim : public NumberChild
   { }
 };
 
-static struct NumberDimSyntax : public DeclareModel
+struct NumberDimSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberDim (al); }
@@ -675,6 +676,19 @@ Specify dimension for number.")
 		"Dimension to use.");
     frame.order ("value", "dimension");
   }
-} NumberDim_syntax;
+};
+
+void
+register_number_const_models ()
+{
+  static NumberConstSyntax number_const_syntax;
+  static NumberXSyntax number_x_syntax;
+  static NumberGetSyntax number_get_syntax;
+  static NumberFetchSyntax number_fetch_syntax;
+  static NumberChildSyntax number_child_syntax;
+  static NumberIdentitySyntax number_identity_syntax;
+  static NumberConvertSyntax number_convert_syntax;
+  static NumberDimSyntax number_dim_syntax;
+}
 
 // number_const.C ends here.

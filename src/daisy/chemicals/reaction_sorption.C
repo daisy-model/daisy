@@ -245,7 +245,6 @@ struct ReactionSorption : public Reaction
       : k_desorption * (has_solute - want_solute);
   }
 
-
   // Create.
   bool check (const Geometry&, 
               const Soil&, const SoilWater&, 
@@ -305,87 +304,91 @@ struct ReactionSorption : public Reaction
 const symbol
 ReactionSorption::k_unit ("h^-1");
 
-static struct ReactionSorptionSyntax : public DeclareModel
+void
+register_reaction_sorption_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionSorption (al); }
-  ReactionSorptionSyntax ()
-    : DeclareModel (Reaction::component, "sorption", 
-                    "Kinetic linear sorption equilibrium.\n\
+  static struct ReactionSorptionSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ReactionSorption (al); }
+    ReactionSorptionSyntax ()
+      : DeclareModel (Reaction::component, "sorption", 
+                      "Kinetic linear sorption equilibrium.\n\
 Faster than the 'equilibrium' reaction model, more flexible than the\n\
 'adsorption' reaction model.")
-  { }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
-  {
-    bool ok = true;
+    { }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& msg)
+    {
+      bool ok = true;
 
-    const bool has_K_d = al.check ("K_d");
-    const bool has_K_clay = al.check ("K_clay");
-    const bool has_K_OC = al.check ("K_OC");
-      
-    if (!has_K_d && !has_K_clay && !has_K_OC)
-      {
-	msg.error ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
-	ok = false;
-      }
-    if (has_K_d && (has_K_clay || has_K_OC))
-      {
-	msg.error ("You cannot specify 'K_d' with 'K_clay' or 'K_OC'");
-	ok = false;
-      }
-    return ok;
-  }
+      const bool has_K_d = al.check ("K_d");
+      const bool has_K_clay = al.check ("K_clay");
+      const bool has_K_OC = al.check ("K_OC");
+        
+      if (!has_K_d && !has_K_clay && !has_K_OC)
+        {
+  	msg.error ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
+  	ok = false;
+        }
+      if (has_K_d && (has_K_clay || has_K_OC))
+        {
+  	msg.error ("You cannot specify 'K_d' with 'K_clay' or 'K_OC'");
+  	ok = false;
+        }
+      return ok;
+    }
 
-  void load_frame (Frame& frame) const
-  {
-    frame.add_check (check_alist);
-    frame.declare_string ("solute", Attribute::Const,
-                          "Name of solute form of chemical.\n\
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.declare_string ("solute", Attribute::Const,
+                            "Name of solute form of chemical.\n\
 If this chemical has equilibrium sorption, only the colute part is used.");
-    frame.declare_string ("sorbed", Attribute::Const,
-                          "Name of sorbed form of chemical.");
-    frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
-                   Attribute::OptionalConst, "\
+      frame.declare_string ("sorbed", Attribute::Const,
+                            "Name of sorbed form of chemical.");
+      frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
+                     Attribute::OptionalConst, "\
 Equillibrium parameter: M = C (K_d rho_b + Theta)\n\
 Here M is the total amount, C is solute concentration, K_d is this\n\
 parameter, rho_b is the dry bulk density, and Theta is the volumetric\n\
 water content.  By default, K_d is calculated from K_clay and K_OC.");
-    frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
-		Attribute::OptionalConst, 
-		"Clay dependent distribution parameter.\n\
+      frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
+  		Attribute::OptionalConst, 
+  		"Clay dependent distribution parameter.\n\
 It is multiplied with the soil clay fraction to get the clay part of\n\
 the 'K_d' factor.  If 'K_OC' is specified, 'K_clay' defaults to 0.");
-    frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
-		Attribute::OptionalConst, 
-		"Humus dependent distribution parameter.\n\
+      frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
+  		Attribute::OptionalConst, 
+  		"Humus dependent distribution parameter.\n\
 It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of the 'K_d' factor.  By default, 'K_OC' is equal to 'K_clay'.");
-    frame.declare ("k_sorption", "h^-1",
-                   Check::non_negative (), Attribute::Const, "\
+      frame.declare ("k_sorption", "h^-1",
+                     Check::non_negative (), Attribute::Const, "\
 Sorption rate.");
-    frame.declare ("k_desorption", "h^-1", 
-                   Check::non_negative (), Attribute::OptionalConst, "\
+      frame.declare ("k_desorption", "h^-1", 
+                     Check::non_negative (), Attribute::OptionalConst, "\
 Desorption rate.\n\
 By default, this is identical to 'k_sorption'.");
-    frame.declare ("surface_sorption", "g/cm^2/h", Attribute::LogOnly, "\
+      frame.declare ("surface_sorption", "g/cm^2/h", Attribute::LogOnly, "\
 Sorption on surface this timestep (may be negative).");
-    frame.declare ("S_sorption", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, "\
+      frame.declare ("S_sorption", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, "\
 Sorption in soil this timestep (may be negative).");
-    frame.declare ("S_sorption_primary", "g/cm^3/h", 
-                   Attribute::LogOnly, Attribute::SoilCells, "\
+      frame.declare ("S_sorption_primary", "g/cm^3/h", 
+                     Attribute::LogOnly, Attribute::SoilCells, "\
 Sorption in primary domain this timestep (may be negative).");
-    frame.declare ("S_sorption_secondary", "g/cm^3/h",
-                   Attribute::LogOnly, Attribute::SoilCells, "\
+      frame.declare ("S_sorption_secondary", "g/cm^3/h",
+                     Attribute::LogOnly, Attribute::SoilCells, "\
 Sorption in secondary domain this timestep (may be negative).");
-    frame.declare_string ("colloid", Attribute::OptionalConst, "\
+      frame.declare_string ("colloid", Attribute::OptionalConst, "\
 Sorp to this chemical instead of to the soil matrix.");
-    frame.declare ("soil_enrichment_factor", 
-                   Attribute::None (), Check::positive (), Attribute::Const, "\
+      frame.declare ("soil_enrichment_factor", 
+                     Attribute::None (), Check::positive (), Attribute::Const, "\
 Multiply K_d with this number if 'colloid' is set.\n\
 This represents how much more accesible colloids is compared to\n\
 the soil matrix.");
-    frame.set ("soil_enrichment_factor", 1.0);
-  }
-} ReactionSorption_syntax;
+      frame.set ("soil_enrichment_factor", 1.0);
+    }
+  } ReactionSorption_syntax;
+}
 
 // reaction_sorption.C ends here.

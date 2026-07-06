@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/summary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/output/fetch_pretty.h"
 #include "daisy/output/select.h"
@@ -245,33 +246,37 @@ SummaryBalance::summarize (Treelog& msg) const
     } 
 }
 
-static struct SummaryBalanceSyntax : public DeclareModel
+void
+register_summary_balance_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SummaryBalance (al); }
-  SummaryBalanceSyntax ()
-    : DeclareModel (Summary::component, "balance",
-                    SummaryBalance::default_description)
-  { }
-  void load_frame (Frame& frame) const
+  static struct SummaryBalanceSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SummaryBalance (al); }
+    SummaryBalanceSyntax ()
+      : DeclareModel (Summary::component, "balance",
+                      SummaryBalance::default_description)
+    { }
+    void load_frame (Frame& frame) const
     {
       frame.declare_string ("where", Attribute::OptionalConst,
                   "File name to store the summary.\n\
 By default, the summary will be stored in daisy.log and the screen.");
       frame.declare_integer ("precision", Attribute::Const,
-		  "Number of digits to print after decimal point.");
+                             "Number of digits to print after decimal point.");
       frame.set ("precision", 2);
       frame.declare_boolean ("require_top", Attribute::Const, "\
 If the balance only hold true when logging the top of the soil, i.e. the\n\
 `from' parameter of the log model is 0, this flag should be set.");
       frame.set ("require_top", false);
       frame.declare_string ("input", Attribute::Const, Attribute::Variable,
-                  "Tags of columns in log file representing inputs.");
+                            "Tags of columns in log file representing inputs.");
       frame.declare_string ("output", Attribute::Const, Attribute::Variable,
-                  "Tags of columns in log file representing outputs.");
+                            "Tags of columns in log file representing outputs.");
       frame.declare_string ("content", Attribute::Const, Attribute::Variable,
-                  "Tags of columns in log file representing content.");
+                            "Tags of columns in log file representing content.");
     }
-} SummaryBalance_syntax;
+  } summary_balance_syntax;
+}
 
 // summary_balance.C ends here.

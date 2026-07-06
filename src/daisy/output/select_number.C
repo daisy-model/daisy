@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select_value.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -45,19 +46,23 @@ struct SelectNumber : public SelectValue
   { }
 };
 
-static struct SelectNumberSyntax : public DeclareModel
+void
+register_select_number_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectNumber (al); }
+  static struct SelectNumberSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectNumber (al); }
 
-  SelectNumberSyntax ()
-    : DeclareModel (Select::component, "number", "value", "\
+    SelectNumberSyntax ()
+      : DeclareModel (Select::component, "number", "value", "\
 Extract specified number.\n\
 If used on an array, it will treat them as individual numbers as\n\
 specified by the 'handle' parameter.")
-  { }
-  void load_frame (Frame&) const
-  { }
-} SelectNumber_syntax;
+    { }
+    void load_frame (Frame&) const
+    { }
+  } select_number_syntax;
+}
 
 // select_number.C ends here.

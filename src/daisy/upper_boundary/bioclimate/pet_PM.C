@@ -34,6 +34,7 @@
 #include "object_model/block_model.h"
 #include <sstream>
 #include <memory>
+#include "daisy/daisy_registration_internal.h"
 
 class PetPM : public Pet
 {
@@ -142,7 +143,7 @@ PetPM::tick (const Weather& weather,
     }
 }
 
-static struct PetPMSyntax : public DeclareModel
+struct PetPMSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new PetPM (al); }
@@ -157,4 +158,11 @@ static struct PetPMSyntax : public DeclareModel
 used for bare soil only.");
      frame.set ("rb", 20.0);
   }
-} PetPM_syntax;
+};
+
+void
+register_pet_PM_models ()
+{
+  static PetPMSyntax PetPM_syntax;
+}
+

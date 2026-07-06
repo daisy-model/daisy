@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/phenology.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/output/log.h"
 #include "object_model/frame.h"
@@ -85,26 +86,32 @@ Phenology::Phenology (const BlockModel& al)
 Phenology::~Phenology ()
 { }
 
-static struct PhenologyInit : public DeclareComponent 
+void
+register_phenology_models ()
 {
-  PhenologyInit ()
-    : DeclareComponent (Phenology::component, "\
-The development process.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct PhenologyInit : public DeclareComponent 
   {
-    // Variables.
-    frame.declare ("DAP", "d", Attribute::State, "Days after planting.");
-    frame.set ("DAP", 0.0);
-    frame.declare ("DS", "DS", Attribute::State,
-                "Development stage [-1:2], 0 is emergence, 1 is flowering.");
-    frame.set ("DS", -1.0);
-    frame.declare ("partial_day_length", "h", Attribute::State,
-                "Number of light hours this day, so far.");
-    frame.set ("partial_day_length", 0.0);
-    frame.declare ("day_length", "h", Attribute::State,
-                "Number of light hours yesterday.");
-    frame.set ("day_length", 0.0);
-  }
-} Phenology_init;
+    PhenologyInit ()
+      : DeclareComponent (Phenology::component, "\
+The development process.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      // Variables.
+      frame.declare ("DAP", "d", Attribute::State, "Days after planting.");
+      frame.set ("DAP", 0.0);
+      frame.declare ("DS", "DS", Attribute::State,
+                  "Development stage [-1:2], 0 is emergence, 1 is flowering.");
+      frame.set ("DS", -1.0);
+      frame.declare ("partial_day_length", "h", Attribute::State,
+                  "Number of light hours this day, so far.");
+      frame.set ("partial_day_length", 0.0);
+      frame.declare ("day_length", "h", Attribute::State,
+                  "Number of light hours yesterday.");
+      frame.set ("day_length", 0.0);
+    }
+  } Phenology_init;
 
+  register_phenology_standard_models ();
+  register_phenology_TSum_models ();
+}

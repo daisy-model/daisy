@@ -24,6 +24,7 @@
 #include "object_model/block_model.h"
 #include "daisy/daisy_time.h"
 #include "object_model/plf.h"
+#include "util/util_registration_internal.h"
 #include "util/lexer_data.h"
 #include "daisy/output/output.h"
 #include "object_model/parameter_types/number.h"
@@ -62,13 +63,13 @@ Depth::Depth (const symbol n)
 Depth::~Depth ()
 { }
 
-static struct DepthInit : public DeclareComponent
+struct DepthInit : public DeclareComponent
 {
   DepthInit ()
     : DeclareComponent (Depth::component, "\
 Depth below soil surface.")
   { }
-} Depth_init;
+};
 
 // const model.
 void DepthConst::tick (const Time&, const Scope&, Treelog&)
@@ -95,7 +96,7 @@ Depth*
 Depth::create (const double height)
 { return new DepthConst (height); }
 
-static struct DepthConstSyntax : public DeclareModel
+struct DepthConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepthConst (al); }
@@ -108,11 +109,11 @@ static struct DepthConstSyntax : public DeclareModel
                 "Constant depth.");
     frame.order ("value");
   }
-} DepthConst_syntax;
+};
 
 // deep param.
 
-static struct DepthDeepSyntax : public DeclareParam
+struct DepthDeepSyntax : public DeclareParam
 {
   DepthDeepSyntax ()
     : DeclareParam (Depth::component, "deep", "const", "\
@@ -122,7 +123,7 @@ Way down.")
   {
     frame.set ("value", -1000.0 * 100.0); // 1 km below ground.
   }
-} DepthDeep_syntax;
+};
 
 // extern model.
 
@@ -165,7 +166,7 @@ DepthExtern::DepthExtern (const BlockModel& al)
 DepthExtern::~DepthExtern ()
 { }
 
-static struct DepthExternSyntax : public DeclareModel
+struct DepthExternSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepthExtern (al); }
@@ -182,7 +183,7 @@ Expression that evaluates to a depth.");
 		"Initial depth.");
 
   }
-} DepthExtern_syntax;
+};
 
 // PLF model.
 void DepthPLF::tick (const Time& time, const Scope&, Treelog&)
@@ -252,7 +253,7 @@ static const class CheckTable : public VCheck
   { }
 } check_table;
 
-static struct DepthPLFSyntax : public DeclareModel
+struct DepthPLFSyntax : public DeclareModel
 {
   static void entry_syntax (Frame& frame)
   {
@@ -279,7 +280,7 @@ in the list will be used.", entry_syntax);
     frame.set_check ("table", check_table);
     frame.order ("table");
   }
-} DepthPLF_syntax;
+};
 
 // The 'season' model.
 
@@ -309,7 +310,7 @@ DepthSeason::DepthSeason (const BlockModel& al)
 DepthSeason::~DepthSeason ()
 { }
 
-static struct DepthSeasonSyntax : public DeclareModel
+struct DepthSeasonSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepthSeason (al); }
@@ -325,7 +326,7 @@ First and last entry must be identical.");
     frame.set_check ("season", VCheck::season ());
     frame.order ("season");
   }
-} DepthSeason_syntax;
+};
 
 // file model.
 
@@ -433,7 +434,7 @@ DepthFile::DepthFile (const BlockModel& al)
 DepthFile::~DepthFile ()
 { }
 
-static struct DepthFileSyntax : public DeclareModel
+struct DepthFileSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepthFile (al); }
@@ -450,7 +451,7 @@ where HEIGHT should in cm above ground (i.e. a negative number).\n\
 Linear interpolation is used between the datapoints.");
     frame.order ("file");
   }
-} DepthFile_syntax;
+};
 
 // table model.
 
@@ -583,7 +584,7 @@ DepthTable::DepthTable (const BlockModel& al)
 DepthTable::~DepthTable ()
 { }
 
-static struct DepthTableSyntax : public DeclareModel
+struct DepthTableSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DepthTable (al); }
@@ -599,6 +600,19 @@ Linear interpolation of depth read from file.")
 Add this number to the Level read from the table.");
     frame.set ("offset", 0.0);
   }
-} DepthTable_syntax;
+};
+
+void
+register_depth_models ()
+{
+  static DepthInit depth_init;
+  static DepthConstSyntax depth_const_syntax;
+  static DepthDeepSyntax depth_deep_syntax;
+  static DepthExternSyntax depth_extern_syntax;
+  static DepthPLFSyntax depth_plf_syntax;
+  static DepthSeasonSyntax depth_season_syntax;
+  static DepthFileSyntax depth_file_syntax;
+  static DepthTableSyntax depth_table_syntax;
+}
 
 // depth.C ends here.

@@ -28,6 +28,7 @@
 #include "object_model/submodeler.h"
 #include "util/memutils.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct WSourceStandard : public WSourceTable
 {
@@ -355,7 +356,7 @@ WSourceStandard::map_time_only (const Time& simulation_time, Time& mapped_time,
     }
 }
 
-static struct WSourceStandardSyntax : public DeclareModel
+struct WSourceStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new WSourceStandard (al); }
@@ -391,6 +392,12 @@ one will be used.",
                                       WSourceStandard::YearMap::load_syntax);
     frame.set_empty ("missing_years");
   }
-} WSourceStandard_syntax;
+};
+
+void
+register_wsource_standard_models ()
+{
+  static WSourceStandardSyntax WSourceStandard_syntax;
+}
 
 // wsource_std.C ends here.

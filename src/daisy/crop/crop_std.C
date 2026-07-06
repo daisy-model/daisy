@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/crop.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/chemicals/chemistry.h"
 #include "daisy/crop/seed.h"
 #include "daisy/crop/root/root_system.h"
@@ -925,100 +926,104 @@ CropStandard::CropStandard (const BlockModel& al)
 CropStandard::~CropStandard ()
 { }
 
-static struct CropStandardSyntax : public DeclareModel
+void
+register_crop_standard_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new CropStandard (al); }
-  CropStandardSyntax ()
-    : DeclareModel (Crop::component, "default",
-                    "Standard Daisy crop model.  Hansen, 1999.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct CropStandardSyntax : public DeclareModel
   {
-    frame.declare_object ("Seed", Seed::component, 
-                       "Initial crop growth.");
-    frame.set ("Seed", "LAI");
-    frame.declare_object ("Root", RootSystem::component, "Root system.");
-    frame.set ("Root", "classic");
-    frame.declare_submodule ("Canopy", Attribute::State,
-                          "Canopy.", CanopyStandard::load_syntax);
-    frame.declare_submodule ("Harvest", Attribute::State,
-                          "Harvest parameters.", Harvesting::load_syntax);
-    frame.declare_submodule ("Prod", Attribute::State,
-                          "Production.", Production::load_syntax);
-    frame.declare_submodule ("last_time", Attribute::OptionalState,
-                             "The time of the previous timestep.\n\
+    Model* make (const BlockModel& al) const
+    { return new CropStandard (al); }
+    CropStandardSyntax ()
+      : DeclareModel (Crop::component, "default",
+                      "Standard Daisy crop model.  Hansen, 1999.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("Seed", Seed::component, 
+                         "Initial crop growth.");
+      frame.set ("Seed", "LAI");
+      frame.declare_object ("Root", RootSystem::component, "Root system.");
+      frame.set ("Root", "classic");
+      frame.declare_submodule ("Canopy", Attribute::State,
+                            "Canopy.", CanopyStandard::load_syntax);
+      frame.declare_submodule ("Harvest", Attribute::State,
+                            "Harvest parameters.", Harvesting::load_syntax);
+      frame.declare_submodule ("Prod", Attribute::State,
+                            "Production.", Production::load_syntax);
+      frame.declare_submodule ("last_time", Attribute::OptionalState,
+                               "The time of the previous timestep.\n\
 Don't set, calculated by Daisy.",
-                             Time::load_syntax);
-    frame.declare_submodule ("sow_time", Attribute::OptionalState,
-                             "The time the crop was sown.\n\
+                               Time::load_syntax);
+      frame.declare_submodule ("sow_time", Attribute::OptionalState,
+                               "The time the crop was sown.\n\
 Don't set, calculated by Daisy.",
-                             Time::load_syntax);
-    frame.declare_submodule ("emerge_time", Attribute::OptionalState,
-                             "The time the crop emerged.\n\
+                               Time::load_syntax);
+      frame.declare_submodule ("emerge_time", Attribute::OptionalState,
+                               "The time the crop emerged.\n\
 Don't set, calculated by Daisy.",
-                             Time::load_syntax);
-    frame.declare_submodule ("flowering_time", Attribute::OptionalState,
-                             "The time the crop flowered.\n\
+                               Time::load_syntax);
+      frame.declare_submodule ("flowering_time", Attribute::OptionalState,
+                               "The time the crop flowered.\n\
 Don't set, calculated by Daisy.",
-                             Time::load_syntax);
-    frame.declare_submodule ("ripe_time", Attribute::OptionalState,
-                             "The time the crop became ripe.\n\
+                               Time::load_syntax);
+      frame.declare_submodule ("ripe_time", Attribute::OptionalState,
+                               "The time the crop became ripe.\n\
 Don't set, calculated by Daisy.",
-                             Time::load_syntax);
-    frame.declare_object ("Devel", Phenology::component, 
-                       "Development and phenology.");
-    frame.declare_object ("CStage", CStage::component, 
-			  "Phenological messages.");
-    frame.set ("CStage", "Daisy");
-    frame.declare_submodule ("Partit", Attribute::State,
-                          "Assimilate partitioning.", Partition::load_syntax);
-    frame.declare_object ("Vernal", Vernalization::component, 
-                      Attribute::State, Attribute::Singleton, "\
+                               Time::load_syntax);
+      frame.declare_object ("Devel", Phenology::component, 
+                         "Development and phenology.");
+      frame.declare_object ("CStage", CStage::component, 
+  			  "Phenological messages.");
+      frame.set ("CStage", "Daisy");
+      frame.declare_submodule ("Partit", Attribute::State,
+                            "Assimilate partitioning.", Partition::load_syntax);
+      frame.declare_object ("Vernal", Vernalization::component, 
+                        Attribute::State, Attribute::Singleton, "\
 Vernalization.");
-    frame.set ("Vernal", "none");
-    frame.declare_object ("LeafPhot", Photo::component,
-                          Attribute::Const, Attribute::Singleton,
-                          "Leaf photosynthesis.\n\
+      frame.set ("Vernal", "none");
+      frame.declare_object ("LeafPhot", Photo::component,
+                            Attribute::Const, Attribute::Singleton,
+                            "Leaf photosynthesis.\n\
 Note that if the selected radiation distribution model distinguishes\n\
 between sunlit and shadow leaves, only the shadow leaves will be ");
-    frame.set ("LeafPhot", "GL");
-    frame.declare_object ("sunlit", Photo::component,
-                          Attribute::LogOnly, Attribute::Singleton,
-                          "Leaf photosynthesis for sunlit leaves.\n\
+      frame.set ("LeafPhot", "GL");
+      frame.declare_object ("sunlit", Photo::component,
+                            Attribute::LogOnly, Attribute::Singleton,
+                            "Leaf photosynthesis for sunlit leaves.\n\
 This will be zero if the selected radiation distribution model does not\n\
 distinguish between sunlit and shadow leafs.");
-    frame.declare_object ("reserved", Photo::component,
-                          Attribute::LogOnly, Attribute::Singleton,
-                          "Leaf photosynthesis for reserved leaves.\n\
+      frame.declare_object ("reserved", Photo::component,
+                            Attribute::LogOnly, Attribute::Singleton,
+                            "Leaf photosynthesis for reserved leaves.\n\
 This is used for simulating \"patches\" in multi-crop systems, such as\n\
 a clover-grass mixture.  This is controled by the 'min_light_fraction'\n\
 parameter.");
-    frame.declare_submodule ("CrpN", Attribute::State,
-                          "Nitrogen parameters.", CrpN::load_syntax);
-
-    frame.declare_object ("water_stress_effect", WSE::component, 
-                       Attribute::OptionalConst, Attribute::Singleton,
-                       "Effect of water stress on production.\n\
+      frame.declare_submodule ("CrpN", Attribute::State,
+                            "Nitrogen parameters.", CrpN::load_syntax);
+  
+      frame.declare_object ("water_stress_effect", WSE::component, 
+                         Attribute::OptionalConst, Attribute::Singleton,
+                         "Effect of water stress on production.\n\
 By default, this will be 'none' iff the selected photosynthesis model\n\
 does handle water stress implicitly, and 'full' otherwise.");
-    frame.declare_boolean ("enable_N_stress", Attribute::OptionalConst,
-                "Set this true to let nitrogen stress limit production.\n\
+      frame.declare_boolean ("enable_N_stress", Attribute::OptionalConst,
+                  "Set this true to let nitrogen stress limit production.\n\
 By default, it will be true iff the selected photosynthesis model does\n \
 handle nitrogen stress implicitly.");
-    frame.declare_fraction ("min_light_fraction", Attribute::Const, "\n\
+      frame.declare_fraction ("min_light_fraction", Attribute::Const, "\n\
 When multiple crops are competing for light, this parameter specifies\n\
 a minumum amount of the light this crop will receive.  The idea is\n\
 that the field has patches where one crop is dominating, as specified\n\
 by this parameter, and in these patches the crop will not have to\n\
 compete for light.  The crop still needs LAI in order to catch the\n\
 light though.  Competition for water and nutrients are unaffected.");
-    frame.set ("min_light_fraction", 0.0);
-    frame.declare_object ("RubiscoN", RubiscoN::component, "\
+      frame.set ("min_light_fraction", 0.0);
+      frame.declare_object ("RubiscoN", RubiscoN::component, "\
 Fraction of N in leaves that is photosynthetically active.");
-    frame.set ("RubiscoN", "default");
-  }
-} standard_crop_syntax;
-
+      frame.set ("RubiscoN", "default");
+    }
+  } standard_crop_syntax;
+}
 
 // crop_std.C ends here.
+

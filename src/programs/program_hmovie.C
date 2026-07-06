@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "gnuplot/gnuplot.h"
 #include "util/lexer_table.h"
 #include "object_model/librarian.h"
@@ -313,7 +314,7 @@ Column name.");
   frame.order ("x", "y", "tag");
 }
 
-static struct ProgramHMovieSyntax : public DeclareModel
+struct ProgramHMovieSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramHMovie (al); }
@@ -415,6 +416,12 @@ List of column tags for the data file.",
     frame.declare ("missing_value", Attribute::User (), Attribute::Const, "\
 Replace misisng values with this.");
   }
-} ProgramHMovie_syntax;
+};
+
+void
+register_program_hmovie_models ()
+{
+  static ProgramHMovieSyntax program_hmovie_syntax;
+}
 
 // program_hmovie.C ends here.

@@ -146,38 +146,40 @@ struct ReactionFilter : public Reaction
   { }
 };
 
-static struct ReactionFilterSyntax : public DeclareModel
+void
+register_reaction_filter_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionFilter (al); }
-  ReactionFilterSyntax ()
-    : DeclareModel (Reaction::component, "filter_velocity",
-                    "Filtration of soil colloids.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionFilterSyntax : public DeclareModel
   {
+    Model* make (const BlockModel& al) const
+    { return new ReactionFilter (al); }
+    ReactionFilterSyntax ()
+      : DeclareModel (Reaction::component, "filter_velocity",
+                      "Filtration of soil colloids.")
+    { }
+    void load_frame (Frame& frame) const
+    {
 
 
-    frame.declare_string ("immobile", Attribute::OptionalConst,
-                   "Immobile colloids in the soil.\n\
+      frame.declare_string ("immobile", Attribute::OptionalConst,
+                     "Immobile colloids in the soil.\n\
 By default, filtered colloids are not tracked.");
-    frame.declare_string ("mobile", Attribute::Const,
-                   "Mobile colloids dissolved in soil water.");
-    frame.declare ("F_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Filtration in the primary domain (intra-aggregate pores).");
-    frame.declare ("F_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
-                   "Filtration in secondary domain (inter-aggregate pores).");
+      frame.declare_string ("mobile", Attribute::Const,
+                     "Mobile colloids dissolved in soil water.");
+      frame.declare ("F_primary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Filtration in the primary domain (intra-aggregate pores).");
+      frame.declare ("F_secondary", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells,
+                     "Filtration in secondary domain (inter-aggregate pores).");
 
-    frame.declare ("fc_primary", "cm^-1", Check::positive (), Attribute::Const,
-                   "Filter coefficient in the primary domain");
-    // frame.set ("fc_primary", 1.0);
-   
-    frame.declare ("fc_secondary", "cm^-1", Check::positive (), Attribute::Const,
-                   "Filter coefficient in secondary domain");
-    // frame.set ("fc_secondary", 0.5);
+      frame.declare ("fc_primary", "cm^-1", Check::positive (), Attribute::Const,
+                     "Filter coefficient in the primary domain");
+      // frame.set ("fc_primary", 1.0);
+     
+      frame.declare ("fc_secondary", "cm^-1", Check::positive (), Attribute::Const,
+                     "Filter coefficient in secondary domain");
+      // frame.set ("fc_secondary", 0.5);
 
-  }
-  
-} ReactionFilter_syntax;
-
-
+    }
+    
+  } ReactionFilter_syntax;
+}

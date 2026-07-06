@@ -23,6 +23,7 @@
 #include "object_model/function.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/plf.h"
 
 // The 'function' component.
@@ -38,24 +39,6 @@ Function::Function (const BlockModel&)
 
 Function::~Function ()
 { }
-
-static struct FunctionInit : public DeclareComponent 
-{
-  void load_frame (Frame& frame) const
-  {
-    Model::load_model (frame);
-    frame.declare_string ("domain", Attribute::Const, "Function domain.");
-    frame.set ("domain", Attribute::Unknown ());
-    frame.declare_string ("range", Attribute::Const, "Function range.");
-    frame.set ("range", Attribute::Unknown ());
-    frame.declare_string ("formula", Attribute::OptionalConst, "\
-LaTeX formula for the function, for the reference manual.");
-  }
-  FunctionInit ()
-    : DeclareComponent (Function::component, "\
-Pure function of one parameter.")
-  { }
-} Function_init;
 
 // The 'plotable' base model.
 
@@ -81,6 +64,26 @@ FunctionPlotable::~FunctionPlotable ()
 
 // The 'const' model.
 
+namespace
+{
+struct FunctionInit : public DeclareComponent 
+{
+  void load_frame (Frame& frame) const
+  {
+    Model::load_model (frame);
+    frame.declare_string ("domain", Attribute::Const, "Function domain.");
+    frame.set ("domain", Attribute::Unknown ());
+    frame.declare_string ("range", Attribute::Const, "Function range.");
+    frame.set ("range", Attribute::Unknown ());
+    frame.declare_string ("formula", Attribute::OptionalConst, "\
+LaTeX formula for the function, for the reference manual.");
+  }
+  FunctionInit ()
+    : DeclareComponent (Function::component, "\
+Pure function of one parameter.")
+  { }
+};
+
 struct FunctionConst : public Function
 {
   const double value_;
@@ -96,7 +99,7 @@ struct FunctionConst : public Function
   { }
 };
 
-static struct FunctionConstSyntax : public DeclareModel
+struct FunctionConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionConst (al); }
@@ -110,7 +113,7 @@ static struct FunctionConstSyntax : public DeclareModel
 The number to return.");
     frame.order ("value");
   }
-} FunctionConst_syntax;
+};
 
 // The 'plf' model.
 
@@ -129,7 +132,7 @@ struct FunctionPLF : public Function
   { }
 };
 
-static struct FunctionPLFSyntax : public DeclareModel
+struct FunctionPLFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionPLF (al); }
@@ -144,6 +147,15 @@ static struct FunctionPLFSyntax : public DeclareModel
 The piecewise linear function.");
     frame.order ("plf");
   }
-} FunctionPLF_syntax;
+};
+}
+
+void
+register_function_models ()
+{
+  static FunctionInit function_init;
+  static FunctionConstSyntax function_const_syntax;
+  static FunctionPLFSyntax function_plf_syntax;
+}
 
 // function.C ends here.

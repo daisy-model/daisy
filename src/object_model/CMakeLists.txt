@@ -27,6 +27,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   plf.C
   printer.C
   printer_file.C
+  registration.C
   rate.C
   symbol.C
   toplevel.C

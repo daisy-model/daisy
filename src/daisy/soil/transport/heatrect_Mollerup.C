@@ -486,7 +486,7 @@ HeatrectMollerup::solve (const GeometryRect& geo,
   
 }
 
-static struct HeatrectMollerupSyntax : public DeclareModel
+struct HeatrectMollerupSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HeatrectMollerup (al); }
@@ -506,6 +506,11 @@ Enable additional debug message.\n\
 A value of 0 means no message, higher numbers means more messages.");
     frame.set ("debug", 0);
   }
-} HeatrectMollerup_syntax;
+};
 
+void
+register_heatrect_Mollerup_models ()
+{
+  static HeatrectMollerupSyntax HeatrectMollerup_syntax;
+}
 // heatrect_mollerup.C ends here.

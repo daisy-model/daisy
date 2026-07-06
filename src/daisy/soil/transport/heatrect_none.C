@@ -45,7 +45,7 @@ struct HeatrectNone : public Heatrect
   { }
 };
 
-static struct HeatrectNoneSyntax : public DeclareModel
+struct HeatrectNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HeatrectNone (al); }
@@ -55,6 +55,11 @@ static struct HeatrectNoneSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} HeatrectNone_syntax;
+};
 
+void
+register_heatrect_none_models ()
+{
+  static HeatrectNoneSyntax HeatrectNone_syntax;
+}
 // heatrect_none.C ends here.

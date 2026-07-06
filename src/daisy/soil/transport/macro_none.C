@@ -54,7 +54,7 @@ struct MacroNone : public Macro
     { }
 };
 
-static struct MacroNoneSyntax : public DeclareModel
+struct MacroNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
     { return new MacroNone (al); }
@@ -64,6 +64,12 @@ static struct MacroNoneSyntax : public DeclareModel
   void load_frame (Frame& frame) const
     {
     }
-} MacroNone_syntax;
+};
 
-// macro_none.C ends here
+void
+register_macro_none_models ()
+{
+  static MacroNoneSyntax MacroNone_syntax;
+}
+
+// macro_none.C ends here.

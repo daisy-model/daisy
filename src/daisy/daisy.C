@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/daisy.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/upper_boundary/weather/wsource.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "daisy/soil/horizon.h"
@@ -568,7 +569,7 @@ the simulation.  Can be overwritten by column specific weather.");
 Daisy::~Daisy ()
 { }
 
-static struct ProgramDaisySyntax : public DeclareModel
+struct ProgramDaisySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Daisy (al); }
@@ -582,6 +583,12 @@ static struct ProgramDaisySyntax : public DeclareModel
     
     frame.set_strings ("cite", "daisy-def", "daisy-new", "daisy-fertilizer");
   }
-} ProgramDaisy_syntax;
+};
+
+void
+register_daisy_program_models ()
+{
+  static ProgramDaisySyntax program_daisy_syntax;
+}
 
 // daisy.C ends here.

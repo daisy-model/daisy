@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/block_model.h"
 #include <sstream>
@@ -170,28 +171,30 @@ rubiscoNdist_expr
     }
 }
 
-static struct rubiscoNdist_exprSyntax : public DeclareModel
+void
+register_rubiscoNdist_expr_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new rubiscoNdist_expr (al); }
-
-  rubiscoNdist_exprSyntax ()
-    : DeclareModel (RubiscoNdist::component, "expr", 
-	       "expr rubisco N-distribution model in the canopy.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct rubiscoNdist_exprSyntax : public DeclareModel
   {
-    Model::declare_obsolete (frame, "Experimental, avoid");
-    frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
-                "Fraction of photosynthetically active N in canopy. According to (Boegh et al., 2002) f_photo = 0.75. However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
-    frame.set ("f_photo", 1.0);
-
-    frame.declare_object ("value", Number::component, 
-                       Attribute::Const, Attribute::Singleton, "\
+    Model* make (const BlockModel& al) const
+    { return new rubiscoNdist_expr (al); }
+  
+    rubiscoNdist_exprSyntax ()
+      : DeclareModel (RubiscoNdist::component, "expr", 
+  	       "expr rubisco N-distribution model in the canopy.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::declare_obsolete (frame, "Experimental, avoid");
+      frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
+                  "Fraction of photosynthetically active N in canopy. According to (Boegh et al., 2002) f_photo = 0.75. However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
+      frame.set ("f_photo", 1.0);
+  
+      frame.declare_object ("value", Number::component, 
+                         Attribute::Const, Attribute::Singleton, "\
 Expression that evaluates to the relative rubisco N intesity where 1 is the value in top of the canopy.");
-    frame.order ("value");
-
-  }
-} rubiscoNdist_exprsyntax;
-
-
+      frame.order ("value");
+  
+    }
+  } rubiscoNdist_exprsyntax;
+}

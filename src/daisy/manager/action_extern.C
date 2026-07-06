@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "util/scope_multi.h"
 #include "util/scopesel.h"
@@ -110,7 +111,7 @@ struct ActionExtern : public Action
   { }
 };
 
-static struct ActionExternSyntax : public DeclareModel
+struct ActionExternSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionExtern (al); }
@@ -128,7 +129,7 @@ Scope to evaluate expessions in.");
                        "Action to perform if the condition is false.");
     frame.order ("scope", "action");
   }
-} ActionExtern_syntax;
+};
 
 // The 'extern_fertigation' action.
 
@@ -295,7 +296,7 @@ struct ActionExternFertigation : public Action
 const symbol 
 ActionExternFertigation::kg_N_per_ha_per_h ("kg N/ha/h");
 
-static struct ActionExternFertigationSyntax : public DeclareModel
+struct ActionExternFertigationSyntax : public DeclareModel
 {
   static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
   { 
@@ -359,7 +360,7 @@ Height where you want to start the incorporation (a negative number).");
 Height where you want to end the incorporation (a negative number).");
     frame.set ("from", -10.0);
   }
-} ActionExternFertigation_syntax;
+};
 
 // The 'extern_subsoil' action.
 
@@ -479,7 +480,7 @@ struct ActionExternSubsoil : public Action
   { }
 };
 
-static struct ActionExternSubsoilSyntax : public DeclareModel
+struct ActionExternSubsoilSyntax : public DeclareModel
 {
   static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
   { 
@@ -535,6 +536,14 @@ OBSOLETE: Use (volume box (top FROM)) instead.");
 Height where you want to end the incorporation (a negative number).\n\
 OBSOLETE: Use (volume box (bottom TO)) instead.");
   }
-} ActionExternSubsoil_syntax;
+};
+
+void
+register_action_extern_models ()
+{
+  static ActionExternSyntax action_extern_syntax;
+  static ActionExternFertigationSyntax action_extern_fertigation_syntax;
+  static ActionExternSubsoilSyntax action_extern_subsoil_syntax;
+}
 
 // action_extern.C ends here.

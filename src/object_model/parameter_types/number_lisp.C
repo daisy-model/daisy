@@ -23,6 +23,7 @@
 #include "object_model/parameter_types/number.h"
 #include "object_model/parameter_types/boolean.h"
 #include "util/scope_multi.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/submodeler.h"
 #include "util/memutils.h"
 #include "object_model/librarian.h"
@@ -208,7 +209,7 @@ List of identifiers and values to bind in this scope.", Clause::load_syntax);
   { }
 };
 
-static struct NumberLetSyntax : public DeclareModel
+struct NumberLetSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberLet (al); }
@@ -223,7 +224,7 @@ Bind symbols in 'clauses' in a new scope, and evaluate 'expr' in that scope.")
 Expression to evaluate.");
     frame.order ("clauses", "expr");
   }
-} NumberLet_syntax;
+};
 
 // The 'if' model.
 
@@ -295,7 +296,7 @@ struct NumberIf : public Number
   { }
 };
 
-static struct NumberIfSyntax : public DeclareModel
+struct NumberIfSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberIf (al); }
@@ -313,6 +314,13 @@ Select between two numbers depending on a boolean expression.")
                           "Use this if false.");
     frame.order ("if", "then", "else");
   }
-} NumberIf_syntax;
+};
+
+void
+register_number_lisp_models ()
+{
+  static NumberLetSyntax number_let_syntax;
+  static NumberIfSyntax number_if_syntax;
+}
 
 // number_lisp.C ends here

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/parameter_types/number.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/units.h"
@@ -100,12 +101,21 @@ Number::Number (const BlockModel& al)
 Number::~Number ()
 { }
 
-static struct NumberInit : public DeclareComponent 
+namespace
+{
+struct NumberInit : public DeclareComponent 
 {
   NumberInit ()
     : DeclareComponent (Number::component, "\
 Generic representation of numbers.")
   { }
-} Number_init;
+};
+}
+
+void
+register_number_models ()
+{
+  static NumberInit number_init;
+}
 
 // number.C ends here.

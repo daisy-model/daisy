@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/rootdens.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -106,29 +107,33 @@ Rootdens_AP::Rootdens_AP (const BlockModel& al)
   
 { }
 
-static struct Rootdens_APSyntax : public DeclareModel
+void
+register_rootdens_AP_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new Rootdens_AP (al); }
-  Rootdens_APSyntax ()
-    : DeclareModel (Rootdens::component, "Anders Pedersen", 
-	       "Use exponential function for root density.\n\
+  static struct Rootdens_APSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new Rootdens_AP (al); }
+    Rootdens_APSyntax ()
+      : DeclareModel (Rootdens::component, "Anders Pedersen", 
+  	       "Use exponential function for root density.\n\
 In this variant of Gerwitz and Page, 'a' is specified as a function of\n\
 development stage.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "gp74");
-
-    frame.declare ("a_DS", "DS", "cm^-1", Attribute::Const, 
-                "Form parameter as a function of development stage.");
-    frame.declare ("q", "cm", Check::non_negative (), Attribute::Const, 
-                "Extra root length below max rooting depth.\n\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "gp74");
+  
+      frame.declare ("a_DS", "DS", "cm^-1", Attribute::Const, 
+                  "Form parameter as a function of development stage.");
+      frame.declare ("q", "cm", Check::non_negative (), Attribute::Const, 
+                  "Extra root length below max rooting depth.\n\
 Root density will decrease linearly from the GP calculated amount\n\
 at max rooting depth to zero 'q' further down.");
-    frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
+      frame.declare ("a", "cm^-1", Attribute::LogOnly, "Form parameter.\n\
 Calculated from 'a_DS'.");
-    frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
-                "Root density at soil surface.");
-  }
-} Rootdens_AP_syntax;
+      frame.declare ("L0", "cm/cm^3", Attribute::LogOnly,
+                  "Root density at soil surface.");
+    }
+  } Rootdens_AP_syntax;
+}

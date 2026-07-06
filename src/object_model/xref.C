@@ -29,6 +29,36 @@
 #include "object_model/frame_model.h"
 #include <deque>
 
+namespace
+{
+int
+compare_symbol_name (const symbol one, const symbol two)
+{
+  if (one == two)
+    return 0;
+  return symbol::alphabetical (one, two) ? -1 : 1;
+}
+
+int
+compare_symbol_path (const std::vector<symbol>& one,
+                     const std::vector<symbol>& two)
+{
+  const size_t common = std::min (one.size (), two.size ());
+  for (size_t i = 0; i < common; i++)
+    {
+      const int cmp = compare_symbol_name (one[i], two[i]);
+      if (cmp != 0)
+        return cmp;
+    }
+
+  if (one.size () < two.size ())
+    return -1;
+  if (one.size () > two.size ())
+    return 1;
+  return 0;
+}
+}
+
 class TraverseXRef : public Traverse
 {
   // We store it here.
@@ -341,8 +371,13 @@ TraverseXRef::~TraverseXRef ()
 
 bool
 XRef::ModelUsed::operator< (const ModelUsed& other) const
-{ return component < other.component
-    || (component == other.component && model < other.model); }
+{
+  const int component_cmp = compare_symbol_name (component, other.component);
+  if (component_cmp != 0)
+    return component_cmp < 0;
+
+  return compare_symbol_name (model, other.model) < 0;
+}
 
 
 XRef::ModelUsed::ModelUsed (const symbol comp, const symbol mod)
@@ -352,8 +387,17 @@ XRef::ModelUsed::ModelUsed (const symbol comp, const symbol mod)
 
 bool
 XRef::ModelUser::operator< (const ModelUser& other) const
-{ return component < other.component
-    || (component == other.component && model < other.model); }
+{
+  const int component_cmp = compare_symbol_name (component, other.component);
+  if (component_cmp != 0)
+    return component_cmp < 0;
+
+  const int model_cmp = compare_symbol_name (model, other.model);
+  if (model_cmp != 0)
+    return model_cmp < 0;
+
+  return compare_symbol_path (path, other.path) < 0;
+}
 
 
 XRef::ModelUser::ModelUser (const symbol comp, const symbol mod,
@@ -365,7 +409,13 @@ XRef::ModelUser::ModelUser (const symbol comp, const symbol mod,
 
 bool
 XRef::SubmodelUser::operator< (const SubmodelUser& other) const
-{ return submodel < other.submodel; }
+{
+  const int submodel_cmp = compare_symbol_name (submodel, other.submodel);
+  if (submodel_cmp != 0)
+    return submodel_cmp < 0;
+
+  return compare_symbol_path (path, other.path) < 0;
+}
 
 XRef::SubmodelUser::SubmodelUser (const symbol sub,
                                   const std::vector<symbol>& p)
@@ -386,4 +436,3 @@ XRef::XRef (const Metalib& mlib)
 
 XRef::~XRef ()
 { }
-

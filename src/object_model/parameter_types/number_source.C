@@ -25,6 +25,7 @@
 #include "gnuplot/source.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/frame.h"
 #include <sstream>
@@ -90,7 +91,7 @@ struct NumberSource : public Number
   { }
 };
 
-static struct NumberSourceSyntax : public DeclareBase
+struct NumberSourceSyntax : public DeclareBase
 {
   NumberSourceSyntax ()
     : DeclareBase (Number::component, "source", 
@@ -106,7 +107,7 @@ The time series we want to extract a number from.");
     frame.declare_submodule ("end", Attribute::OptionalConst,
 			  "Ignore values after this date.", Time::load_syntax);
   }
-} NumberSource_syntax;
+};
 
 
 struct NumberSourceUnique : public NumberSource
@@ -144,7 +145,7 @@ struct NumberSourceUnique : public NumberSource
   { }
 };
 
-static struct NumberSourceUniqueSyntax : public DeclareModel
+struct NumberSourceUniqueSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSourceUnique (al); }
@@ -154,7 +155,7 @@ static struct NumberSourceUniqueSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSourceUnique_syntax;
+};
 
 struct NumberSourceAverage : public NumberSource
 {
@@ -188,7 +189,7 @@ struct NumberSourceAverage : public NumberSource
   { }
 };
 
-static struct NumberSourceAverageSyntax : public DeclareModel
+struct NumberSourceAverageSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSourceAverage (al); }
@@ -198,7 +199,7 @@ static struct NumberSourceAverageSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSourceAverage_syntax;
+};
 
 struct NumberSourceSum : public NumberSource
 {
@@ -218,7 +219,7 @@ struct NumberSourceSum : public NumberSource
   { }
 };
 
-static struct NumberSourceSumSyntax : public DeclareModel
+struct NumberSourceSumSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSourceSum (al); }
@@ -228,7 +229,7 @@ static struct NumberSourceSumSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSourceSum_syntax;
+};
 
 struct NumberSourceIncrease : public NumberSource
 {
@@ -261,7 +262,7 @@ struct NumberSourceIncrease : public NumberSource
   { }
 };
 
-static struct NumberSourceIncreaseSyntax : public DeclareModel
+struct NumberSourceIncreaseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberSourceIncrease (al); }
@@ -271,6 +272,16 @@ static struct NumberSourceIncreaseSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} NumberSourceIncrease_syntax;
+};
+
+void
+register_number_source_models ()
+{
+  static NumberSourceSyntax number_source_syntax;
+  static NumberSourceUniqueSyntax number_source_unique_syntax;
+  static NumberSourceAverageSyntax number_source_average_syntax;
+  static NumberSourceSumSyntax number_source_sum_syntax;
+  static NumberSourceIncreaseSyntax number_source_increase_syntax;
+}
 
 // number_source.C ends here

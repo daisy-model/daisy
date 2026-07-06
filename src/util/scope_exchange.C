@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "util/scope_exchange.h"
+#include "util/util_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
@@ -69,7 +70,7 @@ Exchange::Exchange (const symbol n, const symbol d)
 Exchange::~Exchange ()
 { }
 
-static struct ExchangeInit : public DeclareComponent 
+struct ExchangeInit : public DeclareComponent 
 {
   ExchangeInit ()
     : DeclareComponent (Exchange::component, "\
@@ -81,7 +82,7 @@ A named value to exchange with external models.")
     frame.declare_string ("name", Attribute::Const, "\
 Name of value to exchange.");
   }
-} Exchange_init;
+};
 
 // Exchanging a number.
 
@@ -131,7 +132,7 @@ ExchangeNumber::ExchangeNumber (const symbol n, const double val,
 ExchangeNumber::~ExchangeNumber ()
 { }
 
-static struct ExchangeNumberSyntax : public DeclareModel
+struct ExchangeNumberSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ExchangeNumber (al); }
@@ -145,7 +146,7 @@ Dimension of value to exchange.");
     frame.declare ("value", Attribute::Unknown (), Attribute::OptionalState, "\
 Current value to exchange.");
   }
-} ExchangeNumber_syntax;
+};
 
 // Exchanging a name (or string).
 
@@ -169,7 +170,7 @@ ExchangeName::ExchangeName (const BlockModel& al)
 ExchangeName::~ExchangeName ()
 { }
 
-static struct ExchangeNameSyntax : public DeclareModel
+struct ExchangeNameSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ExchangeName (al); }
@@ -181,7 +182,7 @@ static struct ExchangeNameSyntax : public DeclareModel
     frame.declare_string ("value", Attribute::Const, "\
 Current value to exchange.");
   }
-} ExchangeName_syntax;
+};
 
 // The scope.
 
@@ -280,7 +281,7 @@ ScopeExchange::ScopeExchange (const BlockModel& al)
 ScopeExchange::~ScopeExchange ()
 { }
 
-static struct ScopeExchangeSyntax : public DeclareModel
+struct ScopeExchangeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ScopeExchange (al); }
@@ -295,6 +296,15 @@ static struct ScopeExchangeSyntax : public DeclareModel
                           Attribute::Const, Attribute::Variable,
                           "List of items to exchange.");
   }
-} ScopeExchange_syntax;
+};
+
+void
+register_scope_exchange_models ()
+{
+  static ExchangeInit exchange_init;
+  static ExchangeNumberSyntax exchange_number_syntax;
+  static ExchangeNameSyntax exchange_name_syntax;
+  static ScopeExchangeSyntax scope_exchange_syntax;
+}
 
 // scope_exchange.C ends here.

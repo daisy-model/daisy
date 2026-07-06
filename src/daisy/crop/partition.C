@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/partition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/plf.h"
 #include "object_model/librarian.h"
 #include "object_model/frame_submodel.h"
@@ -178,13 +179,18 @@ Partition::Partition (const FrameSubmodel& al)
 Partition::~Partition ()
 { }
 
-static DeclareSubmodel 
-partition_submodel (Partition::load_syntax, "Partition", "\
+void
+register_partition_models ()
+{
+  static DeclareSubmodel 
+  partition_submodel (Partition::load_syntax, "Partition", "\
 Assimilate partitioning in the default crop model.\n\
 The 'Root' parameter determine what fraction of the assimilate for growth\n\
 goes to roots at a given development stage.  The remaining assimilate goes\n\
 to the shoot.  The 'Leaf' and 'Stem' parameters determine what fraction of\n\
 the shoot assimilate goes to the leaf and stem respectively.  The remaining\n\
 shoot assimilate will go to the storage organ.");
+}
 
 // partition.C ends here.
+

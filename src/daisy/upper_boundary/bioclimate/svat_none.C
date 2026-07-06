@@ -26,6 +26,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include "daisy/upper_boundary/weather/weather.h"
+#include "daisy/daisy_registration_internal.h"
 
 struct SVAT_none : public SVAT
 {
@@ -89,7 +90,7 @@ struct SVAT_none : public SVAT
   { }
 };
 
-static struct SVAT_NoneSyntax : public DeclareModel
+struct SVAT_NoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SVAT_none (al); }
@@ -101,6 +102,12 @@ Done using reference values and crop factors.")
   void load_frame (Frame& frame) const
   {
   }
-} SVAT_none_syntax;
+};
+
+void
+register_svat_none_models ()
+{
+  static SVAT_NoneSyntax SVAT_none_syntax;
+}
 
 // svat_none.C ends here.

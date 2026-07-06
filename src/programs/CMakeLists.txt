@@ -1,5 +1,6 @@
 target_sources(${DAISY_CORE_NAME} PRIVATE
   program.C
+  registration.C
   program_GP2D.C
   program_KM2.C
   program_astdump.C

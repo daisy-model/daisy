@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/drain.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -43,7 +44,7 @@ Drain::Drain (const BlockModel& al)
 Drain::~Drain ()
 { }
 
-static struct DrainInit : public DeclareComponent 
+struct DrainInit : public DeclareComponent 
 {
   DrainInit ()
     : DeclareComponent (Drain::component, "\
@@ -51,7 +52,7 @@ Lateral transport of water.")
   { }
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
-} Drain_init;
+};
 
 // The 'none' model.
 
@@ -75,7 +76,7 @@ struct DrainNone : public Drain
   { }
 };
 
-static struct DrainNoneSyntax : public DeclareModel
+struct DrainNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DrainNone (al); }
@@ -84,6 +85,14 @@ static struct DrainNoneSyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   { }
-} DrainNone_syntax;
+};
 
+void
+register_drain_models ()
+{
+  static DrainInit Drain_init;
+  static DrainNoneSyntax DrainNone_syntax;
+
+  register_drain_lateral_models ();
+}
 // drain.C ends here.

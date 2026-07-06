@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/chemicals/reaction.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -63,14 +64,34 @@ Reaction::Reaction (const BlockModel& al)
 Reaction::~Reaction ()
 { }
 
-static struct ReactionInit : public DeclareComponent 
+void
+register_reaction_models ()
 {
-  ReactionInit ()
-    : DeclareComponent (Reaction::component, "\
+  static struct ReactionInit : public DeclareComponent 
+  {
+    ReactionInit ()
+      : DeclareComponent (Reaction::component, "\
 Generic transformations between soil chemicals.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Reaction_init;
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Reaction_init;
+
+  register_reaction_colgen_models ();
+  register_reaction_std_models ();
+  register_reaction_adsorption_models ();
+  register_reaction_boundrel_models ();
+  register_reaction_denit_models ();
+  register_reaction_dom_models ();
+  register_reaction_equil_models ();
+  register_reaction_filter_models ();
+  register_reaction_jarvis99_models ();
+  register_reaction_morgan98_models ();
+  register_reaction_nit_models ();
+  register_reaction_python_models ();
+  register_reaction_shoot_models ();
+  register_reaction_sorption_models ();
+  register_reaction_styczen88_models ();
+}
 
 // reaction.C ends here.

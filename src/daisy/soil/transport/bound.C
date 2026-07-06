@@ -34,13 +34,13 @@
 
 const char *const Bound::component = "bound";
 
-static struct BoundInit : public DeclareComponent 
+struct BoundInit : public DeclareComponent 
 {
   BoundInit ()
     : DeclareComponent (Bound::component, "\
 Specify one end of an interval boundary.")
   { }
-} Bound_init;
+};
 
 symbol
 Bound::library_id () const
@@ -153,7 +153,7 @@ Bound::~Bound ()
 { }
 
 // "none" model.
-static struct BoundNoneSyntax : public DeclareModel
+struct BoundNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Bound (al, Bound::none, -42.42e42); }
@@ -162,10 +162,10 @@ static struct BoundNoneSyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   { }
-} BoundNone_syntax;
+};
 
 // "full" model.
-static struct BoundFullSyntax : public DeclareModel
+struct BoundFullSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Bound (al, Bound::full, 69.69e69); }
@@ -175,10 +175,10 @@ Maximum value for the interval boundary.")
   { }
   void load_frame (Frame& frame) const
   { }
-} BoundFull_syntax;
+};
 
 // finite model.
-static struct BoundFiniteSyntax : public DeclareModel
+struct BoundFiniteSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Bound (al, Bound::finite, al.number ("bound")); }
@@ -192,10 +192,10 @@ static struct BoundFiniteSyntax : public DeclareModel
     frame.order ("bound");
 
   }
-} BoundFinite_syntax;
+};
 
 // state model.
-static struct BoundStateSyntax : public DeclareModel
+struct BoundStateSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Bound (al, Bound::symbol2type (al.name ("type")), 
@@ -227,9 +227,9 @@ static struct BoundStateSyntax : public DeclareModel
     frame.declare ("bound", "cm", Attribute::OptionalState, "\
 Interval bound to use.  Only valid for the 'finite' type.");
   }
-} BoundState_syntax;
+};
 
-static struct BoundEmptySyntax : public DeclareParam
+struct BoundEmptySyntax : public DeclareParam
 {
   BoundEmptySyntax ()
     : DeclareParam (Bound::component, "empty", "state", "\
@@ -239,6 +239,16 @@ A 'state' model set to 'none.")
   {
     frame.set ("type", Bound::type2symbol (Bound::none)); 
   }
-} BoundEmpty_syntax;
+};
 
+void
+register_bound_models ()
+{
+  static BoundInit Bound_init;
+  static BoundNoneSyntax BoundNone_syntax;
+  static BoundFullSyntax BoundFull_syntax;
+  static BoundFiniteSyntax BoundFinite_syntax;
+  static BoundStateSyntax BoundState_syntax;
+  static BoundEmptySyntax BoundEmpty_syntax;
+}
 // bound.C ends here.

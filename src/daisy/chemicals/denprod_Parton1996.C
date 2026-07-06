@@ -54,24 +54,6 @@ struct FunctionP96WFPS : public FunctionPlotable
   { }
 };
 
-static struct FunctionP96WFPSSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new FunctionP96WFPS (al); }
-  FunctionP96WFPSSyntax ()
-    : DeclareModel (Function::component, "P96WFPS", 
-		    "Water filed pore space effect on N2/N2O ratio.\n\
-Figure 5, top. Note extra parentheses compared to source.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set ("domain", Attribute::Fraction ());
-    frame.set ("range", Attribute::None ());
-    frame.set_strings ("cite", "Parton1996");
-    frame.set ("formula", "\\frac{1.4}{13^{\\left(13^{\\left(\\frac{17}{2.2\\; \\mathrm{wfps}}\\right)}\\right)}}");
-  }
-} FunctionP96WFPS_syntax;
-
 // The 'P96NO3' function.
 
 struct FunctionP96NO3 : public FunctionPlotable
@@ -92,24 +74,6 @@ struct FunctionP96NO3 : public FunctionPlotable
   { }
 };
 
-static struct FunctionP96NO3Syntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new FunctionP96NO3 (al); }
-  FunctionP96NO3Syntax ()
-    : DeclareModel (Function::component, "P96NO3", 
-		    "NO3 effect on N2/N2O ratio.\n\
-Figure 5, middle.  Note extra parentheses compared to source.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "Parton1996");
-    frame.set ("domain", "ug N/g");
-    frame.set ("range", Attribute::None ());
-    frame.set ("formula", "\\left(1 - \\left(0.5 + \\frac{1\\arctan{(\\pi\\;0.01\\; (\\textrm{NO3}-190))}}{\\pi}\\right)\\right) 25");
-  }
-} FunctionP96NO3_syntax;
-
 // The 'P96CO2' function.
 
 struct FunctionP96CO2 : public FunctionPlotable
@@ -128,24 +92,6 @@ struct FunctionP96CO2 : public FunctionPlotable
     : FunctionPlotable (al)
   { }
 };
-
-static struct FunctionP96CO2Syntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new FunctionP96CO2 (al); }
-  FunctionP96CO2Syntax ()
-    : DeclareModel (Function::component, "P96CO2", 
-		    "CO2 effect on N2/N2O ratio.\n\
-Figure 5, bottom.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "Parton1996");
-    frame.set ("domain", "kg C/ha/d");
-    frame.set ("range", Attribute::None ());
-    frame.set ("formula", "13+\\frac{30.78 \\arctan{(\\pi\\;0.07\\;(\\textrm{CO2}-13))}}{\\pi}");
-  }
-} FunctionP96CO2_syntax;
 
 // The 'Parton1996' denprod model.
 
@@ -206,33 +152,91 @@ struct DenprodParton1996 : public Denprod
   { }      
 };
 
-static struct DenprodParton1996Syntax : public DeclareModel
+void
+register_denprod_parton1996_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new DenprodParton1996 (al); }
-  DenprodParton1996Syntax ()
-    : DeclareModel (Denprod::component, "Parton1996", "\
-Find N2O from denitrification based on WFPS, NO3, and CO2.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct FunctionP96WFPSSyntax : public DeclareModel
   {
-    frame.declare_function ("FR_NO3", "ug N/g", Attribute::None (), "\
+    Model* make (const BlockModel& al) const
+    { return new FunctionP96WFPS (al); }
+    FunctionP96WFPSSyntax ()
+      : DeclareModel (Function::component, "P96WFPS", 
+  		    "Water filed pore space effect on N2/N2O ratio.\n\
+Figure 5, top. Note extra parentheses compared to source.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set ("domain", Attribute::Fraction ());
+      frame.set ("range", Attribute::None ());
+      frame.set_strings ("cite", "Parton1996");
+      frame.set ("formula", "\\frac{1.4}{13^{\\left(13^{\\left(\\frac{17}{2.2\\; \\mathrm{wfps}}\\right)}\\right)}}");
+    }
+  } FunctionP96WFPS_syntax;
+
+  static struct FunctionP96NO3Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new FunctionP96NO3 (al); }
+    FunctionP96NO3Syntax ()
+      : DeclareModel (Function::component, "P96NO3", 
+  		    "NO3 effect on N2/N2O ratio.\n\
+Figure 5, middle.  Note extra parentheses compared to source.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "Parton1996");
+      frame.set ("domain", "ug N/g");
+      frame.set ("range", Attribute::None ());
+      frame.set ("formula", "\\left(1 - \\left(0.5 + \\frac{1\\arctan{(\\pi\\;0.01\\; (\\textrm{NO3}-190))}}{\\pi}\\right)\\right) 25");
+    }
+  } FunctionP96NO3_syntax;
+
+  static struct FunctionP96CO2Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new FunctionP96CO2 (al); }
+    FunctionP96CO2Syntax ()
+      : DeclareModel (Function::component, "P96CO2", 
+  		    "CO2 effect on N2/N2O ratio.\n\
+Figure 5, bottom.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "Parton1996");
+      frame.set ("domain", "kg C/ha/d");
+      frame.set ("range", Attribute::None ());
+      frame.set ("formula", "13+\\frac{30.78 \\arctan{(\\pi\\;0.07\\;(\\textrm{CO2}-13))}}{\\pi}");
+    }
+  } FunctionP96CO2_syntax;
+
+  static struct DenprodParton1996Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new DenprodParton1996 (al); }
+    DenprodParton1996Syntax ()
+      : DeclareModel (Denprod::component, "Parton1996", "\
+Find N2O from denitrification based on WFPS, NO3, and CO2.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_function ("FR_NO3", "ug N/g", Attribute::None (), "\
 NO3 effect N2O.");
-    frame.set ("FR_NO3", "P96NO3");
-    frame.declare_function ("FR_CO2", "kg C/ha/d", Attribute::None (), "\
+      frame.set ("FR_NO3", "P96NO3");
+      frame.declare_function ("FR_CO2", "kg C/ha/d", Attribute::None (), "\
 CO2 effect N2O.");
-    frame.set ("FR_CO2", "P96CO2");
-    frame.declare_function ("FR_WFPS",
-			    Attribute::Fraction (), Attribute::None (), "\
+      frame.set ("FR_CO2", "P96CO2");
+      frame.declare_function ("FR_WFPS",
+  			    Attribute::Fraction (), Attribute::None (), "\
 WFPS effect N2O.");
-    frame.set ("FR_WFPS", "P96WFPS");
-    frame.declare ("FR_CO2_depth", "cm", Attribute::Const, "\
+      frame.set ("FR_WFPS", "P96WFPS");
+      frame.declare ("FR_CO2_depth", "cm", Attribute::Const, "\
 Depth used for converting CO2 from volume to area units.");
-    frame.set ("FR_CO2_depth", 30.0);
-    frame.declare ("N2O", "g N/cm^3/h",
-                   Attribute::LogOnly, Attribute::Variable,
-                   "Amount of N2O-N generated by denitrification.");
-  }
-} DenprodParton1996_syntax;
+      frame.set ("FR_CO2_depth", 30.0);
+      frame.declare ("N2O", "g N/cm^3/h",
+                     Attribute::LogOnly, Attribute::Variable,
+                     "Amount of N2O-N generated by denitrification.");
+    }
+  } DenprodParton1996_syntax;
+}
 
 // denprod.C ends here.

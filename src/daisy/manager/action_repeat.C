@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "object_model/block_model.h"
@@ -103,7 +104,7 @@ struct ActionRepeat : public Action
   { }
 };
 
-static struct ActionRepeatSyntax : DeclareModel
+struct ActionRepeatSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionRepeat (al); }
@@ -123,6 +124,12 @@ The action may take several timesteps.")
                          "Action currently being performed.");
       frame.order ("repeat");
     }
-} ActionRepeat_syntax;
+};
+
+void
+register_action_repeat_models ()
+{
+  static ActionRepeatSyntax action_repeat_syntax;
+}
 
 // action_repeat.C ends here.

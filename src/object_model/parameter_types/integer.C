@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/parameter_types/integer.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/submodeler.h"
 #include "object_model/block_model.h"
@@ -72,7 +73,9 @@ struct IntegerConst : public Integer
   { }
 };
 
-static struct IntegerConstSyntax : public DeclareModel
+namespace
+{
+struct IntegerConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerConst (al); }
@@ -87,7 +90,7 @@ static struct IntegerConstSyntax : public DeclareModel
 		"Fixed value for this integer.");
     frame.order ("value");
   }
-} IntegerConst_syntax;
+};
 
 struct IntegerCond : public Integer
 {
@@ -152,12 +155,7 @@ Value to return.");
   { sequence_delete (clauses.begin (), clauses.end ()); }
 };
 
-static DeclareSubmodel 
-integer_cond_clause_submodel (IntegerCond::Clause::load_syntax,
-                              "IntegerCondClause", "\
-If condition is true, return value.");
-
-static struct IntegerCondSyntax : public DeclareModel
+struct IntegerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerCond (al); }
@@ -173,14 +171,26 @@ List of clauses to match for.",
                                    IntegerCond::Clause::load_syntax);
     frame.order ("clauses");
   }
-} IntegerCond_syntax;
+};
 
-static struct IntegerInit : public DeclareComponent 
+struct IntegerInit : public DeclareComponent 
 {
   IntegerInit ()
     : DeclareComponent (Integer::component, "\
 Generic representation of integers.")
   { }
-} Integer_init;
+};
+}
+
+void
+register_integer_models ()
+{
+  static DeclareSubmodel integer_cond_clause_submodel (
+    IntegerCond::Clause::load_syntax, "IntegerCondClause", "\
+If condition is true, return value.");
+  static IntegerConstSyntax integer_const_syntax;
+  static IntegerCondSyntax integer_cond_syntax;
+  static IntegerInit integer_init;
+}
 
 // integer.C ends here

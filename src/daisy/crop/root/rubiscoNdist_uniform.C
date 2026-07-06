@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/root/rubiscoNdist.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include <sstream>
 #include "object_model/check.h"
@@ -76,21 +77,23 @@ rubiscoNdistUniform::rubiscoN_distribution (const Units&,
 
 }
 
-static struct rubiscoNdistUniformSyntax : public DeclareModel
+void
+register_rubiscoNdist_uniform_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new rubiscoNdistUniform (al); }
-  rubiscoNdistUniformSyntax ()
-    : DeclareModel (RubiscoNdist::component, "uniform", 
-	       "Uniform  rubisco N-distribution model in the canopy for photosynthesis.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct rubiscoNdistUniformSyntax : public DeclareModel
   {
-    frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
-                "Fraction of photosynthetically active N in canopy, f_photo = 0.75 (Boegh et al., 2002). However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
-    frame.set ("f_photo", 1.0);
-
-  }
-} rubiscoNdistUniform_syntax;
-
-
+    Model* make (const BlockModel& al) const
+    { return new rubiscoNdistUniform (al); }
+    rubiscoNdistUniformSyntax ()
+      : DeclareModel (RubiscoNdist::component, "uniform", 
+  	       "Uniform  rubisco N-distribution model in the canopy for photosynthesis.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("f_photo", Attribute::None (), Check::positive (), Attribute::Const,
+                  "Fraction of photosynthetically active N in canopy, f_photo = 0.75 (Boegh et al., 2002). However, non-functional N is already substracted from leaf-N in the cropN_std module, therefore f_photo = 1.0 as default.");
+      frame.set ("f_photo", 1.0);
+  
+    }
+  } rubiscoNdistUniform_syntax;
+}

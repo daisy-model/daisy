@@ -23,6 +23,7 @@
 #include "daisy/upper_boundary/bioclimate/difrad.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Difrad::component = "difrad";
 
@@ -45,7 +46,7 @@ Difrad::Difrad (const BlockModel& al)
 Difrad::~Difrad ()
 { }
 
-static struct DifradInit : public DeclareComponent 
+struct DifradInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -54,6 +55,16 @@ static struct DifradInit : public DeclareComponent
 The 'difrad' component should calculate the diffuse radiation from\n\
 meterological data.")
   { }
-} Difrad_init;
+};
+
+void
+register_difrad_models ()
+{
+  static DifradInit Difrad_init;
+
+  register_difrad_BRL_models ();
+  register_difrad_DPF_models ();
+  register_difrad_weather_models ();
+}
 
 // difrad.C ends here.

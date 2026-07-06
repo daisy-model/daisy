@@ -126,7 +126,6 @@ ReactionMorgan98::output (Log& log) const
   output_variable (E, log); 
 }
 
-
 void 
 ReactionMorgan98::initialize (const Geometry& geo, 
                               const Soil& soil,
@@ -143,32 +142,36 @@ ReactionMorgan98::ReactionMorgan98 (const BlockModel& al)
     E (-42.42e42)
 { }
 
-static struct ReactionMorgan98Syntax : public DeclareModel
+void
+register_reaction_morgan98_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionMorgan98 (al); }
-  ReactionMorgan98Syntax ()
-    : DeclareModel (Reaction::component, "colgen_Morgan98", "colgen", "\
-Colloid generation using kinetic energy, emulating EUROSEM.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionMorgan98Syntax : public DeclareModel
   {
-    frame.set_strings ("cite", "EUROSEM");
+    Model* make (const BlockModel& al) const
+    { return new ReactionMorgan98 (al); }
+    ReactionMorgan98Syntax ()
+      : DeclareModel (Reaction::component, "colgen_Morgan98", "colgen", "\
+Colloid generation using kinetic energy, emulating EUROSEM.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "EUROSEM");
 
-    frame.declare ("kd", "g/J", Check::non_negative (), Attribute::Const,
-                "Detachment rate coefficient.\n\
+      frame.declare ("kd", "g/J", Check::non_negative (), Attribute::Const,
+                  "Detachment rate coefficient.\n\
 The EUROSEM user manual list values between 0.8 and 6.0 [g/J] for various\n\
 soils in Table A9.1.");
-    frame.declare_object ("rainergy", Rainergy::component,
-                      Attribute::Const, Attribute::Singleton,
-                      "Model for calculating energy in rain.");
-    frame.set ("rainergy", "EUROSEM");
+      frame.declare_object ("rainergy", Rainergy::component,
+                        Attribute::Const, Attribute::Singleton,
+                        "Model for calculating energy in rain.");
+      frame.set ("rainergy", "EUROSEM");
 
-    frame.declare ("KE", "J/cm^2/h", Attribute::LogOnly, 
-               "Kinertic energy avalable for colloid generation.");
-    frame.declare ("E", "J/cm^2/mm", Attribute::LogOnly, 
-               "Kinetic energy in rain.");
-  }
-} ReactionMorgan98syntax;
+      frame.declare ("KE", "J/cm^2/h", Attribute::LogOnly, 
+                 "Kinertic energy avalable for colloid generation.");
+      frame.declare ("E", "J/cm^2/mm", Attribute::LogOnly, 
+                 "Kinetic energy in rain.");
+    }
+  } ReactionMorgan98syntax;
+}
 
 // reaction_Morgan98.C ends here.

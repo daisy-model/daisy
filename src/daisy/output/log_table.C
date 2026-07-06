@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/log_select.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/dlf.h"
 #include "object_model/symbol.h"
 #include "daisy/output/select.h"
@@ -538,45 +539,49 @@ LogTable::LogTable (const BlockModel& al)
 LogTable::~LogTable ()
 { }
 
-static struct LogTableSyntax : public DeclareModel
+void
+register_log_table_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new LogTable (al); }
+  static struct LogTableSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new LogTable (al); }
 
-  LogTableSyntax ()
-    : DeclareModel (Log::component, "table", "select", "\
+    LogTableSyntax ()
+      : DeclareModel (Log::component, "table", "select", "\
 Write results in a tabular Daisy log file.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    frame.declare_string ("where", Attribute::Const,
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("where", Attribute::Const,
                           "Name of the log file to create.");
-    DLF::add_syntax (frame, "print_header");
-    frame.declare_boolean ("print_tags", Attribute::Const,
+      DLF::add_syntax (frame, "print_header");
+      frame.declare_boolean ("print_tags", Attribute::Const,
                            "Print a tag line in the file.");
-    frame.set ("print_tags", true);
-    frame.declare_boolean ("print_dimension", Attribute::Const,
+      frame.set ("print_tags", true);
+      frame.declare_boolean ("print_dimension", Attribute::Const,
                            "Print a line with units after the tag line.");
-    frame.set ("print_dimension", true);
-    frame.declare_boolean ("flush", Attribute::Const,
+      frame.set ("print_dimension", true);
+      frame.declare_boolean ("flush", Attribute::Const,
                            "Flush to disk after each entry (for debugging).");
-    frame.set ("flush", false);
-    frame.declare_string ("record_separator", Attribute::Const, "\
+      frame.set ("flush", false);
+      frame.declare_string ("record_separator", Attribute::Const, "\
 String to print between records (time steps).");
-    frame.set ("record_separator", "\n");
-    frame.declare_string ("field_separator", Attribute::Const, "\
+      frame.set ("record_separator", "\n");
+      frame.declare_string ("field_separator", Attribute::Const, "\
 String to print between fields.");
-    frame.set ("field_separator", "\t");
-    frame.declare_string ("missing_value", Attribute::Const, "\
+      frame.set ("field_separator", "\t");
+      frame.declare_string ("missing_value", Attribute::Const, "\
 String to print when the path doesn't match anything.\n\
 This can be relevant for example if you are logging a crop, and there are\n\
 no crops on the field.");
-    frame.set ("missing_value", "00.00");
-    frame.declare_string ("array_separator", Attribute::Const, "\
+      frame.set ("missing_value", "00.00");
+      frame.declare_string ("array_separator", Attribute::Const, "\
 String to print between array entries.");
-    frame.set ("array_separator", "\t");
-    Librarian::add_doc_fun (Log::component, LogSelect::document_entries);
-  }
-} LogTable_syntax;
+      frame.set ("array_separator", "\t");
+      Librarian::add_doc_fun (Log::component, LogSelect::document_entries);
+    }
+  } log_table_syntax;
+}
 
 // log_table.C ends here.

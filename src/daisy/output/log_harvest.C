@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "daisy/output/log.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/daisy.h"
 #include "daisy/output/harvest.h"
 #include "daisy/output/dlf.h"
@@ -221,62 +222,65 @@ struct LogHarvest : public Log
   }
 };
 
-static struct LogHarvestSyntax : public DeclareModel
+void
+register_log_harvest_models ()
 {
-  static void entry (Format& format, const symbol name, const symbol dim,
-                     const symbol description)
+  static struct LogHarvestSyntax : public DeclareModel
   {
-    Format::Item item (format, name);  
-    format.special ("nbsp");
-    format.text ("[");
-    format.bold (dim);
-    format.text ("]");
-    format.hard_linebreak ();
-    format.text (description);
-    format.soft_linebreak ();
-  }
-  static void document_entries (Format& format, const Metalib&, 
-                         Treelog& msg, const symbol name)
-  {
-    if (name != "harvest")
-      return;
-    
-    format.bold ("Table columns (common):");
+    static void entry (Format& format, const symbol name, const symbol dim,
+                       const symbol description)
     {
-      Format::List dummy (format);
-      entry (format, "stem_DM", "Mg DM/ha", "\
+      Format::Item item (format, name);
+      format.special ("nbsp");
+      format.text ("[");
+      format.bold (dim);
+      format.text ("]");
+      format.hard_linebreak ();
+      format.text (description);
+      format.soft_linebreak ();
+    }
+    static void document_entries (Format& format, const Metalib&,
+                                  Treelog& msg, const symbol name)
+    {
+      if (name != "harvest")
+        return;
+
+      format.bold ("Table columns (common):");
+      {
+        Format::List dummy (format);
+        entry (format, "stem_DM", "Mg DM/ha", "\
 Stem dry matter removed by harvest.");
-      entry (format, "dead_DM", "Mg DM/ha", "\
+        entry (format, "dead_DM", "Mg DM/ha", "\
 Yeallow leaves dry matter removed by harvest.");
-      entry (format, "leaf_DM", "Mg DM/ha", "\
+        entry (format, "leaf_DM", "Mg DM/ha", "\
 Green leaves dry matter removed by harvest.");
-      entry (format, "sorg_DM", "Mg DM/ha", "\
+        entry (format, "sorg_DM", "Mg DM/ha", "\
 Storage organ (grains or tuber) dry matter removed by harvest.\n\
 For some crops, only the economicly important part of the storage organ\n\
 is counted.");
-    }
-    format.soft_linebreak ();
+      }
+      format.soft_linebreak ();
 
-    format.bold ("Table columns (if print_N is set):");
-    {
-      Format::List dummy (format);
-      entry (format, "stem_N", "kg N/ha", "\
+      format.bold ("Table columns (if print_N is set):");
+      {
+        Format::List dummy (format);
+        entry (format, "stem_N", "kg N/ha", "\
 Stem nitrogen removed by harvest.");
-      entry (format, "dead_N", "kg N/ha", "\
+        entry (format, "dead_N", "kg N/ha", "\
 Yeallow leaves nitrogen removed by harvest.");
-      entry (format, "leaf_N", "kg N/ha", "\
+        entry (format, "leaf_N", "kg N/ha", "\
 Green leaves nitrogen removed by harvest.");
-      entry (format, "sorg_N", "kg N/ha", "\
+        entry (format, "sorg_N", "kg N/ha", "\
 Storage organ (grains or tuber) nitrogen removed by harvest.");
-    }
-    format.soft_linebreak ();
-      
-    format.bold ("Table columns (if print_C is set):");
-    {
-      Format::List dummy (format);
-      entry (format, "stem_C", "kg C/ha", "\
+      }
+      format.soft_linebreak ();
+
+      format.bold ("Table columns (if print_C is set):");
+      {
+        Format::List dummy (format);
+        entry (format, "stem_C", "kg C/ha", "\
 Stem carbon removed by harvest.");
-      entry (format, "dead_C", "kg C/ha", "\
+        entry (format, "dead_C", "kg C/ha", "\
 Yeallow leaves carbon removed by harvest.");
       entry (format, "leaf_C", "kg C/ha", "\
 Green leaves carbon removed by harvest.");
@@ -342,6 +346,6 @@ harvest.");
     frame.set ("print_C", false);
     frame.set ("print_dimension", true);
     Librarian::add_doc_fun (Log::component, document_entries);
-  }
-} LogHarvest_syntax;
-
+    }
+  } log_harvest_syntax;
+}

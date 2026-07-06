@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "daisy/field.h"
@@ -141,7 +142,7 @@ struct ConditionSoilN_min : public Condition
   { }
 };
 
-static struct ConditionSoilTemperatureSyntax : public DeclareModel
+struct ConditionSoilTemperatureSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionSoilTemperature (al); }
@@ -156,9 +157,9 @@ Lowest soil temperature for which the condition is true.");
     frame.declare ("height", "cm", Check::non_positive (), Attribute::Const, "\
 Soil depth in which to test the temperature.");
   }
-} ConditionSoilTemperature_syntax;
+};
 
-static struct ConditionSoilPotentialSyntax : public DeclareModel
+struct ConditionSoilPotentialSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionSoilPotential (al); }
@@ -173,7 +174,7 @@ The soil should be wetter than this for the condition to be true.");
     frame.declare ("height", "cm", Check::non_positive (), Attribute::Const, "\
 Depth at which to example the pressure potential.");
   }
-} ConditionSoilPotential_syntax;
+};
 
 static bool check_water_content (const Metalib&, const Frame& al, Treelog& err)
 {
@@ -190,7 +191,7 @@ static bool check_water_content (const Metalib&, const Frame& al, Treelog& err)
   return ok;
 }
 
-static struct ConditionSoilWaterSyntax : public DeclareModel
+struct ConditionSoilWaterSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionSoilWater (al); }
@@ -210,9 +211,9 @@ Top of interval to measure soil water content in.");
 Bottom of interval to measure soil water content in.");
     frame.order ("water");
   }
-} ConditionSoilWater_syntax;
+};
 
-static struct ConditionSoilN_minSyntax : public DeclareModel
+struct ConditionSoilN_minSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionSoilN_min (al); }
@@ -234,6 +235,15 @@ Top of interval to measure soil content in.");
 Bottom of interval to measure soil content in.");
     frame.order ("amount");
   }
-} ConditionSoilN_min_syntax;
+};
+
+void
+register_condition_soil_models ()
+{
+  static ConditionSoilTemperatureSyntax condition_soil_temperature_syntax;
+  static ConditionSoilPotentialSyntax condition_soil_potential_syntax;
+  static ConditionSoilWaterSyntax condition_soil_water_syntax;
+  static ConditionSoilN_minSyntax condition_soil_n_min_syntax;
+}
 
 // condition_soil.C ends here.

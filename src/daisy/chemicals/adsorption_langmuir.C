@@ -87,44 +87,48 @@ public:
     { }
 };
 
-static struct AdsorptionLangmuirSyntax : DeclareModel
+void
+register_adsorption_langmuir_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new AdsorptionLangmuir (al); }
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+  static struct AdsorptionLangmuirSyntax : DeclareModel
   {
-    bool ok = true;
+    Model* make (const BlockModel& al) const
+    { return new AdsorptionLangmuir (al); }
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
 
-    const bool has_my_max_clay = al.check ("my_max_clay");
-    const bool has_my_max_OC = al.check ("my_max_OC");
+      const bool has_my_max_clay = al.check ("my_max_clay");
+      const bool has_my_max_OC = al.check ("my_max_OC");
 
-    if (!has_my_max_clay && !has_my_max_OC)
-      {
-        err.entry ("You must specify either 'my_max_clay' or 'my_max_OC'");
-        ok = false;
-      }
-    return ok;
-  }
-  AdsorptionLangmuirSyntax ()
-    : DeclareModel (Adsorption::component, "Langmuir", "\
+      if (!has_my_max_clay && !has_my_max_OC)
+        {
+          err.entry ("You must specify either 'my_max_clay' or 'my_max_OC'");
+          ok = false;
+        }
+      return ok;
+    }
+    AdsorptionLangmuirSyntax ()
+      : DeclareModel (Adsorption::component, "Langmuir", "\
 M = rho (my_max C) / ((1/K) + C) + Theta C")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.add_check (check_alist);
-    frame.declare ("K", "cm^3/g", Check::positive (), Attribute::Const,
-		   "Slope parameter.");
-    frame.declare ("my_max_clay", "g/g", Check::non_negative (), 
-		   Attribute::OptionalConst,
-		   "Max adsorption capacity (clay).\n\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.add_check (check_alist);
+      frame.declare ("K", "cm^3/g", Check::positive (), Attribute::Const,
+  		   "Slope parameter.");
+      frame.declare ("my_max_clay", "g/g", Check::non_negative (), 
+  		   Attribute::OptionalConst,
+  		   "Max adsorption capacity (clay).\n\
 It is multiplied with the soil clay fraction to get the clay part of\n\
 'my_max'.  If 'my_max_OC' is specified, 'my_max_clay' defaults to 0.");
-    frame.declare ("my_max_OC", "g/g", Check::non_negative (), 
-		Attribute::OptionalConst,
-		"Max adsorption capacity (humus).\n\
+      frame.declare ("my_max_OC", "g/g", Check::non_negative (), 
+  		Attribute::OptionalConst,
+  		"Max adsorption capacity (humus).\n\
 It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of 'my_max'.  By default, 'my_max_OC' is equal to 'my_max_clay'.");
-  }
-} AdsorptionLangmuir_syntax;
+    }
+  } AdsorptionLangmuir_syntax;
+}
 
 // adsorption_langmuir.C ends here.

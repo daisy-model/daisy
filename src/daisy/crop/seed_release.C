@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "daisy/crop/seed.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "daisy/output/log.h"
@@ -121,39 +122,44 @@ SeedRelease::SeedRelease (const BlockModel& al)
 SeedRelease::~SeedRelease ()
 { }
 
-static struct Seed_ReleaseSyntax : public DeclareModel
+void
+register_seed_release_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SeedRelease (al); }
-  Seed_ReleaseSyntax ()
-    : DeclareModel (Seed::component, "release", "\
-Initial crop growth is governed by carbon released from seeds.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct Seed_ReleaseSyntax : public DeclareModel
   {
-    frame.declare ("initial_weight", "g w.w./m^2",
-                Check::positive (), Attribute::OptionalConst, "\
+    Model* make (const BlockModel& al) const
+    { return new SeedRelease (al); }
+    Seed_ReleaseSyntax ()
+      : DeclareModel (Seed::component, "release", "\
+Initial crop growth is governed by carbon released from seeds.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("initial_weight", "g w.w./m^2",
+                  Check::positive (), Attribute::OptionalConst, "\
 Initial seed weight to use when not specified by the sow operation.\n\
 If not specified here, specifying seed amount when sowing is mandatory.");
-    frame.declare ("DM_fraction", Attribute::Fraction (), Attribute::Const, "\
+      frame.declare ("DM_fraction", Attribute::Fraction (), Attribute::Const, "\
 Dry matter content in seeds.");
-    frame.declare ("C_fraction", Attribute::Fraction (), Attribute::Const, "\
+      frame.declare ("C_fraction", Attribute::Fraction (), Attribute::Const, "\
 Carbon content in seeds.");
-    frame.declare ("N_fraction", Attribute::Fraction (), Attribute::Const, "\
+      frame.declare ("N_fraction", Attribute::Fraction (), Attribute::Const, "\
 Nitrogen content in seeds.");
-    frame.declare ("T_factor", "dg C", Attribute::Fraction (),
-		   Attribute::OptionalConst, "\
+      frame.declare ("T_factor", "dg C", Attribute::Fraction (),
+  		   Attribute::OptionalConst, "\
 Soil temperature effect on release rate.\n\
 By default use the same as for maintenance respiration:\
 0.4281 (exp (0.57 - 0.024 T + 0.0020 T^2) - exp (0.57 - 0.042 T - 0.0051 T^2))\
 \n\
 This will give a rate of 1 at 20 dg C, slightly above 2 at 30 dg C, and a \
 bit below 0.5 at 10 dg C.");
-    frame.declare ("rate", "h^-1", Check::positive (), Attribute::Const, "\
+      frame.declare ("rate", "h^-1", Check::positive (), Attribute::Const, "\
 Release rate of seed carbon to assimilate pool.");
-    frame.declare ("C", "g C/m^2", Check::non_negative (), Attribute::OptionalState, "\
+      frame.declare ("C", "g C/m^2", Check::non_negative (), Attribute::OptionalState, "\
 Unreleased carbon left in seeds.");
-  }
-} SeedRelease_syntax;
+    }
+  } SeedRelease_syntax;
+}
 
 // seed_release.C ends here.
+

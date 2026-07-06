@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "programs/program.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot.h"
 #include "object_model/treelog.h"
@@ -119,7 +120,7 @@ ProgramGnuplot::ProgramGnuplot (const BlockModel& al)
 ProgramGnuplot::~ProgramGnuplot ()
 { }
 
-static struct ProgramGnuplotSyntax : public DeclareModel
+struct ProgramGnuplotSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramGnuplot (al); }
@@ -148,4 +149,10 @@ The commands will be inserted right before the list of graphs.");
     frame.declare_object ("graph", Gnuplot::component, Attribute::State, 
                        Attribute::Variable, "Graphs to plot.");
   }
-} ProgramGnuplot_syntax;
+};
+
+void
+register_gnuplot_program_models ()
+{
+  static ProgramGnuplotSyntax program_gnuplot_syntax;
+}

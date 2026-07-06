@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/zone.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/librarian.h"
 
 const char *const 
@@ -36,7 +37,7 @@ Zone::Zone (const BlockModel&)
 Zone::~Zone ()
 { }
 
-static struct ZoneInit : public DeclareComponent 
+struct ZoneInit : public DeclareComponent 
 {
   ZoneInit ()
     : DeclareComponent (Zone::component, "\
@@ -44,6 +45,14 @@ A subset of 3D space.")
   { }
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
-} Zone_init;
+};
 
+void
+register_zone_models ()
+{
+  static ZoneInit Zone_init;
+
+  register_zone_box_models ();
+  register_zone_poly_models ();
+}
 // zone.C ends here.

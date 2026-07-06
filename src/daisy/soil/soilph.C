@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/soilph.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/log.h"
 #include "object_model/block_model.h"
 #include "object_model/submodeler.h"
@@ -50,7 +51,7 @@ SoilpH::SoilpH (const BlockModel& al)
 SoilpH::~SoilpH ()
 { }
 
-static struct SoilpHInit : public DeclareComponent 
+struct SoilpHInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   {
@@ -63,7 +64,7 @@ Current pH of soil.");
     : DeclareComponent (SoilpH::component, "\
 pH of soil.")
   { }
-} SoilpH_init;
+};
 
 // The 'neutral' model.
 
@@ -82,7 +83,7 @@ struct SoilpHNeutral : public SoilpH
   { }
 };
 
-static struct SoilpHNeutralSyntax : public DeclareModel
+struct SoilpHNeutralSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SoilpHNeutral (al); }
@@ -92,7 +93,7 @@ A soil with a constant pH of 7.")
   { }
   void load_frame (Frame& frame) const
   { }
-} SoilpHNeutral_syntax;
+};
 
 // The 'year' model.
 
@@ -189,7 +190,7 @@ struct SoilpHYear : public SoilpH
   { }
 };
 
-static struct SoilpHYearSyntax : public DeclareModel
+struct SoilpHYearSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SoilpHYear (al); }
@@ -205,6 +206,14 @@ If specified, Daisy will interpolate between depth and between years.\n\
 By default, a pH of 7 is assumed.", SoilpHYear::pHyear::load_syntax);
     frame.set_check ("pH_depth_year", VCheck::min_size_1 ());
   }
-} SoilpHYear_syntax;
+};
+
+void
+register_soilph_models ()
+{
+  static SoilpHInit soilph_init;
+  static SoilpHNeutralSyntax soilph_neutral_syntax;
+  static SoilpHYearSyntax soilph_year_syntax;
+}
 
 // soilph.C ends here.

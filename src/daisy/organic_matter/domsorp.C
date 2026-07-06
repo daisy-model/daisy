@@ -22,6 +22,7 @@
 
 
 #include "daisy/organic_matter/domsorp.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -41,16 +42,22 @@ Domsorp::Domsorp (const BlockModel& al)
 Domsorp::~Domsorp ()
 { }
 
-static struct DomsorpInit : public DeclareComponent 
+void
+register_domsorp_models ()
 {
-  void load_frame (Frame& frame) const
-  { 
-    Model::load_model (frame);
-  }
-  DomsorpInit ()
-    : DeclareComponent (Domsorp::component, "\
+  static struct DomsorpInit : public DeclareComponent
+  {
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+    }
+    DomsorpInit ()
+      : DeclareComponent (Domsorp::component, "\
 Sorption and desorption of DOM to SOM.")
-  { }
-} Domsorp_init;
+    { }
+  } domsorp_init;
+
+  register_domsorp_standard_models ();
+}
 
 // domsorp.C ends here.

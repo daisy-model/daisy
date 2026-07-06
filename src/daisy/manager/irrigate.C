@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/irrigate.h"
 #include "daisy/soil/transport/volume.h"
 #include "daisy/chemicals/im.h"
@@ -389,10 +390,13 @@ Irrigation::Irrigation (const BlockSubmodel& al)
 Irrigation::~Irrigation ()
 { }
 
-static DeclareSubmodel 
-irrigation_submodel (Irrigation::load_syntax, "Irrigation", "\
+void
+register_irrigation_models ()
+{
+  static DeclareSubmodel irrigation_submodel (Irrigation::load_syntax,
+                                              "Irrigation", "\
 Keep track of active irrigation events.\n                       \
 Usually not set explicitly, but may be found in a checkpint.");
+}
 
 // irrigate.C ends here.
-

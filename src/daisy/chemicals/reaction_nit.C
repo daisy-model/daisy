@@ -102,7 +102,6 @@ ReactionNitrification::tick_soil (const Geometry& geo,
         NH4[i] = N2O[i] = NO3[i] = 0.0;        
     }
 
-
   soil_NH4.add_to_transform_sink (NH4);
   soil_NO3.add_to_transform_source (NO3);
 }
@@ -147,27 +146,31 @@ ReactionNitrification::ReactionNitrification (const BlockModel& al)
   : Reaction (al)
 { }
 
-static struct ReactionNitrificationSyntax : public DeclareModel
+void
+register_reaction_nit_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionNitrification (al); }
-  ReactionNitrificationSyntax ()
-    : DeclareModel (Reaction::component, "nitrification", "Nitrification.\n\
+  static struct ReactionNitrificationSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ReactionNitrification (al); }
+    ReactionNitrificationSyntax ()
+      : DeclareModel (Reaction::component, "nitrification", "Nitrification.\n\
 The actual nitrification specification is part of the horizon models, this\n\
 reaction just applies the models and logs the result. ")
-  { }
-  void load_frame (Frame& frame) const
-  {
+    { }
+    void load_frame (Frame& frame) const
+    {
 
-    frame.declare ("NH4", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
-		"Amount of ammonium consumed this hour.");
-    frame.declare ("NO3", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
-		"Amount of nitrate generated this hour.");
-    frame.declare ("N2O", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
-		"Amount of nitrous oxide generated this hour.");
+      frame.declare ("NH4", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
+  		"Amount of ammonium consumed this hour.");
+      frame.declare ("NO3", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
+  		"Amount of nitrate generated this hour.");
+      frame.declare ("N2O", "g/cm^3/h", Attribute::LogOnly, Attribute::SoilCells, 
+  		"Amount of nitrous oxide generated this hour.");
 
 
-  }
-} ReactionNitrification_syntax;
+    }
+  } ReactionNitrification_syntax;
+}
 
 // reaction_nit.C ends here.

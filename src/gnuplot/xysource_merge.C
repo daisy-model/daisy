@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "object_model/parameter_types/number.h"
@@ -173,7 +174,7 @@ XYSourceMerge::XYSourceMerge (const BlockModel& al)
     style_ (al.integer ("style", -1))
 { }
 
-static struct XYSourceMergeSyntax : public DeclareModel
+struct XYSourceMergeSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceMerge (al); }
@@ -197,6 +198,12 @@ Dimension for x points.");
 Dimension for y points.");
 
   }
-} XYSourceMerge_syntax;
+};
+
+void
+register_gnuplot_xysource_merge_models ()
+{
+  static XYSourceMergeSyntax xysource_merge_syntax;
+}
 
 // xysource_merge.C ends here.

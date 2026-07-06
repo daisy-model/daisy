@@ -26,6 +26,7 @@
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Bioclimate::component = "bioclimate";
 
@@ -79,7 +80,7 @@ Bioclimate::Bioclimate (const BlockModel& al)
 Bioclimate::~Bioclimate ()
 { }
 
-static struct BioclimateInit : public DeclareComponent 
+struct BioclimateInit : public DeclareComponent 
 {
   BioclimateInit ()
     : DeclareComponent (Bioclimate::component, "\
@@ -87,6 +88,21 @@ The 'bioclimate' component is responsible for distributing the water\n\
 and energy provided by the weather component among the crops and soil\n\
 for a given column.")
   { }
-} Bioclimate_init;
+};
+
+void
+register_bioclimate_models ()
+{
+  static BioclimateInit Bioclimate_init;
+
+  register_cloudiness_models ();
+  register_difrad_models ();
+  register_ghf_models ();
+  register_net_radiation_models ();
+  register_pet_models ();
+  register_raddist_models ();
+  register_svat_models ();
+  register_bioclimate_standard_models ();
+}
 
 // bioclimate.C ends here.

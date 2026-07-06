@@ -85,29 +85,33 @@ NitrificationSolute::NitrificationSolute (const BlockModel& al)
     water_factor (al.plf ("water_factor"))
 { }
 
-static struct NitrificationSoluteSyntax : public DeclareModel
+void
+register_nitrification_solute_models ()
 {
-  Model* make (const BlockModel& al) const
+  static struct NitrificationSoluteSyntax : public DeclareModel
   {
-    return new NitrificationSolute (al);
-  }
+    Model* make (const BlockModel& al) const
+    {
+      return new NitrificationSolute (al);
+    }
 
-  NitrificationSoluteSyntax ()
-    : DeclareModel (Nitrification::component, "solute", 
-	       "k_10 * C / (k + C).  Michaelis-Menten kinetics,\n\
+    NitrificationSoluteSyntax ()
+      : DeclareModel (Nitrification::component, "solute", 
+  	       "k_10 * C / (k + C).  Michaelis-Menten kinetics,\n\
 with nitrification based on ammonium solute.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("k", "g/cm^3", Check::positive (), Attribute::Const, 
-		"Half saturation constant.");
-    frame.declare ("k_10", "h^-1", Check::non_negative (),
-		Attribute::Const, "Max rate.");
-    frame.declare ("heat_factor", "dg C", Attribute::None (), Attribute::Const,
-		"Heat factor.");
-    frame.set ("heat_factor", PLF::empty ());
-    frame.declare ("water_factor", "cm", Attribute::None (), Attribute::Const,
-		"Water potential factor.");
-    frame.set ("water_factor", PLF::empty ());
-  }
-} NitrificationSolute_syntax;
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("k", "g/cm^3", Check::positive (), Attribute::Const, 
+  		"Half saturation constant.");
+      frame.declare ("k_10", "h^-1", Check::non_negative (),
+  		Attribute::Const, "Max rate.");
+      frame.declare ("heat_factor", "dg C", Attribute::None (), Attribute::Const,
+  		"Heat factor.");
+      frame.set ("heat_factor", PLF::empty ());
+      frame.declare ("water_factor", "cm", Attribute::None (), Attribute::Const,
+  		"Water potential factor.");
+      frame.set ("water_factor", PLF::empty ());
+    }
+  } NitrificationSolute_syntax;
+}

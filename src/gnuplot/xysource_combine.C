@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/xysource.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/gnuplot_utils.h"
 #include "object_model/parameter_types/number.h"
@@ -127,7 +128,7 @@ XYSourceCombine::XYSourceCombine (const BlockModel& al)
     style_ (al.integer ("style", -1))
 { }
 
-static struct XYSourceCombineSyntax : public DeclareModel
+struct XYSourceCombineSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new XYSourceCombine (al); }
@@ -159,6 +160,12 @@ Expression for calculating the y value for this source for each row.\n\
 A row is any date found in any of the member of 'source'.  The\n\
 expression may refer to the value of each source by its title.");
   }
-} XYSourceCombine_syntax;
+};
+
+void
+register_gnuplot_xysource_combine_models ()
+{
+  static XYSourceCombineSyntax xysource_combine_syntax;
+}
 
 // xysource_combine.C ends here.

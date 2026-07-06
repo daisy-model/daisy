@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "object_model/block_model.h"
 #include "util/path.h"
 #include "object_model/treelog.h"
@@ -59,7 +60,7 @@ struct ProgramCD : public Program
   { }
 };
 
-static struct ProgramCDSyntax : public DeclareModel
+struct ProgramCDSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramCD (al); }
@@ -72,7 +73,7 @@ static struct ProgramCDSyntax : public DeclareModel
 Name of directory to change into.");
     frame.order ("directory");
   }
-} ProgramCD_syntax;
+};
 
 struct ProgramWrite : public Program
 {
@@ -112,7 +113,7 @@ struct ProgramWrite : public Program
   { }
 };
 
-static struct ProgramWriteSyntax : public DeclareModel
+struct ProgramWriteSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramWrite (al); }
@@ -128,4 +129,11 @@ File to write it in.\n\
 If the value is 'screen', write the string to the screen.");
     frame.set ("where", "screen");
   }
-} ProgramWrite_syntax;
+};
+
+void
+register_program_file_models ()
+{
+  static ProgramCDSyntax program_cd_syntax;
+  static ProgramWriteSyntax program_write_syntax;
+}

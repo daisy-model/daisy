@@ -88,26 +88,30 @@ ReactionColgen::ReactionColgen (const BlockModel& al)
 ReactionColgen::~ReactionColgen ()
 { }
 
-static struct ReactionColgenSyntax : public DeclareBase
+void
+register_reaction_colgen_models ()
 {
-  ReactionColgenSyntax ()
-    : DeclareBase (Reaction::component, "colgen", "\
-Shared parameter and log variable for colloid generation models.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionColgenSyntax : public DeclareBase
   {
-    frame.declare_string ("colloid", Attribute::Const, "Colloid to generate.");
-    frame.declare_object ("ponddamp", Ponddamp::component,
-                          Attribute::Const, Attribute::Singleton,
-                          "Model for calculating 'KH'.");
-    frame.declare ("dds", "mm", Attribute::LogOnly, "Median raindrop size.");
-    frame.declare ("KH", Attribute::Fraction (), Attribute::LogOnly, 
-                   "Ponding factor.");
-    frame.declare ("D", "g/cm^2/h", Attribute::LogOnly, 
-                   "Depletion of detachable particles from top soil.");
-    frame.declare ("surface_release", Attribute::Fraction (), Attribute::LogOnly, "\
+    ReactionColgenSyntax ()
+      : DeclareBase (Reaction::component, "colgen", "\
+Shared parameter and log variable for colloid generation models.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("colloid", Attribute::Const, "Colloid to generate.");
+      frame.declare_object ("ponddamp", Ponddamp::component,
+                            Attribute::Const, Attribute::Singleton,
+                            "Model for calculating 'KH'.");
+      frame.declare ("dds", "mm", Attribute::LogOnly, "Median raindrop size.");
+      frame.declare ("KH", Attribute::Fraction (), Attribute::LogOnly, 
+                     "Ponding factor.");
+      frame.declare ("D", "g/cm^2/h", Attribute::LogOnly, 
+                     "Depletion of detachable particles from top soil.");
+      frame.declare ("surface_release", Attribute::Fraction (), Attribute::LogOnly, "\
 Fraction of available soil particles released as colloids this timestep.");
-  }
-} ReactionColgen_syntax;
+    }
+  } ReactionColgen_syntax;
+}
 
 // reaction_colgen.C ends here.

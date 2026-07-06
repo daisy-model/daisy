@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/root_system.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/crop/root/rootdens.h"
 #include "daisy/crop/root/ABAprod.h"
 #include "daisy/crop/root/solupt.h"
@@ -53,27 +54,6 @@ RootSystem::library_id () const
   static const symbol id (component);
   return id;
 }
-
-static struct RootSystemInit : public DeclareComponent 
-{
-  static bool
-  check_alist (const Metalib&, const Frame& al, Treelog& msg)
-  {
-    bool ok = true;
-    return ok;
-  }
-
-  void load_frame (Frame& frame) const
-  {
-    RootSystem::load_syntax (frame);
-  }
-
-  RootSystemInit ()
-    : DeclareComponent (RootSystem::component, "\
-Root processes.")
-  { }
-} RootSystem_init;
-
 
 double 
 RootSystem::crown_potential () const
@@ -718,28 +698,63 @@ struct RootClassic : public RootSystem
   { }
 };
 
-static struct RootClassicSyntax : DeclareModel
+void
+register_root_system_models ()
 {
-  static bool
-  check_alist (const Metalib&, const Frame& al, Treelog& msg)
+  static struct RootSystemInit : public DeclareComponent 
   {
-    bool ok = true;
-    return ok;
-  }
-
-  void load_frame (Frame& frame) const
-  { }
-
-  bool used_to_be_a_submodel () const
-  { return true; }
-
-  Model* make (const BlockModel& al) const
-  { return new RootClassic (al); }
-
-  RootClassicSyntax () 
-    : DeclareModel (RootSystem::component, "classic", "\
+    static bool
+    check_alist (const Metalib&, const Frame& al, Treelog& msg)
+    {
+      bool ok = true;
+      return ok;
+    }
+  
+    void load_frame (Frame& frame) const
+    {
+      RootSystem::load_syntax (frame);
+    }
+  
+    RootSystemInit ()
+      : DeclareComponent (RootSystem::component, "\
+Root processes.")
+    { }
+  } RootSystem_init;
+  static struct RootClassicSyntax : DeclareModel
+  {
+    static bool
+    check_alist (const Metalib&, const Frame& al, Treelog& msg)
+    {
+      bool ok = true;
+      return ok;
+    }
+  
+    void load_frame (Frame& frame) const
+    { }
+  
+    bool used_to_be_a_submodel () const
+    { return true; }
+  
+    Model* make (const BlockModel& al) const
+    { return new RootClassic (al); }
+  
+    RootClassicSyntax () 
+      : DeclareModel (RootSystem::component, "classic", "\
 Classic root system model.")
-  { }
-} RootClassic_syntax;
+    { }
+  } RootClassic_syntax;
+}
+
+void
+register_crop_root_models ()
+{
+  register_rootdens_models ();
+  register_root_system_models ();
+  register_rubiscoN_models ();
+  register_rubiscoNdist_models ();
+  register_ABAprod_models ();
+  register_solupt_models ();
+}
 
 // root_system.C ends here.
+

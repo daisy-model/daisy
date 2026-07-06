@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/tortuosity.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/hydraulic.h"
 #include "object_model/librarian.h"
@@ -54,7 +55,7 @@ public:
     { }
 };
 
-static struct TortuosityLinearSyntax : public DeclareModel
+struct TortuosityLinearSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   {
@@ -72,5 +73,10 @@ Theta offset.  By default, this corresponds to the wilting point.");
     frame.declare ("b", Attribute::None (), Attribute::Const, "Theta factor.");
     frame.set ("b", 2.0);
   }
-} TortuosityLinear_syntax;
+};
 
+void
+register_tortuosity_linear_models ()
+{
+  static TortuosityLinearSyntax tortuosity_linear_syntax;
+}

@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/log.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/block_model.h"
@@ -154,13 +155,23 @@ Log::summarize (Treelog&)
 Log::~Log ()
 { }
 
-static struct LogInit : public DeclareComponent 
+void
+register_log_models ()
 {
-  LogInit ()
-    : DeclareComponent (Log::component, "\
+  static struct LogInit : public DeclareComponent
+  {
+    LogInit ()
+      : DeclareComponent (Log::component, "\
 Running a simulation is uninteresting, unless you can get access to\n\
 the results in one way or another.  The purpose of the 'log' component\n\
 is to provide this access.  Most 'log' models does this by writing a\n\
 summary of the state to a log file.")
-  { }
-} Log_init;
+    { }
+  } log_init;
+
+  register_log_select_models ();
+  register_log_checkpoint_models ();
+  register_log_extern_models ();
+  register_log_harvest_models ();
+  register_log_table_models ();
+}

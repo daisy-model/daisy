@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/crop.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/organic_matter/om.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
@@ -144,18 +145,40 @@ Crop::Crop (const BlockModel& al)
 Crop::~Crop ()
 { }
 
-static struct CropInit : public DeclareComponent 
+void
+register_crop_models ()
 {
-  CropInit ()
-    : DeclareComponent (Crop::component, "\
+  static struct CropInit : public DeclareComponent 
+  {
+    CropInit ()
+      : DeclareComponent (Crop::component, "\
 The 'crop' component simulates a specific crop on the field, typically\n\
 averaged over one square meter, not individual plants.  Of particular\n\
 interest is water and nitrogen uptake at different depths, and the\n\
 vertical leaf area distribution, which are used for competition with\n\
 other crops.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} Crop_init;
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } Crop_init;
+
+  register_canopy_simple_models ();
+  register_canopy_std_models ();
+  register_crpn_models ();
+  register_harvesting_models ();
+  register_partition_models ();
+  register_production_models ();
+  register_phenology_models ();
+  register_photo_models ();
+  register_seed_models ();
+  register_stomatacon_models ();
+  register_vernalization_models ();
+  register_wse_models ();
+  register_cstage_models ();
+  register_crop_root_models ();
+  register_crop_simple_models ();
+  register_crop_standard_models ();
+}
 
 // crop.C ends here.
+

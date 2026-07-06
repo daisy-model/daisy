@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/tortuosity.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/hydraulic.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"
@@ -51,7 +52,7 @@ std::unique_ptr<Tortuosity>
 Tortuosity::create_default ()
 { return std::unique_ptr<Tortuosity> (new TortuosityM_Q ());  }
 
-static struct TortuosityM_QSyntax : public DeclareModel
+struct TortuosityM_QSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new TortuosityM_Q (al); }
@@ -61,6 +62,12 @@ Millington-Quirk.  Theta^(7/3) / Theta_sat^2.")
   { }
   void load_frame (Frame&) const
   { }
-} TortuosityM_Q_syntax;
+};
+
+void
+register_tortuosity_M_Q_models ()
+{
+  static TortuosityM_QSyntax tortuosity_m_q_syntax;
+}
 
 // tortuosity_M_Q.C ends here.

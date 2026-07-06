@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/plf.h"
 #include "object_model/librarian.h"
@@ -230,7 +231,7 @@ HydraulicTable::~HydraulicTable ()
 
 // Add the HydraulicTable syntax to the syntax table.
 
-static struct HydraulicTableSyntax : public DeclareModel
+struct HydraulicTableSyntax : public DeclareModel
 {
   HydraulicTableSyntax ()
     : DeclareModel (Hydraulic::component, "table", "\
@@ -256,6 +257,12 @@ Reads a ddf file with column pF Theta Cw2 K.")
 			   "Number of intervals for numeric integration of K.");
     frame.set ("M_intervals", 500);
   }
-} hydraulicTable_syntax;
+};
+
+void
+register_hydraulic_table_models ()
+{
+  static HydraulicTableSyntax hydraulicTable_syntax;
+}
 
 // hydraulic_table.C ends here.

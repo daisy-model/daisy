@@ -26,6 +26,7 @@
 #include "object_model/function.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/submodeler.h"
 #include "object_model/treelog.h"
 #include "object_model/frame_submodel.h"
@@ -83,7 +84,7 @@ struct NumberApply : public Number
   { }
 };
 
-static struct NumberApplySyntax : public DeclareModel
+struct NumberApplySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberApply (al); }
@@ -102,6 +103,12 @@ static struct NumberApplySyntax : public DeclareModel
 Operand for this function.");
     frame.order ("function", "operand");
   }
-} NumberApply_syntax;
+};
+
+void
+register_number_apply_models ()
+{
+  static NumberApplySyntax number_apply_syntax;
+}
 
 // number_apply.C ends here.

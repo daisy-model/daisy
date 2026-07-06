@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "util/lexer_table.h"
 #include "object_model/librarian.h"
 #include "util/assertion.h"
@@ -271,7 +272,7 @@ struct ProgramCPEData : public Program
   { }
 };
 
-static struct ProgramCPEDataSyntax : public DeclareModel
+struct ProgramCPEDataSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramCPEData (al); }
@@ -315,6 +316,12 @@ If true, print zeroes for hours with no data.");
 Debug level, 0 means no debug information.");
     frame.set ("debug", 0);
   }
-} ProgramCPEData_syntax;
+};
+
+void
+register_program_cpedata_models ()
+{
+  static ProgramCPEDataSyntax program_cpedata_syntax;
+}
 
 // program_cpedata.C ends here.

@@ -20,6 +20,7 @@
 
 #define BUILD_DLL
 #include "gnuplot/gnuplot_base.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "gnuplot/xysource.h"
 #include "object_model/treelog.h"
@@ -409,7 +410,7 @@ GnuplotXY::GnuplotXY (const BlockModel& al)
 GnuplotXY::~GnuplotXY ()
 { sequence_delete (source.begin (), source.end ()); }
 
-static struct GnuplotXYSyntax : public DeclareModel
+struct GnuplotXYSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GnuplotXY (al); }
@@ -448,4 +449,10 @@ By default determine this from the data.");
                        Attribute::Variable, "\
 XY series to plot.");
   }
-} GnuplotXY_syntax;
+};
+
+void
+register_gnuplot_xy_models ()
+{
+  static GnuplotXYSyntax gnuplot_xy_syntax;
+}

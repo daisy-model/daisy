@@ -25,6 +25,7 @@
 #include "daisy/output/log.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const SVAT::component = "svat";
 
@@ -50,7 +51,7 @@ SVAT::SVAT (const BlockModel& al)
 SVAT::~SVAT ()
 { }
 
-static struct SVATInit : public DeclareComponent 
+struct SVATInit : public DeclareComponent 
 {
   SVATInit ()
     : DeclareComponent (SVAT::component, "\
@@ -61,6 +62,16 @@ and soil state.")
   { }
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
-} SVAT_init;
+};
+
+void
+register_svat_models ()
+{
+  static SVATInit SVAT_init;
+
+  register_svat_none_models ();
+  register_svat_pmsw_models ();
+  register_svat_ssoc_models ();
+}
 
 // svat.C ends here.

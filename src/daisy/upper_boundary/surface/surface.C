@@ -26,6 +26,7 @@
 #include "daisy/upper_boundary/surface/surface.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "daisy/daisy_registration_internal.h"
 
 const char *const Surface::component = "surface";
 
@@ -43,12 +44,23 @@ Surface::Surface (const BlockModel& al)
 Surface::~Surface ()
 { }
 
-static struct SurfaceInit : public DeclareComponent 
+struct SurfaceInit : public DeclareComponent 
 {
   SurfaceInit ()
     : DeclareComponent (Surface::component, "\
 Surface processes.")
   { }
-} Surface_init;
+};
+
+void
+register_surface_models ()
+{
+  static SurfaceInit Surface_init;
+
+  register_max_exfiltration_models ();
+  register_surface_simple_models ();
+  register_surface_source_models ();
+  register_surface_standard_models ();
+}
 
 // surface.C ends here.

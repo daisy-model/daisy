@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/daisy.h"
 #include "object_model/block_model.h"
 #include "object_model/parameter_types/boolean.h"
@@ -106,7 +107,7 @@ struct ConditionExtern : public Condition
   { }
 };
 
-static struct ConditionExternSyntax : public DeclareModel
+struct ConditionExternSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionExtern (al); }
@@ -124,6 +125,12 @@ Scope to evaluate expession in.");
 Expression to evaluate.");
       frame.order ("scope", "expr");
   }
-} ConditionExtern_syntax;
+};
+
+void
+register_condition_extern_models ()
+{
+  static ConditionExternSyntax condition_extern_syntax;
+}
 
 // condition_extern.C ends here.

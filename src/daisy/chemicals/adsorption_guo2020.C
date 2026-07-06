@@ -94,57 +94,61 @@ public:
   { }
 };
 
-static struct AdsorptionGuo2020Syntax : DeclareModel
+void
+register_adsorption_guo2020_models ()
 {
-  Model* make (const BlockModel& al) const
+  static struct AdsorptionGuo2020Syntax : DeclareModel
   {
-    return new AdsorptionGuo2020 (al);
-  }
+    Model* make (const BlockModel& al) const
+    {
+      return new AdsorptionGuo2020 (al);
+    }
 
-  static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
-  {
-    bool ok = true;
+    static bool check_alist (const Metalib&, const Frame& al, Treelog& err)
+    {
+      bool ok = true;
 
-    const bool has_K_d = al.check ("K_d");
-    const bool has_K_clay = al.check ("K_clay");
-    const bool has_K_OC = al.check ("K_OC");
-      
-    if (!has_K_d && !has_K_clay && !has_K_OC)
-      {
-	err.entry ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
-	ok = false;
-      }
-    return ok;
-  }
-  AdsorptionGuo2020Syntax ()
-    : DeclareModel (Adsorption::component, "Guo2020", "\
+      const bool has_K_d = al.check ("K_d");
+      const bool has_K_clay = al.check ("K_clay");
+      const bool has_K_OC = al.check ("K_OC");
+        
+      if (!has_K_d && !has_K_clay && !has_K_OC)
+        {
+  	err.entry ("You must specify either 'K_d', 'K_clay' or 'K_OC'");
+  	ok = false;
+        }
+      return ok;
+    }
+    AdsorptionGuo2020Syntax ()
+      : DeclareModel (Adsorption::component, "Guo2020", "\
 Linear sorption with K_awi estimated from Equation 11.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "guo2020mathematical");
-    frame.add_check (check_alist);
-    frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
-		   Attribute::OptionalConst, 
-		   "Soil dependent distribution parameter.\n\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "guo2020mathematical");
+      frame.add_check (check_alist);
+      frame.declare ("K_d", "cm^3/g", Check::non_negative (), 
+  		   Attribute::OptionalConst, 
+  		   "Soil dependent distribution parameter.\n\
 By default, it will be calculated from 'K_OC' and 'K_clay'.");
-    frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
-		   Attribute::OptionalConst, 
-		   "Clay dependent distribution parameter.\n\
+      frame.declare ("K_clay", "cm^3/g", Check::non_negative (), 
+  		   Attribute::OptionalConst, 
+  		   "Clay dependent distribution parameter.\n\
 It is multiplied with the soil clay fraction to get the clay part of\n\
 the 'K_d' factor.  If 'K_OC' is specified, 'K_clay' defaults to 0.");
-    frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
-		   Attribute::OptionalConst, 
-		   "Humus dependent distribution parameter.\n\
+      frame.declare ("K_OC", "cm^3/g", Check::non_negative (), 
+  		   Attribute::OptionalConst, 
+  		   "Humus dependent distribution parameter.\n\
 It is multiplied with the soil organic carbon fraction to get the\n\
 carbon part of the 'K_d' factor.  By default, 'K_OC' is equal to 'K_clay'.");
-    frame.declare ("a", "mol/cm^3", Check::non_negative (), 
-		   Attribute::Const, 
-		   "Fitting parameter, Eq11.");
-    frame.declare ("b", Attribute::None (), Check::non_negative (), 
-		   Attribute::Const, 
-		   "Fitting parameter, Eq11.");
-  }
-} AdsorptionGuo2020_syntax;
+      frame.declare ("a", "mol/cm^3", Check::non_negative (), 
+  		   Attribute::Const, 
+  		   "Fitting parameter, Eq11.");
+      frame.declare ("b", Attribute::None (), Check::non_negative (), 
+  		   Attribute::Const, 
+  		   "Fitting parameter, Eq11.");
+    }
+  } AdsorptionGuo2020_syntax;
+}
 
 // adsorption_guo2020.C ends here.

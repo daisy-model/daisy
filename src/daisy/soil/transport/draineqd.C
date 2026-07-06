@@ -43,7 +43,7 @@ Draineqd::Draineqd ()
 Draineqd::~Draineqd ()
 { }
 
-static struct DraineqdInit : public DeclareComponent 
+struct DraineqdInit : public DeclareComponent 
 {
   DraineqdInit ()
     : DeclareComponent (Draineqd::component, "\
@@ -54,7 +54,7 @@ Find the equilibrium drain depth for the Hooghoudt drainage model.")
     Model::load_model (frame); 
     frame.set_strings ("cite", "hooghoudt");
   }
-} Draineqd_init;
+};
 
 // 'none' model.
 
@@ -70,7 +70,7 @@ struct DraineqdNone : public Draineqd
   { }
 };
 
-static struct DraineqdNoneSyntax : DeclareModel
+struct DraineqdNoneSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DraineqdNone (al); }
@@ -80,7 +80,7 @@ No modifications.")
   { }
   void load_frame (Frame& frame) const
   { }
-} DraineqdNone_syntax;
+};
 
 
 
@@ -101,7 +101,7 @@ struct DraineqdWesseling : public Draineqd
   { }
 };
 
-static struct DraineqdWesselingSyntax : DeclareModel
+struct DraineqdWesselingSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DraineqdWesseling (al); }
@@ -111,7 +111,7 @@ Equivalent depth calculated with model by Wesseling.")
   { }
   void load_frame (Frame& frame) const
   {frame.set_strings ("cite", "wesseling");}
-} DraineqdWesseling_syntax;
+};
 
 
 // Moody
@@ -132,7 +132,7 @@ struct DraineqdMoody : public Draineqd
   { }
 };
 
-static struct DraineqdMoodySyntax : DeclareModel
+struct DraineqdMoodySyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DraineqdMoody (al); }
@@ -142,7 +142,7 @@ Equivalent depth calculated with model by Moody.")
   { }
   void load_frame (Frame& frame) const
   {frame.set_strings ("cite", "moody");}
-} DraineqdMoody_syntax;
+};
 
 // van der Molen and Wesseling
 struct DraineqdMolenWesseling : public Draineqd
@@ -171,7 +171,7 @@ struct DraineqdMolenWesseling : public Draineqd
   { }
 };
 
-static struct DraineqdMolenWesselingSyntax : DeclareModel
+struct DraineqdMolenWesselingSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new DraineqdMolenWesseling (al); }
@@ -181,7 +181,16 @@ Equivalent depth calculated with model by van der Molen and Wesseling.")
   { }
   void load_frame (Frame& frame) const
   {frame.set_strings ("cite", "molenwesseling");}
-} DraineqdMolenWesseling_syntax;
+};
 
 
+void
+register_draineqd_models ()
+{
+  static DraineqdInit Draineqd_init;
+  static DraineqdNoneSyntax DraineqdNone_syntax;
+  static DraineqdWesselingSyntax DraineqdWesseling_syntax;
+  static DraineqdMoodySyntax DraineqdMoody_syntax;
+  static DraineqdMolenWesselingSyntax DraineqdMolenWesseling_syntax;
+}
 // draineqd.C ends here.

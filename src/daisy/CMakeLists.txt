@@ -24,5 +24,6 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   daisy.C
   daisy_time.C
   field.C
+  registration.C
   timestep.C
 )

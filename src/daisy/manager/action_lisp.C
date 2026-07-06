@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "daisy/daisy.h"
 #include "daisy/output/log.h"
@@ -314,7 +315,7 @@ struct ActionIf : public Action
   { }
 };
 
-static struct ActionNilSyntax : public DeclareModel
+struct ActionNilSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionNil (al); }
@@ -324,9 +325,9 @@ This action does nothing, always done.")
   { }
   void load_frame (Frame&) const
   { }
-} ActionNil_syntax;
+};
 
-static struct ActionTSyntax : public DeclareModel
+struct ActionTSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionT (al); }
@@ -336,9 +337,9 @@ This action does nothing, never done.")
   { }
   void load_frame (Frame&) const
   { }
-} ActionT_syntax;
+};
 
-static struct ActionPrognSyntax : public DeclareModel
+struct ActionPrognSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionProgn (al); }
@@ -354,9 +355,9 @@ All the actions will be performed in the same time step.")
                           "List of actions to perform.");
     frame.order ("actions");
   }
-} ActionProgn_syntax;
+};
 
-static struct ActionCondSyntax : public DeclareModel
+struct ActionCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionCond (al); }
@@ -372,9 +373,9 @@ The first clause whose condition is true, will have its actions activated.",
                                    ActionCond::clause::load_syntax);
     frame.order ("clauses");
   }
-} ActionCond_syntax;
+};
 
-static struct ActionIfSyntax : public DeclareModel
+struct ActionIfSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionIf (al); }
@@ -394,6 +395,16 @@ otherwise perform the second action.")
     frame.order ("if", "then", "else");
     frame.set ("else", "nil");
   }
-} ActionIf_syntax;
+};
+
+void
+register_action_lisp_models ()
+{
+  static ActionNilSyntax action_nil_syntax;
+  static ActionTSyntax action_t_syntax;
+  static ActionPrognSyntax action_progn_syntax;
+  static ActionCondSyntax action_cond_syntax;
+  static ActionIfSyntax action_if_syntax;
+}
 
 // action_lisp.C ends here.

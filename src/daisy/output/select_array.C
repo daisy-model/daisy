@@ -23,6 +23,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/output/select.h"
 #include "daisy/soil/soil.h"
 #include "daisy/output/bdconv.h"
@@ -359,15 +360,20 @@ The 'array' select model only handle bulk density for soil sized variables";
   { }
 };
 
-static struct SelectArraySyntax : public DeclareModel
+void
+register_select_array_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new SelectArray (al); }
-  SelectArraySyntax ()
-    : DeclareModel (Select::component, "array", "Log all members of an array.")
-  { }
-  void load_frame (Frame& frame) const
-  { }
-} SelectArray_syntax;
+  static struct SelectArraySyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new SelectArray (al); }
+    SelectArraySyntax ()
+      : DeclareModel (Select::component, "array",
+                      "Log all members of an array.")
+    { }
+    void load_frame (Frame& frame) const
+    { }
+  } select_array_syntax;
+}
 
 // select_array.C ends here.

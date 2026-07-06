@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "gnuplot/gnuplot.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -48,7 +49,7 @@ Gnuplot::Gnuplot (const BlockModel& al)
 Gnuplot::~Gnuplot ()
 { }
 
-static struct GnuplotInit : public DeclareComponent 
+struct GnuplotInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { 
@@ -58,4 +59,10 @@ static struct GnuplotInit : public DeclareComponent
     : DeclareComponent (Gnuplot::component, "\
 Plot a graph with gnuplot.")
   { }
-} Gnuplot_init;
+};
+
+void
+register_gnuplot_core_models ()
+{
+  static GnuplotInit gnuplot_init;
+}

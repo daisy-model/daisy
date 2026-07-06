@@ -37,6 +37,7 @@
 #include "util/mathlib.h"
 #include <sstream>
 #include <memory>
+#include "daisy/daisy_registration_internal.h"
 
 class PetFAO_PM_hourly : public Pet
 {
@@ -149,7 +150,7 @@ PetFAO_PM_hourly::tick (const Weather& weather,
                                   reference_evapotranspiration_wet);
 }
 
-static struct PetFAO_PM_hourlySyntax : public DeclareModel
+struct PetFAO_PM_hourlySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new PetFAO_PM_hourly (al); }
@@ -180,6 +181,12 @@ especially when feed with daily weather data.");
                    "Boundary layer resistance for wet surface.");
     frame.set ("rb", 20.0);
   }
-} PetFAO_PM_hourly_syntax;
+};
+
+void
+register_pet_FAO_PM_hourly_models ()
+{
+  static PetFAO_PM_hourlySyntax PetFAO_PM_hourly_syntax;
+}
 
 // pet_FAO_PM_hourly.C ends here.

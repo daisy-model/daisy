@@ -170,35 +170,39 @@ struct ReactionAdsorption : public Reaction
   { }
 };
 
-static struct ReactionAdsorptionSyntax : public DeclareModel
+void
+register_reaction_adsorption_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ReactionAdsorption (al); }
-
-  ReactionAdsorptionSyntax ()
-    : DeclareModel (Reaction::component, "adsorption", 
-	       "Maintain equilibrium between solute and sorbed from.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct ReactionAdsorptionSyntax : public DeclareModel
   {
-    frame.declare_string ("solute", Attribute::Const,
-		"Name of solute form of chemical.");
-    frame.declare_string ("sorbed", Attribute::Const,
-		"Name of sorbed form of chemical.");
-    frame.declare_object ("equilibrium", Adsorption::component, "\
+    Model* make (const BlockModel& al) const
+    { return new ReactionAdsorption (al); }
+
+    ReactionAdsorptionSyntax ()
+      : DeclareModel (Reaction::component, "adsorption", 
+  	       "Maintain equilibrium between solute and sorbed from.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_string ("solute", Attribute::Const,
+  		"Name of solute form of chemical.");
+      frame.declare_string ("sorbed", Attribute::Const,
+  		"Name of sorbed form of chemical.");
+      frame.declare_object ("equilibrium", Adsorption::component, "\
 Function for calculating equilibrium between solute and sorbed form.");
-    frame.declare_object ("adsorption_rate", Number::component,
-                       Attribute::Const, Attribute::Singleton, 
-                       "Tranformation rate from solute to sorbed form.");
-    frame.declare_object ("desorption_rate", Number::component,
-                       Attribute::OptionalConst, Attribute::Singleton,
-                       "Tranformation rate from sorbed to solute form.\n\
+      frame.declare_object ("adsorption_rate", Number::component,
+                         Attribute::Const, Attribute::Singleton, 
+                         "Tranformation rate from solute to sorbed form.");
+      frame.declare_object ("desorption_rate", Number::component,
+                         Attribute::OptionalConst, Attribute::Singleton,
+                         "Tranformation rate from sorbed to solute form.\n\
 By default, this is identical to 'adsorption_rate'.");
-    frame.declare ("adsorption_source", "g/cm^3/h", 
-		Attribute::LogOnly, Attribute::SoilCells, "\
+      frame.declare ("adsorption_source", "g/cm^3/h", 
+  		Attribute::LogOnly, Attribute::SoilCells, "\
 Converted from solute to sorbed form this timestep (may be negative).");
 
-  }
-} ReactionAdsorption_syntax;
+    }
+  } ReactionAdsorption_syntax;
+}
 
 // reaction_adsorption.C ends here.

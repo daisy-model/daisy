@@ -21,8 +21,8 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/chemical.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/vcheck.h"
@@ -94,13 +94,19 @@ Chemical::Chemical (const BlockModel& al)
 Chemical::~Chemical ()
 { }
 
-static struct ChemicalInit : public DeclareComponent 
+void
+register_chemical_models ()
 {
-  ChemicalInit ()
-    : DeclareComponent (Chemical::component, "\
+  static struct ChemicalInit : public DeclareComponent 
+  {
+    ChemicalInit ()
+      : DeclareComponent (Chemical::component, "\
 This component should, for a specific chemical (typically a pesticide),\n\
 provide a description of the properties of interest to Daisy.")
-  { }
-} Chemical_init;
+    { }
+  } Chemical_init;
+
+  register_chemical_standard_models ();
+}
 
 // chemical.C ends here.

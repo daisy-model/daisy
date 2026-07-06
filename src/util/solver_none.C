@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "util/solver.h"
+#include "util/util_registration_internal.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 
@@ -33,7 +34,9 @@ struct SolverNone : public Solver
   { }
 };
 
-static struct SolverNoneSyntax : public DeclareModel
+namespace
+{
+struct SolverNoneSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new SolverNone (al); }
@@ -43,6 +46,13 @@ static struct SolverNoneSyntax : public DeclareModel
   void load_frame (Frame&) const
   {
   }
-} SolverNone_syntax;
+};
+}
+
+void
+register_solver_none_models ()
+{
+  static SolverNoneSyntax solver_none_syntax;
+}
 
 // solver_none.C ends here.

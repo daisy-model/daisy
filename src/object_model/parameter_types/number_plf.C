@@ -26,6 +26,7 @@
 #include "util/memutils.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/submodeler.h"
 #include "object_model/treelog.h"
 #include "object_model/frame_submodel.h"
@@ -134,7 +135,7 @@ struct NumberPLF : public Number
   { }
 };
 
-static struct NumberPLFSyntax : public DeclareModel
+struct NumberPLFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new NumberPLF (al); }
@@ -161,6 +162,12 @@ The x values must be ordered lowest first.", NumberPLF::Point::load_syntax);
 
     frame.order ("operand");
   }
-} NumberPLF_syntax;
+};
+
+void
+register_number_plf_models ()
+{
+  static NumberPLFSyntax number_plf_syntax;
+}
 
 // number_plf.C ends here.

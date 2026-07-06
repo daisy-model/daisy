@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "gnuplot/source.h"
+#include "gnuplot/gnuplot_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -98,7 +99,7 @@ Source::Source (const BlockModel& al)
 Source::~Source ()
 { }
 
-static struct SourceInit : public DeclareComponent 
+struct SourceInit : public DeclareComponent 
 {
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
@@ -106,4 +107,10 @@ static struct SourceInit : public DeclareComponent
     : DeclareComponent (Source::component, "\
 Time series, with possible error bars and formatting information.")
   { }
-} Source_init;
+};
+
+void
+register_gnuplot_source_models ()
+{
+  static SourceInit source_init;
+}

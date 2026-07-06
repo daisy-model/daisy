@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/output/summary.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 
@@ -49,18 +50,27 @@ Summary::Summary (const BlockModel& al)
 Summary::~Summary ()
 { }
 
-static struct SummaryInit : public DeclareComponent 
+void
+register_summary_models ()
 {
-  SummaryInit ()
-    : DeclareComponent (Summary::component, "\
+  static struct SummaryInit : public DeclareComponent
+  {
+    SummaryInit ()
+      : DeclareComponent (Summary::component, "\
 Summary reports for log parameterizations.")
-  { }
-  void load_frame (Frame& frame) const
-  { 
-    Model::load_model (frame); 
-    frame.declare_string ("title", Attribute::OptionalConst,
+    { }
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.declare_string ("title", Attribute::OptionalConst,
 		  "Title of this summary.\n\
 By default, use the name of the parameterization.");
-  }
-} Summary_init;
+    }
+  } summary_init;
 
+  register_summary_simple_models ();
+  register_summary_balance_models ();
+  register_summary_Rsqr_models ();
+  register_summary_RsqrW_models ();
+  register_summary_fractiles_models ();
+}

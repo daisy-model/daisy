@@ -59,7 +59,7 @@ struct AverageArithmetic : public Average
   { }
 };
 
-static struct AverageArithmeticSyntax : DeclareModel
+struct AverageArithmeticSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new AverageArithmetic (al); }
@@ -69,7 +69,7 @@ Arithmetic average '(a+b)/2'.")
   { }
   void load_frame (Frame& frame) const
   { }
-} AverageArithmetic_syntax;
+};
 
 
 std::unique_ptr<const Average>
@@ -90,7 +90,7 @@ struct AverageHarmonic : public Average
   { }
 };
 
-static struct AverageHarmonicSyntax : DeclareModel
+struct AverageHarmonicSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new AverageHarmonic (al); }
@@ -100,7 +100,7 @@ Harmonic average '2ab/(a+b)'.")
   { }
   void load_frame (Frame& frame) const
   { }
-} AverageHarmonic_syntax;
+};
 
 // geometric model.
 
@@ -118,7 +118,7 @@ struct AverageGeometric : public Average
   { }
 };
 
-static struct AverageGeometricSyntax : DeclareModel
+struct AverageGeometricSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new AverageGeometric (al); }
@@ -128,18 +128,26 @@ Geometric average 'sqrt(a*b)'.")
   { }
   void load_frame (Frame& frame) const
   { }
-} AverageGeometric_syntax;
+};
 
 std::unique_ptr<const Average>
 Average::build_geometric ()
 { return std::unique_ptr<const Average> (new AverageGeometric (__FUNCTION__)); }
 
-static struct AverageInit : public DeclareComponent 
+struct AverageInit : public DeclareComponent 
 {
   AverageInit ()
     : DeclareComponent (Average::component, "\
 Find the average of two numbers.")
   { }
-} Average_init;
+};
 
+void
+register_average_models ()
+{
+  static AverageArithmeticSyntax AverageArithmetic_syntax;
+  static AverageHarmonicSyntax AverageHarmonic_syntax;
+  static AverageGeometricSyntax AverageGeometric_syntax;
+  static AverageInit Average_init;
+}
 // average.C ends here.

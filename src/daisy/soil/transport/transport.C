@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/transport/transport.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/chemicals/chemical.h"
 #include "daisy/organic_matter/doe.h"
 #include "daisy/soil/transport/geometry.h"
@@ -102,12 +103,40 @@ Transport::Transport (const BlockModel& al)
 Transport::~Transport ()
 { }
 
-static struct TransportInit : public DeclareComponent 
+struct TransportInit : public DeclareComponent 
 {
   TransportInit ()
     : DeclareComponent (Transport::component, "\
 Solute transport in primary domain.")
   { }
-} Transport_init;
+};
 
-// transport.C ends here
+void
+register_transport_models ()
+{
+  static TransportInit Transport_init;
+
+  register_average_models ();
+  register_bound_models ();
+  register_condedge_models ();
+  register_draineqd_models ();
+  register_secondary_models ();
+  register_transport_Hansen_models ();
+  register_transport_Mollerup_models ();
+  register_transport_convection_models ();
+  register_transport_none_models ();
+  register_macro_models ();
+  register_mactrans_models ();
+  register_drain_models ();
+  register_biopore_models ();
+  register_tertiary_models ();
+  register_heatrect_models ();
+  register_uz1d_models ();
+  register_uzmodel_models ();
+  register_uzrect_models ();
+  register_volume_models ();
+  register_zone_models ();
+  register_movement_models ();
+}
+
+// transport.C ends here.

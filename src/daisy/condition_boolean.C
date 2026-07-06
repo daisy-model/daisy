@@ -23,6 +23,7 @@
 #define BUILD_DLL
 
 #include "daisy/condition.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "util/scope.h"
 #include "object_model/librarian.h"
@@ -93,7 +94,7 @@ struct ConditionBoolean : public Condition
   { }
 };
 
-static struct ConditionBooleanSyntax : public DeclareModel
+struct ConditionBooleanSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ConditionBoolean (al); }
@@ -108,4 +109,10 @@ Test if a boolean expression is true.")
 Expression to evaluate.");
     frame.order ("expr");
   }
-} ConditionBoolean_syntax;
+};
+
+void
+register_condition_boolean_models ()
+{
+  static ConditionBooleanSyntax condition_boolean_syntax;
+}

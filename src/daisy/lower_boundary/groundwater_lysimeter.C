@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/lower_boundary/groundwater.h"
 #include "daisy/soil/transport/geometry.h"
 #include "util/assertion.h"
@@ -64,7 +65,7 @@ public:
   { }
 };
 
-static struct GroundwaterLysimeterSyntax : public DeclareModel
+struct GroundwaterLysimeterSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new GroundwaterLysimeter (al); }
@@ -75,6 +76,11 @@ Lysimeter bottom.")
   { }
   void load_frame (Frame&) const
   { }
-} GroundwaterLysimeter_syntax;
+};
 
+void
+register_groundwater_lysimeter_models ()
+{
+  static GroundwaterLysimeterSyntax groundwater_lysimeter_syntax;
+}
 

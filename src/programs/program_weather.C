@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "daisy/upper_boundary/weather/wsource.h"
 #include "daisy/daisy_time.h"
 #include "object_model/librarian.h"
@@ -270,7 +271,7 @@ struct ProgramWeather : public Program
   { }
 };
 
-static struct ProgramWeatherSyntax : public DeclareModel
+struct ProgramWeatherSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramWeather (al); }
@@ -294,6 +295,12 @@ Weather source to analyse.");
 List of fractiles print in 'file'.");
     frame.set_empty ("fractiles");
   }
-} ProgramWeather_syntax;
+};
+
+void
+register_program_weather_models ()
+{
+  static ProgramWeatherSyntax program_weather_syntax;
+}
 
 // program_weather.C ends here.

@@ -26,6 +26,7 @@
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
 #include <sstream>
+#include "daisy/daisy_registration_internal.h"
 
 struct RaddistStandard : public Raddist
 {
@@ -96,7 +97,7 @@ void RaddistStandard::tick (std::vector <double>& sun_LAI_fraction,
 
 }
 
-static struct RaddistStandardSyntax : public DeclareModel
+struct RaddistStandardSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new RaddistStandard (al); }
@@ -106,6 +107,12 @@ static struct RaddistStandardSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} RaddistStandard_syntax;
+};
+
+void
+register_raddist_standard_models ()
+{
+  static RaddistStandardSyntax RaddistStandard_syntax;
+}
 
 // raddist_std.C ends here.

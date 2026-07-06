@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/stomatacon.h"
+#include "daisy/daisy_registration_internal.h"
 #include "util/mathlib.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
@@ -44,16 +45,6 @@ StomataCon::StomataCon (const BlockModel& al)
 
 StomataCon::~StomataCon ()
 { }
-
-static struct StomataConInit : public DeclareComponent 
-{
-  StomataConInit ()
-    : DeclareComponent (StomataCon::component, "\
-The 'Stomatacon' component calculates the stomata conductance of water vapour.")
-  { }
-  void load_frame (Frame& frame) const
-  { Model::load_model (frame); }
-} StomataCon_init;
 
 // The 'WSF' stomatacon base model.
 
@@ -92,30 +83,6 @@ StomataCon_WSF_base::StomataCon_WSF_base (const BlockModel& al)
     delta (al.number ("delta"))
 { }
 
-static struct StomataConWSFSyntax : public DeclareBase
-{
-  StomataConWSFSyntax ()
-    : DeclareBase (StomataCon::component, "WSF", "\
-Common water stress effect parameters.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("beta", "cm^3/g", Check::non_negative (), Attribute::Const,
-                   "Effect of ABA concentration.\n\
-The effect is exp (-beta (|ABA| - ABA_min)), where |ABA| is the ABA\n\
-concentration in the xylem.");
-    frame.set ("beta", 0.0);
-    frame.declare ("ABA_min", "g/cm^3", Check::non_negative (),
-                   Attribute::Const,
-                   "Level of ABA with unstressed production.");
-    frame.set ("ABA_min", 0.0);
-    frame.declare ("delta", "MPa^-1", Check::non_negative (), Attribute::Const,
-                   "Effect of crown water potential.\n\
-The effect is exp (-delta |psi_c|), where psi_c is the crown potential.");
-    frame.set ("delta", 0.0);
-  }
-} StomataConWSF_syntax;
-
 // The 'BB_base' stomatacon base model.
 
 struct StomataCon_BB_base : public StomataCon_WSF_base
@@ -140,25 +107,6 @@ StomataCon_BB_base::StomataCon_BB_base (const BlockModel& al)
     m (al.number("m")),
     b (al.number("b"))
 { }
-
-static struct StomataConBBbaseSyntax : public DeclareBase
-{
-  StomataConBBbaseSyntax ()
-    : DeclareBase (StomataCon::component, "BB_base", "WSF", "\
-Common parameters for Ball&Berry derived models.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare ("m", Attribute::None (), Check::positive (),
-                   Attribute::Const, "\
-Stomatal slope factor.\n\
-Ball and Berry (1982): m = 9 for soyabean.\n\
-Wang and Leuning(1998): m = 11 for wheat");
-    frame.declare ("b", "mol/m^2/s", Check::positive (), Attribute::Const, "\
-Stomatal intercept.\n                                                   \
-Ball and Berry (1982) & Wang and Leuning(1998): (0.01 mol/m2/s)");
-  }
-} StomataConBBbase_syntax;
 
 // The 'BB' stomatacon model.
 
@@ -199,20 +147,6 @@ StomataCon_BB::stomata_con (const double ABA,  // [g/cm^3]
   daisy_assert (gsw >= 0.0);
   return gsw;
 }
-
-static struct StomataConBBSyntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new StomataCon_BB (al); }
-  StomataConBBSyntax ()
-    : DeclareModel (StomataCon::component, "BB", "BB_base",
-                    "Stomata conductance calculated by the Ball & Berry model.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "bb87");
-  }
-} StomataConBBsyntax;
 
 // The 'Leuning' stomatacon model.
 
@@ -264,21 +198,91 @@ StomataCon_Leuning::stomata_con (const double ABA,  // [g/cm^3]
   return gsw;
 }
 
-static struct StomataConLeuningSyntax : public DeclareModel
+void
+register_stomatacon_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new StomataCon_Leuning (al); }
-  StomataConLeuningSyntax ()
-    : DeclareModel (StomataCon::component, "Leuning", "BB_base", "\
-Stomata conductance calculated by the Leuning model.")
-  { }
-  void load_frame (Frame& frame) const
+  static struct StomataConInit : public DeclareComponent 
   {
-    frame.set_strings ("cite", "Leuning95");
-    frame.declare ("Do", "[Pa]", Check::positive (), Attribute::Const,
-                   "Empirical coefficient.");
-    frame.set ("Do", 1500.);
-  }
-} StomataConLeuningsyntax;
+    StomataConInit ()
+      : DeclareComponent (StomataCon::component, "\
+The 'Stomatacon' component calculates the stomata conductance of water vapour.")
+    { }
+    void load_frame (Frame& frame) const
+    { Model::load_model (frame); }
+  } StomataCon_init;
+  static struct StomataConWSFSyntax : public DeclareBase
+  {
+    StomataConWSFSyntax ()
+      : DeclareBase (StomataCon::component, "WSF", "\
+Common water stress effect parameters.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("beta", "cm^3/g", Check::non_negative (), Attribute::Const,
+                     "Effect of ABA concentration.\n\
+The effect is exp (-beta (|ABA| - ABA_min)), where |ABA| is the ABA\n\
+concentration in the xylem.");
+      frame.set ("beta", 0.0);
+      frame.declare ("ABA_min", "g/cm^3", Check::non_negative (),
+                     Attribute::Const,
+                     "Level of ABA with unstressed production.");
+      frame.set ("ABA_min", 0.0);
+      frame.declare ("delta", "MPa^-1", Check::non_negative (), Attribute::Const,
+                     "Effect of crown water potential.\n\
+The effect is exp (-delta |psi_c|), where psi_c is the crown potential.");
+      frame.set ("delta", 0.0);
+    }
+  } StomataConWSF_syntax;
+  static struct StomataConBBbaseSyntax : public DeclareBase
+  {
+    StomataConBBbaseSyntax ()
+      : DeclareBase (StomataCon::component, "BB_base", "WSF", "\
+Common parameters for Ball&Berry derived models.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare ("m", Attribute::None (), Check::positive (),
+                     Attribute::Const, "\
+Stomatal slope factor.\n\
+Ball and Berry (1982): m = 9 for soyabean.\n\
+Wang and Leuning(1998): m = 11 for wheat");
+      frame.declare ("b", "mol/m^2/s", Check::positive (), Attribute::Const, "\
+Stomatal intercept.\n                                                   \
+Ball and Berry (1982) & Wang and Leuning(1998): (0.01 mol/m2/s)");
+    }
+  } StomataConBBbase_syntax;
+  static struct StomataConBBSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new StomataCon_BB (al); }
+    StomataConBBSyntax ()
+      : DeclareModel (StomataCon::component, "BB", "BB_base",
+                      "Stomata conductance calculated by the Ball & Berry model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "bb87");
+    }
+  } StomataConBBsyntax;
+  static struct StomataConLeuningSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new StomataCon_Leuning (al); }
+    StomataConLeuningSyntax ()
+      : DeclareModel (StomataCon::component, "Leuning", "BB_base", "\
+Stomata conductance calculated by the Leuning model.")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "Leuning95");
+      frame.declare ("Do", "[Pa]", Check::positive (), Attribute::Const,
+                     "Empirical coefficient.");
+      frame.set ("Do", 1500.);
+    }
+  } StomataConLeuningsyntax;
+
+  register_stomatacon_SHA_models ();
+}
 
 // StomataCon.C ends here.
+

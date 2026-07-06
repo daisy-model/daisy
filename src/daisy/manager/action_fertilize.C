@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -217,7 +218,7 @@ ActionFertilize::ActionFertilize (const BlockModel& al)
 ActionFertilize::~ActionFertilize ()
 { }
 
-static struct ActionFertilizeSyntax : public DeclareBase
+struct ActionFertilizeSyntax : public DeclareBase
 {
   static bool check_alist (const Metalib& metalib, 
                            const Frame& al, Treelog& err)
@@ -297,7 +298,7 @@ organic fertilizer parameter.  The second year effect does not fade with\n\
 time, but is zeroed once you fertilize with this flag set.");
     frame.set ("second_year_compensation", false);
   }
-} ActionFertilize_init;
+};
 
 // Surface fertilizer.
 
@@ -359,7 +360,7 @@ ActionFertilizeSurface::doIt (Daisy& daisy, const Scope&, Treelog& msg)
     }
 }
 
-static struct ActionFertilizeSurfaceSyntax : public DeclareModel
+struct ActionFertilizeSurfaceSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionFertilizeSurface (al); }
@@ -401,7 +402,7 @@ OBSOLETE:  Use 'fertilize_incorporate' instead.");
     frame.set ("to", 0.0);
     frame.order ("am");
   }
-} ActionFertilizeSurface_syntax;
+};
 
 // Incorporate fertilizer.
 
@@ -440,7 +441,7 @@ ActionFertilizeIncorporate::doIt (Daisy& daisy, const Scope&, Treelog& msg)
                            volume, true, msg);
 }
 
-static struct ActionFertilizeIncorporateSyntax : public DeclareModel
+struct ActionFertilizeIncorporateSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionFertilizeIncorporate (al); }
@@ -463,6 +464,14 @@ static struct ActionFertilizeIncorporateSyntax : public DeclareModel
                        "Soil volume to incorporate fertilizer in.");
     frame.order ("am");
   }
-} ActionFertilizeIncorporate_syntax;
+};
+
+void
+register_action_fertilize_models ()
+{
+  static ActionFertilizeSyntax action_fertilize_syntax;
+  static ActionFertilizeSurfaceSyntax action_fertilize_surface_syntax;
+  static ActionFertilizeIncorporateSyntax action_fertilize_incorporate_syntax;
+}
 
 // action_fertilize.C ends here.

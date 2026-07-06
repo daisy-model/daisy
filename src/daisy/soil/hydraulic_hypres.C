@@ -25,6 +25,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/texture.h"
 #include "object_model/plf.h"
@@ -295,7 +296,7 @@ HydraulicHypres::~HydraulicHypres ()
 
 // Add the HydraulicHypres syntax to the syntax table.
 
-static struct HydraulicHypresSyntax : public DeclareModel
+struct HydraulicHypresSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicHypres (al); }
@@ -323,6 +324,12 @@ plowing layer), if set false it will be initialized as a subsoil.\n\
 By default, the horizon will be initialized as a topsoil if and only if\n\
 it is the topmost horison in the soil profile.");
   }
-} hydraulicHypres_syntax;
+};
+
+void
+register_hydraulic_hypres_models ()
+{
+  static HydraulicHypresSyntax hydraulicHypres_syntax;
+}
 
 // hydraulic_hypres.C ends here.

@@ -1213,7 +1213,7 @@ BioporeMatrix::BioporeMatrix (const BlockModel& al)
     M (al, "M")
 { }
 
-static struct BioporeMatrixSyntax : DeclareModel
+struct BioporeMatrixSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BioporeMatrix (al); }
@@ -1274,6 +1274,11 @@ Allow water to enter from saturated soil at the bottom of the biopore.\n\
 And leave in unsaturated soil above.");
     frame.set ("allow_upward_flow", true);
   }
-} BioporeMatrix_syntax;
+};
 
+void
+register_biopore_matrix_models ()
+{
+  static BioporeMatrixSyntax BioporeMatrix_syntax;
+}
 // biopore_matrix.C ends here.

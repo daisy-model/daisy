@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/crop/root/ABAprod.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/parameter_types/number.h"
 #include "util/scope_id.h"
 #include "daisy/soil/transport/geometry.h"
@@ -133,26 +134,30 @@ ABAProdUptake::ABAProdUptake (const BlockModel& al)
 ABAProdUptake::~ABAProdUptake ()
 { }
 
-static struct ABAProdUptakeSyntax : DeclareModel
+void
+register_ABAprod_uptake_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new ABAProdUptake (al); }
-  ABAProdUptakeSyntax ()
-    : DeclareModel (ABAProd::component, "uptake", "\
+  static struct ABAProdUptakeSyntax : DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new ABAProdUptake (al); }
+    ABAProdUptakeSyntax ()
+      : DeclareModel (ABAProd::component, "uptake", "\
 ABA production based on concentration in water uptake.\n\
 \n\
 The assumption is water uptake from roots in specific region of the soil\n\
 comes with a specific ABA concentration, which depends solely on the\n\
 water pressure in that region.")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.declare_object ("expr", Number::component, 
-                      Attribute::Const, Attribute::Singleton, "\
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.declare_object ("expr", Number::component, 
+                        Attribute::Const, Attribute::Singleton, "\
 Expression to evaluate to ABA concentration in water uptake [g/cm^3].\n\
 The symbol 'h' will be bound to the water pressure [cm].");
-  }
-} ABAProdUptake_syntax;
+    }
+  } ABAProdUptake_syntax;
+}
 
 // ABAprod_uptake.C ends here
 

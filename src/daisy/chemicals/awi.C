@@ -67,21 +67,6 @@ AWI::AWI (const BlockModel& al)
 AWI::~AWI ()
 { }
 
-static struct AWIInit : public DeclareComponent 
-{
-  void load_frame (Frame& frame) const
-  {
-    Model::load_model (frame);
-    frame.declare ("area", "cm^2/cm^3", 
-                   Attribute::LogOnly, Attribute::SoilCells, 
-                   "Air-Water interface area.");
-  }
-  AWIInit ()
-    : DeclareComponent (AWI::component, "\
-Estimate area of air-water interface.")
-  { }
-} AWI_init;
-
 // The 'Brusseau2023' AWI model.
 
 struct AWIBrusseau2023 : public AWI
@@ -99,20 +84,6 @@ struct AWIBrusseau2023 : public AWI
     : AWI (al)
   { }      
 };
-
-static struct AWIBrusseau2023Syntax : public DeclareModel
-{
-  Model* make (const BlockModel& al) const
-  { return new AWIBrusseau2023 (al); }
-  AWIBrusseau2023Syntax ()
-    : DeclareModel (AWI::component, "Brusseau2023", "\
-Estimate AWI area from water and median particle size (Equation 5).")
-  { }
-  void load_frame (Frame& frame) const
-  {
-    frame.set_strings ("cite", "brusseau2023");
-  }
-} AWIBrusseau2023_syntax;
 
 // The 'Costanza2008x' AWI model.
 
@@ -137,18 +108,51 @@ struct AWICostanza2008x : public AWI
   { }      
 };
 
-static struct AWICostanza2008xSyntax : public DeclareModel
+void
+register_awi_models ()
 {
-  Model* make (const BlockModel& al) const
-  { return new AWICostanza2008x (al); }
-  AWICostanza2008xSyntax ()
-    : DeclareModel (AWI::component, "Costanza2008x", "\
-Estimate AWI area from water and median particle size (Equation 1 and 2).")
-  { }
-  void load_frame (Frame& frame) const
+  static struct AWIInit : public DeclareComponent 
   {
-    frame.set_strings ("cite", "costanza2008x");
-  }
-} AWICostanza2008x_syntax;
+    void load_frame (Frame& frame) const
+    {
+      Model::load_model (frame);
+      frame.declare ("area", "cm^2/cm^3", 
+                     Attribute::LogOnly, Attribute::SoilCells, 
+                     "Air-Water interface area.");
+    }
+    AWIInit ()
+      : DeclareComponent (AWI::component, "\
+Estimate area of air-water interface.")
+    { }
+  } AWI_init;
+
+  static struct AWIBrusseau2023Syntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new AWIBrusseau2023 (al); }
+    AWIBrusseau2023Syntax ()
+      : DeclareModel (AWI::component, "Brusseau2023", "\
+Estimate AWI area from water and median particle size (Equation 5).")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "brusseau2023");
+    }
+  } AWIBrusseau2023_syntax;
+
+  static struct AWICostanza2008xSyntax : public DeclareModel
+  {
+    Model* make (const BlockModel& al) const
+    { return new AWICostanza2008x (al); }
+    AWICostanza2008xSyntax ()
+      : DeclareModel (AWI::component, "Costanza2008x", "\
+Estimate AWI area from water and median particle size (Equation 1 and 2).")
+    { }
+    void load_frame (Frame& frame) const
+    {
+      frame.set_strings ("cite", "costanza2008x");
+    }
+  } AWICostanza2008x_syntax;
+}
 
 // AWI.C ends here.

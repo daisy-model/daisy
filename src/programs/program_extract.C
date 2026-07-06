@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "programs/program.h"
+#include "programs/program_registration_internal.h"
 #include "util/lexer_table.h"
 #include "util/scope_table.h"
 #include "object_model/parameter_types/number.h"
@@ -73,13 +74,13 @@ Listsum::Listsum ()
 Listsum::~Listsum ()
 { }
 
-static struct ListsumInit : public DeclareComponent 
+struct ListsumInit : public DeclareComponent 
 {
   ListsumInit ()
     : DeclareComponent (Listsum::component, "\
 Condense a list of numbers to a single number.")
   { }
-} Listsum_init;
+};
 
 // The 'sum' model.
 
@@ -101,7 +102,7 @@ struct ListsumSum : public Listsum
   { }
 };
 
-static struct ListsumSumSyntax : DeclareModel
+struct ListsumSumSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ListsumSum (al); }
@@ -111,7 +112,7 @@ The sum of all members of a list.")
   { }
   void load_frame (Frame&) const
   { }
-} ListsumSum_syntax;
+};
 
 // The 'max' model.
 
@@ -136,7 +137,7 @@ struct ListsumMax : public Listsum
   { }
 };
 
-static struct ListsumMaxSyntax : DeclareModel
+struct ListsumMaxSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ListsumMax (al); }
@@ -146,7 +147,7 @@ The maximum of all members of a list.")
   { }
   void load_frame (Frame&) const
   { }
-} ListsumMax_syntax;
+};
 
 // The 'min' model.
 
@@ -171,7 +172,7 @@ struct ListsumMin : public Listsum
   { }
 };
 
-static struct ListsumMinSyntax : DeclareModel
+struct ListsumMinSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ListsumMin (al); }
@@ -181,7 +182,7 @@ The minimum of all members of a list.")
   { }
   void load_frame (Frame&) const
   { }
-} ListsumMin_syntax;
+};
 
 // The 'count' model.
 
@@ -203,7 +204,7 @@ struct ListsumCount : public Listsum
   { }
 };
 
-static struct ListsumCountSyntax : DeclareModel
+struct ListsumCountSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ListsumCount (al); }
@@ -213,7 +214,7 @@ Count all members of a list.")
   { }
   void load_frame (Frame&) const
   { }
-} ListsumCount_syntax;
+};
 
 // The 'arithmetic' model.
 
@@ -242,7 +243,7 @@ struct ListsumArithmetic : public Listsum
   { }
 };
 
-static struct ListsumArithmeticSyntax : DeclareModel
+struct ListsumArithmeticSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ListsumArithmetic (al); }
@@ -252,7 +253,7 @@ Arithmetic average of all members of a list.")
   { }
   void load_frame (Frame&) const
   { }
-} ListsumArithmetic_syntax;
+};
 
 // The 'extract' program.
 
@@ -451,7 +452,7 @@ struct ProgramExtract : public Program
   { }
 };
 
-static struct ProgramExtractSyntax : public DeclareModel
+struct ProgramExtractSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramExtract (al); }
@@ -488,6 +489,18 @@ String to seperate values within a column descriptor.");
 String to seperate values within a row descriptor.");
     frame.set ("row_separator", "+");
   }
-} ProgramExtract_syntax;
+};
+
+void
+register_program_extract_models ()
+{
+  static ListsumInit listsum_init;
+  static ListsumSumSyntax listsum_sum_syntax;
+  static ListsumMaxSyntax listsum_max_syntax;
+  static ListsumMinSyntax listsum_min_syntax;
+  static ListsumCountSyntax listsum_count_syntax;
+  static ListsumArithmeticSyntax listsum_arithmetic_syntax;
+  static ProgramExtractSyntax program_extract_syntax;
+}
 
 // program_extract.C ends here.

@@ -39,6 +39,7 @@
 #include <memory>
 #include <sstream>
 #include <map>
+#include "daisy/daisy_registration_internal.h"
 
 
 struct SurfaceStandard : public Surface
@@ -558,7 +559,7 @@ SurfaceStandard::SurfaceStandard (const BlockModel& al)
 SurfaceStandard::~SurfaceStandard ()
 { }
 
-static struct SurfaceStandardSyntax : DeclareModel
+struct SurfaceStandardSyntax : DeclareModel
 {
   bool used_to_be_a_submodel () const
   { return true; }
@@ -660,6 +661,12 @@ Resistance to mixing inorganic compounds between soil and ponding.");
     frame.declare ("ME", "mm/h", Attribute::LogOnly, "\
 Soil limit on exfiltration rate.");
   }
-} SurfaceStandard_syntax;
+};
+
+void
+register_surface_standard_models ()
+{
+  static SurfaceStandardSyntax SurfaceStandard_syntax;
+}
 
 // surface_std.C ends here.

@@ -21,6 +21,7 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/manager/action.h"
 #include "object_model/block_model.h"
 #include "daisy/daisy.h"
@@ -55,7 +56,7 @@ struct ActionSetSurfaceDetentionCapacity : public Action
   { }
 };
 
-static struct ActionSurfaceSyntax : DeclareModel
+struct ActionSurfaceSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ActionSetSurfaceDetentionCapacity (al); }
@@ -70,6 +71,12 @@ Set amount of ponding the surface can retain.")
 		"Max ponding height before runoff.");
     frame.order ("height");
   }
-} ActionSurface_syntax;
+};
+
+void
+register_action_surface_models ()
+{
+  static ActionSurfaceSyntax action_surface_syntax;
+}
 
 // action_surface.C ends here.
