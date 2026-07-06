@@ -672,7 +672,7 @@ Time::now ()
 {
   const std::time_t now_time = std::time (NULL);
   const std::tm now_tm = *std::localtime (&now_time);
-  Time time (now_tm.tm_year, now_tm.tm_mon + 1, now_tm.tm_mday, 
+  Time time (now_tm.tm_year + 1900, now_tm.tm_mon + 1, now_tm.tm_mday,
              now_tm.tm_hour, now_tm.tm_min, now_tm.tm_sec);
   return time;
 }
