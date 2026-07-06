@@ -50,7 +50,8 @@ Will build both `deb` and `flatpak` packages.
 
     make linux-test
 
-Will run the test suite.
+Will build Daisy, install the local test harness, and run the test suite. This
+is the recommended local test entrypoint on Linux.
 
 
     make linux-coverage

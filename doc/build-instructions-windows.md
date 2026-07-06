@@ -48,7 +48,8 @@ Will build both installer and zip archive.
 
     make windows-test
 
-Will build the zip archive and run the test suite.
+Will build the zip archive, install the local test harness, and run the test
+suite. This is the recommended local test entrypoint on Windows.
 
 
 ### Non-standard builds
