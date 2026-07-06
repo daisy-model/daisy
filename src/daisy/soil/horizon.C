@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/horizon.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/library.h"
 #include "object_model/block_model.h"
 #include "object_model/frame_model.h"
@@ -476,7 +477,7 @@ Horizon::library_id () const
   return id;
 }
 
-static struct HorizonInit : public DeclareComponent 
+struct HorizonInit : public DeclareComponent 
 {
   HorizonInit ()
     : DeclareComponent (Horizon::component, "\
@@ -611,6 +612,14 @@ Danish cultivated soils. The pedotransfer function is known to be invalid\
 for podzolic B-horizons.",
                                 "krogh2000cation");
   }
-} Horizon_init;
+};
+
+void
+register_horizon_models ()
+{
+  static HorizonInit horizon_init;
+
+  register_horizon_numeric_models ();
+}
 
 // horizon.C ends here.

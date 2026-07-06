@@ -22,6 +22,7 @@
 
 #define BUILD_DLL
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
 #include "util/mathlib.h"
@@ -160,7 +161,7 @@ struct HydraulicB_C_inverse : public Hydraulic
   { }
 };
 
-static struct HydraulicB_C_inverseSyntax : public DeclareModel
+struct HydraulicB_C_inverseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicB_C_inverse (al); }
@@ -217,6 +218,12 @@ Wilting point.\n\
 By default, this value will be estimated from texture.", 
                                 "madsen1983land"); 
   }
-} hydraulicB_C_inverse_syntax;
+};
+
+void
+register_hydraulic_B_C_inverse_models ()
+{
+  static HydraulicB_C_inverseSyntax hydraulicB_C_inverse_syntax;
+}
 
 // hydraulic_B_C_inverse.C ends here.

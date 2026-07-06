@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/library.h"
 #include "object_model/plf.h"
 #include "daisy/output/log.h"
@@ -252,7 +253,7 @@ Hydraulic::Hydraulic (const BlockModel& al)
 Hydraulic::~Hydraulic ()
 { }
 
-static struct HydraulicInit : public DeclareComponent 
+struct HydraulicInit : public DeclareComponent 
 {
   HydraulicInit ()
     : DeclareComponent (Hydraulic::component, "\
@@ -263,7 +264,7 @@ properties.")
   { 
     Model::load_model (frame);
   }
-} Hydraulic_init;
+};
 
 
 // The 'hydraulic' program model.
@@ -339,7 +340,7 @@ struct ProgramHydraulic_table : public Program
   { }
 };
 
-static struct ProgramHydraulic_tableSyntax : public DeclareModel
+struct ProgramHydraulic_tableSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new ProgramHydraulic_table (al); }
@@ -389,6 +390,37 @@ Temperature for conductivity.");
     frame.set ("T", 20.0);
     frame.order ("horizon");
   }
-} ProgramHydraulic_table_syntax;
+};
+
+void
+register_hydraulic_models ()
+{
+  static HydraulicInit hydraulic_init;
+  static ProgramHydraulic_tableSyntax program_hydraulic_table_syntax;
+
+  register_hydraulic_B_BaC_models ();
+  register_hydraulic_B_BaC_Bimodal_models ();
+  register_hydraulic_B_C_models ();
+  register_hydraulic_B_C_inverse_models ();
+  register_hydraulic_B_vG_models ();
+  register_hydraulic_Cosby_models ();
+  register_hydraulic_MACRO_models ();
+  register_hydraulic_M_BaC_models ();
+  register_hydraulic_M_BaC_Bimodal_models ();
+  register_hydraulic_M_BivG_models ();
+  register_hydraulic_M_C_models ();
+  register_hydraulic_M_vG_models ();
+  register_hydraulic_M_vG_compact_models ();
+  register_hydraulic_M_vGip_models ();
+  register_hydraulic_M_vGp_models ();
+  register_hydraulic_hypres_models ();
+  register_hydraulic_hyprop_models ();
+  register_hydraulic_linear_models ();
+  register_hydraulic_mod_C_models ();
+  register_hydraulic_old2_models ();
+  register_hydraulic_table_models ();
+  register_hydraulic_wepp_models ();
+  register_hydraulic_yolo_models ();
+}
 
 // hydraulic.C ends here.

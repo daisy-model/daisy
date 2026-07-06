@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -444,7 +445,7 @@ HydraulicHyprop::HydraulicHyprop (const BlockModel& al)
 HydraulicHyprop::~HydraulicHyprop ()
 { }
 
-static struct HydraulicHypropSyntax : public DeclareModel
+struct HydraulicHypropSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicHyprop (al); }
@@ -527,6 +528,12 @@ Must be below wilting point, and below h_surf for steady state exfiltration.\n\
 \n\
 By default same as h0.");
   }
-} hydraulicHyprop_syntax;
+};
+
+void
+register_hydraulic_hyprop_models ()
+{
+  static HydraulicHypropSyntax hydraulicHyprop_syntax;
+}
 
 // hydraulic_hyprop.C ends here.

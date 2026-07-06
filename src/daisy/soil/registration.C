@@ -23,6 +23,11 @@
 void
 register_soil_models ()
 {
+  register_abiotic_models ();
+  register_tortuosity_models ();
+  register_hydraulic_models ();
+  register_horizon_models ();
+  register_soilph_models ();
   register_transport_models ();
 }
 

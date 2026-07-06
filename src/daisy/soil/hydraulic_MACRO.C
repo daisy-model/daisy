@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -273,7 +274,7 @@ HydraulicMACRO::~HydraulicMACRO ()
 
 // Add the HydraulicMACRO syntax to the syntax table.
 
-static struct HydraulicMACROSyntax : public DeclareModel
+struct HydraulicMACROSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicMACRO (al); }
@@ -314,6 +315,12 @@ Include contribution from macropores in conductivity curve.");
 Include contribution from macropores in retention curve.");
     frame.set ("enable_Theta_macro", true);
   }
-} hydraulicMACRO_syntax;
+};
+
+void
+register_hydraulic_MACRO_models ()
+{
+  static HydraulicMACROSyntax hydraulicMACRO_syntax;
+}
 
 // hydraulic_MACRO.C ends here.

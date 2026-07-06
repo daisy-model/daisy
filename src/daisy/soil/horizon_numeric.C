@@ -22,6 +22,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/horizon.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/texture.h"
 #include "daisy/soil/hydraulic.h"
@@ -83,7 +84,7 @@ HorizonNumeric::normalize (const std::vector<double>& original)
   return normalized;
 }
 
-static struct HorizonNumericSyntax : public DeclareModel
+struct HorizonNumericSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HorizonNumeric (al); }
@@ -144,6 +145,12 @@ Otherwise, give an error if the sum is not 1.0.");
     frame.set ("normalize", false);
 
   }
-} HorizonNumeric_syntax;
+};
+
+void
+register_horizon_numeric_models ()
+{
+  static HorizonNumericSyntax horizon_numeric_syntax;
+}
 
 // horizon_numeric.C ends here.

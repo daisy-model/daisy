@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"
@@ -240,7 +241,7 @@ HydraulicLinear::HydraulicLinear (const BlockModel& al)
 HydraulicLinear::~HydraulicLinear ()
 { }
 
-static struct HydraulicLinearSyntax : public DeclareModel
+struct HydraulicLinearSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicLinear (al); }
@@ -277,6 +278,12 @@ Factor multiplied with hydraulic conductivity (K).");
     frame.declare ("d", "cm/h", Attribute::State, "\
 Offset added to hydraulic conductivity (K).");
   }
-} hydraulicLinear_syntax;
+};
+
+void
+register_hydraulic_linear_models ()
+{
+  static HydraulicLinearSyntax hydraulicLinear_syntax;
+}
 
 // hydraulic_linear.C ends here.

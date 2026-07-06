@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -188,7 +189,7 @@ HydraulicM_BivG::~HydraulicM_BivG ()
 
 // Add the HydraulicM_vG syntax to the syntax table.
 
-static struct HydraulicM_BivGSyntax : public DeclareModel
+struct HydraulicM_BivGSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicM_BivG (al); }
@@ -217,6 +218,12 @@ static struct HydraulicM_BivGSyntax : public DeclareModel
     frame.set ("l", 0.5);
 
   }
-} hydraulicM_BivG_syntax;
+};
+
+void
+register_hydraulic_M_BivG_models ()
+{
+  static HydraulicM_BivGSyntax hydraulicM_BivG_syntax;
+}
 
 // hydraulic_M_BivG.C ends here.

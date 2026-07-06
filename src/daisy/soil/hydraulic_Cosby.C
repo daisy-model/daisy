@@ -25,6 +25,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/texture.h"
 #include "object_model/treelog.h"
 #include "util/mathlib.h"
@@ -174,7 +175,7 @@ Hydraulic_Cosby::~Hydraulic_Cosby ()
 { }
 
 // Add the Hydraulic_Cosby syntax to the syntax table.
-static struct Hydraulic_CosbySyntax : public DeclareModel
+struct Hydraulic_CosbySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Hydraulic_Cosby (al); }
@@ -187,4 +188,11 @@ Parameters estimated from soil texture as specified by Cosby et at.")
   void load_frame (Frame& frame) const
   { 
   }
-} hydraulic_Cosby_syntax;
+};
+
+void
+register_hydraulic_Cosby_models ()
+{
+  static Hydraulic_CosbySyntax hydraulic_Cosby_syntax;
+}
+

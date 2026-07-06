@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/texture.h"
 #include "object_model/plf.h"
@@ -632,7 +633,7 @@ HydraulicWEPP::~HydraulicWEPP ()
 
 // Add the HydraulicWEPP syntax to the syntax table.
 
-static struct HydraulicWEPPSyntax : public DeclareModel
+struct HydraulicWEPPSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicWEPP (al); }
@@ -777,11 +778,11 @@ the `freeze_effect' trigger.");
     frame.declare_fraction ("Theta_wp",  Attribute::LogOnly, 
                             "Water content at wilting point (pF 4.2).");
   }
-} hydraulicWEPP_syntax;
+};
 
 // The 'Styczen' parametrization.
 
-static struct HydraulicStyczenSyntax : public DeclareParam
+struct HydraulicStyczenSyntax : public DeclareParam
 { 
   HydraulicStyczenSyntax ()
     : DeclareParam (Hydraulic::component, "Styczen", "wepp", "\
@@ -797,6 +798,13 @@ Parameterization of for Danish soils.")
     frame.set ("freeze_on", 0.19);
     frame.set ("freeze_off", 0.01);
   }
-} HydraulicStyczen_syntax;
+};
+
+void
+register_hydraulic_wepp_models ()
+{
+  static HydraulicWEPPSyntax hydraulicWEPP_syntax;
+  static HydraulicStyczenSyntax hydraulic_styczen_syntax;
+}
 
 // hydraulic_wepp.C ends here.

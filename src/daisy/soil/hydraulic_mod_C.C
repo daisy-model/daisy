@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
 #include "util/mathlib.h"
@@ -116,7 +117,7 @@ Hydraulic_mod_C::~Hydraulic_mod_C ()
 
 // Add the Hydraulic_mod_C syntax to the syntax table.
 
-static struct Hydraulic_mod_CSyntax : public DeclareModel
+struct Hydraulic_mod_CSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new Hydraulic_mod_C (al); }
@@ -135,4 +136,11 @@ Modified Campbell retention curve model with Burdine theory.")
                 "Campbell parameter.");
 
   }
-} hydraulic_mod_C_syntax;
+};
+
+void
+register_hydraulic_mod_C_models ()
+{
+  static Hydraulic_mod_CSyntax hydraulic_mod_C_syntax;
+}
+

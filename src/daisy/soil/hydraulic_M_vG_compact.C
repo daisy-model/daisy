@@ -24,6 +24,7 @@
 #define BUILD_DLL
 
 #include "daisy/soil/hydraulic.h"
+#include "daisy/daisy_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/plf.h"
 #include "util/mathlib.h"
@@ -159,7 +160,7 @@ HydraulicM_vG_compact::~HydraulicM_vG_compact ()
 { }
 
 // Register the HydraulicM_vG_compact syntax.
-static struct HydraulicM_vG_compactSyntax : public DeclareModel
+struct HydraulicM_vG_compactSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new HydraulicM_vG_compact (al); }
@@ -188,6 +189,13 @@ and compaction.")
 		"Porosity modifier for water conductivity of saturated soil.");
 
   }
-} hydraulicM_vG_compact_syntax;
+};
 
 // hydraulic:M_vG_compact.C ends here.
+
+void
+register_hydraulic_M_vG_compact_models ()
+{
+  static HydraulicM_vG_compactSyntax hydraulicM_vG_compact_syntax;
+}
+
