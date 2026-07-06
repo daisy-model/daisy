@@ -39,20 +39,46 @@ TEST(MathlibTest, set_bound) {
 }
 
 TEST(MathlibTest, pF2h) {
-  FAIL() << "Missing specification.";
+  EXPECT_DOUBLE_EQ(pF2h(-1.0), -0.1);
+  EXPECT_DOUBLE_EQ(pF2h(0.0), -1.0);
+  EXPECT_DOUBLE_EQ(pF2h(1.0), -10.0);
+  EXPECT_DOUBLE_EQ(pF2h(2.0), -100.0);
+  EXPECT_DOUBLE_EQ(pF2h(3.0), -1000.0);
+  EXPECT_NEAR(pF2h(4.2), -15848.93192461114, 1e-9);
 }
 
 
 TEST(MathlibTest, h2pF) {
-  FAIL() << "Missing specification.";
+  EXPECT_DOUBLE_EQ(h2pF(-0.1), -1.0);
+  EXPECT_DOUBLE_EQ(h2pF(-1.0), 0.0);
+  EXPECT_DOUBLE_EQ(h2pF(-10.0), 1.0);
+  EXPECT_DOUBLE_EQ(h2pF(-100.0), 2.0);
+  EXPECT_DOUBLE_EQ(h2pF(-1000.0), 3.0);
+  EXPECT_NEAR(h2pF(-15848.93192461114), 4.2, 1e-12);
+
+  for (double pF : {-1.0, 0.0, 1.0, 2.0, 3.0, 4.2}) {
+    EXPECT_NEAR(h2pF(pF2h(pF)), pF, 1e-12);
+  }
 }
 
 TEST(MathlibTest, rate_to_halftime) {
-  FAIL() << "Missing specification.";
+  EXPECT_DOUBLE_EQ(rate_to_halftime(M_LN2), 1.0);
+  EXPECT_DOUBLE_EQ(rate_to_halftime(M_LN2 / 2.0), 2.0);
+  EXPECT_DOUBLE_EQ(rate_to_halftime(M_LN2 / 24.0), 24.0);
+
+  for (double rate : {M_LN2, M_LN2 / 2.0, M_LN2 / 24.0, 0.01}) {
+    EXPECT_NEAR(halftime_to_rate(rate_to_halftime(rate)), rate, 1e-12);
+  }
 }
 
 TEST(MathlibTest, halftime_to_rate) {
-  FAIL() << "Missing specification.";
+  EXPECT_DOUBLE_EQ(halftime_to_rate(1.0), M_LN2);
+  EXPECT_DOUBLE_EQ(halftime_to_rate(2.0), M_LN2 / 2.0);
+  EXPECT_DOUBLE_EQ(halftime_to_rate(24.0), M_LN2 / 24.0);
+
+  for (double halftime : {1.0, 2.0, 24.0, 100.0}) {
+    EXPECT_NEAR(rate_to_halftime(halftime_to_rate(halftime)), halftime, 1e-12);
+  }
 }
 
 
