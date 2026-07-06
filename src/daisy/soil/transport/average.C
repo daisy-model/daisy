@@ -21,6 +21,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/soil/transport/average.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"

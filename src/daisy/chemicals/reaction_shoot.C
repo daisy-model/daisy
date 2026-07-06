@@ -20,6 +20,8 @@
 
 #define BUILD_DLL
 
+#include "daisy/daisy_registration_internal.h"
+
 #include "daisy/chemicals/reaction.h"
 #include "daisy/output/log.h"
 #include "object_model/plf.h"

@@ -19,6 +19,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
+
+#include "daisy/daisy_registration_internal.h"
 #include "daisy/chemicals/adsorption.h"
 #include "object_model/block_model.h"
 #include "object_model/check.h"
