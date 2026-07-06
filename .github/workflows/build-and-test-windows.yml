@@ -42,6 +42,7 @@ jobs:
         working-directory: ci-build
         run: >
           cmake ..
+          -DBUILD_CXX_TESTS=ON
           -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
           -DBUILD_CXX_TESTS=ON
           --preset mingw-gcc-portable
