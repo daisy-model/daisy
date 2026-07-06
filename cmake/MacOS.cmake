@@ -56,6 +56,8 @@ if (${BUILD_PYTHON})
     POST_BUILD
     COMMAND "install_name_tool"
     ARGS "-id" "${_python_dylib_name}" "${_python_dylib_relpath}"
+    COMMAND "codesign"
+    ARGS "--force" "--sign" "-" "${_python_dylib_relpath}"
   )
 
   # Install the wrapper script that calls daisy with python
