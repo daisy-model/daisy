@@ -21,6 +21,7 @@ jobs:
             git
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gtest
             mingw-w64-ucrt-x86_64-ninja
             mingw-w64-ucrt-x86_64-suitesparse
             mingw-w64-ucrt-x86_64-boost
@@ -40,6 +41,7 @@ jobs:
         working-directory: ci-build
         run: >
           cmake ..
+          -DBUILD_CXX_TESTS=ON
           -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
           --preset mingw-gcc-portable
 

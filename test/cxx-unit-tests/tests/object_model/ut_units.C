@@ -3,6 +3,7 @@
 #include "object_model/units.h"
 #include "object_model/unit.h"
 #include "object_model/metalib.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "util/assertion.h"
 #include "util/mathlib.h"
@@ -12,13 +13,19 @@
 struct UnitsTest : public testing::Test
 {
   const Assertion::Register shut_up;
-  const Metalib metalib;
+  const std::unique_ptr<Metalib> metalib;
   const Units& units;
+
+  static std::unique_ptr<Metalib> make_metalib ()
+  {
+    register_unit_models ();
+    return std::make_unique<Metalib> (Units::load_syntax);
+  }
   
   UnitsTest ()
     : shut_up (Treelog::null ()),
-      metalib (Units::load_syntax),
-      units (metalib.units ())
+      metalib (make_metalib ()),
+      units (metalib->units ())
   { }
 };
   
@@ -70,4 +77,3 @@ TEST_F (UnitsTest, Radians2Degrees)
 }
 
 // ut_units.C ends here.
-

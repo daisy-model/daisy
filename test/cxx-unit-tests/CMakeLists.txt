@@ -49,6 +49,10 @@ if (${BUILD_CXX_TESTS})
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
   target_compile_options(ut_core PRIVATE ${COMPILE_OPTIONS})
   target_link_options(ut_core PRIVATE ${LINKER_OPTIONS})
+  target_link_libraries(ut_core PUBLIC
+    Boost::filesystem
+    Boost::system
+  )
 
   # function(cxx_unit_test_mock name)
   #   add_executable(${name} ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/tests/${name}.C ${ARGN})
@@ -74,7 +78,10 @@ if (${BUILD_CXX_TESTS})
       GTest::gtest
       GTest::gtest_main
     )
-    gtest_discover_tests(${name} TEST_PREFIX cxx_unit_test.)
+    gtest_discover_tests(${name}
+      TEST_PREFIX cxx_unit_test.
+      PROPERTIES LABELS "cxx-unit"
+    )
   endfunction()
 
   add_subdirectory(tests)

@@ -34,6 +34,12 @@ configured build directory first:
     uv venv --allow-existing
     uv pip install git+https://github.com/daisy-model/daisypy-test
 
+Useful CTest selectors by test layer:
+
+    ctest -L cxx-unit
+    ctest -L dai-unit
+    ctest -L dai-system
+
 ### Windows
 If you use `MSYS2` you need to install `python`, `pip` and `pandas`. Installing `pandas` with `pip` fails, so it needs to be installed before `daisypy-test`
 

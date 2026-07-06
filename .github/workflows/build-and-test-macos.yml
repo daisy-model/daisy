@@ -24,7 +24,7 @@ jobs:
       run: brew untap aws/tap || true
 
     - name: Install build dependencies using brew
-      run: brew install cmake boost suite-sparse pybind11
+      run: brew install cmake boost googletest suite-sparse pybind11
 
     - name: Install uv
       uses: astral-sh/setup-uv@v10.0.1
@@ -43,6 +43,7 @@ jobs:
       run: >
         cmake ..
         -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir )/* | grep 3.13 )
+        -DBUILD_CXX_TESTS=ON
         --preset macos-clang-portable
 
     - name: Build
