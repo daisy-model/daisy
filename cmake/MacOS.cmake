@@ -54,6 +54,8 @@ if (${BUILD_PYTHON})
   set(_python_dylib_relpath "${_staging_dir}/python/lib/${_python_dylib_name}")
   add_custom_command(TARGET ${DAISY_BIN_NAME}
     POST_BUILD
+    COMMAND "codesign"
+    ARGS "--remove-signature" "${_python_dylib_relpath}"
     COMMAND "install_name_tool"
     ARGS "-id" "${_python_dylib_name}" "${_python_dylib_relpath}"
     COMMAND "codesign"
