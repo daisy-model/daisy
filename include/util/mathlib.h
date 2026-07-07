@@ -75,12 +75,20 @@ tridia (int from,
 	const std::vector<double>& d,
 	std::vector<double>::iterator x);
 
+// Solves a*x^3 + b*x^2 + c*x + d = 0 and returns that non-negative root.
+// Preconditions:
+// - a != 0, so the equation is genuinely cubic.
+// - The equation has exactly one non-negative real root.
 double
-single_positive_root_of_cubic_equation 
+single_positive_root_of_cubic_equation
 (double a, double b, double c, double d);
 
+// Solves a*x^2 + b*x + c = 0 and returns that non-negative root.
+// Preconditions:
+// - a != 0, so the equation is genuinely quadratic.
+// - The equation has exactly one non-negative real root.
 double
-single_positive_root_of_square_equation 
+single_positive_root_of_square_equation
 (double a, double b, double c);
 
 extern bool approximate (double a, double b, double noise = 0.0001);

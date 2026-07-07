@@ -94,7 +94,6 @@ TEST(MathlibTest, fraction_within) {
 TEST(MathlibTest, single_positive_root_of_square_equation) {
   EXPECT_EQ(single_positive_root_of_square_equation(1, 1, -2), 1);
   EXPECT_EQ(single_positive_root_of_square_equation(1, 0, -9), 3);
-  EXPECT_EQ(single_positive_root_of_square_equation(0, 0.25, 10), 40);
 }
 
 TEST(MathlibDeathTest, single_positive_root_of_square_equation) {
@@ -105,6 +104,4 @@ TEST(MathlibTest, single_positive_root_of_cubic_equation) {
   EXPECT_FLOAT_EQ(single_positive_root_of_cubic_equation(1, 0, 0, -27), 3);
   EXPECT_FLOAT_EQ(single_positive_root_of_cubic_equation(1, 1, 0, -12), 2);
   EXPECT_FLOAT_EQ(single_positive_root_of_cubic_equation(1, 1, 1,  -3), 1);
-  EXPECT_EQ(single_positive_root_of_cubic_equation(0, 1, 0, - 9), 3);
-  EXPECT_EQ(single_positive_root_of_cubic_equation(0, 0, 1, - 3), 3);
 }
