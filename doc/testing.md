@@ -21,6 +21,28 @@ explicit rather than routing CI through the Makefile targets.
 Test scenarios are in [test/dai_test_files](test/dai_test_files).
 When adding a test you need to add it as a `dai_test_case` in [test/CMakeLists.txt](test/CMakeLists.txt).
 
+## Packaged install verification tests
+For install/package verification we now keep a separate test bundle that does not
+depend on CTest registration in the build tree. Build the bundle with:
+
+    make test-bundle
+
+This produces `build/test-bundle/daisy-test-suite-<version>.zip` containing the
+`.dai` test cases, shared test inputs, baselines, known-failure metadata, and a
+standalone runner script.
+
+After unpacking the bundle and installing `daisypy-test`, run it against an
+installed Daisy package with:
+
+    python run_packaged_tests.py --bundle-root . --daisy-bin /path/to/daisy
+
+The packaged runner does not infer Daisy paths. Daisy resolves its own runtime
+data from the installed binary. Use `--daisy-home` or `--pythonpath` only when
+you explicitly want to override the environment passed to the test harness.
+
+Pass `--suite dai-unit` or `--suite dai-system` to limit the scope, or
+`--list` to inspect the discovered tests without running them.
+
 Use [ctest](https://cmake.org/cmake/help/latest/manual/ctest.1.html) directly if
 you need lower-level control from a configured build directory. This assumes the
 build directory already has a `uv` environment and `daisypy-test` installed.
