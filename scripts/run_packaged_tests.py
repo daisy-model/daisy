@@ -11,6 +11,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
+def configure_output_streams() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(line_buffering=True)
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(line_buffering=True)
+
+
 @dataclass(frozen=True)
 class TestCase:
     suite: str
@@ -180,10 +187,10 @@ def run_case(case: TestCase, daisy_bin: Path, env: dict[str, str]) -> tuple[int,
         text=True,
     )
     if completed.returncode == 0:
-        print(f"[ PASS ] {case.test_id}")
+        print(f"[ PASS ] {case.test_id}", flush=True)
         return completed.returncode, None
 
-    print(f"[ FAIL ] {case.test_id}")
+    print(f"[ FAIL ] {case.test_id}", flush=True)
     return completed.returncode, FailureDetail(
         test_id=case.test_id,
         stdout=completed.stdout,
@@ -239,6 +246,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    configure_output_streams()
     args = parse_args()
     bundle_root = args.bundle_root.resolve()
     output_root = args.output_root.resolve()
@@ -255,7 +263,7 @@ def main() -> int:
     if args.list:
         for case in cases:
             marker = " known-failure" if case.test_id in known_failures else ""
-            print(f"{case.test_id}{marker}")
+            print(f"{case.test_id}{marker}", flush=True)
         return 0
 
     daisy_bin = args.daisy_bin.resolve()
@@ -288,10 +296,10 @@ def main() -> int:
     for case in cases:
         if case.test_id in known_failures and not args.include_known_failures:
             skipped += 1
-            print(f"[ SKIP ] {case.test_id} (known failure on {args.platform})")
+            print(f"[ SKIP ] {case.test_id} (known failure on {args.platform})", flush=True)
             continue
         if case.baseline_dir is not None and not case.baseline_dir.is_dir():
-            print(f"[ FAIL ] {case.test_id}")
+            print(f"[ FAIL ] {case.test_id}", flush=True)
             failed += 1
             failure_details.append(
                 FailureDetail(
@@ -314,17 +322,18 @@ def main() -> int:
                 break
 
     if failure_details:
-        print("\nFailure details:")
+        print("\nFailure details:", flush=True)
         for detail in failure_details:
-            print(f"\n--- {detail.test_id} ---")
+            print(f"\n--- {detail.test_id} ---", flush=True)
             if detail.stdout:
-                print(detail.stdout, end="" if detail.stdout.endswith("\n") else "\n")
+                print(detail.stdout, end="" if detail.stdout.endswith("\n") else "\n", flush=True)
             if detail.stderr:
-                print(detail.stderr, end="" if detail.stderr.endswith("\n") else "\n")
+                print(detail.stderr, end="" if detail.stderr.endswith("\n") else "\n", flush=True)
 
     print(
         f"Completed {len(cases)} discovered tests: "
-        f"{passed} passed, {failed} failed, {skipped} skipped."
+        f"{passed} passed, {failed} failed, {skipped} skipped.",
+        flush=True,
     )
     return 1 if failed else 0
 
