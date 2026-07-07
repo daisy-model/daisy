@@ -207,7 +207,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.0.1
         with:
           version: "0.9.18"
-          enable-cache: false
+          enable-cache: true
 
       - name: Import Developer ID certificate
         id: signing

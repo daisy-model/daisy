@@ -19,6 +19,7 @@ jobs:
           update: true
           install: >-
             git
+            make
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-gtest
@@ -29,10 +30,21 @@ jobs:
             mingw-w64-ucrt-x86_64-uv
             unzip
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v5
 
       - name: Install python
         run: uv python install 3.13
+
+      - name: Resolve managed python root
+        id: python-root
+        run: |
+          uv_dir="$(uv python dir | tr '\\' '/')"
+          python_root="$(find "$uv_dir" -maxdepth 1 -mindepth 1 -type d -name 'cpython-3.13*' -print -quit)"
+          if [ -z "$python_root" ]; then
+            echo "Managed Python 3.13 installation not found." >&2
+            exit 1
+          fi
+          echo "root=$python_root" >> "$GITHUB_OUTPUT"
 
       - name: Create build dir
         run: mkdir ci-build
@@ -42,34 +54,104 @@ jobs:
         run: >
           cmake ..
           -DBUILD_CXX_TESTS=ON
-          -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
+          -DUV_INSTALLED_PYTHON_ROOT_DIR="${{ steps.python-root.outputs.root }}"
           --preset mingw-gcc-portable
 
       - name: Build
         working-directory: ci-build
         run: cmake --build .
 
+      - name: Run C++ unit tests
+        working-directory: ci-build
+        run: ctest -L cxx-unit --output-on-failure
+
       - name: Pack
         working-directory: ci-build
         run: cpack -G ZIP
 
-      - name: Install
-        working-directory: ci-build
-        run: unzip daisy-*-Windows-python*.zip
+      - name: Build packaged test bundle
+        run: make test-bundle
 
-      - name: Setup test environment
-        working-directory: ci-build
-        run: |
-          uv venv
-          uv pip install git+https://github.com/daisy-model/daisypy-test
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v5
+        with:
+          name: ci-windows-package
+          path: ci-build/daisy-*-Windows-python*.zip
+          if-no-files-found: error
 
-      - name: Test
-        working-directory: ci-build
-        run: ctest --output-on-failure
+      - name: Upload Windows test bundle
+        uses: actions/upload-artifact@v5
+        with:
+          name: ci-windows-test-bundle
+          path: build/test-bundle/*.zip
+          if-no-files-found: error
 
-      - name: Upload test logs
+      - name: Upload C++ test logs
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v5
         with:
           name: test-output-windows
           path: ci-build/Testing
+
+  package-test:
+    needs: build
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            mingw-w64-ucrt-x86_64-uv
+            unzip
+
+      - name: Install python
+        run: uv python install 3.13
+
+      - name: Download Windows package
+        uses: actions/download-artifact@v4
+        with:
+          name: ci-windows-package
+          path: ci-package
+
+      - name: Download Windows test bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: ci-windows-test-bundle
+          path: ci-test-bundle
+
+      - name: Unpack package and test bundle
+        run: |
+          unzip ci-package/*.zip -d ci-install
+          unzip ci-test-bundle/*.zip -d ci-test-bundle
+
+      - name: Run packaged tests
+        run: |
+          bundle_root="$(find ci-test-bundle -maxdepth 1 -type d -name 'daisy-test-suite-*' -print -quit)"
+          daisy_bin="$(find ci-install -type f -path '*/bin/daisy-bin.exe' -print -quit)"
+          if [ -z "$bundle_root" ]; then
+            echo "Packaged test bundle not found." >&2
+            exit 1
+          fi
+          if [ -z "$daisy_bin" ]; then
+            echo "Packaged Daisy binary not found." >&2
+            exit 1
+          fi
+          uv run --with git+https://github.com/daisy-model/daisypy-test \
+            python "$bundle_root/run_packaged_tests.py" \
+            --bundle-root "$bundle_root" \
+            --daisy-bin "$daisy_bin" \
+            --output-root "$PWD/package-test-results"
+
+      - name: Upload packaged test output
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: packaged-test-output-windows
+          path: package-test-results

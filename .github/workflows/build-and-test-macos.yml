@@ -6,19 +6,10 @@ on:
 
 jobs:
   build:
-    name: Build and test (${{ matrix.arch }})
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runner: macos-latest
-            arch: arm64
-          - runner: macos-15-intel
-            arch: x86_64
-    runs-on: ${{ matrix.runner }}
+    runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v5
 
     - name: Remove unused untrusted Homebrew tap
       run: brew untap aws/tap || true
@@ -27,13 +18,23 @@ jobs:
       run: brew install cmake boost googletest suite-sparse pybind11
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v10.0.1
+      uses: astral-sh/setup-uv@v7
       with:
         version: "0.9.18"
-        enable-cache: false
+        enable-cache: true
 
     - name: Install python
       run: uv python install 3.13
+
+    - name: Resolve managed python root
+      id: python-root
+      run: |
+        python_root="$(find "$(uv python dir)" -maxdepth 1 -mindepth 1 -type d -name 'cpython-3.13*' -print -quit)"
+        if [ -z "$python_root" ]; then
+          echo "Managed Python 3.13 installation not found." >&2
+          exit 1
+        fi
+        echo "root=$python_root" >> "$GITHUB_OUTPUT"
 
     - name: Create build dir
       run: mkdir ci-build
@@ -42,7 +43,7 @@ jobs:
       working-directory: ci-build
       run: >
         cmake ..
-        -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir )/* | grep 3.13 )
+        -DUV_INSTALLED_PYTHON_ROOT_DIR="${{ steps.python-root.outputs.root }}"
         -DBUILD_CXX_TESTS=ON
         --preset macos-clang-portable
 
@@ -50,27 +51,90 @@ jobs:
       working-directory: ci-build
       run: cmake --build . -j 4
 
+    - name: Run C++ unit tests
+      working-directory: ci-build
+      run: ctest -L cxx-unit --output-on-failure
+
     - name: Pack
       working-directory: ci-build
       run: cpack -G ZIP
 
-    - name: Install
-      working-directory: ci-build
-      run: unzip daisy*-Darwin-*-python*.zip
+    - name: Build packaged test bundle
+      run: make test-bundle
 
-    - name: Setup test environment
-      working-directory: ci-build
-      run: |
-        uv venv
-        uv pip install git+https://github.com/daisy-model/daisypy-test
-
-    - name: Test
-      working-directory: ci-build
-      run: ctest --output-on-failure
-
-    - name: Upload test log
-      if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v7
+    - name: Upload macOS package
+      uses: actions/upload-artifact@v5
       with:
-        name: test-output-macos-${{ matrix.arch }}
+        name: ci-macos-package
+        path: ci-build/daisy-*Darwin-python*.zip
+        if-no-files-found: error
+
+    - name: Upload macOS test bundle
+      uses: actions/upload-artifact@v5
+      with:
+        name: ci-macos-test-bundle
+        path: build/test-bundle/*.zip
+        if-no-files-found: error
+
+    - name: Upload C++ test log
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: test-output-macos
         path: ci-build/Testing
+
+  package-test:
+    needs: build
+    runs-on: macos-latest
+
+    steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: "0.9.18"
+        enable-cache: true
+
+    - name: Install python
+      run: uv python install 3.13
+
+    - name: Download macOS package
+      uses: actions/download-artifact@v4
+      with:
+        name: ci-macos-package
+        path: ci-package
+
+    - name: Download macOS test bundle
+      uses: actions/download-artifact@v4
+      with:
+        name: ci-macos-test-bundle
+        path: ci-test-bundle
+
+    - name: Unpack package and test bundle
+      run: |
+        unzip ci-package/*.zip -d ci-install
+        unzip ci-test-bundle/*.zip -d ci-test-bundle
+
+    - name: Run packaged tests
+      run: |
+        bundle_root="$(find ci-test-bundle -maxdepth 1 -type d -name 'daisy-test-suite-*' -print -quit)"
+        daisy_bin="$(find ci-install -type f -path '*/Daisy/bin/daisy' -print -quit)"
+        if [ -z "$bundle_root" ]; then
+          echo "Packaged test bundle not found." >&2
+          exit 1
+        fi
+        if [ -z "$daisy_bin" ]; then
+          echo "Packaged Daisy binary not found." >&2
+          exit 1
+        fi
+        uv run --with git+https://github.com/daisy-model/daisypy-test \
+          python "$bundle_root/run_packaged_tests.py" \
+          --bundle-root "$bundle_root" \
+          --daisy-bin "$daisy_bin" \
+          --output-root "$PWD/package-test-results"
+
+    - name: Upload packaged test output
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v5
+      with:
+        name: packaged-test-output-macos
+        path: package-test-results
