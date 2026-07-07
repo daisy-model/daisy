@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -37,42 +36,7 @@ jobs:
       working-directory: ci-build
       run: cmake --build . -j 4
 
-    - name: Upload build tree
-      uses: actions/upload-artifact@v5
-      with:
-        name: ci-build-linux
-        path: ci-build
-        if-no-files-found: error
-
-  test:
-    name: Test
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v5
-
-    - name: Install build dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake libsuitesparse-dev libboost-filesystem-dev libgtest-dev python3-pybind11
-
-    - name: Install uv for testing
-      uses: astral-sh/setup-uv@v7
-      with:
-        version: "0.9.18"
-        enable-cache: true
-
-    - name: Install python
-      run: uv python install 3.13
-
-    - name: Download build tree
-      uses: actions/download-artifact@v4
-      with:
-        name: ci-build-linux
-        path: .
-
-    - name: Setup test environment
+    - name: Test environment
       working-directory: ci-build
       run: |
         uv venv
