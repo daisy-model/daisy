@@ -32,7 +32,6 @@ It requires
 You should now be able to run Daisy
 ```
 $ flatpak run dk.ku.daisy --info
-Installing lib and sample
 Daisy crop/soil simulation version 7.1.3. (Dec 17 2025)
 Python 3.13.9
 ```
@@ -62,6 +61,10 @@ If you installed the `flatpak` package, then Daisy comes with a python environme
 ```
 daisy --python
 ```
+
+The bundled Daisy `lib/` and `sample/` data under the Flatpak app-data
+directory are refreshed automatically when the packaged data changes, so
+package reinstalls and upgrades do not keep stale copies of those files.
 
 You can install additional packages by passing `--pip` to daisy. To install `numpy`
 ```
