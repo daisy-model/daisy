@@ -5,6 +5,7 @@ has_gcovr := $(shell command -v gcovr 2> /dev/null)
 python_version = 3.13
 python_root = $(shell scripts/find_python_root_dir.sh ${python_version})
 nproc := 6
+test_bundle_dir=build/test-bundle
 
 # Python
 .PHONY: uv-python
@@ -30,6 +31,17 @@ release-tag:
 	fi
 	git tag -a "$(daisy_tag)" -m "Release $(daisy_tag)"
 	@echo "Created tag $(daisy_tag)"
+
+
+# Package verification tests
+.PHONY: test-bundle
+test-bundle:
+	mkdir -p $(test_bundle_dir)
+	cmake \
+		-DDAISY_SOURCE_DIR="$(current_dir)" \
+		-DDAISY_BUNDLE_DIR="$(current_dir)/$(test_bundle_dir)" \
+		-DDAISY_VERSION="$(daisy_version)" \
+		-P cmake/TestBundle.cmake
 
 
 # Windows
