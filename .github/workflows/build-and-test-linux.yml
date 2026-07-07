@@ -44,9 +44,86 @@ jobs:
       working-directory: ci-build
       run: ctest --output-on-failure
 
+    - name: Build Debian package
+      working-directory: ci-build
+      run: cpack -G DEB
+
+    - name: Build packaged test bundle
+      run: make test-bundle
+
+    - name: Upload Linux Debian package
+      uses: actions/upload-artifact@v7
+      with:
+        name: ci-linux-package
+        path: ci-build/*.deb
+        if-no-files-found: error
+
+    - name: Upload Linux test bundle
+      uses: actions/upload-artifact@v7
+      with:
+        name: ci-linux-test-bundle
+        path: build/test-bundle/*.zip
+        if-no-files-found: error
+
     - name: Upload test log
       if: ${{ !cancelled() }}
       uses: actions/upload-artifact@v7
       with:
         name: test-output-ubuntu
-        path: build/Testing
+        path: ci-build/Testing
+
+  package-test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install test dependencies
+      run: sudo apt install unzip
+
+    - name: Install uv for packaged tests
+      uses: astral-sh/setup-uv@v10.0.1
+      with:
+        version: "0.9.18"
+        enable-cache: false
+
+    - name: Install python
+      run: uv python install 3.13
+
+    - name: Download Linux Debian package
+      uses: actions/download-artifact@v4
+      with:
+        name: ci-linux-package
+        path: ci-package
+
+    - name: Download Linux test bundle
+      uses: actions/download-artifact@v4
+      with:
+        name: ci-linux-test-bundle
+        path: ci-test-bundle
+
+    - name: Unpack test bundle
+      working-directory: ci-test-bundle
+      run: unzip *.zip
+
+    - name: Install Debian package
+      run: sudo apt install ./ci-package/*.deb
+
+    - name: Run packaged tests
+      run: |
+        bundle_root="$(find ci-test-bundle -maxdepth 1 -type d -name 'daisy-test-suite-*' -print -quit)"
+        if [ -z "$bundle_root" ]; then
+          echo "Packaged test bundle not found." >&2
+          exit 1
+        fi
+        uv run --with git+https://github.com/daisy-model/daisypy-test \
+          python "$bundle_root/run_packaged_tests.py" \
+          --bundle-root "$bundle_root" \
+          --daisy-bin "/usr/bin/daisy" \
+          --output-root "$PWD/package-test-results"
+
+    - name: Upload packaged test output
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: packaged-test-output-ubuntu
+        path: package-test-results
