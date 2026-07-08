@@ -56,4 +56,26 @@ public:
   ~Boolean ();
 };
 
+class BooleanTrue : public Boolean
+{
+public:
+  void tick (const Units&, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool value (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit BooleanTrue (const BlockModel&);
+};
+
+class BooleanFalse : public Boolean
+{
+public:
+  void tick (const Units&, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool value (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit BooleanFalse (const BlockModel&);
+};
+
 #endif // BOOLEAN_H

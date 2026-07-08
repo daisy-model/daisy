@@ -22,6 +22,7 @@
 
 
 #include "object_model/parameter_types/boolean.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/block_model.h"
 #include "object_model/frame.h"
 #include "util/assertion.h"
@@ -44,6 +45,10 @@ const std::string&
 Boolean::title () const
 { return name.name (); }
 
+Boolean::Boolean (const symbol direct_name)
+  : name (direct_name)
+{ }
+
 Boolean::Boolean (const BlockModel& al)
   : name (al.type_name ())
 { }
@@ -51,27 +56,169 @@ Boolean::Boolean (const BlockModel& al)
 Boolean::~Boolean ()
 { }
 
-struct BooleanTrue : public Boolean
+void
+BooleanTrue::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+bool
+BooleanTrue::missing (const Scope&) const
+{ return false; }
+
+bool
+BooleanTrue::value (const Scope&) const
+{ return true; }
+
+bool
+BooleanTrue::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+BooleanTrue::check (const Units&, const Scope&, Treelog&) const
+{ return true; }
+
+BooleanTrue::BooleanTrue ()
+  : Boolean ("true")
+{ }
+
+BooleanTrue::BooleanTrue (const BlockModel& al)
+  : Boolean (al)
+{ }
+
+void
+BooleanFalse::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+bool
+BooleanFalse::missing (const Scope&) const
+{ return false; }
+
+bool
+BooleanFalse::value (const Scope&) const
+{ return false; }
+
+bool
+BooleanFalse::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+BooleanFalse::check (const Units&, const Scope&, Treelog&) const
+{ return true; }
+
+BooleanFalse::BooleanFalse ()
+  : Boolean ("false")
+{ }
+
+BooleanFalse::BooleanFalse (const BlockModel& al)
+  : Boolean (al)
+{ }
+
+void
+BooleanOperands::tick (const Units& units, const Scope& scope, Treelog& msg)
 {
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const
-  { return false; }
-  bool value (const Scope&) const
-  { return true; }
+  for (size_t i = 0; i < operand.size (); i++)
+    operand[i]->tick (units, scope, msg);
+}
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog&)
-  { return true; }
-  bool check (const Units&, const Scope&, Treelog&) const
-  { return true; }
-  BooleanTrue (const BlockModel& al)
-    : Boolean (al)
-  { }
-};
+bool
+BooleanOperands::missing (const Scope& scope) const
+{
+  for (size_t i = 0; i < operand.size (); i++)
+    if (operand[i]->missing (scope))
+      return true;
 
-static struct BooleanTrueSyntax : DeclareModel
+  return false;
+}
+
+bool
+BooleanOperands::initialize (const Units& units, const Scope& scope,
+                             Treelog& msg)
+{
+  bool ok = true;
+
+  for (size_t i = 0; i < operand.size (); i++)
+    if (!operand[i]->initialize (units, scope, msg))
+      {
+        std::ostringstream tmp;
+        tmp << name << "[" << i << "]";
+        Treelog::Open nest (msg, tmp.str ());
+        ok = false;
+      }
+  return ok;
+}
+
+bool
+BooleanOperands::check (const Units& units, const Scope& scope,
+                        Treelog& msg) const
+{
+  Treelog::Open nest (msg, name);
+  bool ok = true;
+
+  for (size_t i = 0; i < operand.size (); i++)
+    if (!operand[i]->check (units, scope, msg))
+      ok = false;
+
+  return ok;
+}
+
+BooleanOperands::BooleanOperands (const BlockModel& al)
+  : Boolean (al),
+    operand (Librarian::build_vector<Boolean> (al, "operands"))
+{ }
+
+BooleanOperands::~BooleanOperands ()
+{ sequence_delete (operand.begin (), operand.end ()); }
+
+bool
+BooleanAnd::value (const Scope& scope) const
+{
+  for (size_t i = 0; i < operand.size (); i++)
+    if (!operand[i]->value (scope))
+      return false;
+  return true;
+}
+
+BooleanAnd::BooleanAnd (const BlockModel& al)
+  : BooleanOperands (al)
+{ }
+
+bool
+BooleanOr::value (const Scope& scope) const
+{
+  for (size_t i = 0; i < operand.size (); i++)
+    if (operand[i]->value (scope))
+      return true;
+  return false;
+}
+
+BooleanOr::BooleanOr (const BlockModel& al)
+  : BooleanOperands (al)
+{ }
+
+bool
+BooleanXOr::value (const Scope& scope) const
+{
+  daisy_assert (operand.size () == 2);
+  return operand[0]->value (scope) != operand[1]->value (scope);
+}
+
+BooleanXOr::BooleanXOr (const BlockModel& al)
+  : BooleanOperands (al)
+{ }
+
+bool
+BooleanNot::value (const Scope& scope) const
+{
+  daisy_assert (operand.size () == 1);
+  return !operand[0]->value (scope);
+}
+
+BooleanNot::BooleanNot (const BlockModel& al)
+  : BooleanOperands (al)
+{ }
+
+namespace
+{
+struct BooleanTrueSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanTrue (al); }
@@ -81,30 +228,9 @@ static struct BooleanTrueSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanTrue_syntax;
-
-
-struct BooleanFalse : public Boolean
-{
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const
-  { return false; }
-  bool value (const Scope&) const
-  { return false; }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog&)
-  { return true; }
-  bool check (const Units&, const Scope&, Treelog&) const
-  { return true; }
-  BooleanFalse (const BlockModel& al)
-    : Boolean (al)
-  { }
 };
 
-static struct BooleanFalseSyntax : DeclareModel
+struct BooleanFalseSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanFalse (al); }
@@ -114,62 +240,9 @@ static struct BooleanFalseSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   {  }
-} BooleanFalse_syntax;
-
-struct BooleanOperands : public Boolean
-{
-  const std::vector<Boolean*> operand;
-
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      operand[i]->tick (units, scope, msg);
-  }
-  bool missing (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      if (operand[i]->missing (scope))
-        return true;
-    
-    return false;
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    bool ok = true;
-
-    for (size_t i = 0; i < operand.size (); i++)
-      if (!operand[i]->initialize (units, scope, msg))
-        {
-          std::ostringstream tmp;
-          tmp << name << "[" << i << "]";
-          Treelog::Open nest (msg, tmp.str ());
-          ok = false;
-        }
-    return ok;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    Treelog::Open nest (msg, name);
-    bool ok = true;
-
-    for (size_t i = 0; i < operand.size (); i++)
-      if (!operand[i]->check (units, scope, msg))
-        ok = false;
-
-    return ok;
-  }
-  BooleanOperands (const BlockModel& al)
-    : Boolean (al),
-      operand (Librarian::build_vector<Boolean> (al, "operands"))
-  { }
-  ~BooleanOperands ()
-  { sequence_delete (operand.begin (), operand.end ()); }
 };
 
-static struct BooleanOperandsSyntax : public DeclareBase
+struct BooleanOperandsSyntax : public DeclareBase
 {
   BooleanOperandsSyntax ()
     : DeclareBase (Boolean::component, "operands", "\
@@ -182,23 +255,9 @@ Base class for boolean expressions involving multiple boolean operands.")
 List of operands to compare.");
     frame.order ("operands");
   }
-} BooleanOperands_syntax;
-
-struct BooleanAnd : public BooleanOperands 
-{
-  bool value (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      if (!operand[i]->value (scope))
-        return false;
-    return true;
-  }
-  BooleanAnd (const BlockModel& al)
-    : BooleanOperands (al)
-  { }
 };
 
-static struct BooleanAndSyntax : DeclareModel
+struct BooleanAndSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanAnd (al); }
@@ -208,24 +267,10 @@ static struct BooleanAndSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanAnd_syntax;
-
-
-struct BooleanOr : public BooleanOperands 
-{
-  bool value (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      if (operand[i]->value (scope))
-        return true;
-    return false;
-  }
-  BooleanOr (const BlockModel& al)
-    : BooleanOperands (al)
-  { }
 };
 
-static struct BooleanOrSyntax : DeclareModel
+
+struct BooleanOrSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanOr (al); }
@@ -235,21 +280,9 @@ static struct BooleanOrSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanOr_syntax;
-
-struct BooleanXOr : public BooleanOperands 
-{
-  bool value (const Scope& scope) const
-  { 
-    daisy_assert (operand.size () == 2);
-    return operand[0]->value (scope) != operand[1]->value (scope);
-  }
-  BooleanXOr (const BlockModel& al)
-    : BooleanOperands (al)
-  { }
 };
 
-static struct BooleanXOrSyntax : DeclareModel
+struct BooleanXOrSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanXOr (al); }
@@ -264,21 +297,9 @@ static struct BooleanXOrSyntax : DeclareModel
 The two operands to compare.");
     frame.order ("operands");
   }
-} BooleanXOr_syntax;
-
-struct BooleanNot : public BooleanOperands 
-{
-  bool value (const Scope& scope) const
-  { 
-    daisy_assert (operand.size () == 1);
-    return !operand[0]->value (scope);
-  }
-  BooleanNot (const BlockModel& al)
-    : BooleanOperands (al)
-  { }
 };
 
-static struct BooleanNotSyntax : DeclareModel
+struct BooleanNotSyntax : DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNot (al); }
@@ -293,14 +314,28 @@ static struct BooleanNotSyntax : DeclareModel
 The operand to check.");
     frame.order ("operands");
   }
-} BooleanNot_syntax;
+};
 
-static struct BooleanInit : public DeclareComponent 
+struct BooleanInit : public DeclareComponent 
 {
   BooleanInit ()
     : DeclareComponent (Boolean::component, "\
 Generic representation of booleans.")
   { }
-} Boolean_init;
+};
+}
+
+void
+register_boolean_models ()
+{
+  static BooleanTrueSyntax boolean_true_syntax;
+  static BooleanFalseSyntax boolean_false_syntax;
+  static BooleanOperandsSyntax boolean_operands_syntax;
+  static BooleanAndSyntax boolean_and_syntax;
+  static BooleanOrSyntax boolean_or_syntax;
+  static BooleanXOrSyntax boolean_xor_syntax;
+  static BooleanNotSyntax boolean_not_syntax;
+  static BooleanInit boolean_init;
+}
 
 // boolean.C ends here.

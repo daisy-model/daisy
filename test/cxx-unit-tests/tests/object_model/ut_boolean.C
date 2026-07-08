@@ -1,4 +1,5 @@
 #include <set>
+#include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -85,4 +86,11 @@ TEST(BooleanRegistrationTest, BooleanLeafModelsHaveNoBaseModel) {
 
 TEST(BooleanRegistrationTest, BooleanComponentMetadataIsStable) {
   EXPECT_EQ(symbol(Boolean::component), symbol("boolean"));
+}
+
+TEST(BooleanExposureTest, BooleanLeafClassesArePublicTypes) {
+  EXPECT_TRUE((std::is_base_of<Boolean, BooleanTrue>::value));
+  EXPECT_TRUE((std::is_base_of<Boolean, BooleanFalse>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanTrue, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanFalse, const BlockModel&>::value));
 }
