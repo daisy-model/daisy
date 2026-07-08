@@ -39,6 +39,7 @@ TEST(OldunitsTest, RejectsInvalidValuesForGuardedConversions) {
 TEST(OldunitsTest, ReportsUnavailableConversions) {
   EXPECT_FALSE(Oldunits::can_convert("unknown", "cm"));
   EXPECT_FALSE(Oldunits::can_convert("cm", "unknown"));
+  EXPECT_TRUE(Oldunits::can_convert("cm", "cm", 123.0));
 }
 
 TEST(OldunitsTest, MultiplyHandlesNeutralKnownAndInverseCases) {
@@ -49,6 +50,8 @@ TEST(OldunitsTest, MultiplyHandlesNeutralKnownAndInverseCases) {
   EXPECT_EQ(Oldunits::multiply("h^-1", "cm"), symbol("cm/h"));
   EXPECT_EQ(Oldunits::multiply("cm", "h^-1"), symbol("cm/h"));
   EXPECT_EQ(Oldunits::multiply("cm/h", "h"), symbol("cm"));
+  EXPECT_EQ(Oldunits::multiply("g/cm^2", "h^-1"), symbol("g/cm^2/h"));
+  EXPECT_EQ(Oldunits::multiply("cm^3/cm^3", "cm"), symbol("cm"));
   EXPECT_EQ(Oldunits::multiply("cm", "cm^-1"), Attribute::None());
   EXPECT_EQ(Oldunits::multiply(Attribute::Unknown(), "cm"), Attribute::Unknown());
   EXPECT_EQ(Oldunits::multiply("foo", "bar"), Attribute::Unknown());
