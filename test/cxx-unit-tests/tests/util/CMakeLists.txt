@@ -2,6 +2,7 @@ cxx_unit_test(ut_scope_exchange
   ${CMAKE_SOURCE_DIR}/src/util/scope_exchange.C
   ${CMAKE_SOURCE_DIR}/src/util/scope_model.C
 )
+cxx_unit_test(ut_filepos)
 cxx_unit_test(ut_iterative
   ${CMAKE_SOURCE_DIR}/src/util/iterative.C
 )
