@@ -1,5 +1,7 @@
 cxx_unit_test(ut_symbol)
 cxx_unit_test(ut_plf)
+cxx_unit_test(ut_function)
+cxx_unit_test(ut_boolean)
 cxx_unit_test(ut_type)
 cxx_unit_test(ut_unit)
 cxx_unit_test(ut_units)
