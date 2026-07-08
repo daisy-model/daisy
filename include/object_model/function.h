@@ -23,6 +23,7 @@
 #define FUNCTION_H
 
 #include "object_model/model.h"
+#include "object_model/plf.h"
 #include "object_model/symbol.h"
 #include <vector>
 
@@ -57,6 +58,22 @@ protected:
   virtual double x_max () const = 0;
   FunctionPlotable (const BlockModel&);
   ~FunctionPlotable ();
+};
+
+class FunctionConst : public Function
+{
+  const double value_;
+public:
+  double value (const double) const;
+  explicit FunctionConst (const BlockModel&);
+};
+
+class FunctionPLF : public Function
+{
+  const PLF plf_;
+public:
+  double value (const double x) const;
+  explicit FunctionPLF (const BlockModel&);
 };
 
 #endif // FUNCTION_H

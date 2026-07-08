@@ -1,4 +1,5 @@
 #include <set>
+#include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -65,4 +66,11 @@ TEST(FunctionRegistrationTest, FunctionModelsHaveExpectedInheritance) {
 
 TEST(FunctionRegistrationTest, FunctionComponentSymbolIsStable) {
   EXPECT_EQ(symbol(Function::component), symbol("function"));
+}
+
+TEST(FunctionExposureTest, ConcreteFunctionClassesArePublicTypes) {
+  EXPECT_TRUE((std::is_base_of<Function, FunctionConst>::value));
+  EXPECT_TRUE((std::is_base_of<Function, FunctionPLF>::value));
+  EXPECT_TRUE((std::is_constructible<FunctionConst, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<FunctionPLF, const BlockModel&>::value));
 }
