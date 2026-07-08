@@ -1,6 +1,9 @@
 cxx_unit_test(ut_symbol)
 cxx_unit_test(ut_plf)
 cxx_unit_test(ut_units)
+cxx_unit_test(ut_attribute)
+cxx_unit_test(ut_check)
+cxx_unit_test(ut_value)
 cxx_unit_test(ut_xref
   ${CMAKE_SOURCE_DIR}/src/object_model/traverse.C
   ${CMAKE_SOURCE_DIR}/src/object_model/xref.C
