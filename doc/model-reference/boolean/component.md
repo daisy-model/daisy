@@ -23,6 +23,11 @@ Generic representation of booleans.
 | `Boolean` | Abstract base class for boolean-valued models. |
 | `BooleanTrue` | Concrete model that always evaluates to true. |
 | `BooleanFalse` | Concrete model that always evaluates to false. |
+| `BooleanOperands` | Shared base class for operand-driven boolean models. |
+| `BooleanAnd` | Concrete model that requires all operands to be true. |
+| `BooleanOr` | Concrete model that requires any operand to be true. |
+| `BooleanXOr` | Concrete model that compares exactly two operands. |
+| `BooleanNot` | Concrete model that negates a single operand. |
 
 ## Shared declared entries
 
@@ -42,5 +47,4 @@ currently does not add shared frame entries at the component level.
 ## TODO
 
 - Document the lifecycle expectations for `initialize`, `check`, `tick`, and `missing`.
-- Extend the exposed-class list when operand-based boolean classes are promoted to headers.
 - Add usage examples showing how boolean models are embedded in Daisy inputs.

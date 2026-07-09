@@ -24,6 +24,7 @@
 
 #include "object_model/model.h"
 #include "object_model/symbol.h"
+#include <vector>
 
 class Scope;
 class Treelog;
@@ -76,6 +77,47 @@ public:
   bool initialize (const Units& units, const Scope& scope, Treelog& msg);
   bool check (const Units&, const Scope&, Treelog&) const;
   explicit BooleanFalse (const BlockModel&);
+};
+
+class BooleanOperands : public Boolean
+{
+protected:
+  const std::vector<Boolean*> operand;
+public:
+  void tick (const Units&, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit BooleanOperands (const BlockModel&);
+  ~BooleanOperands ();
+};
+
+class BooleanAnd : public BooleanOperands
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanAnd (const BlockModel&);
+};
+
+class BooleanOr : public BooleanOperands
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanOr (const BlockModel&);
+};
+
+class BooleanXOr : public BooleanOperands
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanXOr (const BlockModel&);
+};
+
+class BooleanNot : public BooleanOperands
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanNot (const BlockModel&);
 };
 
 #endif // BOOLEAN_H

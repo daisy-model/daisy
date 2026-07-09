@@ -94,3 +94,16 @@ TEST(BooleanExposureTest, BooleanLeafClassesArePublicTypes) {
   EXPECT_TRUE((std::is_constructible<BooleanTrue, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanFalse, const BlockModel&>::value));
 }
+
+TEST(BooleanExposureTest, BooleanOperandClassesArePublicTypes) {
+  EXPECT_TRUE((std::is_base_of<Boolean, BooleanOperands>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanOperands, BooleanAnd>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanOperands, BooleanOr>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanOperands, BooleanXOr>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanOperands, BooleanNot>::value));
+  EXPECT_TRUE((std::is_abstract<BooleanOperands>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanAnd, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanOr, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanXOr, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNot, const BlockModel&>::value));
+}

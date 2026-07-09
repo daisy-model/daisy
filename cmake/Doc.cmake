@@ -1,7 +1,19 @@
 if(${BUILD_DOC})
+  find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
   add_custom_target(doc_setup
     COMMAND mkdir -p doc/gnufig
   )
+
+  add_custom_target(model_reference_scaffolding
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_SOURCE_DIR}/doc/model-reference/generate_from_registration.py
+            --repo-root ${CMAKE_SOURCE_DIR}
+            --output-dir ${CMAKE_BINARY_DIR}/model-reference-generated
+            --source src/object_model/function.C
+            --source src/object_model/parameter_types/boolean.C
+  )
+
   add_custom_command(OUTPUT doc/components.tex
     COMMAND ${DAISY_BIN_NAME} -d doc all.dai -p document
     COMMAND cd doc && gnuplot document.gnuplot
