@@ -27,6 +27,7 @@ class Declaration:
     implementation_header: str | None
     source_path: str
     entries: list[Entry]
+    syntax_name: str
 
 
 STRUCT_RE = re.compile(
@@ -118,6 +119,20 @@ def find_header_for_class(repo_root: pathlib.Path, class_name: str) -> str | Non
     return None
 
 
+def find_component_name(repo_root: pathlib.Path, class_name: str) -> str | None:
+    for source in list(repo_root.joinpath("include").rglob("*.h")) + list(
+        repo_root.joinpath("src").rglob("*.C")
+    ):
+        text = source.read_text()
+        match = re.search(
+            rf'const char \*const\s+{re.escape(class_name)}::component\s*=\s*"([^"]+)";',
+            text,
+        )
+        if match:
+            return match.group(1)
+    return None
+
+
 def parse_entries(load_frame_body: str) -> list[Entry]:
     entries: list[Entry] = []
     for match in DECLARE_CALL_RE.finditer(load_frame_body):
@@ -138,12 +153,9 @@ def parse_entries(load_frame_body: str) -> list[Entry]:
     return entries
 
 
-def parse_source(repo_root: pathlib.Path, source: pathlib.Path) -> tuple[Declaration, list[Declaration]]:
+def parse_source(repo_root: pathlib.Path, source: pathlib.Path) -> tuple[Declaration | None, list[Declaration]]:
     text = source.read_text()
     component_map = {f"{class_name}::component": component for class_name, component in COMPONENT_RE.findall(text)}
-    if not component_map:
-        raise ValueError(f"No component constants found in {source}")
-
     declarations: list[Declaration] = []
     for match in STRUCT_RE.finditer(text):
       kind = match.group("kind")
@@ -159,6 +171,10 @@ def parse_source(repo_root: pathlib.Path, source: pathlib.Path) -> tuple[Declara
       constructor_args = split_top_level_args(constructor_match.group("args"))
       component_expr = constructor_args[0]
       component_name = component_map.get(component_expr)
+      if component_name is None and component_expr.endswith("::component"):
+          component_name = find_component_name(
+              repo_root, component_expr.split("::", 1)[0]
+          )
       if not component_name:
           continue
       component_class = component_expr.split("::", 1)[0]
@@ -195,13 +211,14 @@ def parse_source(repo_root: pathlib.Path, source: pathlib.Path) -> tuple[Declara
               implementation_header=implementation_header,
               source_path=source.relative_to(repo_root).as_posix(),
               entries=entries,
+              syntax_name=syntax_name,
           )
       )
 
     component_declarations = [decl for decl in declarations if decl.kind == "DeclareComponent"]
-    if len(component_declarations) != 1:
-        raise ValueError(f"Expected exactly one DeclareComponent in {source}")
-    component_decl = component_declarations[0]
+    if len(component_declarations) > 1:
+        raise ValueError(f"Expected at most one DeclareComponent in {source}")
+    component_decl = component_declarations[0] if component_declarations else None
     model_decls = [decl for decl in declarations if decl.kind != "DeclareComponent"]
     return component_decl, model_decls
 
@@ -307,6 +324,15 @@ def write_model_doc(output_dir: pathlib.Path, model_decl: Declaration) -> None:
             lines.append(f"| `{entry.name}` | `{entry.registration}` | {entry.description or '(none)'} |")
     else:
         lines.append("This model currently declares no model-specific frame entries.")
+    if not model_decl.implementation_header:
+        lines.extend(
+            [
+                "",
+                "## Exposure status",
+                "",
+                f"The registration maps to `{model_decl.implementation_class or model_decl.syntax_name}`, which is not yet exposed through a public header.",
+            ]
+        )
     lines.extend(
         [
             "",
@@ -329,7 +355,8 @@ def main() -> None:
     for source_arg in args.source:
         source_path = (repo_root / source_arg).resolve()
         component_decl, model_decls = parse_source(repo_root, source_path)
-        write_component_doc(output_dir, component_decl, model_decls)
+        if component_decl is not None:
+            write_component_doc(output_dir, component_decl, model_decls)
         for model_decl in model_decls:
             write_model_doc(output_dir, model_decl)
 

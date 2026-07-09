@@ -25,7 +25,10 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/object_model/model_logable.C
     ${CMAKE_SOURCE_DIR}/src/object_model/oldunits.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/boolean.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/boolean_string.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/integer.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_const.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/stringer.C
     ${CMAKE_SOURCE_DIR}/src/object_model/plf.C
     ${CMAKE_SOURCE_DIR}/src/object_model/symbol.C

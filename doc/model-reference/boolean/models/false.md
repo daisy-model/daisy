@@ -27,10 +27,10 @@ This model currently declares no model-specific frame entries.
 
 ## Construction paths
 
+- Direct-use path: `BooleanFalse()`
 - Registration/build path: `BooleanFalse(const BlockModel&)`
 
 ## TODO
 
-- Add direct-construction documentation when a non-`BlockModel` constructor is introduced.
 - Document whether this model should be preferred over literal boolean flags in specific contexts.
 - Add an example of where a `boolean::false` model is used in Daisy input.

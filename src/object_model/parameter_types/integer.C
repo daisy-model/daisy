@@ -43,6 +43,10 @@ const std::string&
 Integer::title () const
 { return name.name (); }
 
+Integer::Integer (const symbol direct_name)
+  : name (direct_name)
+{ }
+
 Integer::Integer (const BlockModel& al)
   : name (al.type_name ())
 { }
@@ -50,27 +54,31 @@ Integer::Integer (const BlockModel& al)
 Integer::~Integer ()
 { }
 
-struct IntegerConst : public Integer
-{
-  // Parameters.
-  const int val;
+bool
+IntegerConst::missing (const Scope&) const
+{ return false; }
 
-  // Simulation.
-  bool missing (const Scope&) const
-  { return false; }
-  int value (const Scope&) const
-  { return val; }
+int
+IntegerConst::value (const Scope&) const
+{ return val_; }
 
-  // Create.
-  bool initialize (const Units&, const Scope&, Treelog&)
-  { return true; }
-  bool check (const Scope&, Treelog&) const
-  { return true; }
-  IntegerConst (const BlockModel& al)
-    : Integer (al),
-      val (al.integer ("value"))
-  { }
-};
+bool
+IntegerConst::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+IntegerConst::check (const Scope&, Treelog&) const
+{ return true; }
+
+IntegerConst::IntegerConst (const int value)
+  : Integer ("const"),
+    val_ (value)
+{ }
+
+IntegerConst::IntegerConst (const BlockModel& al)
+  : Integer (al),
+    val_ (al.integer ("value"))
+{ }
 
 static struct IntegerConstSyntax : public DeclareModel
 {

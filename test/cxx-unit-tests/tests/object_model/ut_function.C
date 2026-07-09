@@ -79,8 +79,29 @@ TEST(FunctionRegistrationTest, FunctionComponentSymbolIsStable) {
 TEST(FunctionExposureTest, ConcreteFunctionClassesArePublicTypes) {
   EXPECT_TRUE((std::is_base_of<Function, FunctionConst>::value));
   EXPECT_TRUE((std::is_base_of<Function, FunctionPLF>::value));
+  EXPECT_TRUE((std::is_constructible<FunctionConst, double>::value));
+  EXPECT_TRUE((std::is_constructible<FunctionPLF, const PLF&>::value));
   EXPECT_TRUE((std::is_constructible<FunctionConst, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<FunctionPLF, const BlockModel&>::value));
+}
+
+TEST(FunctionExposureTest, FunctionConstHasDirectValueConstructor) {
+  FunctionConst function(4.25);
+
+  EXPECT_DOUBLE_EQ(function.value(-10.0), 4.25);
+  EXPECT_DOUBLE_EQ(function.value(10.0), 4.25);
+}
+
+TEST(FunctionExposureTest, FunctionPLFHasDirectPlfConstructor) {
+  PLF plf;
+  plf.add(0.0, 0.0);
+  plf.add(2.0, 4.0);
+
+  FunctionPLF function(plf);
+
+  EXPECT_DOUBLE_EQ(function.value(0.0), 0.0);
+  EXPECT_DOUBLE_EQ(function.value(1.0), 2.0);
+  EXPECT_DOUBLE_EQ(function.value(2.0), 4.0);
 }
 
 TEST(FunctionExposureTest, FunctionConstCanBeInstantiatedDirectlyFromBlockModel) {

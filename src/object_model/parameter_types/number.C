@@ -93,6 +93,10 @@ Number::check_dim (const Units& units,
   return false;
 }
 
+Number::Number (const symbol direct_objid)
+  : objid (direct_objid)
+{ }
+
 Number::Number (const BlockModel& al)
   : objid (al.type_name ())
 { }

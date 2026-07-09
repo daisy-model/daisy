@@ -32,55 +32,66 @@
 #include "object_model/frame.h"
 #include <sstream>
 
-struct NumberConst : public Number
+void
+NumberConst::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+bool
+NumberConst::missing (const Scope&) const
+{ return false; }
+
+double
+NumberConst::value (const Scope&) const
+{ return val_; }
+
+symbol
+NumberConst::dimension (const Scope&) const
+{ return unit_.native_name (); }
+
+const Unit&
+NumberConst::unit () const
+{ return unit_; }
+
+bool
+NumberConst::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+NumberConst::check (const Units& units, const Scope&, Treelog& msg) const
 {
-  // Parameters.
-  const double val;
-  const Unit& unit_;
+  bool ok = true;
+  if (units.is_error (unit_))
+    {
+      msg.error ("Bad unit");
+      ok = false;
+    }
+  return ok;
+}
 
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const
-  { return false; }
-  double value (const Scope&) const
-  { return val; }
-  symbol dimension (const Scope&) const
-  { return unit_.native_name (); }
-  const Unit& unit () const
-  { return unit_; }
+NumberConst::NumberConst (const double value, const Unit& unit)
+  : Number ("const"),
+    val_ (value),
+    unit_ (unit)
+{ }
 
-  // Create.
-  bool initialize (const Units&, const Scope&, Treelog&)
-  { return true; }
-  bool check (const Units& units, const Scope&, Treelog& msg) const
-  { 
-    bool ok = true;
-    if (units.is_error (unit_))
-      {
-        msg.error ("Bad unit");
-        ok = false;
-      }
-    return ok;
-  }
-  explicit NumberConst (const BlockModel& al)
-    : Number (al),
-      val (al.number ("value")),
-      unit_ (al.units ().get_unit (al.name ("value")))
-  { 
-    if (al.units ().is_error (unit_))
-      al.msg ().warning ("Unknown unit '" + al.name ("value") + "'");
-  }
-  explicit NumberConst (const BlockModel& al, const symbol key)
-    : Number (al),
-      val (al.number (key)),
-      unit_ (al.units ().get_unit (al.find_frame (key).dimension (key)))
-  { 
-    if (al.units ().is_error (unit_))
-      al.msg ().warning ("Unknown unit '"
-                         + al.find_frame (key).dimension (key) + "'");
-  }
-};
+NumberConst::NumberConst (const BlockModel& al)
+  : Number (al),
+    val_ (al.number ("value")),
+    unit_ (al.units ().get_unit (al.name ("value")))
+{
+  if (al.units ().is_error (unit_))
+    al.msg ().warning ("Unknown unit '" + al.name ("value") + "'");
+}
+
+NumberConst::NumberConst (const BlockModel& al, const symbol key)
+  : Number (al),
+    val_ (al.number (key)),
+    unit_ (al.units ().get_unit (al.find_frame (key).dimension (key)))
+{
+  if (al.units ().is_error (unit_))
+    al.msg ().warning ("Unknown unit '"
+                       + al.find_frame (key).dimension (key) + "'");
+}
 
 static struct NumberConstSyntax : public DeclareModel
 {

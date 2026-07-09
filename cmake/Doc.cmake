@@ -12,6 +12,11 @@ if(${BUILD_DOC})
             --output-dir ${CMAKE_BINARY_DIR}/model-reference-generated
             --source src/object_model/function.C
             --source src/object_model/parameter_types/boolean.C
+            --source src/object_model/parameter_types/boolean_string.C
+            --source src/object_model/parameter_types/integer.C
+            --source src/object_model/parameter_types/number.C
+            --source src/object_model/parameter_types/number_const.C
+            --source src/object_model/parameter_types/stringer.C
   )
 
   add_custom_command(OUTPUT doc/components.tex

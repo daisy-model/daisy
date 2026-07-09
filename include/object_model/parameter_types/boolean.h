@@ -52,6 +52,7 @@ public:
                            Treelog& msg) = 0;
   virtual bool check (const Units&, const Scope&, Treelog&) const = 0;
 protected:
+  explicit Boolean (symbol name);
   explicit Boolean (const BlockModel&);
 public:
   ~Boolean ();
@@ -65,6 +66,7 @@ public:
   bool value (const Scope&) const;
   bool initialize (const Units& units, const Scope& scope, Treelog& msg);
   bool check (const Units&, const Scope&, Treelog&) const;
+  BooleanTrue ();
   explicit BooleanTrue (const BlockModel&);
 };
 
@@ -76,6 +78,7 @@ public:
   bool value (const Scope&) const;
   bool initialize (const Units& units, const Scope& scope, Treelog& msg);
   bool check (const Units&, const Scope&, Treelog&) const;
+  BooleanFalse ();
   explicit BooleanFalse (const BlockModel&);
 };
 
@@ -118,6 +121,19 @@ class BooleanNot : public BooleanOperands
 public:
   bool value (const Scope& scope) const;
   explicit BooleanNot (const BlockModel&);
+};
+
+class BooleanStringEqual : public Boolean
+{
+  const std::vector<symbol> values_;
+public:
+  void tick (const Units&, const Scope&, Treelog&);
+  bool missing (const Scope&) const;
+  bool value (const Scope&) const;
+  bool initialize (const Units&, const Scope&, Treelog&);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit BooleanStringEqual (const std::vector<symbol>& values);
+  explicit BooleanStringEqual (const BlockModel&);
 };
 
 #endif // BOOLEAN_H

@@ -51,9 +51,22 @@ public:
   virtual bool initialize (const Units&, const Scope&, Treelog&) = 0;
   virtual bool check (const Scope&, Treelog&) const = 0;
 protected:
+  explicit Integer (symbol name);
   explicit Integer (const BlockModel&);
 public:
   ~Integer ();
+};
+
+class IntegerConst : public Integer
+{
+  const int val_;
+public:
+  bool missing (const Scope& scope) const;
+  int value (const Scope&) const;
+  bool initialize (const Units&, const Scope&, Treelog&);
+  bool check (const Scope&, Treelog&) const;
+  explicit IntegerConst (int value);
+  explicit IntegerConst (const BlockModel&);
 };
 
 #endif // INTEGER_H

@@ -24,11 +24,13 @@
 
 #include "object_model/model.h"
 #include "object_model/symbol.h"
+#include <memory>
 
 class Scope;
 class BlockModel;
 class Treelog;
 class Units;
+class Number;
 
 class Stringer : public Model
 {
@@ -50,9 +52,52 @@ public:
   virtual bool initialize (const Units&, const Scope&, Treelog& msg) = 0;
   virtual bool check (const Units&, const Scope&, Treelog&) const = 0;
 protected:
+  explicit Stringer (symbol name);
   explicit Stringer (const BlockModel&);
 public:
   ~Stringer ();
+};
+
+class StringerNumber : public Stringer
+{
+protected:
+  std::unique_ptr<Number> number_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit StringerNumber (const BlockModel&);
+  ~StringerNumber ();
+};
+
+class StringerValue : public StringerNumber
+{
+  const int precision_;
+public:
+  symbol value (const Scope& scope) const;
+  explicit StringerValue (const BlockModel&);
+};
+
+class StringerDimension : public StringerNumber
+{
+public:
+  symbol value (const Scope& scope) const;
+  explicit StringerDimension (const BlockModel&);
+};
+
+class StringerIdentity : public Stringer
+{
+  const symbol val_;
+public:
+  void tick (const Units&, const Scope&, Treelog&);
+  bool missing (const Scope&) const;
+  symbol value (const Scope&) const;
+  bool initialize (const Units&, const Scope&, Treelog&);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit StringerIdentity (symbol value);
+  explicit StringerIdentity (const BlockModel&);
+  ~StringerIdentity ();
 };
 
 #endif // STRINGER_H

@@ -59,9 +59,27 @@ public:
   virtual bool check (const Units&, const Scope&, Treelog&) const = 0;
   bool check_dim (const Units&, const Scope&, symbol dim, Treelog&) const;
 protected:
+  explicit Number (symbol objid);
   explicit Number (const BlockModel&);
 public:
   ~Number ();
+};
+
+class NumberConst : public Number
+{
+  const double val_;
+  const Unit& unit_;
+public:
+  void tick (const Units&, const Scope&, Treelog&);
+  bool missing (const Scope&) const;
+  double value (const Scope&) const;
+  symbol dimension (const Scope&) const;
+  const Unit& unit () const;
+  bool initialize (const Units&, const Scope&, Treelog&);
+  bool check (const Units& units, const Scope&, Treelog& msg) const;
+  NumberConst (double value, const Unit& unit);
+  explicit NumberConst (const BlockModel&);
+  explicit NumberConst (const BlockModel& al, symbol key);
 };
 
 #endif // NUMBER_H

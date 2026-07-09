@@ -29,10 +29,10 @@ Always return the same number.
 
 ## Construction paths
 
+- Direct-use path: `FunctionConst(double)`
 - Registration/build path: `FunctionConst(const BlockModel&)`
 
 ## TODO
 
-- Add direct-construction documentation when a non-`BlockModel` constructor is introduced.
 - Document how units and dimensions are expected to interact with constant functions.
 - Add an example showing how `value` appears in Daisy input.

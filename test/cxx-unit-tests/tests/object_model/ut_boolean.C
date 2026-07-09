@@ -43,6 +43,7 @@ std::vector<boost::shared_ptr<const FrameModel> > clone_operands(
 void register_test_models() {
   register_unit_models();
   register_boolean_models();
+  register_boolean_string_models();
 }
 
 }  // namespace
@@ -62,6 +63,7 @@ TEST(BooleanRegistrationTest, BooleanLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("or"));
   EXPECT_TRUE(entries.count("xor"));
   EXPECT_TRUE(entries.count("not"));
+  EXPECT_TRUE(entries.count("string-equal"));
 }
 
 TEST(BooleanRegistrationTest, BooleanCompositeModelsDeriveFromOperandsBase) {
@@ -108,8 +110,13 @@ TEST(BooleanRegistrationTest, BooleanComponentMetadataIsStable) {
 TEST(BooleanExposureTest, BooleanLeafClassesArePublicTypes) {
   EXPECT_TRUE((std::is_base_of<Boolean, BooleanTrue>::value));
   EXPECT_TRUE((std::is_base_of<Boolean, BooleanFalse>::value));
+  EXPECT_TRUE((std::is_base_of<Boolean, BooleanStringEqual>::value));
+  EXPECT_TRUE((std::is_default_constructible<BooleanTrue>::value));
+  EXPECT_TRUE((std::is_default_constructible<BooleanFalse>::value));
   EXPECT_TRUE((std::is_constructible<BooleanTrue, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanFalse, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanStringEqual, const std::vector<symbol>&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanStringEqual, const BlockModel&>::value));
 }
 
 TEST(BooleanExposureTest, BooleanOperandClassesArePublicTypes) {
@@ -123,6 +130,37 @@ TEST(BooleanExposureTest, BooleanOperandClassesArePublicTypes) {
   EXPECT_TRUE((std::is_constructible<BooleanOr, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanXOr, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanNot, const BlockModel&>::value));
+}
+
+TEST(BooleanExposureTest, BooleanLeafClassesHaveDirectConstructors) {
+  BooleanTrue true_model;
+  BooleanFalse false_model;
+  BooleanStringEqual equal_model({symbol("same"), symbol("same")});
+  BooleanStringEqual different_model({symbol("same"), symbol("other")});
+
+  EXPECT_EQ(true_model.title(), std::string("true"));
+  EXPECT_EQ(false_model.title(), std::string("false"));
+  EXPECT_FALSE(true_model.missing(Scope::null()));
+  EXPECT_FALSE(false_model.missing(Scope::null()));
+  EXPECT_TRUE(true_model.value(Scope::null()));
+  EXPECT_FALSE(false_model.value(Scope::null()));
+  EXPECT_TRUE(equal_model.value(Scope::null()));
+  EXPECT_FALSE(different_model.value(Scope::null()));
+}
+
+TEST(BooleanExposureTest, BooleanStringEqualCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Boolean::component);
+  std::unique_ptr<FrameModel> frame = clone_model(library, "string-equal");
+  frame->set_strings("values", "same", "same");
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "string-equal");
+  BooleanStringEqual equal_model(block);
+
+  EXPECT_FALSE(equal_model.missing(Scope::null()));
+  EXPECT_TRUE(equal_model.value(Scope::null()));
 }
 
 TEST(BooleanExposureTest, BooleanLeafClassesCanBeInstantiatedDirectlyFromBlockModel) {

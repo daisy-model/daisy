@@ -29,10 +29,10 @@ A piecewise linear function.
 
 ## Construction paths
 
+- Direct-use path: `FunctionPLF(const PLF&)`
 - Registration/build path: `FunctionPLF(const BlockModel&)`
 
 ## TODO
 
-- Add direct-construction documentation when a non-`BlockModel` constructor is introduced.
 - Document interpolation and boundary behavior for piecewise linear functions.
 - Add an example of the expected PLF input shape in Daisy configuration files.

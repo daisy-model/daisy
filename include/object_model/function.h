@@ -45,6 +45,7 @@ public:
 
   // Create and Destroy.
 protected:
+  Function ();
   Function (const BlockModel&);
 public:
   ~Function ();
@@ -65,6 +66,7 @@ class FunctionConst : public Function
   const double value_;
 public:
   double value (const double) const;
+  explicit FunctionConst (double value);
   explicit FunctionConst (const BlockModel&);
 };
 
@@ -73,6 +75,7 @@ class FunctionPLF : public Function
   const PLF plf_;
 public:
   double value (const double x) const;
+  explicit FunctionPLF (const PLF& plf);
   explicit FunctionPLF (const BlockModel&);
 };
 

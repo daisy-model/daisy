@@ -26,37 +26,43 @@
 #include "object_model/librarian.h"
 #include <vector>
 
-struct BooleanStringEqual : public Boolean
+void
+BooleanStringEqual::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+bool
+BooleanStringEqual::missing (const Scope&) const
+{ return false; }
+
+bool
+BooleanStringEqual::value (const Scope&) const
 {
-  // Parameters.
-  const std::vector<symbol> values;
-
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const
-  { return false; }
-  bool value (const Scope&) const
-  { 
-    if (values.size () < 2)
-      return true;
-    const symbol first = values[0];
-    for (size_t i = 1; i < values.size (); i++)
-      if (first != values[i])
-	return false; 
+  if (values_.size () < 2)
     return true;
-  }
+  const symbol first = values_[0];
+  for (size_t i = 1; i < values_.size (); i++)
+    if (first != values_[i])
+      return false;
+  return true;
+}
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog&)
-  { return true; }
-  bool check (const Units&, const Scope&, Treelog&) const
-  { return true; }
-  BooleanStringEqual (const BlockModel& al)
-    : Boolean (al),
-      values (al.name_sequence ("values"))
-  { }
-};
+bool
+BooleanStringEqual::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+BooleanStringEqual::check (const Units&, const Scope&, Treelog&) const
+{ return true; }
+
+BooleanStringEqual::BooleanStringEqual (const std::vector<symbol>& values)
+  : Boolean ("string-equal"),
+    values_ (values)
+{ }
+
+BooleanStringEqual::BooleanStringEqual (const BlockModel& al)
+  : Boolean (al),
+    values_ (al.name_sequence ("values"))
+{ }
 
 static struct BooleanStringEqualSyntax : public DeclareModel
 {

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/parameter_types/stringer.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/parameter_types/number.h"
 #include "object_model/submodeler.h"
@@ -47,6 +48,10 @@ const std::string&
 Stringer::title () const
 { return name.name (); }
 
+Stringer::Stringer (const symbol direct_name)
+  : name (direct_name)
+{ }
+
 Stringer::Stringer (const BlockModel& al)
   : name (al.type_name ())
 { }
@@ -54,80 +59,216 @@ Stringer::Stringer (const BlockModel& al)
 Stringer::~Stringer ()
 { }
 
-struct StringerCond : public Stringer
+void
+StringerNumber::tick (const Units& units, const Scope& scope, Treelog& msg)
+{ number_->tick (units, scope, msg); }
+
+bool
+StringerNumber::missing (const Scope& scope) const
+{ return number_->missing (scope); }
+
+bool
+StringerNumber::initialize (const Units& units, const Scope& scope,
+                            Treelog& msg)
 {
-  // Parameters.
-  struct Clause
-  {
-    const std::unique_ptr<Boolean> condition;
-    const symbol  value;
-    static void load_syntax (Frame& frame)
+  Treelog::Open nest (msg, name);
+  return number_->initialize (units, scope, msg);
+}
+
+bool
+StringerNumber::check (const Units& units, const Scope& scope,
+                       Treelog& msg) const
+{
+  Treelog::Open nest (msg, name);
+  return number_->check (units, scope, msg);
+}
+
+StringerNumber::StringerNumber (const symbol direct_name,
+                                std::unique_ptr<Number> number)
+  : Stringer (direct_name),
+    number_ (std::move (number))
+{ }
+
+StringerNumber::StringerNumber (const BlockModel& al)
+  : Stringer (al),
+    number_ (Librarian::build_item<Number> (al, "number"))
+{ }
+
+StringerNumber::~StringerNumber ()
+{ }
+
+symbol
+StringerValue::value (const Scope& scope) const
+{
+  std::ostringstream tmp;
+  if (precision_ >= 0)
     {
-      frame.declare_object ("condition", Boolean::component, "\
-Condition to test for.");
-      frame.declare_string ("value", Attribute::Const, "\
-Value to return.");
-      frame.order ("condition", "value");
+      tmp.precision (precision_);
+      tmp.flags (std::ios::right | std::ios::fixed);
     }
-    Clause (const Block& al)
-      : condition (Librarian::build_item<Boolean> (al, "condition")),
-        value (al.name ("value"))
-    { }
-  };
-  std::vector<const Clause*> clauses;
+  tmp << number_->value (scope);
+  return tmp.str ();
+}
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    for (size_t i = 0; i < clauses.size (); i++)
-      clauses[i]->condition->tick (units, scope, msg);
-  }
-  bool missing (const Scope&) const
-  { return false; }
-  symbol value (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < clauses.size (); i++)
-      if (clauses[i]->condition->value (scope))
-        return clauses[i]->value;
-    throw "No matching conditions";
-  }
+StringerValue::StringerValue (std::unique_ptr<Number> number, const int precision)
+  : StringerNumber ("value", std::move (number)),
+    precision_ (precision)
+{ }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  {
-    bool ok = true;
-    for (size_t i = 0; i < clauses.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << name << "[" << i << "]";
-        Treelog::Open nest (msg, tmp.str ());
-        if (!clauses[i]->condition->initialize (units, scope, msg))
-          ok = false;
-      }
-    return ok;
-  }
-  bool check (const Units&, const Scope& scope, Treelog& msg) const
-  { 
-    for (size_t i = 0; i < clauses.size (); i++)
-      if (clauses[i]->condition->value (scope))
-        return true;
-    msg.error ("No clause matches");
-    return false; 
-  }
-  StringerCond (const BlockModel& al)
-    : Stringer (al),
-      clauses (map_submodel_const<Clause> (al, "clauses"))
-  { }
-  ~StringerCond ()
-  { sequence_delete (clauses.begin (), clauses.end ()); }
-};
+StringerValue::StringerValue (const BlockModel& al)
+  : StringerNumber (al),
+    precision_ (al.integer ("precision", -1))
+{ }
 
-static DeclareSubmodel 
-stringer_cond_clause_submodel (StringerCond::Clause::load_syntax,
-                              "StringerCondClause", "\
-If condition is true, return value.");
+symbol
+StringerDimension::value (const Scope& scope) const
+{ return number_->dimension (scope); }
 
-static struct StringerCondSyntax : public DeclareModel
+StringerDimension::StringerDimension (std::unique_ptr<Number> number)
+  : StringerNumber ("dimension", std::move (number))
+{ }
+
+StringerDimension::StringerDimension (const BlockModel& al)
+  : StringerNumber (al)
+{ }
+
+void
+StringerIdentity::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+bool
+StringerIdentity::missing (const Scope&) const
+{ return false; }
+
+symbol
+StringerIdentity::value (const Scope&) const
+{ return val_; }
+
+bool
+StringerIdentity::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+StringerIdentity::check (const Units&, const Scope&, Treelog&) const
+{ return true; }
+
+StringerIdentity::StringerIdentity (const symbol value)
+  : Stringer ("identity"),
+    val_ (value)
+{ }
+
+StringerIdentity::StringerIdentity (const BlockModel& al)
+  : Stringer (al),
+    val_ (al.name ("value"))
+{ }
+
+StringerIdentity::~StringerIdentity ()
+{ }
+
+void
+StringerCond::Clause::load_syntax (Frame& frame)
+{
+  frame.declare_object ("condition", Boolean::component, "\
+Condition to test for.");
+  frame.declare_string ("value", Attribute::Const, "\
+Value to return.");
+  frame.order ("condition", "value");
+}
+
+StringerCond::Clause::Clause (std::unique_ptr<Boolean> condition, const symbol value)
+  : condition_ (std::move (condition)),
+    value_ (value)
+{ }
+
+StringerCond::Clause::Clause (const Block& al)
+  : condition_ (Librarian::build_item<Boolean> (al, "condition")),
+    value_ (al.name ("value"))
+{ }
+
+void
+StringerCond::Clause::tick (const Units& units, const Scope& scope,
+                            Treelog& msg) const
+{ condition_->tick (units, scope, msg); }
+
+void
+StringerCond::Clause::initialize (const Units& units, const Scope& scope,
+                                  Treelog& msg, const symbol& owner_name,
+                                  const size_t index, bool& ok) const
+{
+  std::ostringstream tmp;
+  tmp << owner_name << "[" << index << "]";
+  Treelog::Open nest (msg, tmp.str ());
+  if (!condition_->initialize (units, scope, msg))
+    ok = false;
+}
+
+bool
+StringerCond::Clause::matches (const Scope& scope) const
+{ return condition_->value (scope); }
+
+symbol
+StringerCond::Clause::value () const
+{ return value_; }
+
+void
+StringerCond::tick (const Units& units, const Scope& scope, Treelog& msg)
+{
+  for (size_t i = 0; i < clauses_.size (); i++)
+    clauses_[i].tick (units, scope, msg);
+}
+
+bool
+StringerCond::missing (const Scope&) const
+{ return false; }
+
+symbol
+StringerCond::value (const Scope& scope) const
+{
+  for (size_t i = 0; i < clauses_.size (); i++)
+    if (clauses_[i].matches (scope))
+      return clauses_[i].value ();
+  throw "No matching conditions";
+}
+
+bool
+StringerCond::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  bool ok = true;
+  for (size_t i = 0; i < clauses_.size (); i++)
+    clauses_[i].initialize (units, scope, msg, name, i, ok);
+  return ok;
+}
+
+bool
+StringerCond::check (const Units&, const Scope& scope, Treelog& msg) const
+{
+  for (size_t i = 0; i < clauses_.size (); i++)
+    if (clauses_[i].matches (scope))
+      return true;
+  msg.error ("No clause matches");
+  return false;
+}
+
+StringerCond::StringerCond (std::vector<Clause> clauses)
+  : Stringer ("cond"),
+    clauses_ (std::move (clauses))
+{ }
+
+StringerCond::StringerCond (const BlockModel& al)
+  : Stringer (al)
+{
+  auto raw_clauses = map_submodel<Clause> (al, "clauses");
+  clauses_.reserve (raw_clauses.size ());
+  for (size_t i = 0; i < raw_clauses.size (); ++i)
+    {
+      clauses_.push_back (std::move (*raw_clauses[i]));
+      delete raw_clauses[i];
+    }
+}
+
+namespace
+{
+struct StringerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerCond (al); }
@@ -143,39 +284,9 @@ List of clauses to match for.",
                                    StringerCond::Clause::load_syntax);
     frame.order ("clauses");
   }
-} StringerCond_syntax;
-
-struct StringerNumber : public Stringer
-{
-  // Parameters.
-  std::unique_ptr<Number> number;
-
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { number->tick (units, scope, msg); }
-  bool missing (const Scope& scope) const
-  { return number->missing (scope); }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    Treelog::Open nest (msg, name);
-    return number->initialize (units, scope, msg); 
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    Treelog::Open nest (msg, name);
-    return number->check (units, scope, msg); 
-  }
-  StringerNumber (const BlockModel& al)
-    : Stringer (al),
-      number (Librarian::build_item<Number> (al, "number"))
-  { }
-  ~StringerNumber ()
-  { }
 };
 
-static struct StringerNumberSyntax : public DeclareBase
+struct StringerNumberSyntax : public DeclareBase
 {
   StringerNumberSyntax ()
     : DeclareBase (Stringer::component, "number", "\
@@ -186,31 +297,9 @@ Extract the value of a number.")
     frame.declare_object ("number", Number::component, "\
 Number to manipulate."); 
   }
-} StringerNumber_syntax;
-
-struct StringerValue : public StringerNumber
-{
-  const int precision;
-
-  symbol value (const Scope& scope) const
-  { 
-    std::ostringstream tmp;
-    if (precision >= 0)
-      {
-        tmp.precision (precision);
-        tmp.flags (std::ios::right | std::ios::fixed);
-      }
-    tmp << number->value (scope);
-    return tmp.str ();
-  }
-
-  StringerValue (const BlockModel& al)
-    : StringerNumber (al),
-      precision (al.integer ("precision", -1))
-  { }
 };
 
-static struct StringerValueSyntax : public DeclareModel
+struct StringerValueSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerValue (al); }
@@ -223,19 +312,9 @@ Extract the value of a number as a string.")
     frame.declare_integer ("precision", Attribute::OptionalConst, "\
 Number of decimals after point.  By default, use a floating format.");
   }
-} StringerValue_syntax;
-
-struct StringerDimension : public StringerNumber
-{
-  symbol value (const Scope& scope) const
-  { return number->dimension (scope); }
-
-  StringerDimension (const BlockModel& al)
-    : StringerNumber (al)
-  { }
 };
 
-static struct StringerDimensionSyntax : public DeclareModel
+struct StringerDimensionSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerDimension (al); }
@@ -246,35 +325,9 @@ Extract the dimension of a number as a string.")
   void load_frame (Frame& frame) const
   {
   }
-} StringerDimension_syntax;
-
-struct StringerIdentity : public Stringer
-{
-  const symbol val;
-
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const
-  { return false; }
-  symbol value (const Scope&) const
-  { return val; }
-
-  // Create.
-  bool initialize (const Units&, const Scope&, Treelog&)
-  { return true; }
-
-  bool check (const Units&, const Scope&, Treelog&) const
-  { return true; }
-  StringerIdentity (const BlockModel& al)
-    : Stringer (al),
-      val (al.name ("value"))
-  { }
-  ~StringerIdentity ()
-  { }
 };
 
-static struct StringerIdentitySyntax : public DeclareModel
+struct StringerIdentitySyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new StringerIdentity (al); }
@@ -288,13 +341,27 @@ Return the specified value.")
     frame.declare_string ("value", Attribute::Const, "\
 Constant value.");
   }
-} StringerIdentity_syntax;
+};
 
-static struct StringerInit : public DeclareComponent 
+struct StringerInit : public DeclareComponent 
 {
   StringerInit ()
     : DeclareComponent (Stringer::component, "\
 Generic representation of strings.")
   { }
-} Stringer_init;
+};
+}
 
+void
+register_stringer_models ()
+{
+  static DeclareSubmodel stringer_cond_clause_submodel (
+    StringerCond::Clause::load_syntax, "StringerCondClause", "\
+If condition is true, return value.");
+  static StringerCondSyntax stringer_cond_syntax;
+  static StringerNumberSyntax stringer_number_syntax;
+  static StringerValueSyntax stringer_value_syntax;
+  static StringerDimensionSyntax stringer_dimension_syntax;
+  static StringerIdentitySyntax stringer_identity_syntax;
+  static StringerInit stringer_init;
+}

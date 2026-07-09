@@ -28,6 +28,7 @@ Generic representation of booleans.
 | `BooleanOr` | Concrete model that requires any operand to be true. |
 | `BooleanXOr` | Concrete model that compares exactly two operands. |
 | `BooleanNot` | Concrete model that negates a single operand. |
+| `BooleanStringEqual` | Concrete model that compares a sequence of strings for equality. |
 
 ## Shared declared entries
 
@@ -43,6 +44,7 @@ currently does not add shared frame entries at the component level.
 - `or`
 - `xor`
 - `not`
+- `string-equal`
 
 ## TODO
 
