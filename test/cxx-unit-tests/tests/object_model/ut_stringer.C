@@ -11,6 +11,7 @@
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/object_model_registration_internal.h"
+#include "object_model/parameter_types/number.h"
 #include "object_model/parameter_types/stringer.h"
 #include "object_model/units.h"
 
@@ -80,6 +81,8 @@ TEST(StringerExposureTest, StringerClassesArePublicTypes) {
   EXPECT_TRUE((std::is_base_of<StringerNumber, StringerDimension>::value));
   EXPECT_TRUE((std::is_base_of<Stringer, StringerIdentity>::value));
   EXPECT_TRUE((std::is_abstract<StringerNumber>::value));
+  EXPECT_TRUE((std::is_constructible<StringerValue, std::unique_ptr<Number>, int>::value));
+  EXPECT_TRUE((std::is_constructible<StringerDimension, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<StringerValue, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<StringerDimension, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<StringerIdentity, symbol>::value));
@@ -106,4 +109,24 @@ TEST(StringerExposureTest, StringerIdentityCanBeInstantiatedDirectlyFromBlockMod
 
   EXPECT_FALSE(stringer.missing(Scope::null()));
   EXPECT_EQ(stringer.value(Scope::null()), symbol("hello"));
+}
+
+TEST(StringerExposureTest, NumberBackedStringersHaveDirectConstructors) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+
+  StringerValue value(
+      std::make_unique<NumberConst>(17.0, metalib.units().get_unit(Units::cm())),
+      1);
+  EXPECT_TRUE(value.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(value.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(value.missing(Scope::null()));
+  EXPECT_EQ(value.value(Scope::null()), symbol("17.0"));
+
+  StringerDimension dimension(
+      std::make_unique<NumberConst>(17.0, metalib.units().get_unit(Units::cm())));
+  EXPECT_TRUE(dimension.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(dimension.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(dimension.missing(Scope::null()));
+  EXPECT_EQ(dimension.value(Scope::null()), Units::cm());
 }

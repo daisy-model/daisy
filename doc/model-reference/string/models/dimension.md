@@ -28,9 +28,10 @@ This model currently relies on the inherited `number` declaration from
 
 ## Construction paths
 
+- Direct-use path: `StringerDimension(std::unique_ptr<Number>)`
 - Registration/build path: `StringerDimension(const BlockModel&)`
 
 ## TODO
 
 - Document the exact dimension string format exposed to callers.
-- Consider whether a direct-use constructor should be introduced once number ownership is redesigned.
+- Add an example showing direct dimension extraction from an exposed number model.

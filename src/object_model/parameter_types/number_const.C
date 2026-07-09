@@ -112,53 +112,60 @@ static struct NumberConstSyntax : public DeclareModel
 
 // The 'x' model.
 
-struct NumberX : public Number
+const symbol NumberX::name_ ("x");
+
+symbol
+NumberX::title () const
+{ return name_; }
+
+void
+NumberX::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+symbol
+NumberX::dimension (const Scope& scope) const
 {
-  static const symbol name;
+  return scope.dimension (name_);
+}
 
-  // Parameters.
-  symbol title () const
-  { return name; }
+bool
+NumberX::missing (const Scope& scope) const
+{ return !scope.check (name_); }
 
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  symbol dimension (const Scope& scope) const
-  { 
-    return scope.dimension (name); 
-  }
-  bool missing (const Scope& scope) const
-  { return !scope.check (name); }
-  double value (const Scope& scope) const
-  {  return scope.number ( name); }
+double
+NumberX::value (const Scope& scope) const
+{ return scope.number (name_); }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    if (scope.lookup (name) != Attribute::Number)
-      {
-        msg.error ("'" + name + "' is not a number");
-        return false;
-      }
-    return true;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  {
-    bool ok = true;
-    if (scope.lookup (name) != Attribute::Number)
-      {
-        msg.error ("'x' is not a number");
-        ok = false;
-      }
-    return ok;
-  }
+bool
+NumberX::initialize (const Units&, const Scope& scope, Treelog& msg)
+{
+  if (scope.lookup (name_) != Attribute::Number)
+    {
+      msg.error ("'" + name_ + "' is not a number");
+      return false;
+    }
+  return true;
+}
 
-  NumberX (const BlockModel& al)
-    : Number (al)
-  { }
-};
+bool
+NumberX::check (const Units&, const Scope& scope, Treelog& msg) const
+{
+  bool ok = true;
+  if (scope.lookup (name_) != Attribute::Number)
+    {
+      msg.error ("'x' is not a number");
+      ok = false;
+    }
+  return ok;
+}
 
-const symbol NumberX::name ("x");
+NumberX::NumberX ()
+  : Number ("x")
+{ }
+
+NumberX::NumberX (const BlockModel& al)
+  : Number (al)
+{ }
 
 static struct NumberXSyntax : public DeclareModel
 {
@@ -172,87 +179,97 @@ The value of the symbol 'x' in the current scope.")
   { }
 } NumberX_syntax;
 
-struct NumberGet : public Number
+symbol
+NumberGet::title () const
+{ return name_; }
+
+void
+NumberGet::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+symbol
+NumberGet::dimension (const Scope&) const
+{ return unit_.native_name (); }
+
+const Unit&
+NumberGet::unit () const
+{ return unit_; }
+
+bool
+NumberGet::missing (const Scope& scope) const
+{ return !scope.check (name_); }
+
+double
+NumberGet::value (const Scope& scope) const
 {
-  // Data.
-  const Unit& unit_;
-  const Unit* scope_unit;
+  daisy_assert (scope.check (name_));
+  daisy_assert (scope_unit_);
+  const double value = scope.number (name_);
+  return Units::unit_convert (*scope_unit_, unit (), value);
+}
 
-  // Parameters.
-  const symbol name;
-  symbol title () const
-  { return name; }
+bool
+NumberGet::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  if (scope.lookup (name_) != Attribute::Number)
+    {
+      msg.error ("'" + name_ + "' is not a number");
+      return false;
+    }
+  const symbol got_dim = scope.dimension (name_);
+  scope_unit_ = &units.get_unit (got_dim);
+  return true;
+}
 
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  symbol dimension (const Scope&) const
-  { return unit_.native_name (); }
-  const Unit& unit () const
-  { return unit_; }
-  bool missing (const Scope& scope) const
-  { return !scope.check (name); }
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (scope.check (name));
-    daisy_assert (scope_unit);
-    const double value = scope.number ( name);
-    return Units::unit_convert (*scope_unit, unit (), value);
-  }
+bool
+NumberGet::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  Treelog::Open nest (msg, name_);
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    if (scope.lookup (name) != Attribute::Number)
-      {
-        msg.error ("'" + name + "' is not a number");
-        return false;
-      }
-    const symbol got_dim = scope.dimension (name);
-    scope_unit = &units.get_unit (got_dim);
-    return true;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  {
-    Treelog::Open nest (msg, name);
+  bool ok = true;
+  if (units.is_error (unit_))
+    {
+      msg.error ("Bad unit");
+      ok = false;
+    }
+  if (!scope_unit_)
+    {
+      msg.error ("'" + name_ + "' is not a number");
+      ok = false;
+    }
+  else if (units.is_error (*scope_unit_))
+    {
+      daisy_assert (scope.lookup (name_) == Attribute::Number);
+      const symbol got_dim = scope.dimension (name_);
+      msg.error ("'" + name_ + "' has unknown dimension [" + got_dim + "]");
+      ok = false;
+    }
+  return ok;
+}
 
-    bool ok = true;
-    if (units.is_error (unit_))
-      {
-        msg.error ("Bad unit");
-        ok = false;
-      }
-    if (!scope_unit)
-      {
-        msg.error ("'" + name + "' is not a number");
-        ok = false;
-      }
-    else if (units.is_error (*scope_unit))
-      {
-        daisy_assert (scope.lookup (name) == Attribute::Number);
-        const symbol got_dim = scope.dimension (name);
-        msg.error ("'" + name + "' has unknown dimension [" + got_dim + "]");
-        ok = false;
-      }
-    return ok;
-  }
+NumberGet::NumberGet (const symbol name, const Unit& unit)
+  : Number ("get"),
+    unit_ (unit),
+    scope_unit_ (NULL),
+    name_ (name)
+{ }
 
-  NumberGet (const BlockModel& al)
-    : Number (al),
-      unit_ (al.units ().get_unit (al.name ("dimension"))),
-      scope_unit (NULL),
-      name (al.name ("name"))
-  {
-    if (al.units ().is_error (unit_))
-      al.msg ().warning ("Unknown unit '" + al.name ("dimension") + "'");
-  }
-  NumberGet (const BlockModel& al, const symbol key)
-    : Number (al),
-      unit_ (al.units ().get_unit (al.name ("dimension"))),
-      scope_unit (NULL),
-      name (key)
-  { }
-};
+NumberGet::NumberGet (const BlockModel& al)
+  : Number (al),
+    unit_ (al.units ().get_unit (al.name ("dimension"))),
+    scope_unit_ (NULL),
+    name_ (al.name ("name"))
+{
+  if (al.units ().is_error (unit_))
+    al.msg ().warning ("Unknown unit '" + al.name ("dimension") + "'");
+}
+
+NumberGet::NumberGet (const BlockModel& al, const symbol key)
+  : Number (al),
+    unit_ (al.units ().get_unit (al.name ("dimension"))),
+    scope_unit_ (NULL),
+    name_ (key)
+{ }
 
 static struct NumberGetSyntax : public DeclareModel
 {
@@ -472,23 +489,23 @@ static struct NumberFetchSyntax : public DeclareModel
   }
 } NumberFetch_syntax;
 
-struct NumberChild : public Number
-{
-  // Parameters.
-  const std::unique_ptr<Number> child;
+NumberChild::NumberChild (const symbol objid, std::unique_ptr<Number> child)
+  : Number (objid),
+    child_ (std::move (child))
+{ }
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { child->tick (units, scope, msg); }
+void
+NumberChild::tick (const Units& units, const Scope& scope, Treelog& msg)
+{ child_->tick (units, scope, msg); }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { return child->initialize (units, scope, msg); }
-  NumberChild (const BlockModel& al)
-    : Number (al),
-      child (Librarian::build_item<Number> (al, "value"))
-  { }
-};
+bool
+NumberChild::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{ return child_->initialize (units, scope, msg); }
+
+NumberChild::NumberChild (const BlockModel& al)
+  : Number (al),
+    child_ (Librarian::build_item<Number> (al, "value"))
+{ }
 
 static struct NumberChildSyntax : public DeclareBase
 {
@@ -503,57 +520,68 @@ Numbers based on another number.")
   }
 } NumberChild_syntax;
 
-struct NumberIdentity : public NumberChild
+bool
+NumberIdentity::missing (const Scope& scope) const
 {
-  const Units& units;
+  return child_->missing (scope)
+    || (known (dim_) && known (child_->dimension (scope))
+        && !units_.can_convert (child_->dimension (scope), dim_,
+                                child_->value (scope)));
+}
 
-  // Parameters.
-  const symbol dim;
+double
+NumberIdentity::value (const Scope& scope) const
+{
+  const double v = child_->value (scope);
+  if (known (dim_) && known (child_->dimension (scope)))
+    return units_.convert (child_->dimension (scope), dim_, v);
+  return v;
+}
 
-  // Simulation.
-  bool missing (const Scope& scope) const 
-  { return child->missing (scope) 
-      || (known (dim) && known (child->dimension (scope))
-          && !units.can_convert (child->dimension (scope), dim, 
-                                 child->value (scope))); }
-  double value (const Scope& scope) const
-  { 
-    const double v = child->value (scope); 
-    if (known (dim) && known (child->dimension (scope)))
-      return units.convert (child->dimension (scope), dim, v);
-    return v;
-  }
-  symbol dimension (const Scope& scope) const
-  {
-    if (known (dim))
-      return dim; 
-    return child->dimension (scope);
-  }
+symbol
+NumberIdentity::dimension (const Scope& scope) const
+{
+  if (known (dim_))
+    return dim_;
+  return child_->dimension (scope);
+}
 
-  // Create.
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    bool ok = true;
+bool
+NumberIdentity::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
 
-    if (!child->check (units, scope, msg))
+  if (!child_->check (units, scope, msg))
+    ok = false;
+
+  if (known (dim_) && known (child_->dimension (scope))
+      && !units.can_convert (child_->dimension (scope), dim_))
+    {
+      msg.error ("Cannot convert [" + child_->dimension (scope)
+                 + "] to [" + dim_ + "]");
       ok = false;
-    
-    if (known (dim) && known (child->dimension (scope))
-        && !units.can_convert (child->dimension (scope), dim))
-      {
-        msg.error ("Cannot convert [" + child->dimension (scope) 
-                   + "] to [" + dim + "]");
-        ok = false;
-      }
-    return ok;
-  }
-  NumberIdentity (const BlockModel& al)
-    : NumberChild (al),
-      units (al.units ()),
-      dim (al.name ("dimension", Attribute::Unknown ()))
-  { }
-};
+    }
+  return ok;
+}
+
+NumberIdentity::NumberIdentity (std::unique_ptr<Number> child, const Units& units)
+  : NumberIdentity (std::move (child), units, Attribute::Unknown ())
+{ }
+
+NumberIdentity::NumberIdentity (std::unique_ptr<Number> child,
+                                const Units& units,
+                                const symbol dimension)
+  : NumberChild ("identity", std::move (child)),
+    units_ (units),
+    dim_ (dimension)
+{ }
+
+NumberIdentity::NumberIdentity (const BlockModel& al)
+  : NumberChild (al),
+    units_ (al.units ()),
+    dim_ (al.name ("dimension", Attribute::Unknown ()))
+{ }
 
 static struct NumberIdentitySyntax : public DeclareModel
 {
@@ -571,49 +599,56 @@ Pass value unchanged.")
   }
 } NumberIdentity_syntax;
 
-struct NumberConvert : public NumberChild
+bool
+NumberConvert::missing (const Scope& scope) const
 {
-  const Units& units;
+  return child_->missing (scope)
+    || !units_.can_convert (child_->dimension (scope), dim_,
+                            child_->value (scope));
+}
 
-  // Parameters.
-  const symbol dim;
+double
+NumberConvert::value (const Scope& scope) const
+{
+  const double v = child_->value (scope);
+  return units_.convert (child_->dimension (scope), dim_, v);
+}
 
-  // Simulation.
-  bool missing (const Scope& scope) const 
-  { return child->missing (scope) 
-      || !units.can_convert (child->dimension (scope), dim, 
-                              child->value (scope)); }
-  double value (const Scope& scope) const
-  { 
-    const double v = child->value (scope); 
-    return units.convert (child->dimension (scope), dim, v);
-  }
-  symbol dimension (const Scope&) const
-  { return dim; }
+symbol
+NumberConvert::dimension (const Scope&) const
+{ return dim_; }
 
-  // Create.
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    bool ok = true;
+bool
+NumberConvert::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
 
-    if (!child->check (units, scope, msg))
+  if (!child_->check (units, scope, msg))
+    ok = false;
+
+  if (!units.can_convert (child_->dimension (scope), dim_))
+    {
+      msg.error ("Cannot convert [" + child_->dimension (scope)
+                 + "] to [" + dim_ + "]");
       ok = false;
-    
-    if (!units.can_convert (child->dimension (scope), dim))
-      {
-        msg.error ("Cannot convert [" + child->dimension (scope) 
-                   + "] to [" + dim + "]");
-        ok = false;
-      }
-    return ok;
-  }
-  NumberConvert (const BlockModel& al)
-    : NumberChild (al),
-      units (al.units ()),
-      dim (al.name ("dimension"))
-  { }
-};
+    }
+  return ok;
+}
+
+NumberConvert::NumberConvert (std::unique_ptr<Number> child,
+                              const Units& units,
+                              const symbol dimension)
+  : NumberChild ("convert", std::move (child)),
+    units_ (units),
+    dim_ (dimension)
+{ }
+
+NumberConvert::NumberConvert (const BlockModel& al)
+  : NumberChild (al),
+    units_ (al.units ()),
+    dim_ (al.name ("dimension"))
+{ }
 
 static struct NumberConvertSyntax : public DeclareModel
 {
@@ -632,42 +667,48 @@ Convert to specified dimension.")
   }
 } NumberConvert_syntax;
 
-struct NumberDim : public NumberChild
+bool
+NumberDim::missing (const Scope& scope) const
+{ return child_->missing (scope); }
+
+double
+NumberDim::value (const Scope& scope) const
+{ return child_->value (scope); }
+
+symbol
+NumberDim::dimension (const Scope&) const
+{ return dim_; }
+
+bool
+NumberDim::check (const Units& units, const Scope& scope, Treelog& msg) const
 {
-  // Parameters.
-  const symbol dim;
-  const bool warn_known;
+  TREELOG_MODEL (msg);
+  bool ok = true;
 
-  // Simulation.
-  bool missing (const Scope& scope) const 
-  { return child->missing (scope); }
-  double value (const Scope& scope) const
-  { return child->value (scope); }
-  symbol dimension (const Scope&) const
-  { return dim; }
+  if (!child_->check (units, scope, msg))
+    ok = false;
 
-  // Create.
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    bool ok = true;
+  if (warn_known_ && known (child_->dimension (scope))
+      && child_->dimension (scope) != dim_)
+    msg.warning ("Dimension for child [" + child_->dimension (scope)
+                 + "] already known, now asserting it is [" + dim_ + "]");
 
-    if (!child->check (units, scope, msg))
-      ok = false;
-    
-    if (warn_known && known (child->dimension (scope))
-        && child->dimension (scope) != dim)
-      msg.warning ("Dimension for child [" + child->dimension (scope)
-                   + "] already known, now asserting it is [" + dim + "]");
+  return ok;
+}
 
-    return ok;
-  }
-  NumberDim (const BlockModel& al)
-    : NumberChild (al),
-      dim (al.name ("dimension")),
-      warn_known (al.flag ("warn_known"))
-  { }
-};
+NumberDim::NumberDim (std::unique_ptr<Number> child,
+                      const symbol dimension,
+                      const bool warn_known)
+  : NumberChild ("dim", std::move (child)),
+    dim_ (dimension),
+    warn_known_ (warn_known)
+{ }
+
+NumberDim::NumberDim (const BlockModel& al)
+  : NumberChild (al),
+    dim_ (al.name ("dimension")),
+    warn_known_ (al.flag ("warn_known"))
+{ }
 
 static struct NumberDimSyntax : public DeclareModel
 {

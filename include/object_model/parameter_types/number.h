@@ -24,6 +24,7 @@
 
 #include "object_model/symbol.h"
 #include "object_model/model.h"
+#include <memory>
 #include <vector>
 
 class Scope;
@@ -80,6 +81,91 @@ public:
   NumberConst (double value, const Unit& unit);
   explicit NumberConst (const BlockModel&);
   explicit NumberConst (const BlockModel& al, symbol key);
+};
+
+class NumberX : public Number
+{
+  static const symbol name_;
+public:
+  symbol title () const;
+  void tick (const Units&, const Scope&, Treelog&);
+  symbol dimension (const Scope& scope) const;
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberX ();
+  explicit NumberX (const BlockModel&);
+};
+
+class NumberGet : public Number
+{
+  const Unit& unit_;
+  const Unit* scope_unit_;
+  const symbol name_;
+public:
+  symbol title () const;
+  void tick (const Units&, const Scope&, Treelog&);
+  symbol dimension (const Scope&) const;
+  const Unit& unit () const;
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberGet (symbol name, const Unit& unit);
+  explicit NumberGet (const BlockModel&);
+  explicit NumberGet (const BlockModel& al, symbol key);
+};
+
+class NumberChild : public Number
+{
+protected:
+  const std::unique_ptr<Number> child_;
+  explicit NumberChild (symbol objid, std::unique_ptr<Number> child);
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  explicit NumberChild (const BlockModel&);
+};
+
+class NumberIdentity : public NumberChild
+{
+  const Units& units_;
+  const symbol dim_;
+public:
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberIdentity (std::unique_ptr<Number> child, const Units& units);
+  NumberIdentity (std::unique_ptr<Number> child, const Units& units, symbol dimension);
+  explicit NumberIdentity (const BlockModel&);
+};
+
+class NumberConvert : public NumberChild
+{
+  const Units& units_;
+  const symbol dim_;
+public:
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberConvert (std::unique_ptr<Number> child, const Units& units, symbol dimension);
+  explicit NumberConvert (const BlockModel&);
+};
+
+class NumberDim : public NumberChild
+{
+  const symbol dim_;
+  const bool warn_known_;
+public:
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberDim (std::unique_ptr<Number> child, symbol dimension, bool warn_known = true);
+  explicit NumberDim (const BlockModel&);
 };
 
 #endif // NUMBER_H

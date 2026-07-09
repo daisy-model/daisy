@@ -29,9 +29,10 @@ Extract the value of a number as a string.
 
 ## Construction paths
 
+- Direct-use path: `StringerValue(std::unique_ptr<Number>, int)`
 - Registration/build path: `StringerValue(const BlockModel&)`
 
 ## TODO
 
 - Document formatting semantics more precisely, including rounding and locale expectations.
-- Consider whether a direct-use constructor should be introduced once number ownership is redesigned.
+- Add an example showing direct number-to-string formatting.

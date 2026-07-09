@@ -62,6 +62,7 @@ class StringerNumber : public Stringer
 {
 protected:
   std::unique_ptr<Number> number_;
+  StringerNumber (symbol name, std::unique_ptr<Number> number);
 public:
   void tick (const Units& units, const Scope& scope, Treelog& msg);
   bool missing (const Scope& scope) const;
@@ -76,6 +77,7 @@ class StringerValue : public StringerNumber
   const int precision_;
 public:
   symbol value (const Scope& scope) const;
+  StringerValue (std::unique_ptr<Number> number, int precision = -1);
   explicit StringerValue (const BlockModel&);
 };
 
@@ -83,6 +85,7 @@ class StringerDimension : public StringerNumber
 {
 public:
   symbol value (const Scope& scope) const;
+  explicit StringerDimension (std::unique_ptr<Number> number);
   explicit StringerDimension (const BlockModel&);
 };
 
