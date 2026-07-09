@@ -1,9 +1,12 @@
+#include <memory>
 #include <set>
 #include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
 
+#include "object_model/block_model.h"
+#include "object_model/block_top.h"
 #include "object_model/frame_model.h"
 #include "object_model/function.h"
 #include "object_model/library.h"
@@ -21,6 +24,11 @@ std::set<symbol> library_entries(const Library& library) {
   std::vector<symbol> entries;
   library.entries(entries);
   return std::set<symbol>(entries.begin(), entries.end());
+}
+
+std::unique_ptr<FrameModel> clone_model(const Library& library,
+                                        const symbol name) {
+  return std::unique_ptr<FrameModel>(&library.model(name).clone());
 }
 
 void register_test_models() {
@@ -73,4 +81,39 @@ TEST(FunctionExposureTest, ConcreteFunctionClassesArePublicTypes) {
   EXPECT_TRUE((std::is_base_of<Function, FunctionPLF>::value));
   EXPECT_TRUE((std::is_constructible<FunctionConst, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<FunctionPLF, const BlockModel&>::value));
+}
+
+TEST(FunctionExposureTest, FunctionConstCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Function::component);
+  std::unique_ptr<FrameModel> frame = clone_model(library, "const");
+  frame->set("value", 4.25);
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "const");
+  FunctionConst function(block);
+
+  EXPECT_DOUBLE_EQ(function.value(-10.0), 4.25);
+  EXPECT_DOUBLE_EQ(function.value(10.0), 4.25);
+}
+
+TEST(FunctionExposureTest, FunctionPLFCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Function::component);
+  std::unique_ptr<FrameModel> frame = clone_model(library, "plf");
+
+  PLF plf;
+  plf.add(0.0, 0.0);
+  plf.add(2.0, 4.0);
+  frame->set("plf", plf);
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "plf");
+  FunctionPLF function(block);
+
+  EXPECT_DOUBLE_EQ(function.value(0.0), 0.0);
+  EXPECT_DOUBLE_EQ(function.value(1.0), 2.0);
+  EXPECT_DOUBLE_EQ(function.value(2.0), 4.0);
 }

@@ -1,9 +1,12 @@
+#include <memory>
 #include <set>
 #include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
 
+#include "object_model/block_model.h"
+#include "object_model/block_top.h"
 #include "object_model/frame_model.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
@@ -21,6 +24,20 @@ std::set<symbol> library_entries(const Library& library) {
   std::vector<symbol> entries;
   library.entries(entries);
   return std::set<symbol>(entries.begin(), entries.end());
+}
+
+std::unique_ptr<FrameModel> clone_model(const Library& library,
+                                        const symbol name) {
+  return std::unique_ptr<FrameModel>(&library.model(name).clone());
+}
+
+std::vector<boost::shared_ptr<const FrameModel> > clone_operands(
+    const Library& library, const std::vector<symbol>& names) {
+  std::vector<boost::shared_ptr<const FrameModel> > operands;
+  for (size_t i = 0; i < names.size(); ++i)
+    operands.push_back(
+        boost::shared_ptr<const FrameModel>(&library.model(names[i]).clone()));
+  return operands;
 }
 
 void register_test_models() {
@@ -106,4 +123,63 @@ TEST(BooleanExposureTest, BooleanOperandClassesArePublicTypes) {
   EXPECT_TRUE((std::is_constructible<BooleanOr, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanXOr, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<BooleanNot, const BlockModel&>::value));
+}
+
+TEST(BooleanExposureTest, BooleanLeafClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Boolean::component);
+  BlockTop context(metalib, Treelog::null(), metalib);
+
+  std::unique_ptr<FrameModel> true_frame = clone_model(library, "true");
+  BlockModel true_block(context, *true_frame, "true");
+  BooleanTrue true_model(true_block);
+
+  std::unique_ptr<FrameModel> false_frame = clone_model(library, "false");
+  BlockModel false_block(context, *false_frame, "false");
+  BooleanFalse false_model(false_block);
+
+  EXPECT_TRUE(true_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(true_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(true_model.missing(Scope::null()));
+  EXPECT_TRUE(true_model.value(Scope::null()));
+
+  EXPECT_TRUE(false_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(false_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(false_model.missing(Scope::null()));
+  EXPECT_FALSE(false_model.value(Scope::null()));
+}
+
+TEST(BooleanExposureTest, BooleanCompositeClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Boolean::component);
+  BlockTop context(metalib, Treelog::null(), metalib);
+
+  std::unique_ptr<FrameModel> and_frame = clone_model(library, "and");
+  and_frame->set("operands", clone_operands(library, {"true", "false"}));
+  BlockModel and_block(context, *and_frame, "and");
+  BooleanAnd and_model(and_block);
+  EXPECT_TRUE(and_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(and_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(and_model.missing(Scope::null()));
+  EXPECT_FALSE(and_model.value(Scope::null()));
+
+  std::unique_ptr<FrameModel> or_frame = clone_model(library, "or");
+  or_frame->set("operands", clone_operands(library, {"true", "false"}));
+  BlockModel or_block(context, *or_frame, "or");
+  BooleanOr or_model(or_block);
+  EXPECT_TRUE(or_model.value(Scope::null()));
+
+  std::unique_ptr<FrameModel> xor_frame = clone_model(library, "xor");
+  xor_frame->set("operands", clone_operands(library, {"true", "false"}));
+  BlockModel xor_block(context, *xor_frame, "xor");
+  BooleanXOr xor_model(xor_block);
+  EXPECT_TRUE(xor_model.value(Scope::null()));
+
+  std::unique_ptr<FrameModel> not_frame = clone_model(library, "not");
+  not_frame->set("operands", clone_operands(library, {"false"}));
+  BlockModel not_block(context, *not_frame, "not");
+  BooleanNot not_model(not_block);
+  EXPECT_TRUE(not_model.value(Scope::null()));
 }
