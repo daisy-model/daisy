@@ -40,6 +40,12 @@ MAKE_RE = re.compile(r"return\s+new\s+(\w+)\s*\(al\);")
 LOAD_FRAME_RE = re.compile(r"load_frame\s*\([^)]*Frame&[^)]*\)\s*const\s*\{(?P<body>.*?)\}", re.S)
 DECLARE_CALL_RE = re.compile(r"frame\.(declare(?:_[A-Za-z]+)?|declare)\s*\((.*?)\);", re.S)
 STRING_RE = re.compile(r'"((?:[^"\\]|\\.)*)"')
+MODEL_FILE_ALIASES = {
+    "*": "multiply",
+    "+": "add",
+    "-": "subtract",
+    "/": "divide",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -109,6 +115,15 @@ def normalize_registration(call_name: str, args: list[str]) -> str:
     cleaned = ", ".join(display_args)
     cleaned = re.sub(r"\s+", " ", cleaned)
     return f"frame.{call_name}({cleaned})"
+
+
+def doc_slug(name: str) -> str:
+    if name in MODEL_FILE_ALIASES:
+        return MODEL_FILE_ALIASES[name]
+    slug = name.strip().lower()
+    slug = re.sub(r"[^a-z0-9]+", "-", slug)
+    slug = slug.strip("-")
+    return slug or "model"
 
 
 def find_header_for_class(repo_root: pathlib.Path, class_name: str) -> str | None:
@@ -284,7 +299,7 @@ def write_component_doc(output_dir: pathlib.Path, component_decl: Declaration, m
 def write_model_doc(output_dir: pathlib.Path, model_decl: Declaration) -> None:
     model_dir = output_dir / model_decl.component / "models"
     model_dir.mkdir(parents=True, exist_ok=True)
-    model_file = model_dir / f"{model_decl.registered_name}.md"
+    model_file = model_dir / f"{doc_slug(model_decl.registered_name)}.md"
     lines = [
         "---",
         "doc_type: model",

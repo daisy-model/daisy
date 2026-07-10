@@ -28,6 +28,13 @@ Generic representation of numbers.
 | `NumberIdentity` | Pass-through wrapper that can optionally assert or convert dimension. |
 | `NumberConvert` | Wrapper that converts the child value into a requested dimension. |
 | `NumberDim` | Wrapper that re-labels the child value with an asserted dimension. |
+| `NumberOperand` | Abstract helper for unary arithmetic numbers backed by one operand. |
+| `NumberLog10` | Base-10 logarithm of the operand. |
+| `NumberLn` | Natural logarithm of the operand. |
+| `NumberExp` | Exponential of the operand. |
+| `NumberSqrt` | Square root of the operand. |
+| `NumberSqr` | Square of the operand. |
+| `NumberPLF` | Evaluates a number operand through a piecewise linear function. |
 
 ## Shared declared entries
 
@@ -43,6 +50,12 @@ currently does not add shared frame entries at the component level.
 - `identity`
 - `convert`
 - `dim`
+- `log10`
+- `ln`
+- `exp`
+- `sqrt`
+- `sqr`
+- `plf`
 
 ## TODO
 

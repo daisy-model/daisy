@@ -33,56 +33,62 @@
 #include <sstream>
 #include <memory>
 
-struct NumberOperand : public Number
+NumberOperand::NumberOperand (const symbol objid, std::unique_ptr<Number> operand)
+  : Number (objid),
+    operand_ (std::move (operand))
+{ }
+
+void
+NumberOperand::tick (const Units& units, const Scope& scope, Treelog& msg)
+{ operand_->tick (units, scope, msg); }
+
+bool
+NumberOperand::missing (const Scope& scope) const
+{ return operand_->missing (scope); }
+
+symbol
+NumberOperand::dimension (const Scope& scope) const
 {
-  // Parameters.
-  const std::unique_ptr<Number> operand;
+  if (operand_->dimension (scope) == Attribute::None ())
+    return Attribute::None ();
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { operand->tick (units, scope, msg); }
-  bool missing (const Scope& scope) const 
-  { return operand->missing (scope); }
-  symbol dimension (const Scope& scope) const
-  {
-    if (operand->dimension (scope) == Attribute::None ())
-      return Attribute::None ();
+  return Attribute::Unknown ();
+}
 
-    return Attribute::Unknown (); 
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    TREELOG_MODEL (msg);
-    return operand->initialize (units, scope, msg); 
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    return operand->check (units, scope, msg); 
-  }
-  NumberOperand (const BlockModel& al)
-    : Number (al),
-      operand (Librarian::build_item<Number> (al, "operand"))
-  { }
-};
-
-struct NumberLog10 : public NumberOperand
+bool
+NumberOperand::initialize (const Units& units, const Scope& scope, Treelog& msg)
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    const double v = operand->value (scope);
-    daisy_assert (v > 0.0);
-    return log10 (v); 
-  }
+  TREELOG_MODEL (msg);
+  return operand_->initialize (units, scope, msg);
+}
 
-  // Create.
-  NumberLog10 (const BlockModel& al)
-    : NumberOperand (al)
-  { }
-};
+bool
+NumberOperand::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  return operand_->check (units, scope, msg);
+}
+
+NumberOperand::NumberOperand (const BlockModel& al)
+  : Number (al),
+    operand_ (Librarian::build_item<Number> (al, "operand"))
+{ }
+
+double
+NumberLog10::value (const Scope& scope) const
+{
+  const double v = operand_->value (scope);
+  daisy_assert (v > 0.0);
+  return log10 (v);
+}
+
+NumberLog10::NumberLog10 (std::unique_ptr<Number> operand)
+  : NumberOperand ("log10", std::move (operand))
+{ }
+
+NumberLog10::NumberLog10 (const BlockModel& al)
+  : NumberOperand (al)
+{ }
 
 static struct NumberLog10Syntax : public DeclareModel
 {
@@ -101,21 +107,21 @@ static struct NumberLog10Syntax : public DeclareModel
   }
 } NumberLog10_syntax;
 
-struct NumberLn : public NumberOperand
+double
+NumberLn::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    const double v = operand->value (scope);
-    daisy_assert (v > 0.0);
-    return log (v); 
-  }
+  const double v = operand_->value (scope);
+  daisy_assert (v > 0.0);
+  return log (v);
+}
 
-  // Create.
-  NumberLn (const BlockModel& al)
-    : NumberOperand (al)
-  { }
-};
+NumberLn::NumberLn (std::unique_ptr<Number> operand)
+  : NumberOperand ("ln", std::move (operand))
+{ }
+
+NumberLn::NumberLn (const BlockModel& al)
+  : NumberOperand (al)
+{ }
 
 static struct NumberLnSyntax : public DeclareModel
 {
@@ -134,20 +140,20 @@ static struct NumberLnSyntax : public DeclareModel
   }
 } NumberLn_syntax;
 
-struct NumberExp : public NumberOperand
+double
+NumberExp::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    const double v = operand->value (scope);
-    return exp (v); 
-  }
+  const double v = operand_->value (scope);
+  return exp (v);
+}
 
-  // Create.
-  NumberExp (const BlockModel& al)
-    : NumberOperand (al)
-  { }
-};
+NumberExp::NumberExp (std::unique_ptr<Number> operand)
+  : NumberOperand ("exp", std::move (operand))
+{ }
+
+NumberExp::NumberExp (const BlockModel& al)
+  : NumberOperand (al)
+{ }
 
 static struct NumberExpSyntax : public DeclareModel
 {
@@ -166,21 +172,21 @@ static struct NumberExpSyntax : public DeclareModel
   }
 } NumberExp_syntax;
 
-struct NumberSqrt : public NumberOperand
+double
+NumberSqrt::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    const double v = operand->value (scope);
-    daisy_assert (v >= 0.0);
-    return sqrt (v); 
-  }
+  const double v = operand_->value (scope);
+  daisy_assert (v >= 0.0);
+  return sqrt (v);
+}
 
-  // Create.
-  NumberSqrt (const BlockModel& al)
-    : NumberOperand (al)
-  { }
-};
+NumberSqrt::NumberSqrt (std::unique_ptr<Number> operand)
+  : NumberOperand ("sqrt", std::move (operand))
+{ }
+
+NumberSqrt::NumberSqrt (const BlockModel& al)
+  : NumberOperand (al)
+{ }
 
 static struct NumberSqrtSyntax : public DeclareModel
 {
@@ -199,25 +205,27 @@ static struct NumberSqrtSyntax : public DeclareModel
   }
 } NumberSqrt_syntax;
 
-struct NumberSqr : public NumberOperand
+double
+NumberSqr::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    const double v = operand->value (scope);
-    return v * v; 
-  }
-  symbol dimension (const Scope& scope) const
-  { 
-    const symbol opdim = operand->dimension (scope);
-    return Units::multiply (opdim, opdim);
-  }
+  const double v = operand_->value (scope);
+  return v * v;
+}
 
-  // Create.
-  NumberSqr (const BlockModel& al)
-    : NumberOperand (al)
-  { }
-};
+symbol
+NumberSqr::dimension (const Scope& scope) const
+{
+  const symbol opdim = operand_->dimension (scope);
+  return Units::multiply (opdim, opdim);
+}
+
+NumberSqr::NumberSqr (std::unique_ptr<Number> operand)
+  : NumberOperand ("sqr", std::move (operand))
+{ }
+
+NumberSqr::NumberSqr (const BlockModel& al)
+  : NumberOperand (al)
+{ }
 
 static struct NumberSqrSyntax : public DeclareModel
 {

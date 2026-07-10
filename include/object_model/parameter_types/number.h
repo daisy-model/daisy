@@ -24,6 +24,7 @@
 
 #include "object_model/symbol.h"
 #include "object_model/model.h"
+#include "object_model/plf.h"
 #include <memory>
 #include <vector>
 
@@ -166,6 +167,80 @@ public:
   bool check (const Units& units, const Scope& scope, Treelog& msg) const;
   NumberDim (std::unique_ptr<Number> child, symbol dimension, bool warn_known = true);
   explicit NumberDim (const BlockModel&);
+};
+
+class NumberOperand : public Number
+{
+protected:
+  const std::unique_ptr<Number> operand_;
+  NumberOperand (symbol objid, std::unique_ptr<Number> operand);
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberOperand (const BlockModel&);
+};
+
+class NumberLog10 : public NumberOperand
+{
+public:
+  double value (const Scope& scope) const;
+  explicit NumberLog10 (std::unique_ptr<Number> operand);
+  explicit NumberLog10 (const BlockModel&);
+};
+
+class NumberLn : public NumberOperand
+{
+public:
+  double value (const Scope& scope) const;
+  explicit NumberLn (std::unique_ptr<Number> operand);
+  explicit NumberLn (const BlockModel&);
+};
+
+class NumberExp : public NumberOperand
+{
+public:
+  double value (const Scope& scope) const;
+  explicit NumberExp (std::unique_ptr<Number> operand);
+  explicit NumberExp (const BlockModel&);
+};
+
+class NumberSqrt : public NumberOperand
+{
+public:
+  double value (const Scope& scope) const;
+  explicit NumberSqrt (std::unique_ptr<Number> operand);
+  explicit NumberSqrt (const BlockModel&);
+};
+
+class NumberSqr : public NumberOperand
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberSqr (std::unique_ptr<Number> operand);
+  explicit NumberSqr (const BlockModel&);
+};
+
+class NumberPLF : public Number
+{
+  const std::unique_ptr<Number> operand_;
+  const symbol domain_;
+  const symbol range_;
+  const PLF plf_;
+  double operand_value_;
+  bool operand_missing_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberPLF (std::unique_ptr<Number> operand, symbol domain, symbol range, const PLF& plf);
+  explicit NumberPLF (const BlockModel&);
 };
 
 #endif // NUMBER_H

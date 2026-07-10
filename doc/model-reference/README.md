@@ -30,7 +30,9 @@ python3 doc/model-reference/generate_from_registration.py \
   --source src/object_model/parameter_types/boolean_string.C \
   --source src/object_model/parameter_types/integer.C \
   --source src/object_model/parameter_types/number.C \
+  --source src/object_model/parameter_types/number_arit.C \
   --source src/object_model/parameter_types/number_const.C \
+  --source src/object_model/parameter_types/number_plf.C \
   --source src/object_model/parameter_types/stringer.C
 ```
 
