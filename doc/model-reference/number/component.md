@@ -34,6 +34,15 @@ Generic representation of numbers.
 | `NumberSourceAverage` | Averages values from a filtered time series. |
 | `NumberSourceSum` | Sums values from a filtered time series. |
 | `NumberSourceIncrease` | Computes the increase across a filtered time series. |
+| `NumberByDepth` | Abstract base for soil lookups that combine a column, pressure, and depth. |
+| `NumberDepthTheta` | Finds soil water content for a pressure at a specific depth. |
+| `NumberDepthK` | Finds soil hydraulic conductivity for a pressure at a specific depth. |
+| `NumberByTension` | Abstract base for soil horizon lookups parameterized by pressure. |
+| `NumberSoilTheta` | Finds soil water content for a pressure within a horizon. |
+| `NumberSoilK` | Finds hydraulic conductivity for a pressure within a horizon. |
+| `NumberSoilHeatCapacity` | Finds soil heat capacity for a pressure within a horizon. |
+| `NumberSoilHeatConductivity` | Finds soil heat conductivity for a pressure within a horizon. |
+| `NumberTensionByTheta` | Finds the pressure corresponding to a horizon water content. |
 | `NumberChild` | Abstract base for number models that wrap another `Number`. |
 | `NumberIdentity` | Pass-through wrapper that can optionally assert or convert dimension. |
 | `NumberConvert` | Wrapper that converts the child value into a requested dimension. |
@@ -83,6 +92,15 @@ currently does not add shared frame entries at the component level.
 - `source_average`
 - `source_sum`
 - `source_increase`
+- `depth`
+- `depth_Theta`
+- `depth_K`
+- `horizon`
+- `soil_Theta`
+- `soil_K`
+- `soil_heat_capacity`
+- `soil_heat_conductivity`
+- `daisy/soil/soil.h`
 - `max`
 - `min`
 - `*`
@@ -93,5 +111,5 @@ currently does not add shared frame entries at the component level.
 
 ## TODO
 
-- Expose and document additional low-risk number models once the child-wrapper slice is established.
+- Document the remaining semantics and examples for the soil-backed number models.
 - Add usage examples showing how number models are embedded in Daisy inputs.

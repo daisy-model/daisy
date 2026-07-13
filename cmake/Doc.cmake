@@ -22,6 +22,7 @@ if(${BUILD_DOC})
             --source src/object_model/parameter_types/number_const.C
             --source src/object_model/parameter_types/number_lisp.C
             --source src/object_model/parameter_types/number_plf.C
+            --source src/object_model/parameter_types/number_soil.C
             --source src/object_model/parameter_types/number_source.C
             --source src/object_model/parameter_types/stringer.C
   )

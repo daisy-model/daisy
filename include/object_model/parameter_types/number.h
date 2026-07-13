@@ -33,6 +33,8 @@
 #include <vector>
 
 class Boolean;
+class Column;
+class Horizon;
 class Source;
 class Treelog;
 class BlockModel;
@@ -310,6 +312,103 @@ public:
                                  std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
                                  std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
   explicit NumberSourceIncrease (const BlockModel& al);
+};
+
+class NumberByDepth : public Number
+{
+protected:
+  const Units& units_;
+  std::unique_ptr<Column> column_;
+  double max_depth_;
+  std::unique_ptr<Number> h_;
+  std::unique_ptr<Number> z_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberByDepth (const BlockModel& al);
+  ~NumberByDepth ();
+};
+
+class NumberDepthTheta : public NumberByDepth
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberDepthTheta (const BlockModel& al);
+};
+
+class NumberDepthK : public NumberByDepth
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberDepthK (const BlockModel& al);
+};
+
+class NumberByTension : public Number
+{
+protected:
+  const Units& units_;
+  std::unique_ptr<Horizon> horizon_;
+  std::unique_ptr<Number> h_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberByTension (const BlockModel& al);
+  ~NumberByTension ();
+};
+
+class NumberSoilTheta : public NumberByTension
+{
+public:
+  void tick (const Units&, const Scope&, Treelog&);
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberSoilTheta (const BlockModel& al);
+};
+
+class NumberSoilK : public NumberByTension
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberSoilK (const BlockModel& al);
+};
+
+class NumberSoilHeatCapacity : public NumberByTension
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberSoilHeatCapacity (const BlockModel& al);
+};
+
+class NumberSoilHeatConductivity : public NumberByTension
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  explicit NumberSoilHeatConductivity (const BlockModel& al);
+};
+
+class NumberTensionByTheta : public Number
+{
+  const Units& units_;
+  std::unique_ptr<Horizon> horizon_;
+  std::unique_ptr<Number> theta_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberTensionByTheta (const BlockModel& al);
+  ~NumberTensionByTheta ();
 };
 
 class NumberChild : public Number
