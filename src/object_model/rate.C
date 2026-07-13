@@ -121,19 +121,17 @@ Rate::value (const BlockModel& al, const symbol name, double default_value)
 
 // The 'rate' model.
 
-struct RateRate : public Rate
-{
-  const double rate;		// [h^-1]
+double
+RateRate::find_rate () const
+{ return rate_; }
 
-  double find_rate () const
-  { return rate; }
+RateRate::RateRate (double rate)
+  : rate_ (rate)
+{ }
 
-  RateRate (const BlockModel& al)
-    : rate (al.number ("rate"))
-  { }
-  ~RateRate ()
-  { }
-};
+RateRate::RateRate (const BlockModel& al)
+  : rate_ (al.number ("rate"))
+{ }
 
 static struct RateRateSyntax : DeclareModel
 {
@@ -168,19 +166,17 @@ A rate of zero.")
 
 // halftime model.
 
-struct RateHalftime : public Rate
-{
-  const double rate;		// [h^-1]
+double
+RateHalftime::find_rate () const
+{ return rate_; }
 
-  double find_rate () const
-  { return rate; }
+RateHalftime::RateHalftime (double halftime)
+  : rate_ (halftime_to_rate (halftime))
+{ }
 
-  RateHalftime (const BlockModel& al)
-    : rate (halftime_to_rate (al.number ("halftime")))
-  { }
-  ~RateHalftime ()
-  { }
-};
+RateHalftime::RateHalftime (const BlockModel& al)
+  : rate_ (halftime_to_rate (al.number ("halftime")))
+{ }
 
 static struct RateHalftimeSyntax : DeclareModel
 {

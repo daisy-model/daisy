@@ -60,4 +60,22 @@ public:
   ~Rate ();
 };
 
+class RateRate : public Rate
+{
+  const double rate_;
+public:
+  double find_rate () const;
+  explicit RateRate (double rate);
+  explicit RateRate (const BlockModel& al);
+};
+
+class RateHalftime : public Rate
+{
+  const double rate_;
+public:
+  double find_rate () const;
+  explicit RateHalftime (double halftime);
+  explicit RateHalftime (const BlockModel& al);
+};
+
 #endif // RATE_H

@@ -39,6 +39,7 @@ python3 doc/model-reference/generate_from_registration.py \
   --source src/object_model/parameter_types/number_plf.C \
   --source src/object_model/parameter_types/number_soil.C \
   --source src/object_model/parameter_types/number_source.C \
+  --source src/object_model/rate.C \
   --source src/object_model/parameter_types/stringer.C
 ```
 

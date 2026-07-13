@@ -39,6 +39,7 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/stringer.C
     ${CMAKE_SOURCE_DIR}/src/gnuplot/source.C
     ${CMAKE_SOURCE_DIR}/src/object_model/plf.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/rate.C
     ${CMAKE_SOURCE_DIR}/src/object_model/symbol.C
     ${CMAKE_SOURCE_DIR}/src/object_model/treelog.C
     ${CMAKE_SOURCE_DIR}/src/object_model/treelog_store.C
