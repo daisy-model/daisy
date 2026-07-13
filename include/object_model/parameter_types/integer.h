@@ -22,14 +22,18 @@
 #ifndef INTEGER_H
 #define INTEGER_H
 
+#include "object_model/parameter_types/boolean.h"
 #include "object_model/model.h"
 #include "object_model/symbol.h"
+#include <memory>
 #include <vector>
 
 class Scope;
 class Treelog;
 class BlockModel;
 class Units;
+class Frame;
+class Block;
 
 class Integer : public Model
 {
@@ -67,6 +71,34 @@ public:
   bool check (const Scope&, Treelog&) const;
   explicit IntegerConst (int value);
   explicit IntegerConst (const BlockModel&);
+};
+
+class IntegerCond : public Integer
+{
+public:
+  class Clause
+  {
+    std::unique_ptr<Boolean> condition_;
+    const int value_;
+  public:
+    static void load_syntax (Frame& frame);
+    Clause (std::unique_ptr<Boolean> condition, int value);
+    Clause (const Block& al);
+    void initialize (const Units& units, const Scope& scope,
+                     Treelog& msg, const symbol& owner_name,
+                     size_t index, bool& ok) const;
+    bool matches (const Scope& scope) const;
+    int value () const;
+  };
+private:
+  std::vector<Clause> clauses_;
+public:
+  bool missing (const Scope&) const;
+  int value (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Scope& scope, Treelog& msg) const;
+  explicit IntegerCond (std::vector<Clause> clauses);
+  explicit IntegerCond (const BlockModel&);
 };
 
 #endif // INTEGER_H

@@ -21,6 +21,7 @@
 #define BUILD_DLL
 
 #include "object_model/parameter_types/integer.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/submodeler.h"
 #include "object_model/block_model.h"
@@ -80,7 +81,9 @@ IntegerConst::IntegerConst (const BlockModel& al)
     val_ (al.integer ("value"))
 { }
 
-static struct IntegerConstSyntax : public DeclareModel
+namespace
+{
+struct IntegerConstSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerConst (al); }
@@ -95,77 +98,9 @@ static struct IntegerConstSyntax : public DeclareModel
 		"Fixed value for this integer.");
     frame.order ("value");
   }
-} IntegerConst_syntax;
-
-struct IntegerCond : public Integer
-{
-  // Parameters.
-  struct Clause
-  {
-    const std::unique_ptr<Boolean> condition;
-    const int value;
-    static void load_syntax (Frame& frame)
-    {
-      frame.declare_object ("condition", Boolean::component, "\
-Condition to test for.");
-      frame.declare_integer ("value", Attribute::Const, "\
-Value to return.");
-      frame.order ("condition", "value");
-    }
-    Clause (const Block& al)
-      : condition (Librarian::build_item<Boolean> (al, "condition")),
-        value (al.integer ("value"))
-    { }
-  };
-  std::vector<const Clause*> clauses;
-
-  // Simulation.
-  bool missing (const Scope&) const
-  { return false; }
-  int value (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < clauses.size (); i++)
-      if (clauses[i]->condition->value (scope))
-        return clauses[i]->value;
-    throw "No matching conditions";
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  {
-    bool ok = true;
-    for (size_t i = 0; i < clauses.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << name << "[" << i << "]";
-        Treelog::Open nest (msg, tmp.str ());
-        if (!clauses[i]->condition->initialize (units, scope, msg))
-          ok = false;
-      }
-    return ok;
-  }
-  bool check (const Scope& scope, Treelog& msg) const
-  { 
-    for (size_t i = 0; i < clauses.size (); i++)
-      if (clauses[i]->condition->value (scope))
-        return true;
-    msg.error ("No clause matches");
-    return false; 
-  }
-  IntegerCond (const BlockModel& al)
-    : Integer (al),
-      clauses (map_submodel_const<Clause> (al, "clauses"))
-  { }
-  ~IntegerCond ()
-  { sequence_delete (clauses.begin (), clauses.end ()); }
 };
 
-static DeclareSubmodel 
-integer_cond_clause_submodel (IntegerCond::Clause::load_syntax,
-                              "IntegerCondClause", "\
-If condition is true, return value.");
-
-static struct IntegerCondSyntax : public DeclareModel
+struct IntegerCondSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerCond (al); }
@@ -181,14 +116,115 @@ List of clauses to match for.",
                                    IntegerCond::Clause::load_syntax);
     frame.order ("clauses");
   }
-} IntegerCond_syntax;
+};
 
-static struct IntegerInit : public DeclareComponent 
+struct IntegerInit : public DeclareComponent 
 {
   IntegerInit ()
     : DeclareComponent (Integer::component, "\
 Generic representation of integers.")
   { }
-} Integer_init;
+};
+}
+
+void
+IntegerCond::Clause::load_syntax (Frame& frame)
+{
+  frame.declare_object ("condition", Boolean::component, "\
+Condition to test for.");
+  frame.declare_integer ("value", Attribute::Const, "\
+Value to return.");
+  frame.order ("condition", "value");
+}
+
+IntegerCond::Clause::Clause (std::unique_ptr<Boolean> condition, const int value)
+  : condition_ (std::move (condition)),
+    value_ (value)
+{ }
+
+IntegerCond::Clause::Clause (const Block& al)
+  : condition_ (Librarian::build_item<Boolean> (al, "condition")),
+    value_ (al.integer ("value"))
+{ }
+
+void
+IntegerCond::Clause::initialize (const Units& units, const Scope& scope,
+                                 Treelog& msg, const symbol& owner_name,
+                                 const size_t index, bool& ok) const
+{
+  std::ostringstream tmp;
+  tmp << owner_name << "[" << index << "]";
+  Treelog::Open nest (msg, tmp.str ());
+  if (!condition_->initialize (units, scope, msg))
+    ok = false;
+}
+
+bool
+IntegerCond::Clause::matches (const Scope& scope) const
+{ return condition_->value (scope); }
+
+int
+IntegerCond::Clause::value () const
+{ return value_; }
+
+bool
+IntegerCond::missing (const Scope&) const
+{ return false; }
+
+int
+IntegerCond::value (const Scope& scope) const
+{
+  for (size_t i = 0; i < clauses_.size (); i++)
+    if (clauses_[i].matches (scope))
+      return clauses_[i].value ();
+  throw "No matching conditions";
+}
+
+bool
+IntegerCond::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  bool ok = true;
+  for (size_t i = 0; i < clauses_.size (); i++)
+    clauses_[i].initialize (units, scope, msg, name, i, ok);
+  return ok;
+}
+
+bool
+IntegerCond::check (const Scope& scope, Treelog& msg) const
+{
+  for (size_t i = 0; i < clauses_.size (); i++)
+    if (clauses_[i].matches (scope))
+      return true;
+  msg.error ("No clause matches");
+  return false;
+}
+
+IntegerCond::IntegerCond (std::vector<Clause> clauses)
+  : Integer ("cond"),
+    clauses_ (std::move (clauses))
+{ }
+
+IntegerCond::IntegerCond (const BlockModel& al)
+  : Integer (al)
+{
+  auto raw_clauses = map_submodel<Clause> (al, "clauses");
+  clauses_.reserve (raw_clauses.size ());
+  for (size_t i = 0; i < raw_clauses.size (); ++i)
+    {
+      clauses_.push_back (std::move (*raw_clauses[i]));
+      delete raw_clauses[i];
+    }
+}
+
+void
+register_integer_models ()
+{
+  static DeclareSubmodel integer_cond_clause_submodel (
+    IntegerCond::Clause::load_syntax, "IntegerCondClause", "\
+If condition is true, return value.");
+  static IntegerConstSyntax integer_const_syntax;
+  static IntegerCondSyntax integer_cond_syntax;
+  static IntegerInit integer_init;
+}
 
 // integer.C ends here

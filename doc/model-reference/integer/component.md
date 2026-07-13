@@ -22,6 +22,7 @@ Generic representation of integers.
 | --- | --- |
 | `Integer` | Abstract base class for integer-valued models. |
 | `IntegerConst` | Concrete model that always returns the same integer value. |
+| `IntegerCond` | Returns the value from the first matching boolean clause. |
 
 ## Shared declared entries
 
@@ -35,6 +36,5 @@ currently does not add shared frame entries at the component level.
 
 ## TODO
 
-- Expose and document `IntegerCond` after the low-risk `IntegerConst` slice is established.
 - Document lifecycle expectations for `initialize`, `check`, and `missing`.
 - Add usage examples showing how integer models are embedded in Daisy inputs.

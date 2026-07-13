@@ -25,6 +25,7 @@ Generic representation of strings.
 | `StringerValue` | Concrete model that renders a number as a string. |
 | `StringerDimension` | Concrete model that extracts a number dimension as a string. |
 | `StringerIdentity` | Concrete model that always returns the same string. |
+| `StringerCond` | Returns the value from the first matching boolean clause. |
 
 ## Shared declared entries
 
@@ -41,5 +42,4 @@ currently does not add shared frame entries at the component level.
 
 ## TODO
 
-- Expose and document `StringerCond` after the low-risk slices are established.
 - Add usage examples showing how string models are embedded in Daisy inputs.

@@ -22,15 +22,19 @@
 #ifndef STRINGER_H
 #define STRINGER_H
 
+#include "object_model/parameter_types/boolean.h"
 #include "object_model/model.h"
 #include "object_model/symbol.h"
 #include <memory>
+#include <vector>
 
 class Scope;
 class BlockModel;
 class Treelog;
 class Units;
 class Number;
+class Frame;
+class Block;
 
 class Stringer : public Model
 {
@@ -101,6 +105,36 @@ public:
   explicit StringerIdentity (symbol value);
   explicit StringerIdentity (const BlockModel&);
   ~StringerIdentity ();
+};
+
+class StringerCond : public Stringer
+{
+public:
+  class Clause
+  {
+    std::unique_ptr<Boolean> condition_;
+    const symbol value_;
+  public:
+    static void load_syntax (Frame& frame);
+    Clause (std::unique_ptr<Boolean> condition, symbol value);
+    Clause (const Block& al);
+    void tick (const Units& units, const Scope& scope, Treelog& msg) const;
+    void initialize (const Units& units, const Scope& scope,
+                     Treelog& msg, const symbol& owner_name,
+                     size_t index, bool& ok) const;
+    bool matches (const Scope& scope) const;
+    symbol value () const;
+  };
+private:
+  std::vector<Clause> clauses_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope&) const;
+  symbol value (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units&, const Scope& scope, Treelog& msg) const;
+  explicit StringerCond (std::vector<Clause> clauses);
+  explicit StringerCond (const BlockModel&);
 };
 
 #endif // STRINGER_H
