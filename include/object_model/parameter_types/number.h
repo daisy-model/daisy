@@ -224,6 +224,89 @@ public:
   explicit NumberSqr (const BlockModel&);
 };
 
+class NumberPow : public Number
+{
+  const std::unique_ptr<Number> base_;
+  const std::unique_ptr<Number> exponent_;
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberPow (std::unique_ptr<Number> base, std::unique_ptr<Number> exponent);
+  explicit NumberPow (const BlockModel&);
+};
+
+class NumberOperands : public Number
+{
+protected:
+  std::vector<std::unique_ptr<Number>> operands_;
+  symbol unique_dimension (const Scope& scope) const;
+  NumberOperands (symbol objid, std::vector<std::unique_ptr<Number>> operands);
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberOperands (const BlockModel&);
+};
+
+class NumberMax : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberMax (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberMax (const BlockModel&);
+};
+
+class NumberMin : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberMin (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberMin (const BlockModel&);
+};
+
+class NumberProduct : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberProduct (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberProduct (const BlockModel&);
+};
+
+class NumberSum : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberSum (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberSum (const BlockModel&);
+};
+
+class NumberSubtract : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberSubtract (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberSubtract (const BlockModel&);
+};
+
+class NumberDivide : public NumberOperands
+{
+public:
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  explicit NumberDivide (std::vector<std::unique_ptr<Number>> operands);
+  explicit NumberDivide (const BlockModel&);
+};
+
 class NumberPLF : public Number
 {
   const std::unique_ptr<Number> operand_;

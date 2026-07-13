@@ -33,6 +33,20 @@
 #include <sstream>
 #include <memory>
 
+namespace
+{
+std::vector<std::unique_ptr<Number>>
+build_operands (const BlockModel& al)
+{
+  std::vector<std::unique_ptr<Number>> result;
+  std::vector<Number*> operands = Librarian::build_vector<Number> (al, "operands");
+  result.reserve (operands.size ());
+  for (size_t i = 0; i < operands.size (); ++i)
+    result.emplace_back (operands[i]);
+  return result;
+}
+} // namespace
+
 NumberOperand::NumberOperand (const symbol objid, std::unique_ptr<Number> operand)
   : Number (objid),
     operand_ (std::move (operand))
@@ -244,57 +258,66 @@ static struct NumberSqrSyntax : public DeclareModel
   }
 } NumberSqr_syntax;
 
-struct NumberPow : public Number
+void
+NumberPow::tick (const Units& units, const Scope& scope, Treelog& msg)
 {
-  // Parameters.
-  const std::unique_ptr<Number> base;
-  const std::unique_ptr<Number> exponent;
+  base_->tick (units, scope, msg);
+  exponent_->tick (units, scope, msg);
+}
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    base->tick (units, scope, msg);
-    exponent->tick (units, scope, msg);
-  }
-  bool missing (const Scope& scope) const 
-  { return base->missing (scope) || exponent->missing (scope); }
-  double value (const Scope& scope) const
-  { 
-    const double x = base->value (scope);
-    const double y = exponent->value (scope);
-    daisy_assert (x >= 0.0);
-    return pow (x, y); 
-  }
-  symbol dimension (const Scope&) const 
-  { return Attribute::Unknown (); }
+bool
+NumberPow::missing (const Scope& scope) const
+{ return base_->missing (scope) || exponent_->missing (scope); }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    TREELOG_MODEL (msg);
-    bool ok = true;
-    if (!base->initialize (units, scope, msg))
-      ok = false;
-    if (!exponent->initialize (units, scope, msg))
-      ok = false;
-    return ok;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  {
-    TREELOG_MODEL (msg);
-    bool ok = true;
-    if (!base->check (units, scope, msg))
-      ok = false;
-    if (!exponent->check (units, scope, msg))
-      ok = false;
-    return ok;
-  }
-  NumberPow (const BlockModel& al)
-    : Number (al),
-      base (Librarian::build_item<Number> (al, "base")),
-      exponent (Librarian::build_item<Number> (al, "exponent"))
-  { }
-};
+double
+NumberPow::value (const Scope& scope) const
+{
+  const double x = base_->value (scope);
+  const double y = exponent_->value (scope);
+  daisy_assert (x >= 0.0);
+  return pow (x, y);
+}
+
+symbol
+NumberPow::dimension (const Scope&) const
+{ return Attribute::Unknown (); }
+
+bool
+NumberPow::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
+  if (!base_->initialize (units, scope, msg))
+    ok = false;
+  if (!exponent_->initialize (units, scope, msg))
+    ok = false;
+  return ok;
+}
+
+bool
+NumberPow::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
+  if (!base_->check (units, scope, msg))
+    ok = false;
+  if (!exponent_->check (units, scope, msg))
+    ok = false;
+  return ok;
+}
+
+NumberPow::NumberPow (std::unique_ptr<Number> base,
+                      std::unique_ptr<Number> exponent)
+  : Number ("pow"),
+    base_ (std::move (base)),
+    exponent_ (std::move (exponent))
+{ }
+
+NumberPow::NumberPow (const BlockModel& al)
+  : Number (al),
+    base_ (Librarian::build_item<Number> (al, "base")),
+    exponent_ (Librarian::build_item<Number> (al, "exponent"))
+{ }
 
 static struct NumberPowSyntax : public DeclareModel
 {
@@ -315,62 +338,56 @@ static struct NumberPowSyntax : public DeclareModel
   }
 } NumberPow_syntax;
 
-struct NumberOperands : public Number
+symbol
+NumberOperands::unique_dimension (const Scope& scope) const
 {
-  // Parameters.
-  const std::vector<Number*> operands;
-
-  // Utilities.
-  symbol unique_dimension (const Scope& scope) const 
-  { 
-    static const symbol unspecified ("<unspecified>");
-    symbol found = unspecified;
-    for (size_t i = 0; i < operands.size (); i++)
-      if (known (operands[i]->dimension (scope)))
-        {
-          if (found == unspecified)
-            found = operands[i]->dimension (scope);
-          else
-            {
-              if (operands[i]->dimension (scope) != found)
-                return Attribute::Unknown ();
-            }
-        }
-    
-    return found != unspecified ? found : Attribute::Unknown ();
-  }
-
-  // Use.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    for (size_t i = 0; i < operands.size (); i++)
-      operands[i]->tick (units, scope, msg);
-  }
-  bool missing (const Scope& scope) const 
-  { 
-    for (size_t i = 0; i < operands.size (); i++)
-      if (operands[i]->missing (scope))
-        return true;
-    return false;
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    bool ok = true;
-    for (size_t i = 0; i < operands.size (); i++)
+  static const symbol unspecified ("<unspecified>");
+  symbol found = unspecified;
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (known (operands_[i]->dimension (scope)))
       {
-        std::ostringstream tmp;
-        tmp << objid << "[" << i << "]";
-        Treelog::Open nest (msg, tmp.str ());
-        
-        if (!operands[i]->initialize (units, scope, msg))
-          ok = false;
+        if (found == unspecified)
+          found = operands_[i]->dimension (scope);
+        else if (operands_[i]->dimension (scope) != found)
+          return Attribute::Unknown ();
       }
-    return ok;
-  }
+
+  return found != unspecified ? found : Attribute::Unknown ();
+}
+
+void
+NumberOperands::tick (const Units& units, const Scope& scope, Treelog& msg)
+{
+  for (size_t i = 0; i < operands_.size (); i++)
+    operands_[i]->tick (units, scope, msg);
+}
+
+bool
+NumberOperands::missing (const Scope& scope) const
+{
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (operands_[i]->missing (scope))
+      return true;
+  return false;
+}
+
+bool
+NumberOperands::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  bool ok = true;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+      std::ostringstream tmp;
+      tmp << objid << "[" << i << "]";
+      Treelog::Open nest (msg, tmp.str ());
+
+      if (!operands_[i]->initialize (units, scope, msg))
+        ok = false;
+    }
+  return ok;
+}
 #ifdef CHECK_OPERANDS_DIM
-  static const struct Unique : public VCheck
+const struct NumberOperandsUnique : public VCheck
   {
     void check (Metalib&, const Frame& al, const std::string&)
       const throw (std::string)
@@ -402,59 +419,62 @@ struct NumberOperands : public Number
           else
             found = &operands[i]->dimension (scope);
     }
-    Unique (const Scope& s)
-  } unique;
+    NumberOperandsUnique (const Scope& s)
+  } number_operands_unique;
 #endif // CHECK_OPERANDS_DIM
 
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    bool ok = true;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << objid << "[" << i << "]";
-        Treelog::Open nest (msg, tmp.str ());
-        
-        if (!operands[i]->check (units, scope, msg))
-          ok = false;
-      }
-    return ok;
-  }
-  NumberOperands (const BlockModel& al)
-    : Number (al),
-      operands (Librarian::build_vector<Number> (al, "operands"))
-  { }
-  ~NumberOperands ()
-  { sequence_delete (operands.begin (), operands.end ()); }
-};
-
-#ifdef CHECK_OPERANDS_DIM
-const NumberOperands::Unique NumberOperands::unique;
-#endif // CHECK_OPERANDS_DIM
-
-struct NumberMax : public NumberOperands
+bool
+NumberOperands::check (const Units& units, const Scope& scope, Treelog& msg) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    double max = -42.42e42;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        const double value = operands[i]->value (scope);
-        if (i == 0 || value > max)
-          max = value;
-      }
-    return max;
-  }
-  symbol dimension (const Scope& scope) const 
-  { return unique_dimension (scope); }
+  bool ok = true;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+    std::ostringstream tmp;
+    tmp << objid << "[" << i << "]";
+    Treelog::Open nest (msg, tmp.str ());
 
-  // Create.
-  NumberMax (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+    if (!operands_[i]->check (units, scope, msg))
+      ok = false;
+    }
+  return ok;
+}
+
+NumberOperands::NumberOperands (const symbol objid,
+                              std::vector<std::unique_ptr<Number>> operands)
+  : Number (objid),
+    operands_ (std::move (operands))
+{ }
+
+NumberOperands::NumberOperands (const BlockModel& al)
+  : Number (al),
+    operands_ (build_operands (al))
+{ }
+
+double
+NumberMax::value (const Scope& scope) const
+{
+  daisy_assert (operands_.size () > 0);
+  double max = -42.42e42;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+    const double value = operands_[i]->value (scope);
+    if (i == 0 || value > max)
+      max = value;
+    }
+  return max;
+}
+
+symbol
+NumberMax::dimension (const Scope& scope) const
+{ return unique_dimension (scope); }
+
+NumberMax::NumberMax (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("max", std::move (operands))
+{ }
+
+NumberMax::NumberMax (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberMaxSyntax : public DeclareModel
 {
@@ -472,36 +492,38 @@ static struct NumberMaxSyntax : public DeclareModel
                        "The operands for this function.");
 #ifdef CHECK_OPERANDS_DIM
     static VCheck::All all (VCheck::min_size_1 (),
-                            NumberOperands::unique);
+                            number_operands_unique);
 #endif // CHECK_OPERANDS_DIM
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
 } NumberMax_syntax;
 
-struct NumberMin : public NumberOperands
+double
+NumberMin::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    double min = 42.42e42;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        const double value = operands[i]->value (scope);
-        if (i == 0 || value < min)
-          min = value;
-      }
-    return min;
-  }
-  symbol dimension (const Scope& scope) const 
-  { return unique_dimension (scope); }
+  daisy_assert (operands_.size () > 0);
+  double min = 42.42e42;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+      const double value = operands_[i]->value (scope);
+      if (i == 0 || value < min)
+        min = value;
+    }
+  return min;
+}
 
-  // Create.
-  NumberMin (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+symbol
+NumberMin::dimension (const Scope& scope) const
+{ return unique_dimension (scope); }
+
+NumberMin::NumberMin (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("min", std::move (operands))
+{ }
+
+NumberMin::NumberMin (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberMinSyntax : public DeclareModel
 {
@@ -519,7 +541,7 @@ static struct NumberMinSyntax : public DeclareModel
                        "The operands for this function.");
 #ifdef CHECK_OPERANDS_DIM
     static VCheck::All all (VCheck::min_size_1 (), 
-                            NumberOperands::unique);
+                            number_operands_unique);
     frame.set_check ("operands", all);
 #else // !CHECK_OPERANDS_DIM
     frame.set_check ("operands", VCheck::min_size_1 ());
@@ -528,29 +550,31 @@ static struct NumberMinSyntax : public DeclareModel
   }
 } NumberMin_syntax;
 
-struct NumberProduct : public NumberOperands
+double
+NumberProduct::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    double product = 1.0;
-    for (size_t i = 0; i < operands.size (); i++)
-      product *= operands[i]->value (scope);
-    return product;
-  }
-  symbol dimension (const Scope& scope) const 
-  { 
-    symbol dim = Attribute::None ();
-    for (size_t i = 0; i < operands.size (); i++)
-      dim = Units::multiply (dim, operands[i]->dimension (scope));
-    return dim;
-  }
+  double product = 1.0;
+  for (size_t i = 0; i < operands_.size (); i++)
+    product *= operands_[i]->value (scope);
+  return product;
+}
 
-  // Create.
-  NumberProduct (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+symbol
+NumberProduct::dimension (const Scope& scope) const
+{
+  symbol dim = Attribute::None ();
+  for (size_t i = 0; i < operands_.size (); i++)
+    dim = Units::multiply (dim, operands_[i]->dimension (scope));
+  return dim;
+}
+
+NumberProduct::NumberProduct (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("*", std::move (operands))
+{ }
+
+NumberProduct::NumberProduct (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberProductSyntax : public DeclareModel
 {
@@ -570,24 +594,26 @@ static struct NumberProductSyntax : public DeclareModel
   }
 } NumberProduct_syntax;
 
-struct NumberSum : public NumberOperands
+double
+NumberSum::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    double sum = 0.0;
-    for (size_t i = 0; i < operands.size (); i++)
-      sum += operands[i]->value (scope);
-    return sum;
-  }
-  symbol dimension (const Scope& scope) const 
-  { return unique_dimension (scope); }
+  double sum = 0.0;
+  for (size_t i = 0; i < operands_.size (); i++)
+    sum += operands_[i]->value (scope);
+  return sum;
+}
 
-  // Create.
-  NumberSum (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+symbol
+NumberSum::dimension (const Scope& scope) const
+{ return unique_dimension (scope); }
+
+NumberSum::NumberSum (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("+", std::move (operands))
+{ }
+
+NumberSum::NumberSum (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberSumSyntax : public DeclareModel
 {
@@ -604,33 +630,35 @@ static struct NumberSumSyntax : public DeclareModel
                        Attribute::Const, Attribute::Variable,
                        "The operands for this function.");
 #ifdef CHECK_OPERANDS_DIM
-    frame.set_check ("operands", NumberOperands::unique);
+    frame.set_check ("operands", number_operands_unique);
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
 } NumberSum_syntax;
 
-struct NumberSubtract : public NumberOperands
+double
+NumberSubtract::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    double val = operands[0]->value (scope);
-    if (operands.size () == 1)
-      return -val; 
-    for (size_t i = 1; i < operands.size (); i++)
-      val -= operands[i]->value (scope);
-    return val;
-  }
-  symbol dimension (const Scope& scope) const 
-  { return unique_dimension (scope); }
+  daisy_assert (operands_.size () > 0);
+  double val = operands_[0]->value (scope);
+  if (operands_.size () == 1)
+    return -val;
+  for (size_t i = 1; i < operands_.size (); i++)
+    val -= operands_[i]->value (scope);
+  return val;
+}
 
-  // Create.
-  NumberSubtract (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+symbol
+NumberSubtract::dimension (const Scope& scope) const
+{ return unique_dimension (scope); }
+
+NumberSubtract::NumberSubtract (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("-", std::move (operands))
+{ }
+
+NumberSubtract::NumberSubtract (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberSubtractSyntax : public DeclareModel
 {
@@ -650,59 +678,61 @@ subtracts all but the first from the first.")
                        "The operands for this function.");
 #ifdef CHECK_OPERANDS_DIM
     static VCheck::All all (VCheck::min_size_1 (), 
-                            NumberOperands::unique);
+                            number_operands_unique);
     frame.set_check ("operands", all);
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
 } NumberSubtract_syntax;
 
-struct NumberDivide : public NumberOperands
+double
+NumberDivide::value (const Scope& scope) const
 {
-  // Simulation.
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    double val = operands[0]->value (scope);
-    for (size_t i = 1; i < operands.size (); i++)
-      val /= operands[i]->value (scope);
-    return val;
-  }
-  symbol dimension (const Scope& scope) const 
-  {
-    daisy_assert (operands.size () > 0);
-    std::string name = operands[0]->dimension (scope).name ();
-    for (size_t i = 1; i < operands.size (); i++)
-      {
-        const symbol dim = operands[i]->dimension (scope);
-        if (dim == Attribute::None () || dim == Attribute::Fraction ())
-          continue;
-        if (dim == Attribute::Unknown ())
-          return Attribute::Unknown ();
-        const std::string dimstr = dim.name ();
-        if (dimstr.length () == 0)
-          continue;
-        if (dimstr == name)
-          {
-            name = "";
-            continue;
-          }
-        if (dimstr.find_first_of ('/') != std::string::npos)
-          name += "/(" + dimstr + ")";
-        else
-          name += "/" + dimstr;
-      }
-    if (name.length () == 0)
-      return Attribute::None ();
+  daisy_assert (operands_.size () > 0);
+  double val = operands_[0]->value (scope);
+  for (size_t i = 1; i < operands_.size (); i++)
+    val /= operands_[i]->value (scope);
+  return val;
+}
 
-    return symbol (name);
-  }
+symbol
+NumberDivide::dimension (const Scope& scope) const
+{
+  daisy_assert (operands_.size () > 0);
+  std::string name = operands_[0]->dimension (scope).name ();
+  for (size_t i = 1; i < operands_.size (); i++)
+    {
+      const symbol dim = operands_[i]->dimension (scope);
+      if (dim == Attribute::None () || dim == Attribute::Fraction ())
+        continue;
+      if (dim == Attribute::Unknown ())
+        return Attribute::Unknown ();
+      const std::string dimstr = dim.name ();
+      if (dimstr.length () == 0)
+        continue;
+      if (dimstr == name)
+        {
+          name = "";
+          continue;
+        }
+      if (dimstr.find_first_of ('/') != std::string::npos)
+        name += "/(" + dimstr + ")";
+      else
+        name += "/" + dimstr;
+    }
+  if (name.length () == 0)
+    return Attribute::None ();
 
-  // Create.
-  NumberDivide (const BlockModel& al)
-    : NumberOperands (al)
-  { }
-};
+  return symbol (name);
+}
+
+NumberDivide::NumberDivide (std::vector<std::unique_ptr<Number>> operands)
+  : NumberOperands ("/", std::move (operands))
+{ }
+
+NumberDivide::NumberDivide (const BlockModel& al)
+  : NumberOperands (al)
+{ }
 
 static struct NumberDivideSyntax : public DeclareModel
 {

@@ -101,6 +101,27 @@ boost::shared_ptr<const FrameSubmodel> make_number_plf_point(double x,
   return point;
 }
 
+std::vector<std::unique_ptr<Number>> make_const_operands(
+    const Metalib& metalib,
+    const std::vector<double>& values,
+    symbol dimension = Units::cm()) {
+  std::vector<std::unique_ptr<Number>> operands;
+  operands.reserve(values.size());
+  for (size_t i = 0; i < values.size(); ++i) {
+    operands.push_back(
+        std::make_unique<NumberConst>(values[i], metalib.units().get_unit(dimension)));
+  }
+  return operands;
+}
+
+boost::shared_ptr<const FrameModel> make_number_const_frame(const Library& library,
+                                                            double value,
+                                                            symbol dimension) {
+  std::unique_ptr<FrameModel> frame = clone_model(library, "const");
+  frame->set("value", value, dimension);
+  return boost::shared_ptr<const FrameModel>(frame.release());
+}
+
 }  // namespace
 
 TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
@@ -123,6 +144,13 @@ TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("exp"));
   EXPECT_TRUE(entries.count("sqrt"));
   EXPECT_TRUE(entries.count("sqr"));
+  EXPECT_TRUE(entries.count("pow"));
+  EXPECT_TRUE(entries.count("max"));
+  EXPECT_TRUE(entries.count("min"));
+  EXPECT_TRUE(entries.count("*"));
+  EXPECT_TRUE(entries.count("+"));
+  EXPECT_TRUE(entries.count("-"));
+  EXPECT_TRUE(entries.count("/"));
   EXPECT_TRUE(entries.count("plf"));
 }
 
@@ -171,6 +199,23 @@ TEST(NumberRegistrationTest, NumberUnaryArithmeticModelsHaveExpectedInheritance)
   }
 }
 
+TEST(NumberRegistrationTest, NumberPowAndSharedOperandModelsHaveExpectedInheritance) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Number::component);
+
+  const std::vector<symbol> names = {"pow", "max", "min", "*", "+", "-", "/"};
+  for (size_t i = 0; i < names.size(); ++i) {
+    EXPECT_TRUE(library.check(names[i]));
+    EXPECT_TRUE(library.is_derived_from(names[i], "component"));
+    EXPECT_EQ(library.base_model(names[i]), symbol("component"));
+
+    const FrameModel& model = library.model(names[i]);
+    EXPECT_EQ(model.type_name(), names[i]);
+    EXPECT_EQ(model.base_name(), symbol("component"));
+  }
+}
+
 TEST(NumberRegistrationTest, NumberComponentMetadataIsStable) {
   EXPECT_EQ(symbol(Number::component), symbol("number"));
 }
@@ -189,8 +234,17 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_base_of<NumberOperand, NumberExp>::value));
   EXPECT_TRUE((std::is_base_of<NumberOperand, NumberSqrt>::value));
   EXPECT_TRUE((std::is_base_of<NumberOperand, NumberSqr>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberPow>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberOperands>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberMax>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberMin>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberProduct>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberSum>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberSubtract>::value));
+  EXPECT_TRUE((std::is_base_of<NumberOperands, NumberDivide>::value));
   EXPECT_TRUE((std::is_abstract<NumberChild>::value));
   EXPECT_TRUE((std::is_abstract<NumberOperand>::value));
+  EXPECT_TRUE((std::is_abstract<NumberOperands>::value));
   EXPECT_TRUE((std::is_constructible<NumberConst, double, const Unit&>::value));
   EXPECT_TRUE((std::is_constructible<NumberX>::value));
   EXPECT_TRUE((std::is_constructible<NumberGet, symbol, const Unit&>::value));
@@ -203,6 +257,13 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberExp, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberSqrt, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberSqr, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberPow, std::unique_ptr<Number>, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberMax, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberMin, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberProduct, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSum, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSubtract, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberDivide, std::vector<std::unique_ptr<Number>>>::value));
   EXPECT_TRUE((std::is_constructible<NumberPLF, std::unique_ptr<Number>, symbol, symbol, const PLF&>::value));
   EXPECT_TRUE((std::is_constructible<NumberConst, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberX, const BlockModel&>::value));
@@ -215,6 +276,13 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberExp, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberSqrt, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberSqr, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberPow, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberMax, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberMin, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberProduct, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSum, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSubtract, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberDivide, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberPLF, const BlockModel&>::value));
 }
 
@@ -454,4 +522,85 @@ TEST(NumberExposureTest, NumberUnaryArithmeticClassesCanBeInstantiatedDirectlyFr
   EXPECT_DOUBLE_EQ(sqr_number.value(Scope::null()), 9.0);
   EXPECT_EQ(sqr_number.dimension(Scope::null()),
             Units::multiply(Units::cm(), Units::cm()));
+}
+
+TEST(NumberExposureTest, NumberPowAndSharedOperandClassesHaveDirectConstructors) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+
+  NumberPow pow_number(
+      std::make_unique<NumberConst>(4.0, metalib.units().get_unit(Units::cm())),
+      std::make_unique<NumberConst>(0.5, metalib.units().get_unit(Attribute::None())));
+  EXPECT_TRUE(pow_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(pow_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(pow_number.value(Scope::null()), 2.0);
+
+  NumberMax max_number(make_const_operands(metalib, {3.0, 7.0, 5.0}));
+  EXPECT_DOUBLE_EQ(max_number.value(Scope::null()), 7.0);
+  EXPECT_EQ(max_number.dimension(Scope::null()), Units::cm());
+
+  NumberMin min_number(make_const_operands(metalib, {3.0, 7.0, 5.0}));
+  EXPECT_DOUBLE_EQ(min_number.value(Scope::null()), 3.0);
+
+  NumberProduct product_number(make_const_operands(metalib, {2.0, 3.0}));
+  EXPECT_DOUBLE_EQ(product_number.value(Scope::null()), 6.0);
+
+  NumberSum sum_number(make_const_operands(metalib, {2.0, 3.0, 5.0}));
+  EXPECT_DOUBLE_EQ(sum_number.value(Scope::null()), 10.0);
+  EXPECT_EQ(sum_number.dimension(Scope::null()), Units::cm());
+
+  NumberSubtract subtract_number(make_const_operands(metalib, {10.0, 3.0, 2.0}));
+  EXPECT_DOUBLE_EQ(subtract_number.value(Scope::null()), 5.0);
+
+  NumberDivide divide_number(make_const_operands(metalib, {12.0, 3.0, 2.0}));
+  EXPECT_DOUBLE_EQ(divide_number.value(Scope::null()), 2.0);
+}
+
+TEST(NumberExposureTest, NumberPowAndSharedOperandClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& library = metalib.library(Number::component);
+
+  std::unique_ptr<FrameModel> pow_frame = clone_model(library, "pow");
+  std::unique_ptr<FrameModel> pow_base = clone_model(library, "const");
+  std::unique_ptr<FrameModel> pow_exponent = clone_model(library, "const");
+  pow_base->set("value", 4.0, Units::cm());
+  pow_exponent->set("value", 0.5, Attribute::None());
+  pow_frame->set("base", *pow_base);
+  pow_frame->set("exponent", *pow_exponent);
+
+  std::unique_ptr<FrameModel> max_frame = clone_model(library, "max");
+  std::vector<boost::shared_ptr<const FrameModel>> max_operands;
+  max_operands.push_back(make_number_const_frame(library, 3.0, Units::cm()));
+  max_operands.push_back(make_number_const_frame(library, 7.0, Units::cm()));
+  max_operands.push_back(make_number_const_frame(library, 5.0, Units::cm()));
+  max_frame->set("operands", max_operands);
+
+  std::unique_ptr<FrameModel> divide_frame = clone_model(library, "/");
+  std::vector<boost::shared_ptr<const FrameModel>> divide_operands;
+  divide_operands.push_back(make_number_const_frame(library, 12.0, Units::cm()));
+  divide_operands.push_back(make_number_const_frame(library, 3.0, Attribute::None()));
+  divide_operands.push_back(make_number_const_frame(library, 2.0, Attribute::None()));
+  divide_frame->set("operands", divide_operands);
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel pow_block(context, *pow_frame, "pow");
+  BlockModel max_block(context, *max_frame, "max");
+  BlockModel divide_block(context, *divide_frame, "/");
+  NumberPow pow_number(pow_block);
+  NumberMax max_number(max_block);
+  NumberDivide divide_number(divide_block);
+
+  EXPECT_TRUE(pow_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(pow_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(pow_number.value(Scope::null()), 2.0);
+
+  EXPECT_TRUE(max_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(max_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(max_number.value(Scope::null()), 7.0);
+  EXPECT_EQ(max_number.dimension(Scope::null()), Units::cm());
+
+  EXPECT_TRUE(divide_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(divide_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(divide_number.value(Scope::null()), 2.0);
 }

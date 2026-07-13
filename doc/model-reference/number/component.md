@@ -34,6 +34,14 @@ Generic representation of numbers.
 | `NumberExp` | Exponential of the operand. |
 | `NumberSqrt` | Square root of the operand. |
 | `NumberSqr` | Square of the operand. |
+| `NumberPow` | Raises one number to the power of another. |
+| `NumberOperands` | Abstract helper for arithmetic number models backed by an operand sequence. |
+| `NumberMax` | Largest value from the operand sequence. |
+| `NumberMin` | Smallest value from the operand sequence. |
+| `NumberProduct` | Product of the operand sequence. |
+| `NumberSum` | Sum of the operand sequence. |
+| `NumberSubtract` | Negation or left-associated subtraction across the operand sequence. |
+| `NumberDivide` | Left-associated division across the operand sequence. |
 | `NumberPLF` | Evaluates a number operand through a piecewise linear function. |
 
 ## Shared declared entries
@@ -55,6 +63,13 @@ currently does not add shared frame entries at the component level.
 - `exp`
 - `sqrt`
 - `sqr`
+- `pow`
+- `max`
+- `min`
+- `*`
+- `+`
+- `-`
+- `/`
 - `plf`
 
 ## TODO
