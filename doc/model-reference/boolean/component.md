@@ -28,6 +28,11 @@ Generic representation of booleans.
 | `BooleanOr` | Concrete model that requires any operand to be true. |
 | `BooleanXOr` | Concrete model that compares exactly two operands. |
 | `BooleanNot` | Concrete model that negates a single operand. |
+| `BooleanNumbers` | Shared base class for number-comparison boolean models. |
+| `BooleanNumGT` | Concrete model requiring each number operand to be greater than the next. |
+| `BooleanNumGTE` | Concrete model requiring each number operand to be greater than or equal to the next. |
+| `BooleanNumLT` | Concrete model requiring each number operand to be less than the next. |
+| `BooleanNumLTE` | Concrete model requiring each number operand to be less than or equal to the next. |
 | `BooleanStringEqual` | Concrete model that compares a sequence of strings for equality. |
 
 ## Shared declared entries
@@ -44,6 +49,11 @@ currently does not add shared frame entries at the component level.
 - `or`
 - `xor`
 - `not`
+- `numbers`
+- `>`
+- `>=`
+- `<`
+- `<=`
 - `string-equal`
 
 ## TODO

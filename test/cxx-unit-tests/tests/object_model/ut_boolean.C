@@ -12,6 +12,7 @@
 #include "object_model/metalib.h"
 #include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
+#include "object_model/parameter_types/number.h"
 #include "object_model/units.h"
 
 namespace {
@@ -43,7 +44,30 @@ std::vector<boost::shared_ptr<const FrameModel> > clone_operands(
 void register_test_models() {
   register_unit_models();
   register_boolean_models();
+  register_number_models();
+  register_number_const_models();
+  register_boolean_number_models();
   register_boolean_string_models();
+}
+
+std::vector<boost::shared_ptr<const FrameModel> > number_operands(
+    const Library& library, const std::vector<double>& values) {
+  std::vector<boost::shared_ptr<const FrameModel> > operands;
+  for (size_t i = 0; i < values.size(); ++i) {
+    std::unique_ptr<FrameModel> operand = clone_model(library, "const");
+    operand->set("value", values[i], Units::cm());
+    operands.push_back(boost::shared_ptr<const FrameModel>(operand.release()));
+  }
+  return operands;
+}
+
+std::vector<std::unique_ptr<Number> > make_number_const_models(
+    const Metalib& metalib, const std::vector<double>& values) {
+  std::vector<std::unique_ptr<Number> > operands;
+  for (size_t i = 0; i < values.size(); ++i)
+    operands.emplace_back(
+        std::make_unique<NumberConst>(values[i], metalib.units().get_unit(Units::cm())));
+  return operands;
 }
 
 }  // namespace
@@ -63,6 +87,11 @@ TEST(BooleanRegistrationTest, BooleanLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("or"));
   EXPECT_TRUE(entries.count("xor"));
   EXPECT_TRUE(entries.count("not"));
+  EXPECT_TRUE(entries.count("numbers"));
+  EXPECT_TRUE(entries.count(">"));
+  EXPECT_TRUE(entries.count(">="));
+  EXPECT_TRUE(entries.count("<"));
+  EXPECT_TRUE(entries.count("<="));
   EXPECT_TRUE(entries.count("string-equal"));
 }
 
@@ -80,6 +109,11 @@ TEST(BooleanRegistrationTest, BooleanCompositeModelsDeriveFromOperandsBase) {
   EXPECT_FALSE(library.is_derived_from("not", "operands"));
   EXPECT_TRUE(library.is_derived_from("xor", "component"));
   EXPECT_TRUE(library.is_derived_from("not", "component"));
+  EXPECT_TRUE(library.is_derived_from("numbers", "component"));
+  EXPECT_TRUE(library.is_derived_from(">", "numbers"));
+  EXPECT_TRUE(library.is_derived_from(">=", "numbers"));
+  EXPECT_TRUE(library.is_derived_from("<", "numbers"));
+  EXPECT_TRUE(library.is_derived_from("<=", "numbers"));
 
   EXPECT_EQ(library.base_model("and"), symbol("component"));
   EXPECT_EQ(library.base_model("or"), symbol("component"));
@@ -132,6 +166,23 @@ TEST(BooleanExposureTest, BooleanOperandClassesArePublicTypes) {
   EXPECT_TRUE((std::is_constructible<BooleanNot, const BlockModel&>::value));
 }
 
+TEST(BooleanExposureTest, BooleanNumberClassesArePublicTypes) {
+  EXPECT_TRUE((std::is_base_of<Boolean, BooleanNumbers>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanNumbers, BooleanNumGT>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanNumbers, BooleanNumGTE>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanNumbers, BooleanNumLT>::value));
+  EXPECT_TRUE((std::is_base_of<BooleanNumbers, BooleanNumLTE>::value));
+  EXPECT_TRUE((std::is_abstract<BooleanNumbers>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumGT, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumGTE, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumLT, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumLTE, std::vector<std::unique_ptr<Number>>>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumGT, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumGTE, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumLT, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<BooleanNumLTE, const BlockModel&>::value));
+}
+
 TEST(BooleanExposureTest, BooleanLeafClassesHaveDirectConstructors) {
   BooleanTrue true_model;
   BooleanFalse false_model;
@@ -146,6 +197,23 @@ TEST(BooleanExposureTest, BooleanLeafClassesHaveDirectConstructors) {
   EXPECT_FALSE(false_model.value(Scope::null()));
   EXPECT_TRUE(equal_model.value(Scope::null()));
   EXPECT_FALSE(different_model.value(Scope::null()));
+}
+
+TEST(BooleanExposureTest, BooleanNumberClassesHaveDirectConstructors) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+
+  BooleanNumGT gt_model(make_number_const_models(metalib, {3.0, 2.0}));
+  BooleanNumGTE gte_model(make_number_const_models(metalib, {3.0, 3.0}));
+  BooleanNumLT lt_model(make_number_const_models(metalib, {2.0, 3.0}));
+  BooleanNumLTE lte_model(make_number_const_models(metalib, {3.0, 3.0}));
+
+  EXPECT_TRUE(gt_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(gt_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(gt_model.value(Scope::null()));
+  EXPECT_TRUE(gte_model.value(Scope::null()));
+  EXPECT_TRUE(lt_model.value(Scope::null()));
+  EXPECT_TRUE(lte_model.value(Scope::null()));
 }
 
 TEST(BooleanExposureTest, BooleanStringEqualCanBeInstantiatedDirectlyFromBlockModel) {
@@ -220,4 +288,28 @@ TEST(BooleanExposureTest, BooleanCompositeClassesCanBeInstantiatedDirectlyFromBl
   BlockModel not_block(context, *not_frame, "not");
   BooleanNot not_model(not_block);
   EXPECT_TRUE(not_model.value(Scope::null()));
+}
+
+TEST(BooleanExposureTest, BooleanNumberClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& boolean_library = metalib.library(Boolean::component);
+  const Library& number_library = metalib.library(Number::component);
+  BlockTop context(metalib, Treelog::null(), metalib);
+
+  std::unique_ptr<FrameModel> gt_frame = clone_model(boolean_library, ">");
+  gt_frame->set("operands", number_operands(number_library, {3.0, 2.0}));
+  BlockModel gt_block(context, *gt_frame, ">");
+  BooleanNumGT gt_model(gt_block);
+  EXPECT_TRUE(gt_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(gt_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(gt_model.value(Scope::null()));
+
+  std::unique_ptr<FrameModel> lte_frame = clone_model(boolean_library, "<=");
+  lte_frame->set("operands", number_operands(number_library, {2.0, 2.0, 3.0}));
+  BlockModel lte_block(context, *lte_frame, "<=");
+  BooleanNumLTE lte_model(lte_block);
+  EXPECT_TRUE(lte_model.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(lte_model.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(lte_model.value(Scope::null()));
 }

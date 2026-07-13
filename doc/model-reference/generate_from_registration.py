@@ -45,6 +45,10 @@ MODEL_FILE_ALIASES = {
     "+": "add",
     "-": "subtract",
     "/": "divide",
+    ">": "gt",
+    ">=": "gte",
+    "<": "lt",
+    "<=": "lte",
 }
 
 

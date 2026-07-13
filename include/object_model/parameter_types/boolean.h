@@ -23,7 +23,9 @@
 #define BOOLEAN_H
 
 #include "object_model/model.h"
+#include "object_model/parameter_types/number.h"
 #include "object_model/symbol.h"
+#include <memory>
 #include <vector>
 
 class Scope;
@@ -134,6 +136,51 @@ public:
   bool check (const Units&, const Scope&, Treelog&) const;
   explicit BooleanStringEqual (const std::vector<symbol>& values);
   explicit BooleanStringEqual (const BlockModel&);
+};
+
+class BooleanNumbers : public Boolean
+{
+protected:
+  std::vector<std::unique_ptr<Number>> operands_;
+  BooleanNumbers (symbol name, std::vector<std::unique_ptr<Number>> operands);
+public:
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit BooleanNumbers (const BlockModel&);
+};
+
+class BooleanNumGT : public BooleanNumbers
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanNumGT (std::vector<std::unique_ptr<Number>> operands);
+  explicit BooleanNumGT (const BlockModel&);
+};
+
+class BooleanNumGTE : public BooleanNumbers
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanNumGTE (std::vector<std::unique_ptr<Number>> operands);
+  explicit BooleanNumGTE (const BlockModel&);
+};
+
+class BooleanNumLT : public BooleanNumbers
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanNumLT (std::vector<std::unique_ptr<Number>> operands);
+  explicit BooleanNumLT (const BlockModel&);
+};
+
+class BooleanNumLTE : public BooleanNumbers
+{
+public:
+  bool value (const Scope& scope) const;
+  explicit BooleanNumLTE (std::vector<std::unique_ptr<Number>> operands);
+  explicit BooleanNumLTE (const BlockModel&);
 };
 
 #endif // BOOLEAN_H

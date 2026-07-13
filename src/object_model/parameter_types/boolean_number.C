@@ -22,87 +22,106 @@
 
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/frame.h"
-#include "object_model/parameter_types/number.h"
-#include "util/memutils.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/block_model.h"
 #include <sstream>
 #include <vector>
 
-struct BooleanNumbers : public Boolean
+namespace
 {
-  const std::vector<Number*> operand;
+std::vector<std::unique_ptr<Number>>
+build_number_operands (const BlockModel& al)
+{
+  std::vector<std::unique_ptr<Number>> result;
+  std::vector<Number*> operands = Librarian::build_vector<Number> (al, "operands");
+  result.reserve (operands.size ());
+  for (size_t i = 0; i < operands.size (); ++i)
+    result.emplace_back (operands[i]);
+  return result;
+}
+} // namespace
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      operand[i]->tick (units, scope, msg);
-  }
-  bool missing (const Scope& scope) const
-  { 
-    for (size_t i = 0; i < operand.size (); i++)
-      if (operand[i]->missing (scope))
-        return true;
-    
-    return false;
-  }
+BooleanNumbers::BooleanNumbers (const symbol direct_name,
+                                std::vector<std::unique_ptr<Number>> operands)
+  : Boolean (direct_name),
+    operands_ (std::move (operands))
+{ }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    bool ok = true;
+void
+BooleanNumbers::tick (const Units& units, const Scope& scope, Treelog& msg)
+{
+  for (size_t i = 0; i < operands_.size (); i++)
+    operands_[i]->tick (units, scope, msg);
+}
 
-    for (size_t i = 0; i < operand.size (); i++)
-      if (!operand[i]->initialize (units, scope, msg))
-        {
-          std::ostringstream tmp;
-          tmp << name << "[" << i << "]";
-          Treelog::Open nest (msg, tmp.str ());
-          ok = false;
-        }
-    return ok;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    Treelog::Open nest (msg, name);
-    bool ok = true;
+bool
+BooleanNumbers::missing (const Scope& scope) const
+{
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (operands_[i]->missing (scope))
+      return true;
 
-    symbol dim = Attribute::Unknown ();
-    for (size_t i = 0; i < operand.size (); i++)
-      if (!operand[i]->check (units, scope, msg))
+  return false;
+}
+
+bool
+BooleanNumbers::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  bool ok = true;
+
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (!operands_[i]->initialize (units, scope, msg))
+      {
+        std::ostringstream tmp;
+        tmp << name << "[" << i << "]";
+        Treelog::Open nest (msg, tmp.str ());
         ok = false;
-      else 
-        {
-          static const symbol blank ("");
-          symbol new_dim = operand[i]->dimension (scope);
-          if (new_dim == Attribute::None ()
-              || new_dim == Attribute::Fraction ())
-            new_dim = blank;
-          if (new_dim != dim)
-            {
-              if (dim == Attribute::Unknown ())
-                dim = new_dim;
-              else if (new_dim != Attribute::Unknown ())
-                {
-                  msg.error ("I don't know how to compare [" + dim + "] with ["
-                             + new_dim + "]");
-                  dim = new_dim;
-                  ok = false;
-                }
-            }
-        }
-    return ok;
-  }
-  BooleanNumbers (const BlockModel& al)
-    : Boolean (al),
-      operand (Librarian::build_vector<Number> (al, "operands"))
-  { }
-  ~BooleanNumbers ()
-  { sequence_delete (operand.begin (), operand.end ()); }
-};
+      }
+  return ok;
+}
 
+bool
+BooleanNumbers::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  Treelog::Open nest (msg, name);
+  bool ok = true;
+
+  symbol dim = Attribute::Unknown ();
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (!operands_[i]->check (units, scope, msg))
+      ok = false;
+    else
+      {
+        static const symbol blank ("");
+        symbol new_dim = operands_[i]->dimension (scope);
+        if (new_dim == Attribute::None ()
+            || new_dim == Attribute::Fraction ())
+          new_dim = blank;
+        if (new_dim != dim)
+          {
+            if (dim == Attribute::Unknown ())
+              dim = new_dim;
+            else if (new_dim != Attribute::Unknown ())
+              {
+                msg.error ("I don't know how to compare [" + dim + "] with ["
+                           + new_dim + "]");
+                dim = new_dim;
+                ok = false;
+              }
+          }
+      }
+  return ok;
+}
+
+BooleanNumbers::BooleanNumbers (const BlockModel& al)
+  : Boolean (al),
+    operands_ (build_number_operands (al))
+{ }
+
+namespace
+{
 struct BooleanNumbersSyntax : public DeclareBase
 {
   BooleanNumbersSyntax ()
@@ -111,36 +130,42 @@ Base class for boolean expressions involving numbers.")
   { }
   void load_frame (Frame& frame) const
   {
-    frame.declare_object ("operands", Number::component, 
+    frame.declare_object ("operands", Number::component,
                        Attribute::Const, Attribute::Variable, "\
 List of operands to compare.");
     frame.order ("operands");
   }
-} BooleanNumbers_syntax;
-
-struct BooleanNumGT : public BooleanNumbers
-{
-  bool value (const Scope& scope) const
-  { 
-    const size_t size = operand.size ();
-    if (size < 1)
-      return true;
-    double prev = operand[0]->value (scope);
-    for (size_t i = 1; i < size; i++)
-      {
-        const double next = operand[i]->value (scope);
-        if (!(prev > next))
-          return false;
-        prev = next;
-      }
-    return true;
-  }
-  BooleanNumGT (const BlockModel& al)
-    : BooleanNumbers (al)
-  { }
 };
+}
 
-static struct BooleanNumGTSyntax : DeclareModel
+bool
+BooleanNumGT::value (const Scope& scope) const
+{
+  const size_t size = operands_.size ();
+  if (size < 1)
+    return true;
+  double prev = operands_[0]->value (scope);
+  for (size_t i = 1; i < size; i++)
+    {
+      const double next = operands_[i]->value (scope);
+      if (!(prev > next))
+        return false;
+      prev = next;
+    }
+  return true;
+}
+
+BooleanNumGT::BooleanNumGT (std::vector<std::unique_ptr<Number>> operands)
+  : BooleanNumbers (">", std::move (operands))
+{ }
+
+BooleanNumGT::BooleanNumGT (const BlockModel& al)
+  : BooleanNumbers (al)
+{ }
+
+namespace
+{
+struct BooleanNumGTSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNumGT (al); }
@@ -150,31 +175,37 @@ static struct BooleanNumGTSyntax : DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} BooleanNumGT_syntax;
-
-struct BooleanNumGTE : public BooleanNumbers
-{
-  bool value (const Scope& scope) const
-  { 
-    const size_t size = operand.size ();
-    if (size < 1)
-      return true;
-    double prev = operand[0]->value (scope);
-    for (size_t i = 1; i < size; i++)
-      {
-        const double next = operand[i]->value (scope);
-        if (!(prev >= next))
-          return false;
-        prev = next;
-      }
-    return true;
-  }
-  BooleanNumGTE (const BlockModel& al)
-    : BooleanNumbers (al)
-  { }
 };
+}
 
-static struct BooleanNumGTESyntax : DeclareModel
+bool
+BooleanNumGTE::value (const Scope& scope) const
+{
+  const size_t size = operands_.size ();
+  if (size < 1)
+    return true;
+  double prev = operands_[0]->value (scope);
+  for (size_t i = 1; i < size; i++)
+    {
+      const double next = operands_[i]->value (scope);
+      if (!(prev >= next))
+        return false;
+      prev = next;
+    }
+  return true;
+}
+
+BooleanNumGTE::BooleanNumGTE (std::vector<std::unique_ptr<Number>> operands)
+  : BooleanNumbers (">=", std::move (operands))
+{ }
+
+BooleanNumGTE::BooleanNumGTE (const BlockModel& al)
+  : BooleanNumbers (al)
+{ }
+
+namespace
+{
+struct BooleanNumGTESyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNumGTE (al); }
@@ -184,31 +215,37 @@ True iff each operand is at least as large as the next.")
   { }
   void load_frame (Frame&) const
   { }
-} BooleanNumGTE_syntax;
-
-struct BooleanNumLT : public BooleanNumbers
-{
-  bool value (const Scope& scope) const
-  { 
-    const size_t size = operand.size ();
-    if (size < 1)
-      return true;
-    double prev = operand[0]->value (scope);
-    for (size_t i = 1; i < size; i++)
-      {
-        const double next = operand[i]->value (scope);
-        if (!(prev < next))
-          return false;
-        prev = next;
-      }
-    return true;
-  }
-  BooleanNumLT (const BlockModel& al)
-    : BooleanNumbers (al)
-  { }
 };
+}
 
-static struct BooleanNumLTSyntax : DeclareModel
+bool
+BooleanNumLT::value (const Scope& scope) const
+{
+  const size_t size = operands_.size ();
+  if (size < 1)
+    return true;
+  double prev = operands_[0]->value (scope);
+  for (size_t i = 1; i < size; i++)
+    {
+      const double next = operands_[i]->value (scope);
+      if (!(prev < next))
+        return false;
+      prev = next;
+    }
+  return true;
+}
+
+BooleanNumLT::BooleanNumLT (std::vector<std::unique_ptr<Number>> operands)
+  : BooleanNumbers ("<", std::move (operands))
+{ }
+
+BooleanNumLT::BooleanNumLT (const BlockModel& al)
+  : BooleanNumbers (al)
+{ }
+
+namespace
+{
+struct BooleanNumLTSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNumLT (al); }
@@ -216,33 +253,39 @@ static struct BooleanNumLTSyntax : DeclareModel
     : DeclareModel (Boolean::component, "<", "numbers",
                     "True iff each operand is smaller than the next.")
   { }
-  void load_frame (Frame& frame) const
-  { }
-} BooleanNumLT_syntax;
-
-struct BooleanNumLTE : public BooleanNumbers
-{
-  bool value (const Scope& scope) const
-  { 
-    const size_t size = operand.size ();
-    if (size < 1)
-      return true;
-    double prev = operand[0]->value (scope);
-    for (size_t i = 1; i < size; i++)
-      {
-        const double next = operand[i]->value (scope);
-        if (!(prev <= next))
-          return false;
-        prev = next;
-      }
-    return true;
-  }
-  BooleanNumLTE (const BlockModel& al)
-    : BooleanNumbers (al)
+  void load_frame (Frame&) const
   { }
 };
+}
 
-static struct BooleanNumLTESyntax : DeclareModel
+bool
+BooleanNumLTE::value (const Scope& scope) const
+{
+  const size_t size = operands_.size ();
+  if (size < 1)
+    return true;
+  double prev = operands_[0]->value (scope);
+  for (size_t i = 1; i < size; i++)
+    {
+      const double next = operands_[i]->value (scope);
+      if (!(prev <= next))
+        return false;
+      prev = next;
+    }
+  return true;
+}
+
+BooleanNumLTE::BooleanNumLTE (std::vector<std::unique_ptr<Number>> operands)
+  : BooleanNumbers ("<=", std::move (operands))
+{ }
+
+BooleanNumLTE::BooleanNumLTE (const BlockModel& al)
+  : BooleanNumbers (al)
+{ }
+
+namespace
+{
+struct BooleanNumLTESyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new BooleanNumLTE (al); }
@@ -252,6 +295,17 @@ True iff each operand is smaller than or equal to the next.")
   { }
   void load_frame (Frame&) const
   { }
-} BooleanNumLTE_syntax;
+};
+}
+
+void
+register_boolean_number_models ()
+{
+  static BooleanNumbersSyntax boolean_numbers_syntax;
+  static BooleanNumGTSyntax boolean_num_gt_syntax;
+  static BooleanNumGTESyntax boolean_num_gte_syntax;
+  static BooleanNumLTSyntax boolean_num_lt_syntax;
+  static BooleanNumLTESyntax boolean_num_lte_syntax;
+}
 
 // boolean_number.C ends here.
