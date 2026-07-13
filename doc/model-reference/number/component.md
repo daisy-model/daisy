@@ -24,6 +24,9 @@ Generic representation of numbers.
 | `NumberConst` | Concrete model that always returns the same numeric value and dimension. |
 | `NumberX` | Reads the current scope symbol `x`. |
 | `NumberGet` | Reads a named number from scope and converts it to a requested dimension. |
+| `NumberFetchGet` | Scope-backed helper that reads a named number without coercing its dimension. |
+| `NumberFetch` | Concrete model that resolves a named number value from the current scope or from a declared numeric/model parameter. |
+| `NumberApply` | Applies a registered function to a numeric operand and returns the function range dimension. |
 | `NumberChild` | Abstract base for number models that wrap another `Number`. |
 | `NumberIdentity` | Pass-through wrapper that can optionally assert or convert dimension. |
 | `NumberConvert` | Wrapper that converts the child value into a requested dimension. |
@@ -54,6 +57,7 @@ currently does not add shared frame entries at the component level.
 - `const`
 - `x`
 - `get`
+- `fetch`
 - `child`
 - `identity`
 - `convert`
@@ -64,6 +68,7 @@ currently does not add shared frame entries at the component level.
 - `sqrt`
 - `sqr`
 - `pow`
+- `apply`
 - `max`
 - `min`
 - `*`

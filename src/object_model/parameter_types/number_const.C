@@ -290,187 +290,206 @@ static struct NumberGetSyntax : public DeclareModel
   }
 } NumberGet_syntax;
 
-struct NumberFetchGet : public Number
+symbol
+NumberFetchGet::title () const
+{ return name_; }
+
+void
+NumberFetchGet::tick (const Units&, const Scope&, Treelog&)
+{ }
+
+symbol
+NumberFetchGet::dimension (const Scope&) const
 {
-  // Data.
-  const Unit* scope_unit;
+  if (scope_unit_)
+    return scope_unit_->native_name ();
 
-  // Parameters.
-  const symbol name;
-  symbol title () const
-  { return name; }
+  return Attribute::Unknown ();
+}
 
-  // Simulation.
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  symbol dimension (const Scope&) const
-  { 
-    if (scope_unit)
-      return scope_unit->native_name (); 
-
-    return Attribute::Unknown ();
-  }
-  const Unit& unit () const
-  { 
-    daisy_assert (scope_unit);
-    return *scope_unit; 
-  }
-  bool missing (const Scope& scope) const
-  { return !scope.check (name); }
-  double value (const Scope& scope) const
-  { 
-    daisy_assert (scope.check (name));
-    return scope.number ( name);
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    if (scope.lookup (name) != Attribute::Number)
-      {
-        msg.error ("'" + name + "' is not a number");
-        return false;
-      }
-    const symbol got_dim = scope.dimension (name);
-    scope_unit = &units.get_unit (got_dim);
-    return true;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  {
-    Treelog::Open nest (msg, name);
-
-    bool ok = true;
-    if (!scope_unit)
-      {
-        msg.error ("'" + name + "' is not a number");
-        ok = false;
-      }
-    else if (units.is_error (*scope_unit))
-      {
-        daisy_assert (scope.lookup (name) == Attribute::Number);
-        const symbol got_dim = scope.dimension (name);
-        msg.error ("'" + name + "' has unknown dimension [" + got_dim + "]");
-        ok = false;
-      }
-    return ok;
-  }
-
-  NumberFetchGet (const BlockModel& al, const symbol key)
-    : Number (al),
-      scope_unit (NULL),
-      name (key)
-  { }
-};
-
-struct NumberFetch : public Number
+const Unit&
+NumberFetchGet::unit () const
 {
-  // Parameters.
-  const std::unique_ptr<Number> child;
-  symbol title () const
-  { return child->title (); }
+  daisy_assert (scope_unit_);
+  return *scope_unit_;
+}
 
-  static std::unique_ptr<Number> fetch_child (const BlockModel& al, const symbol key)
-  {
-    std::unique_ptr<Number> result;
-    Attribute::type type = al.lookup (key);
-    switch (type)
-      {
-      case Attribute::Number:
-        {
-          if (!al.check (key))
-            {
-              const Frame& frame = al.find_frame (key);
-              daisy_assert (frame.lookup (key) == Attribute::Number);
-              al.error ("Parameter '" + key 
-                        + "' is declared in '" + frame.type_name () 
-                        + "' (" + frame.description () 
-                        + ") base '" + frame.base_name () 
-                        + "', but has no value");
-              break;
-            }
-          if (al.type_size (key) != Attribute::Singleton)
-            {
-              al.error ("Parameter '" + key 
-                         + "' is a sequence, expected singleton");
-              break;
-            }
-          result.reset (new NumberConst (al, key));
-        }
-        break;
-      case Attribute::Model:
-        {
-          const Frame& frame = al.find_frame (key);
-          const symbol component = frame.component (key);
-          if (component != Number::component)
-            {
-              al.error ("'" + key + "' is a '" + component
-                         + "' model, expected a '"
-                         + Number::component + "'");
-              break;
-            }
-          if (frame.type_size (key) != Attribute::Singleton)
-            {
-              al.error ("Parameter '" + key 
-                        + "' is a model sequence, expected singleton");
-              break;
-            }
-          if (!frame.check (key))
-            {
-              al.error ("'" + key + "' declared, but has no value");
-              break;
-            }
-          if (!frame.check (al))
-            break;
-          result.reset (Librarian::build_item<Number> (al, key));
-        }
-        break;
-      case Attribute::Error:
-        result.reset (new NumberFetchGet (al, key));
-        break;
-      default:
-        al.error ("'" + key + "' is a " + Attribute::type_name (type)
-                  + ", expected a number");
-      }
-    return result;
-  }
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { child->tick (units, scope, msg); }
-  bool missing (const Scope& scope) const
-  { return child->missing (scope); }
-  double value (const Scope& scope) const
-  { return child->value (scope); }
-  symbol dimension (const Scope& scope) const
-  { return child->dimension (scope); }
+bool
+NumberFetchGet::missing (const Scope& scope) const
+{ return !scope.check (name_); }
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    if (!child.get ())
+double
+NumberFetchGet::value (const Scope& scope) const
+{
+  daisy_assert (scope.check (name_));
+  return scope.number (name_);
+}
+
+bool
+NumberFetchGet::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  if (scope.lookup (name_) != Attribute::Number)
+    {
+      msg.error ("'" + name_ + "' is not a number");
       return false;
-    return child->initialize (units, scope, msg); 
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  {
-    TREELOG_MODEL (msg);
+    }
+  const symbol got_dim = scope.dimension (name_);
+  scope_unit_ = &units.get_unit (got_dim);
+  return true;
+}
 
-    bool ok = true;
-    if (!child.get ())
-      {
-        msg.error ("Fetch failed");
-        ok = false;
-      }
-    else if (!child->check (units, scope, msg))
+bool
+NumberFetchGet::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  Treelog::Open nest (msg, name_);
+
+  bool ok = true;
+  if (!scope_unit_)
+    {
+      msg.error ("'" + name_ + "' is not a number");
       ok = false;
-    return ok;
-  }
-  NumberFetch (const BlockModel& al)
-    : Number (al),
-      child (fetch_child (al, al.name ("name")))
-  { }
-  ~NumberFetch ()
-  { }
-};
+    }
+  else if (units.is_error (*scope_unit_))
+    {
+      daisy_assert (scope.lookup (name_) == Attribute::Number);
+      const symbol got_dim = scope.dimension (name_);
+      msg.error ("'" + name_ + "' has unknown dimension [" + got_dim + "]");
+      ok = false;
+    }
+  return ok;
+}
+
+NumberFetchGet::NumberFetchGet (const symbol name)
+  : Number ("fetch"),
+    scope_unit_ (NULL),
+    name_ (name)
+{ }
+
+NumberFetchGet::NumberFetchGet (const BlockModel& al, const symbol key)
+  : Number (al),
+    scope_unit_ (NULL),
+    name_ (key)
+{ }
+
+symbol
+NumberFetch::title () const
+{ return child_->title (); }
+
+std::unique_ptr<Number>
+NumberFetch::fetch_child (const BlockModel& al, const symbol key)
+{
+  std::unique_ptr<Number> result;
+  Attribute::type type = al.lookup (key);
+  switch (type)
+    {
+    case Attribute::Number:
+      {
+        if (!al.check (key))
+          {
+            const Frame& frame = al.find_frame (key);
+            daisy_assert (frame.lookup (key) == Attribute::Number);
+            al.error ("Parameter '" + key
+                      + "' is declared in '" + frame.type_name ()
+                      + "' (" + frame.description ()
+                      + ") base '" + frame.base_name ()
+                      + "', but has no value");
+            break;
+          }
+        if (al.type_size (key) != Attribute::Singleton)
+          {
+            al.error ("Parameter '" + key
+                      + "' is a sequence, expected singleton");
+            break;
+          }
+        result.reset (new NumberConst (al, key));
+      }
+      break;
+    case Attribute::Model:
+      {
+        const Frame& frame = al.find_frame (key);
+        const symbol component = frame.component (key);
+        if (component != Number::component)
+          {
+            al.error ("'" + key + "' is a '" + component
+                      + "' model, expected a '"
+                      + Number::component + "'");
+            break;
+          }
+        if (frame.type_size (key) != Attribute::Singleton)
+          {
+            al.error ("Parameter '" + key
+                      + "' is a model sequence, expected singleton");
+            break;
+          }
+        if (!frame.check (key))
+          {
+            al.error ("'" + key + "' declared, but has no value");
+            break;
+          }
+        if (!frame.check (al))
+          break;
+        result.reset (Librarian::build_item<Number> (al, key));
+      }
+      break;
+    case Attribute::Error:
+      result.reset (new NumberFetchGet (al, key));
+      break;
+    default:
+      al.error ("'" + key + "' is a " + Attribute::type_name (type)
+                + ", expected a number");
+    }
+  return result;
+}
+
+void
+NumberFetch::tick (const Units& units, const Scope& scope, Treelog& msg)
+{ child_->tick (units, scope, msg); }
+
+bool
+NumberFetch::missing (const Scope& scope) const
+{ return child_->missing (scope); }
+
+double
+NumberFetch::value (const Scope& scope) const
+{ return child_->value (scope); }
+
+symbol
+NumberFetch::dimension (const Scope& scope) const
+{ return child_->dimension (scope); }
+
+bool
+NumberFetch::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  if (!child_.get ())
+    return false;
+  return child_->initialize (units, scope, msg);
+}
+
+bool
+NumberFetch::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+
+  bool ok = true;
+  if (!child_.get ())
+    {
+      msg.error ("Fetch failed");
+      ok = false;
+    }
+  else if (!child_->check (units, scope, msg))
+    ok = false;
+  return ok;
+}
+
+NumberFetch::NumberFetch (std::unique_ptr<Number> child)
+  : Number ("fetch"),
+    child_ (std::move (child))
+{ }
+
+NumberFetch::NumberFetch (const BlockModel& al)
+  : Number (al),
+    child_ (fetch_child (al, al.name ("name")))
+{ }
 
 static struct NumberFetchSyntax : public DeclareModel
 {

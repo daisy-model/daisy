@@ -39,7 +39,9 @@ std::unique_ptr<FrameModel> clone_model(const Library& library,
 
 void register_test_models() {
   register_unit_models();
+  register_function_models();
   register_number_models();
+  register_number_apply_models();
   register_number_arithmetic_models();
   register_number_const_models();
   register_number_plf_models();
@@ -135,6 +137,7 @@ TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("const"));
   EXPECT_TRUE(entries.count("x"));
   EXPECT_TRUE(entries.count("get"));
+  EXPECT_TRUE(entries.count("fetch"));
   EXPECT_TRUE(entries.count("child"));
   EXPECT_TRUE(entries.count("identity"));
   EXPECT_TRUE(entries.count("convert"));
@@ -145,6 +148,7 @@ TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("sqrt"));
   EXPECT_TRUE(entries.count("sqr"));
   EXPECT_TRUE(entries.count("pow"));
+  EXPECT_TRUE(entries.count("apply"));
   EXPECT_TRUE(entries.count("max"));
   EXPECT_TRUE(entries.count("min"));
   EXPECT_TRUE(entries.count("*"));
@@ -224,6 +228,9 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_base_of<Number, NumberConst>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberX>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberGet>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberFetchGet>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberFetch>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberApply>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberChild>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberOperand>::value));
   EXPECT_TRUE((std::is_base_of<NumberChild, NumberIdentity>::value));
@@ -248,6 +255,10 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberConst, double, const Unit&>::value));
   EXPECT_TRUE((std::is_constructible<NumberX>::value));
   EXPECT_TRUE((std::is_constructible<NumberGet, symbol, const Unit&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberFetchGet, symbol>::value));
+  EXPECT_TRUE((std::is_constructible<NumberFetchGet, const BlockModel&, symbol>::value));
+  EXPECT_TRUE((std::is_constructible<NumberFetch, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberApply, std::unique_ptr<Function>, double, symbol>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&, symbol>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, std::unique_ptr<Number>, const Units&, symbol>::value));
@@ -268,6 +279,8 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberConst, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberX, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberGet, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberFetch, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberApply, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberDim, const BlockModel&>::value));
@@ -355,6 +368,83 @@ TEST(NumberExposureTest, NumberGetCanBeInstantiatedDirectlyFromBlockModel) {
   EXPECT_TRUE(number.check(metalib.units(), scope, Treelog::null()));
   EXPECT_DOUBLE_EQ(number.value(scope), 1750.0);
   EXPECT_EQ(number.dimension(scope), Units::mm());
+}
+
+TEST(NumberExposureTest, NumberFetchGetHasDirectConstructor) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  NumberScope scope;
+  NumberFetchGet number("water");
+
+  EXPECT_TRUE(number.initialize(metalib.units(), scope, Treelog::null()));
+  EXPECT_TRUE(number.check(metalib.units(), scope, Treelog::null()));
+  EXPECT_FALSE(number.missing(scope));
+  EXPECT_DOUBLE_EQ(number.value(scope), 175.0);
+  EXPECT_EQ(number.dimension(scope), Units::cm());
+}
+
+TEST(NumberExposureTest, NumberFetchHasDirectChildConstructor) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  NumberScope scope;
+  NumberFetch number(std::make_unique<NumberFetchGet>("water"));
+
+  EXPECT_TRUE(number.initialize(metalib.units(), scope, Treelog::null()));
+  EXPECT_TRUE(number.check(metalib.units(), scope, Treelog::null()));
+  EXPECT_FALSE(number.missing(scope));
+  EXPECT_DOUBLE_EQ(number.value(scope), 175.0);
+  EXPECT_EQ(number.dimension(scope), Units::cm());
+}
+
+TEST(NumberExposureTest, NumberFetchCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  NumberScope scope;
+  const Library& library = metalib.library(Number::component);
+  std::unique_ptr<FrameModel> frame = clone_model(library, "fetch");
+  frame->set("name", "water");
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "fetch");
+  NumberFetch number(block);
+
+  EXPECT_TRUE(number.initialize(metalib.units(), scope, Treelog::null()));
+  EXPECT_TRUE(number.check(metalib.units(), scope, Treelog::null()));
+  EXPECT_FALSE(number.missing(scope));
+  EXPECT_DOUBLE_EQ(number.value(scope), 175.0);
+  EXPECT_EQ(number.dimension(scope), Units::cm());
+}
+
+TEST(NumberExposureTest, NumberApplyHasDirectConstructor) {
+  NumberApply number(std::make_unique<FunctionConst>(8.5), 3.0, Units::mm());
+
+  EXPECT_FALSE(number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(number.value(Scope::null()), 8.5);
+  EXPECT_EQ(number.dimension(Scope::null()), Units::mm());
+}
+
+TEST(NumberExposureTest, NumberApplyCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& number_library = metalib.library(Number::component);
+  const Library& function_library = metalib.library(Function::component);
+  std::unique_ptr<FrameModel> frame = clone_model(number_library, "apply");
+  std::unique_ptr<FrameModel> function = clone_model(function_library, "const");
+  function->set("domain", Units::cm());
+  function->set("range", Units::mm());
+  function->set("value", 8.5);
+  frame->set("function", *function);
+  frame->set("operand", 3.0, Units::cm());
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "apply");
+  NumberApply number(block);
+
+  EXPECT_TRUE(number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(number.value(Scope::null()), 8.5);
+  EXPECT_EQ(number.dimension(Scope::null()), Units::mm());
 }
 
 TEST(NumberExposureTest, NumberIdentityAndDerivedClassesHaveDirectChildConstructors) {

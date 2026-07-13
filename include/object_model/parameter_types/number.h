@@ -22,6 +22,7 @@
 #ifndef NUMBER_H
 #define NUMBER_H
 
+#include "object_model/function.h"
 #include "object_model/symbol.h"
 #include "object_model/model.h"
 #include "object_model/plf.h"
@@ -116,6 +117,55 @@ public:
   NumberGet (symbol name, const Unit& unit);
   explicit NumberGet (const BlockModel&);
   explicit NumberGet (const BlockModel& al, symbol key);
+};
+
+class NumberFetchGet : public Number
+{
+  const Unit* scope_unit_;
+  const symbol name_;
+public:
+  symbol title () const;
+  void tick (const Units&, const Scope&, Treelog&);
+  symbol dimension (const Scope&) const;
+  const Unit& unit () const;
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberFetchGet (symbol name);
+  NumberFetchGet (const BlockModel& al, symbol key);
+};
+
+class NumberFetch : public Number
+{
+  const std::unique_ptr<Number> child_;
+  static std::unique_ptr<Number> fetch_child (const BlockModel& al, symbol key);
+public:
+  symbol title () const;
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  explicit NumberFetch (std::unique_ptr<Number> child);
+  explicit NumberFetch (const BlockModel&);
+};
+
+class NumberApply : public Number
+{
+  const std::unique_ptr<Function> function_;
+  const double operand_;
+  const symbol range_;
+public:
+  void tick (const Units&, const Scope&, Treelog&);
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberApply (std::unique_ptr<Function> function, double operand, symbol range);
+  explicit NumberApply (const BlockModel&);
 };
 
 class NumberChild : public Number

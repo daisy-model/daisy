@@ -35,53 +35,65 @@
 
 #include "util/assertion.h"
 
-struct NumberApply : public Number
+namespace
 {
-  // Parameters.
-  const std::unique_ptr<Function> function;
-  const double operand;
-  const symbol range;
+bool
+check_apply_alist (const Metalib&, const Frame& al, Treelog& msg)
+{
+  bool ok = true;
 
-  // Simulation.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { }
-  bool missing (const Scope& scope) const 
-  { return false; }
-  double value (const Scope& scope) const
-  { return function->value (operand); }
-  symbol dimension (const Scope&) const
-  { return range; }
+  const symbol function_domain = al.model ("function").name ("domain");
+  const symbol operand_domain = al.name ("operand");
 
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  { return true; }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { return true; }
+  if (function_domain != operand_domain)
+    {
+      msg.error (function_domain.name () + " != " + operand_domain.name ());
+      ok = false;
+    }
 
-  static bool check_alist (const Metalib& metalib, 
-                           const Frame& al, Treelog& msg) 
-  {
-    bool ok = true;
+  return ok;
+}
+} // namespace
 
-    const symbol function_domain = al.model ("function").name ("domain");
-    const symbol operand_domain = al.name ("operand");
+void
+NumberApply::tick (const Units&, const Scope&, Treelog&)
+{ }
 
-    if (function_domain != operand_domain)
-      {
-	msg.error (function_domain.name () + " != " + operand_domain.name ());
-	ok = false;
-      }
+bool
+NumberApply::missing (const Scope&) const
+{ return false; }
 
-    return ok;
-  }
+double
+NumberApply::value (const Scope&) const
+{ return function_->value (operand_); }
 
-  NumberApply (const BlockModel& al)
-    : Number (al),
-      function (Librarian::build_item<Function> (al, "function")),
-      operand (al.number ("operand")),
-      range (al.model ("function").name ("range"))
-  { }
-};
+symbol
+NumberApply::dimension (const Scope&) const
+{ return range_; }
+
+bool
+NumberApply::initialize (const Units&, const Scope&, Treelog&)
+{ return true; }
+
+bool
+NumberApply::check (const Units&, const Scope&, Treelog&) const
+{ return true; }
+
+NumberApply::NumberApply (std::unique_ptr<Function> function,
+                          const double operand,
+                          const symbol range)
+  : Number ("apply"),
+    function_ (std::move (function)),
+    operand_ (operand),
+    range_ (range)
+{ }
+
+NumberApply::NumberApply (const BlockModel& al)
+  : Number (al),
+    function_ (Librarian::build_item<Function> (al, "function")),
+    operand_ (al.number ("operand")),
+    range_ (al.model ("function").name ("range"))
+{ }
 
 static struct NumberApplySyntax : public DeclareModel
 {
@@ -94,7 +106,7 @@ static struct NumberApplySyntax : public DeclareModel
   { }
   void load_frame (Frame& frame) const
   {
-    frame.add_check (NumberApply::check_alist);
+    frame.add_check (check_apply_alist);
 
     frame.declare_function ("function", Attribute::User (), Attribute::User (),
 			    "Function to apply.");
