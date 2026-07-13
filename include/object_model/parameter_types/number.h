@@ -22,6 +22,7 @@
 #ifndef NUMBER_H
 #define NUMBER_H
 
+#include "daisy/daisy_time.h"
 #include "object_model/function.h"
 #include "util/scope.h"
 #include "object_model/symbol.h"
@@ -32,12 +33,14 @@
 #include <vector>
 
 class Boolean;
+class Source;
 class Treelog;
 class BlockModel;
 class Units;
 class Unit;
 class Frame;
 class Block;
+class Time;
 
 class Number : public Model
 {
@@ -238,6 +241,75 @@ public:
             std::unique_ptr<Number> else_n);
   explicit NumberIf (const BlockModel& al);
   ~NumberIf ();
+};
+
+class NumberSource : public Number
+{
+protected:
+  std::unique_ptr<Source> source_;
+  std::unique_ptr<const Time> begin_;
+  std::unique_ptr<const Time> end_;
+  enum State { uninitialized, error, is_missing, has_value } state_;
+  double val_;
+  virtual void initialize_derived (Treelog& msg) = 0;
+  NumberSource (symbol objid,
+                std::unique_ptr<Source> source,
+                std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
+                std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
+public:
+  symbol title () const;
+  void tick (const Units&, const Scope&, Treelog&);
+  bool missing (const Scope&) const;
+  double value (const Scope&) const;
+  symbol dimension (const Scope&) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units&, const Scope&, Treelog&) const;
+  explicit NumberSource (const BlockModel& al);
+  ~NumberSource ();
+};
+
+class NumberSourceUnique : public NumberSource
+{
+protected:
+  void initialize_derived (Treelog& msg);
+public:
+  explicit NumberSourceUnique (std::unique_ptr<Source> source,
+                               std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
+                               std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
+  explicit NumberSourceUnique (const BlockModel& al);
+};
+
+class NumberSourceAverage : public NumberSource
+{
+protected:
+  void initialize_derived (Treelog& msg);
+public:
+  explicit NumberSourceAverage (std::unique_ptr<Source> source,
+                                std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
+                                std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
+  explicit NumberSourceAverage (const BlockModel& al);
+};
+
+class NumberSourceSum : public NumberSource
+{
+protected:
+  void initialize_derived (Treelog& msg);
+public:
+  explicit NumberSourceSum (std::unique_ptr<Source> source,
+                            std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
+                            std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
+  explicit NumberSourceSum (const BlockModel& al);
+};
+
+class NumberSourceIncrease : public NumberSource
+{
+protected:
+  void initialize_derived (Treelog& msg);
+public:
+  explicit NumberSourceIncrease (std::unique_ptr<Source> source,
+                                 std::unique_ptr<const Time> begin = std::unique_ptr<const Time> (),
+                                 std::unique_ptr<const Time> end = std::unique_ptr<const Time> ());
+  explicit NumberSourceIncrease (const BlockModel& al);
 };
 
 class NumberChild : public Number

@@ -29,6 +29,11 @@ Generic representation of numbers.
 | `NumberApply` | Applies a registered function to a numeric operand and returns the function range dimension. |
 | `NumberLet` | Binds temporary number names in a nested scope before evaluating an expression. |
 | `NumberIf` | Selects between two numbers based on a boolean expression. |
+| `NumberSource` | Abstract base for number models derived from time-series sources. |
+| `NumberSourceUnique` | Extracts exactly one value from a filtered time series. |
+| `NumberSourceAverage` | Averages values from a filtered time series. |
+| `NumberSourceSum` | Sums values from a filtered time series. |
+| `NumberSourceIncrease` | Computes the increase across a filtered time series. |
 | `NumberChild` | Abstract base for number models that wrap another `Number`. |
 | `NumberIdentity` | Pass-through wrapper that can optionally assert or convert dimension. |
 | `NumberConvert` | Wrapper that converts the child value into a requested dimension. |
@@ -73,6 +78,11 @@ currently does not add shared frame entries at the component level.
 - `apply`
 - `let`
 - `if`
+- `source`
+- `source_unique`
+- `source_average`
+- `source_sum`
+- `source_increase`
 - `max`
 - `min`
 - `*`

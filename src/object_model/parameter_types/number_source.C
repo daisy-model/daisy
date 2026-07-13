@@ -30,65 +30,82 @@
 #include <sstream>
 #include <memory>
 
-struct NumberSource : public Number
+symbol
+NumberSource::title () const
 {
-  const std::unique_ptr<Source> source;
-  const std::unique_ptr<const Time> begin;
-  const std::unique_ptr<const Time> end;
-  enum { uninitialized, error, is_missing, has_value } state;
-  double val;
+  daisy_assert (state_ != uninitialized);
+  return source_->title ();
+}
 
-  symbol title () const
-  {
-    daisy_assert (state != uninitialized);
-    return source->title ();
-  }
-  void tick (const Units&, const Scope&, Treelog&)
-  { }
-  bool missing (const Scope&) const 
-  { 
-    daisy_assert (state != uninitialized);
-    return state != has_value;
-  }
-  double value (const Scope&) const
-  { 
-    daisy_assert (state == has_value);
-    return val;
-  }
-  symbol dimension (const Scope&) const 
-  {     
-    daisy_assert (state != uninitialized);
-    return symbol (source->dimension ());
-  }
+void
+NumberSource::tick (const Units&, const Scope&, Treelog&)
+{ }
 
-  // Create.
-  virtual void initialize_derived (Treelog& msg) = 0;
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  {
-    TREELOG_MODEL (msg);
-    msg.touch ();
-    daisy_assert (state == uninitialized);
-    daisy_assert (source.get ());
-    if (!source->load (msg))
-      state = error;
-    else
-      initialize_derived (msg);
-    return state != error;
-  }
-  bool check (const Units&, const Scope&, Treelog&) const
-  { 
-    daisy_assert (state != uninitialized);
-    return state != error; 
-  }
-  NumberSource (const BlockModel& al)
-    : Number (al),
-      source (Librarian::build_item<Source> (al, "source")),
-      begin (al.check ("begin") ? new Time (al.submodel ("begin")) : NULL),
-      end (al.check ("end") ? new Time (al.submodel ("end")) : NULL),
-      state (uninitialized),
-      val (-42.42e42)
-  { }
-};
+bool
+NumberSource::missing (const Scope&) const
+{
+  daisy_assert (state_ != uninitialized);
+  return state_ != has_value;
+}
+
+double
+NumberSource::value (const Scope&) const
+{
+  daisy_assert (state_ == has_value);
+  return val_;
+}
+
+symbol
+NumberSource::dimension (const Scope&) const
+{
+  daisy_assert (state_ != uninitialized);
+  return symbol (source_->dimension ());
+}
+
+bool
+NumberSource::initialize (const Units&, const Scope&, Treelog& msg)
+{
+  TREELOG_MODEL (msg);
+  msg.touch ();
+  daisy_assert (state_ == uninitialized);
+  daisy_assert (source_.get ());
+  if (!source_->load (msg))
+    state_ = error;
+  else
+    initialize_derived (msg);
+  return state_ != error;
+}
+
+bool
+NumberSource::check (const Units&, const Scope&, Treelog&) const
+{
+  daisy_assert (state_ != uninitialized);
+  return state_ != error;
+}
+
+NumberSource::NumberSource (symbol objid,
+                            std::unique_ptr<Source> source,
+                            std::unique_ptr<const Time> begin,
+                            std::unique_ptr<const Time> end)
+  : Number (objid),
+    source_ (std::move (source)),
+    begin_ (std::move (begin)),
+    end_ (std::move (end)),
+    state_ (uninitialized),
+    val_ (-42.42e42)
+{ }
+
+NumberSource::NumberSource (const BlockModel& al)
+  : Number (al),
+    source_ (Librarian::build_item<Source> (al, "source")),
+    begin_ (al.check ("begin") ? new Time (al.submodel ("begin")) : NULL),
+    end_ (al.check ("end") ? new Time (al.submodel ("end")) : NULL),
+    state_ (uninitialized),
+    val_ (-42.42e42)
+{ }
+
+NumberSource::~NumberSource ()
+{ }
 
 static struct NumberSourceSyntax : public DeclareBase
 {
@@ -109,40 +126,45 @@ The time series we want to extract a number from.");
 } NumberSource_syntax;
 
 
-struct NumberSourceUnique : public NumberSource
+void
+NumberSourceUnique::initialize_derived (Treelog& msg)
 {
-  void initialize_derived (Treelog& msg)
-  {
-    const std::vector<Time>& time = source->time ();
-    const size_t size = time.size ();
-    int count = 0;
-    for (size_t i = 0; i < size; i++)
-      if ((!begin.get () || time[i] > *begin) 
-          && (!end.get () || time[i] <= *end))
-        {
-          val = source->value ()[i];
-          count++;
-        }
+  const std::vector<Time>& time = source_->time ();
+  const size_t size = time.size ();
+  int count = 0;
+  for (size_t i = 0; i < size; i++)
+    if ((!begin_.get () || time[i] > *begin_)
+        && (!end_.get () || time[i] <= *end_))
+      {
+        val_ = source_->value ()[i];
+        count++;
+      }
 
-    if (count == 1U)
-      state = has_value;
-    else if (count == 0U)
-      {
-        msg.warning ("Got zero elements, expected one");
-        state = is_missing;
-      }
-    else
-      {
-        std::ostringstream tmp;
-        tmp << "Got " << count << " elements, expected 1";
-        msg.error (tmp.str ());
-        state = error;
-      }
-  }
-  NumberSourceUnique (const BlockModel& al)
-    : NumberSource (al)
-  { }
-};
+  if (count == 1U)
+    state_ = has_value;
+  else if (count == 0U)
+    {
+      msg.warning ("Got zero elements, expected one");
+      state_ = is_missing;
+    }
+  else
+    {
+      std::ostringstream tmp;
+      tmp << "Got " << count << " elements, expected 1";
+      msg.error (tmp.str ());
+      state_ = error;
+    }
+}
+
+NumberSourceUnique::NumberSourceUnique (std::unique_ptr<Source> source,
+                                        std::unique_ptr<const Time> begin,
+                                        std::unique_ptr<const Time> end)
+  : NumberSource ("source_unique", std::move (source), std::move (begin), std::move (end))
+{ }
+
+NumberSourceUnique::NumberSourceUnique (const BlockModel& al)
+  : NumberSource (al)
+{ }
 
 static struct NumberSourceUniqueSyntax : public DeclareModel
 {
@@ -156,37 +178,42 @@ static struct NumberSourceUniqueSyntax : public DeclareModel
   { }
 } NumberSourceUnique_syntax;
 
-struct NumberSourceAverage : public NumberSource
+void
+NumberSourceAverage::initialize_derived (Treelog& msg)
 {
-  void initialize_derived (Treelog& msg)
-  {
-    const std::vector<Time>& time = source->time ();
-    const size_t size = time.size ();
-    int count = 0;
-    val = 0.0;
-    for (size_t i = 0; i < size; i++)
-      if ((!begin.get () || time[i] > *begin) 
-          && (!end.get () || time[i] <= *end))
-        {
-          val += source->value ()[i];
-          count++;
-        }
+  const std::vector<Time>& time = source_->time ();
+  const size_t size = time.size ();
+  int count = 0;
+  val_ = 0.0;
+  for (size_t i = 0; i < size; i++)
+    if ((!begin_.get () || time[i] > *begin_)
+        && (!end_.get () || time[i] <= *end_))
+      {
+        val_ += source_->value ()[i];
+        count++;
+      }
 
-    if (count == 0U)
-      {
-        msg.warning ("Can't take average of zero elements");
-        state = is_missing;
-      }
-    else
-      {
-        val /= (count + 0.0);
-        state = has_value;
-      }
-  }
-  NumberSourceAverage (const BlockModel& al)
-    : NumberSource (al)
-  { }
-};
+  if (count == 0U)
+    {
+      msg.warning ("Can't take average of zero elements");
+      state_ = is_missing;
+    }
+  else
+    {
+      val_ /= (count + 0.0);
+      state_ = has_value;
+    }
+}
+
+NumberSourceAverage::NumberSourceAverage (std::unique_ptr<Source> source,
+                                          std::unique_ptr<const Time> begin,
+                                          std::unique_ptr<const Time> end)
+  : NumberSource ("source_average", std::move (source), std::move (begin), std::move (end))
+{ }
+
+NumberSourceAverage::NumberSourceAverage (const BlockModel& al)
+  : NumberSource (al)
+{ }
 
 static struct NumberSourceAverageSyntax : public DeclareModel
 {
@@ -200,23 +227,28 @@ static struct NumberSourceAverageSyntax : public DeclareModel
   { }
 } NumberSourceAverage_syntax;
 
-struct NumberSourceSum : public NumberSource
+void
+NumberSourceSum::initialize_derived (Treelog&)
 {
-  void initialize_derived (Treelog&)
-  {
-    const std::vector<Time>& time = source->time ();
-    const size_t size = time.size ();
-    val = 0.0;
-    state = has_value;
-    for (size_t i = 0; i < size; i++)
-      if ((!begin.get () || time[i] > *begin)
-          && (!end.get () || time[i] <= *end))
-        val += source->value ()[i];
-  }
-  NumberSourceSum (const BlockModel& al)
-    : NumberSource (al)
-  { }
-};
+  const std::vector<Time>& time = source_->time ();
+  const size_t size = time.size ();
+  val_ = 0.0;
+  state_ = has_value;
+  for (size_t i = 0; i < size; i++)
+    if ((!begin_.get () || time[i] > *begin_)
+        && (!end_.get () || time[i] <= *end_))
+      val_ += source_->value ()[i];
+}
+
+NumberSourceSum::NumberSourceSum (std::unique_ptr<Source> source,
+                                  std::unique_ptr<const Time> begin,
+                                  std::unique_ptr<const Time> end)
+  : NumberSource ("source_sum", std::move (source), std::move (begin), std::move (end))
+{ }
+
+NumberSourceSum::NumberSourceSum (const BlockModel& al)
+  : NumberSource (al)
+{ }
 
 static struct NumberSourceSumSyntax : public DeclareModel
 {
@@ -230,36 +262,41 @@ static struct NumberSourceSumSyntax : public DeclareModel
   { }
 } NumberSourceSum_syntax;
 
-struct NumberSourceIncrease : public NumberSource
+void
+NumberSourceIncrease::initialize_derived (Treelog& msg)
 {
-  void initialize_derived (Treelog& msg)
-  {
-    const std::vector<Time>& time = source->time ();
-    const std::vector<double>& value = source->value ();
-    const size_t size = time.size ();
-    daisy_assert (value.size () == size);
-    state = has_value;
-    if (size < 2)
-      {
-         msg.warning ("Need two elements to make a difference");
-         val = 0;
-         return;
-      }
-    double first = value[0];
-    double last = value[0];
-    for (size_t i = 1; i < size; i++)
-      {
-        if (begin.get () && time[i] < *begin)
-          first = value[i];
-        if (!end.get () || time[i] <= *end)
-          last = value[i];
-      }
-    val = last - first;
-  }
-  NumberSourceIncrease (const BlockModel& al)
-    : NumberSource (al)
-  { }
-};
+  const std::vector<Time>& time = source_->time ();
+  const std::vector<double>& value = source_->value ();
+  const size_t size = time.size ();
+  daisy_assert (value.size () == size);
+  state_ = has_value;
+  if (size < 2)
+    {
+      msg.warning ("Need two elements to make a difference");
+      val_ = 0;
+      return;
+    }
+  double first = value[0];
+  double last = value[0];
+  for (size_t i = 1; i < size; i++)
+    {
+      if (begin_.get () && time[i] < *begin_)
+        first = value[i];
+      if (!end_.get () || time[i] <= *end_)
+        last = value[i];
+    }
+  val_ = last - first;
+}
+
+NumberSourceIncrease::NumberSourceIncrease (std::unique_ptr<Source> source,
+                                            std::unique_ptr<const Time> begin,
+                                            std::unique_ptr<const Time> end)
+  : NumberSource ("source_increase", std::move (source), std::move (begin), std::move (end))
+{ }
+
+NumberSourceIncrease::NumberSourceIncrease (const BlockModel& al)
+  : NumberSource (al)
+{ }
 
 static struct NumberSourceIncreaseSyntax : public DeclareModel
 {

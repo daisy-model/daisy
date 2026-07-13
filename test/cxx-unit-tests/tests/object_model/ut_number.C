@@ -11,6 +11,7 @@
 #include "object_model/block_top.h"
 #include "object_model/frame_model.h"
 #include "object_model/frame_submodel.h"
+#include "object_model/librarian.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/object_model_registration_internal.h"
@@ -19,6 +20,8 @@
 #include "object_model/plf.h"
 #include "object_model/unit.h"
 #include "object_model/units.h"
+#include "gnuplot/gnuplot_registration_internal.h"
+#include "gnuplot/source.h"
 #include "util/scope.h"
 
 namespace {
@@ -38,16 +41,57 @@ std::unique_ptr<FrameModel> clone_model(const Library& library,
   return std::unique_ptr<FrameModel>(&library.model(name).clone());
 }
 
+void register_test_source_models();
+
 void register_test_models() {
   register_unit_models();
   register_boolean_models();
   register_function_models();
+  register_gnuplot_source_models();
   register_number_models();
   register_number_apply_models();
   register_number_arithmetic_models();
   register_number_const_models();
   register_number_lisp_models();
   register_number_plf_models();
+  register_number_source_models();
+  register_test_source_models();
+}
+
+class TestStaticSource : public Source {
+  const symbol title_;
+  const symbol dimension_;
+  const std::vector<Time> times_;
+  const std::vector<double> values_;
+  const std::vector<double> ebars_;
+public:
+  symbol title() const override { return title_; }
+  symbol dimension() const override { return dimension_; }
+  symbol with() const override { return "lines"; }
+  int style() const override { return 0; }
+  bool accumulate() const override { return false; }
+  const std::vector<Time>& time() const override { return times_; }
+  const std::vector<double>& value() const override { return values_; }
+  const std::vector<double>& ebar() const override { return ebars_; }
+  bool load(Treelog&) override { return true; }
+  explicit TestStaticSource(const BlockModel& al)
+      : Source(al),
+        title_("test_static"),
+        dimension_(Units::cm()),
+        times_({Time(2024, 1, 1, 0), Time(2024, 1, 2, 0), Time(2024, 1, 3, 0)}),
+        values_({1.0, 4.0, 7.0}),
+        ebars_() {}
+};
+
+struct TestStaticSourceSyntax : public DeclareModel {
+  Model* make(const BlockModel& al) const override { return new TestStaticSource(al); }
+  TestStaticSourceSyntax()
+      : DeclareModel(Source::component, "test_static", "Static source for number tests.") {}
+  void load_frame(Frame&) const override {}
+};
+
+void register_test_source_models() {
+  static TestStaticSourceSyntax test_static_source_syntax;
 }
 
 class NumberScope : public Scope {
@@ -127,6 +171,14 @@ boost::shared_ptr<const FrameModel> make_number_const_frame(const Library& libra
   return boost::shared_ptr<const FrameModel>(frame.release());
 }
 
+std::unique_ptr<Source> make_test_source(const Metalib& metalib) {
+  const Library& source_library = metalib.library(Source::component);
+  std::unique_ptr<FrameModel> frame = clone_model(source_library, "test_static");
+  BlockTop context(metalib, Treelog::null(), metalib);
+  BlockModel block(context, *frame, "test_static");
+  return std::make_unique<TestStaticSource>(block);
+}
+
 void load_number_let_clause_frame(Frame& frame) {
   frame.declare_string("identifier", Attribute::Const, "Identifier to bind.");
   frame.declare_object("expr", Number::component, " Value to give it.");
@@ -173,6 +225,11 @@ TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("apply"));
   EXPECT_TRUE(entries.count("let"));
   EXPECT_TRUE(entries.count("if"));
+  EXPECT_TRUE(entries.count("source"));
+  EXPECT_TRUE(entries.count("source_unique"));
+  EXPECT_TRUE(entries.count("source_average"));
+  EXPECT_TRUE(entries.count("source_sum"));
+  EXPECT_TRUE(entries.count("source_increase"));
   EXPECT_TRUE(entries.count("max"));
   EXPECT_TRUE(entries.count("min"));
   EXPECT_TRUE(entries.count("*"));
@@ -242,6 +299,18 @@ TEST(NumberRegistrationTest, NumberPowAndSharedOperandModelsHaveExpectedInherita
     EXPECT_EQ(model.type_name(), names[i]);
     EXPECT_EQ(model.base_name(), symbol("component"));
   }
+
+  const std::vector<symbol> source_names = {
+      "source_unique", "source_average", "source_sum", "source_increase"};
+  for (size_t i = 0; i < source_names.size(); ++i) {
+    EXPECT_TRUE(library.check(source_names[i]));
+    EXPECT_TRUE(library.is_derived_from(source_names[i], "source"));
+    EXPECT_EQ(library.base_model(source_names[i]), symbol("component"));
+
+    const FrameModel& model = library.model(source_names[i]);
+    EXPECT_EQ(model.type_name(), source_names[i]);
+    EXPECT_EQ(model.base_name(), symbol("source"));
+  }
 }
 
 TEST(NumberRegistrationTest, NumberComponentMetadataIsStable) {
@@ -257,6 +326,11 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_base_of<Number, NumberApply>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberLet>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberIf>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberSource>::value));
+  EXPECT_TRUE((std::is_base_of<NumberSource, NumberSourceUnique>::value));
+  EXPECT_TRUE((std::is_base_of<NumberSource, NumberSourceAverage>::value));
+  EXPECT_TRUE((std::is_base_of<NumberSource, NumberSourceSum>::value));
+  EXPECT_TRUE((std::is_base_of<NumberSource, NumberSourceIncrease>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberChild>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberOperand>::value));
   EXPECT_TRUE((std::is_base_of<NumberChild, NumberIdentity>::value));
@@ -288,6 +362,11 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberLet::Clause, symbol, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberLet, std::vector<NumberLet::Clause>, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberIf, std::unique_ptr<Boolean>, std::unique_ptr<Number>, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_abstract<NumberSource>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceUnique, std::unique_ptr<Source>, std::unique_ptr<const Time>, std::unique_ptr<const Time>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceAverage, std::unique_ptr<Source>, std::unique_ptr<const Time>, std::unique_ptr<const Time>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceSum, std::unique_ptr<Source>, std::unique_ptr<const Time>, std::unique_ptr<const Time>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceIncrease, std::unique_ptr<Source>, std::unique_ptr<const Time>, std::unique_ptr<const Time>>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&, symbol>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, std::unique_ptr<Number>, const Units&, symbol>::value));
@@ -312,6 +391,10 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberApply, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberLet, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIf, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceUnique, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceAverage, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceSum, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberSourceIncrease, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberDim, const BlockModel&>::value));
@@ -541,6 +624,107 @@ TEST(NumberExposureTest, NumberLispClassesCanBeInstantiatedDirectlyFromBlockMode
   EXPECT_FALSE(if_number.missing(Scope::null()));
   EXPECT_DOUBLE_EQ(if_number.value(Scope::null()), 17.5);
   EXPECT_EQ(if_number.dimension(Scope::null()), Units::cm());
+}
+
+TEST(NumberExposureTest, NumberSourceClassesHaveDirectConstructors) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+
+  NumberSourceUnique unique(
+      make_test_source(metalib),
+      std::make_unique<Time>(2024, 1, 2, 0),
+      std::make_unique<Time>(2024, 1, 3, 0));
+  EXPECT_TRUE(unique.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(unique.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(unique.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(unique.value(Scope::null()), 7.0);
+
+  NumberSourceAverage average(
+      make_test_source(metalib),
+      std::make_unique<Time>(2024, 1, 1, 0),
+      std::make_unique<Time>(2024, 1, 3, 0));
+  EXPECT_TRUE(average.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(average.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(average.value(Scope::null()), 5.5);
+  EXPECT_EQ(average.dimension(Scope::null()), Units::cm());
+
+  NumberSourceSum sum(make_test_source(metalib));
+  EXPECT_TRUE(sum.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(sum.value(Scope::null()), 12.0);
+
+  NumberSourceIncrease increase(make_test_source(metalib));
+  EXPECT_TRUE(increase.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(increase.value(Scope::null()), 6.0);
+}
+
+TEST(NumberExposureTest, NumberSourceClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& number_library = metalib.library(Number::component);
+  const Library& source_library = metalib.library(Source::component);
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+
+  std::unique_ptr<FrameModel> source_unique_frame = clone_model(number_library, "source_unique");
+  std::unique_ptr<FrameModel> source_frame = clone_model(source_library, "test_static");
+  source_unique_frame->set("source", *source_frame);
+  std::unique_ptr<FrameSubmodel> unique_begin_frame(new FrameSubmodel(Time::load_syntax));
+  unique_begin_frame->set("year", 2024);
+  unique_begin_frame->set("month", 1);
+  unique_begin_frame->set("mday", 2);
+  unique_begin_frame->set("hour", 0);
+  source_unique_frame->set("begin", boost::shared_ptr<const FrameSubmodel>(unique_begin_frame.release()));
+  std::unique_ptr<FrameSubmodel> unique_end_frame(new FrameSubmodel(Time::load_syntax));
+  unique_end_frame->set("year", 2024);
+  unique_end_frame->set("month", 1);
+  unique_end_frame->set("mday", 3);
+  unique_end_frame->set("hour", 0);
+  source_unique_frame->set("end", boost::shared_ptr<const FrameSubmodel>(unique_end_frame.release()));
+  BlockModel unique_block(context, *source_unique_frame, "source_unique");
+  NumberSourceUnique unique(unique_block);
+  EXPECT_TRUE(unique.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(unique.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(unique.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(unique.value(Scope::null()), 7.0);
+
+  std::unique_ptr<FrameModel> source_average_frame = clone_model(number_library, "source_average");
+  std::unique_ptr<FrameModel> avg_source_frame = clone_model(source_library, "test_static");
+  source_average_frame->set("source", *avg_source_frame);
+  std::unique_ptr<FrameSubmodel> begin_frame(new FrameSubmodel(Time::load_syntax));
+  begin_frame->set("year", 2024);
+  begin_frame->set("month", 1);
+  begin_frame->set("mday", 1);
+  begin_frame->set("hour", 0);
+  source_average_frame->set("begin", boost::shared_ptr<const FrameSubmodel>(begin_frame.release()));
+  std::unique_ptr<FrameSubmodel> end_frame(new FrameSubmodel(Time::load_syntax));
+  end_frame->set("year", 2024);
+  end_frame->set("month", 1);
+  end_frame->set("mday", 3);
+  end_frame->set("hour", 0);
+  source_average_frame->set("end", boost::shared_ptr<const FrameSubmodel>(end_frame.release()));
+  BlockModel average_block(context, *source_average_frame, "source_average");
+  NumberSourceAverage average(average_block);
+  EXPECT_TRUE(average.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(average.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(average.value(Scope::null()), 5.5);
+
+  std::unique_ptr<FrameModel> source_sum_frame = clone_model(number_library, "source_sum");
+  std::unique_ptr<FrameModel> sum_source_frame = clone_model(source_library, "test_static");
+  source_sum_frame->set("source", *sum_source_frame);
+  BlockModel sum_block(context, *source_sum_frame, "source_sum");
+  NumberSourceSum sum(sum_block);
+  EXPECT_TRUE(sum.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(sum.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(sum.value(Scope::null()), 12.0);
+
+  std::unique_ptr<FrameModel> source_increase_frame = clone_model(number_library, "source_increase");
+  std::unique_ptr<FrameModel> increase_source_frame = clone_model(source_library, "test_static");
+  source_increase_frame->set("source", *increase_source_frame);
+  BlockModel increase_block(context, *source_increase_frame, "source_increase");
+  NumberSourceIncrease increase(increase_block);
+  EXPECT_TRUE(increase.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(increase.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_DOUBLE_EQ(increase.value(Scope::null()), 6.0);
 }
 
 TEST(NumberExposureTest, NumberIdentityAndDerivedClassesHaveDirectChildConstructors) {
