@@ -24,6 +24,7 @@ Pure function of one parameter.
 | `FunctionPlotable` | Helper base class that samples a function into `x`/`y` vectors. |
 | `FunctionConst` | Concrete function that always returns the same value. |
 | `FunctionPLF` | Concrete function backed by a piecewise linear function. |
+| `FunctionPython` | Concrete function that dispatches to a Python module function at runtime. |
 
 ## Shared declared entries
 
@@ -42,6 +43,7 @@ component registration in `src/object_model/function.C`.
 
 - `const`
 - `plf`
+- `Python`
 
 ## TODO
 

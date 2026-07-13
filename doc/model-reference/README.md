@@ -26,6 +26,7 @@ python3 doc/model-reference/generate_from_registration.py \
   --repo-root . \
   --output-dir build/model-reference-generated \
   --source src/object_model/function.C \
+  --source src/object_model/function_Python.C \
   --source src/object_model/parameter_types/boolean.C \
   --source src/object_model/parameter_types/boolean_number.C \
   --source src/object_model/parameter_types/boolean_string.C \

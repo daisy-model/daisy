@@ -11,6 +11,7 @@ if(${BUILD_DOC})
             --repo-root ${CMAKE_SOURCE_DIR}
             --output-dir ${CMAKE_BINARY_DIR}/model-reference-generated
             --source src/object_model/function.C
+            --source src/object_model/function_Python.C
             --source src/object_model/parameter_types/boolean.C
             --source src/object_model/parameter_types/boolean_number.C
             --source src/object_model/parameter_types/boolean_string.C

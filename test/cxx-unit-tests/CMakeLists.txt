@@ -58,6 +58,11 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/util/scope.C
     ${CMAKE_SOURCE_DIR}/src/util/scope_multi.C
   )
+  if (${BUILD_PYTHON})
+    target_sources(ut_core PRIVATE
+      ${CMAKE_SOURCE_DIR}/src/object_model/function_Python.C
+    )
+  endif()
 
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
   target_compile_options(ut_core PRIVATE ${COMPILE_OPTIONS})

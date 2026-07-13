@@ -25,6 +25,7 @@
 #include "object_model/model.h"
 #include "object_model/plf.h"
 #include "object_model/symbol.h"
+#include <memory>
 #include <vector>
 
 class BlockModel;
@@ -78,6 +79,23 @@ public:
   explicit FunctionPLF (const PLF& plf);
   explicit FunctionPLF (const BlockModel&);
 };
+
+#ifdef BUILD_PYTHON
+class FunctionPython : public Function
+{
+  struct Implementation;
+  const symbol pmodule_;
+  const symbol pname_;
+  const symbol domain_;
+  const symbol range_;
+  mutable std::unique_ptr<Implementation> impl_;
+public:
+  double value (const double arg) const;
+  FunctionPython (symbol module, symbol name, symbol domain, symbol range);
+  explicit FunctionPython (const BlockModel&);
+  ~FunctionPython ();
+};
+#endif
 
 #endif // FUNCTION_H
 

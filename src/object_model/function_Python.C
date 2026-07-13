@@ -22,88 +22,96 @@
 #include "object_model/function.h"
 #include "object_model/block_model.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "util/assertion.h"
 
 #include <pybind11/embed.h>
 #include <pybind11/stl.h>
 
-// The 'Python' model.
-
-struct FunctionPython : public Function
+struct FunctionPython::Implementation
 {
-  const symbol pmodule;
-  const symbol pname;
-  const symbol domain;
-  const symbol range;
+  pybind11::object py_module;
+  pybind11::object py_function;
+  enum class state_t { uninitialized, working, error } state;
 
-  mutable pybind11::object py_module;
-  mutable pybind11::object py_function;
-  mutable enum class state_t { uninitialized, working, error } state;
-  
-  // Simulation.
-  double value (const double arg) const
-  {
-    switch (state)
-      {
-      case state_t::error:
-	return NAN;
-      case state_t::uninitialized:
-	// Find module.
-	try
-	  {
-	    py_module = pybind11::module::import (pmodule.name ().c_str ());
-	  }
-	catch (std::exception &e)
-	  {
-	    Assertion::message ("Could not find Python module '"
-				+ pmodule + ".");
-        Assertion::message (e.what());
-	    break;
-	  }
-
-	// Find function.
-	try
-	  {
-	    py_function = py_module.attr(pname.name ().c_str ());
-	  }
-	catch (std::exception &e)
-	  {
-	    Assertion::message ("Can't find Python function '"
-				+ pname + "' in '" + pmodule + "'.");
-        Assertion::message (e.what());
-	    break;
-	  }
-	state = state_t::working;
-	/* fall through */
-      case state_t::working:
-	try
-	  {
-	    pybind11::object py_object = py_function (arg);
-	    return py_object.cast<double> ();
-	  }
-	catch (std::exception &e)
-	  {
-	    Assertion::message ("Call to Python function '"
-				+ pname + "' in '" + pmodule + "' failed.");
-        Assertion::message (e.what());
-	  }
-      }
-    state = state_t::error;
-    return NAN;
-  }
-
-  // Create.
-  FunctionPython (const BlockModel& al)
-    : Function (al),
-      pmodule (al.name ("module")),
-      pname (al.name ("name")),
-      domain (al.name ("domain")),
-      range (al.name ("range")),
-      state (state_t::uninitialized)
+  Implementation ()
+    : state (state_t::uninitialized)
   { }
 };
 
-static struct FunctionPythonSyntax : public DeclareModel
+double
+FunctionPython::value (const double arg) const
+{
+  switch (impl_->state)
+    {
+    case Implementation::state_t::error:
+      return NAN;
+    case Implementation::state_t::uninitialized:
+      // Find module.
+      try
+        {
+          impl_->py_module = pybind11::module::import (pmodule_.name ().c_str ());
+        }
+      catch (std::exception &e)
+        {
+          Assertion::message ("Could not find Python module '"
+                              + pmodule_ + ".");
+          Assertion::message (e.what());
+          break;
+        }
+
+      // Find function.
+      try
+        {
+          impl_->py_function = impl_->py_module.attr(pname_.name ().c_str ());
+        }
+      catch (std::exception &e)
+        {
+          Assertion::message ("Can't find Python function '"
+                              + pname_ + "' in '" + pmodule_ + "'.");
+          Assertion::message (e.what());
+          break;
+        }
+      impl_->state = Implementation::state_t::working;
+      /* fall through */
+    case Implementation::state_t::working:
+      try
+        {
+          pybind11::object py_object = impl_->py_function (arg);
+          return py_object.cast<double> ();
+        }
+      catch (std::exception &e)
+        {
+          Assertion::message ("Call to Python function '"
+                              + pname_ + "' in '" + pmodule_ + "' failed.");
+          Assertion::message (e.what());
+        }
+    }
+  impl_->state = Implementation::state_t::error;
+  return NAN;
+}
+
+FunctionPython::FunctionPython (symbol module, symbol name, symbol domain, symbol range)
+  : pmodule_ (module),
+    pname_ (name),
+    domain_ (domain),
+    range_ (range),
+    impl_ (std::make_unique<Implementation> ())
+{ }
+
+FunctionPython::FunctionPython (const BlockModel& al)
+  : Function (al),
+    pmodule_ (al.name ("module")),
+    pname_ (al.name ("name")),
+    domain_ (al.name ("domain")),
+    range_ (al.name ("range")),
+    impl_ (std::make_unique<Implementation> ())
+{ }
+
+FunctionPython::~FunctionPython ()
+{ }
+
+struct FunctionPythonSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new FunctionPython (al); }
@@ -122,6 +130,12 @@ Function domain.");
     frame.declare_string ("range", Attribute::Const, "\
 Function range.");
   }
-} FunctionPython_syntax;
+};
+
+void
+register_function_python_models ()
+{
+  static FunctionPythonSyntax function_python_syntax;
+}
 
 // function_Python.C ends here.
