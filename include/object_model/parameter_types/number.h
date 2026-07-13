@@ -23,17 +23,21 @@
 #define NUMBER_H
 
 #include "object_model/function.h"
+#include "util/scope.h"
 #include "object_model/symbol.h"
 #include "object_model/model.h"
 #include "object_model/plf.h"
+#include <map>
 #include <memory>
 #include <vector>
 
-class Scope;
+class Boolean;
 class Treelog;
 class BlockModel;
 class Units;
 class Unit;
+class Frame;
+class Block;
 
 class Number : public Model
 {
@@ -166,6 +170,74 @@ public:
   bool check (const Units& units, const Scope& scope, Treelog& msg) const;
   NumberApply (std::unique_ptr<Function> function, double operand, symbol range);
   explicit NumberApply (const BlockModel&);
+};
+
+class NumberLet : public Number
+{
+public:
+  class Clause
+  {
+    const symbol id_;
+    std::unique_ptr<Number> expr_;
+  public:
+    static void load_syntax (Frame& frame);
+    Clause (symbol id, std::unique_ptr<Number> expr);
+    explicit Clause (const Block& al);
+    const symbol& id () const;
+    Number& expr ();
+    const Number& expr () const;
+  };
+private:
+  class ScopeClause : public Scope
+  {
+    std::vector<Clause> clauses_;
+    std::map<symbol, double> numbers_;
+    std::map<symbol, symbol> dimensions_;
+  public:
+    void tick (const Units& units, const Scope& scope, Treelog& msg);
+    void entries (std::set<symbol>& all) const;
+    Attribute::type lookup (symbol id) const;
+    bool check (symbol id) const;
+    double number (symbol id) const;
+    symbol dimension (symbol id) const;
+    symbol description (symbol id) const;
+    bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+    bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+    static void load_syntax (Frame& frame);
+    explicit ScopeClause (std::vector<Clause> clauses);
+    explicit ScopeClause (const BlockModel& al);
+  };
+  mutable ScopeClause scope_clause_;
+  const std::unique_ptr<Number> expr_;
+public:
+  static void load_syntax (Frame& frame);
+  bool missing (const Scope& inherit_scope) const;
+  double value (const Scope& inherit_scope) const;
+  symbol dimension (const Scope& inherit_scope) const;
+  void tick (const Units& units, const Scope& inherit_scope, Treelog& msg);
+  bool initialize (const Units& units, const Scope& inherit_scope, Treelog& msg);
+  bool check (const Units& units, const Scope& inherit_scope, Treelog& msg) const;
+  NumberLet (std::vector<Clause> clauses, std::unique_ptr<Number> expr);
+  explicit NumberLet (const BlockModel& al);
+};
+
+class NumberIf : public Number
+{
+  const std::unique_ptr<Boolean> if_b_;
+  const std::unique_ptr<Number> then_n_;
+  const std::unique_ptr<Number> else_n_;
+public:
+  bool missing (const Scope& scope) const;
+  double value (const Scope& scope) const;
+  symbol dimension (const Scope& scope) const;
+  void tick (const Units& units, const Scope& scope, Treelog& msg);
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Units& units, const Scope& scope, Treelog& msg) const;
+  NumberIf (std::unique_ptr<Boolean> if_b,
+            std::unique_ptr<Number> then_n,
+            std::unique_ptr<Number> else_n);
+  explicit NumberIf (const BlockModel& al);
+  ~NumberIf ();
 };
 
 class NumberChild : public Number

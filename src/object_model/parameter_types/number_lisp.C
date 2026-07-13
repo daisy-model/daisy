@@ -34,179 +34,223 @@
 #include <memory>
 #include <map>
 
-// The 'let' model.
-
-struct NumberLet : public Number
+void
+NumberLet::Clause::load_syntax (Frame& frame)
 {
-  mutable struct ScopeClause : public Scope
-  {
-    // Content.
-    struct Clause
+  frame.declare_string ("identifier", Attribute::Const,
+                        "Identifier to bind.");
+  frame.declare_object ("expr", Number::component,
+                        " Value to give it.");
+  frame.order ("identifier", "expr");
+}
+
+NumberLet::Clause::Clause (const symbol id, std::unique_ptr<Number> expr)
+  : id_ (id),
+    expr_ (std::move (expr))
+{ }
+
+NumberLet::Clause::Clause (const Block& al)
+  : id_ (al.name ("identifier")),
+    expr_ (Librarian::build_item<Number> (al, "expr"))
+{ }
+
+const symbol&
+NumberLet::Clause::id () const
+{ return id_; }
+
+Number&
+NumberLet::Clause::expr ()
+{ return *expr_; }
+
+const Number&
+NumberLet::Clause::expr () const
+{ return *expr_; }
+
+void
+NumberLet::ScopeClause::tick (const Units& units, const Scope& scope, Treelog& msg)
+{
+  numbers_.clear ();
+  dimensions_.clear ();
+  for (size_t i = 0; i < clauses_.size (); i++)
     {
-      symbol id;
-      std::unique_ptr<Number> expr;
-
-      static void load_syntax (Frame& frame)
-      {
-        // Bind an identifier to an expression.
-        frame.declare_string ("identifier", Attribute::Const, 
-                    "Identifier to bind.");
-        frame.declare_object ("expr", Number::component, 
-                           " Value to give it.");
-        frame.order ("identifier", "expr");
-      }
-      Clause (const Block& al)
-        : id (al.name ("identifier")),
-          expr (Librarian::build_item<Number> (al, "expr"))
-      { }
-    }; 
-    std::vector<Clause*> clause;
-
-    typedef std::map<symbol, double> number_map;
-    number_map numbers;
-    typedef std::map<symbol, symbol> symbol_map;
-    symbol_map dimensions;
-
-    // Scope.
-    void tick (const Units& units, const Scope& scope, Treelog& msg)
-    {
-      numbers.clear ();
-      dimensions.clear ();
-      for (size_t i = 0; i < clause.size (); i++)
+      const symbol id = clauses_[i].id ();
+      Number& expr = clauses_[i].expr ();
+      expr.tick (units, scope, msg);
+      if (!expr.missing (scope))
         {
-          const symbol id = clause[i]->id;
-          std::ostringstream tmp;
-          tmp << "clause[" << i << "]: " << id;
-          // Treelog::Open nest (msg, tmp.str ());
-          Number& expr = *(clause[i]->expr);
-          expr.tick (units, scope, msg);
-          if (!expr.missing (scope))
-            {
-              numbers[id] = expr.value (scope);
-              dimensions[id] = expr.dimension (scope);
-            }
+          numbers_[id] = expr.value (scope);
+          dimensions_[id] = expr.dimension (scope);
         }
     }
-    void entries (std::set<symbol>& all) const
-    {
-      for (number_map::const_iterator i = numbers.begin ();
-           i != numbers.end ();
-           i++)
-        all.insert ((*i).first);
-    }
+}
 
-    Attribute::type lookup (const symbol id) const
-    { return check (id) ? Attribute::Number : Attribute::Error; }
+void
+NumberLet::ScopeClause::entries (std::set<symbol>& all) const
+{
+  for (std::map<symbol, double>::const_iterator i = numbers_.begin ();
+       i != numbers_.end (); ++i)
+    all.insert ((*i).first);
+}
 
-    bool check (symbol id) const
-    {
-      const number_map::const_iterator i = numbers.find (id);
-      return i != numbers.end ();
-    }
-    double number (symbol id) const
-    { 
-      const number_map::const_iterator i = numbers.find (id);
-      daisy_assert (i != numbers.end ());
-      return (*i).second;
-    }
-    symbol dimension (symbol id) const
-    {
-      const symbol_map::const_iterator i = dimensions.find (id);
-      daisy_assert (i != dimensions.end ());
-      return (*i).second;
-    }
-    symbol description (symbol) const
-    { return symbol ("Descriptions not implemented yet"); }
+Attribute::type
+NumberLet::ScopeClause::lookup (const symbol id) const
+{ return check (id) ? Attribute::Number : Attribute::Error; }
 
-    // Create and Destroy.
-    bool initialize (const Units& units, const Scope& scope, Treelog& msg)
+bool
+NumberLet::ScopeClause::check (symbol id) const
+{
+  const std::map<symbol, double>::const_iterator i = numbers_.find (id);
+  return i != numbers_.end ();
+}
+
+double
+NumberLet::ScopeClause::number (symbol id) const
+{
+  const std::map<symbol, double>::const_iterator i = numbers_.find (id);
+  daisy_assert (i != numbers_.end ());
+  return (*i).second;
+}
+
+symbol
+NumberLet::ScopeClause::dimension (symbol id) const
+{
+  const std::map<symbol, symbol>::const_iterator i = dimensions_.find (id);
+  daisy_assert (i != dimensions_.end ());
+  return (*i).second;
+}
+
+symbol
+NumberLet::ScopeClause::description (symbol) const
+{ return symbol ("Descriptions not implemented yet"); }
+
+bool
+NumberLet::ScopeClause::initialize (const Units& units, const Scope& scope,
+                                    Treelog& msg)
+{
+  bool ok = true;
+  for (size_t i = 0; i < clauses_.size (); i++)
     {
-      bool ok = true;
-      for (size_t i = 0; i < clause.size (); i++)
-        {
-          std::ostringstream tmp;
-          tmp << "clauses[" << i << "]";
-          Treelog::Open nest (msg, tmp.str ());
-          if (!clause[i]->expr->initialize (units, scope, msg))
-            ok = false;
-        }
-      if (ok)
-	tick (units, scope, msg);
-      return ok;
+      std::ostringstream tmp;
+      tmp << "clauses[" << i << "]";
+      Treelog::Open nest (msg, tmp.str ());
+      if (!clauses_[i].expr ().initialize (units, scope, msg))
+        ok = false;
     }
-    using Scope::check;
-    bool check (const Units& units, const Scope& scope, Treelog& msg) const
+  if (ok)
+    tick (units, scope, msg);
+  return ok;
+}
+
+bool
+NumberLet::ScopeClause::check (const Units& units, const Scope& scope,
+                               Treelog& msg) const
+{
+  bool ok = true;
+  for (size_t i = 0; i < clauses_.size (); i++)
     {
-      bool ok = true;
-      for (size_t i = 0; i < clause.size (); i++)
-        {
-          std::ostringstream tmp;
-          tmp << "clauses[" << i << "]";
-          Treelog::Open nest (msg, tmp.str ());
-          if (!clause[i]->expr->check (units, scope, msg))
-            ok = false;
-        }
-      return ok;
+      std::ostringstream tmp;
+      tmp << "clauses[" << i << "]";
+      Treelog::Open nest (msg, tmp.str ());
+      if (!clauses_[i].expr ().check (units, scope, msg))
+        ok = false;
     }
-    static void load_syntax (Frame& frame)
-    {
-      frame.declare_submodule_sequence ("clauses", Attribute::Const, "\
+  return ok;
+}
+
+void
+NumberLet::ScopeClause::load_syntax (Frame& frame)
+{
+  frame.declare_submodule_sequence ("clauses", Attribute::Const, "\
 List of identifiers and values to bind in this scope.", Clause::load_syntax);
+}
+
+void
+NumberLet::load_syntax (Frame& frame)
+{
+  ScopeClause::load_syntax (frame);
+  frame.declare_object ("expr", Number::component, "\
+Expression to evaluate.");
+  frame.order ("clauses", "expr");
+}
+
+NumberLet::ScopeClause::ScopeClause (std::vector<Clause> clauses)
+  : clauses_ (std::move (clauses))
+{ }
+
+NumberLet::ScopeClause::ScopeClause (const BlockModel& al)
+  : clauses_ ()
+{
+  auto raw_clauses = map_submodel<Clause> (al, "clauses");
+  clauses_.reserve (raw_clauses.size ());
+  for (size_t i = 0; i < raw_clauses.size (); ++i)
+    {
+      clauses_.push_back (std::move (*raw_clauses[i]));
+      delete raw_clauses[i];
     }
-    ScopeClause (const BlockModel& al)
-      : clause (map_submodel<Clause> (al, "clauses"))
-    { }
-    ~ScopeClause ()
-    { sequence_delete (clause.begin (), clause.end ()); }
-  } scope_clause;
-  std::unique_ptr<Number> expr;
+}
 
-  bool missing (const Scope& inherit_scope) const 
-  { 
-    ScopeMulti scope (scope_clause, inherit_scope);
-    return expr->missing (scope);
-  }
-  double value (const Scope& inherit_scope) const
-  { 
-    ScopeMulti scope (scope_clause, inherit_scope);
-    return expr->value (scope);
-  }
-  symbol dimension (const Scope& inherit_scope) const 
-  {     
-    ScopeMulti scope (scope_clause, inherit_scope);
-    return expr->dimension (scope);
-  }
+bool
+NumberLet::missing (const Scope& inherit_scope) const
+{
+  ScopeMulti scope (scope_clause_, inherit_scope);
+  return expr_->missing (scope);
+}
 
-  // Create.
-  void tick (const Units& units, const Scope& inherit_scope, Treelog& msg)
-  { 
-    scope_clause.tick (units, inherit_scope, msg);
-    expr->tick (units, inherit_scope, msg);
-  }
-  bool initialize (const Units& units,
-                   const Scope& inherit_scope, Treelog& msg)
-  {
-    TREELOG_MODEL (msg);
-    scope_clause.initialize (units, inherit_scope, msg);
-    ScopeMulti scope (scope_clause, inherit_scope);
-    return expr->initialize (units, scope, msg);
-  }
-  bool check (const Units& units,
-              const Scope& inherit_scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    if (!scope_clause.check (units, inherit_scope, msg))
-      return false;
-    scope_clause.tick (units, inherit_scope, msg);
-    ScopeMulti scope (scope_clause, inherit_scope);
-    return expr->check (units, scope, msg);
-  }
-  NumberLet (const BlockModel& al)
-    : Number (al),
-      scope_clause (al),
-      expr (Librarian::build_item<Number> (al, "expr"))
-  { }
-};
+double
+NumberLet::value (const Scope& inherit_scope) const
+{
+  ScopeMulti scope (scope_clause_, inherit_scope);
+  return expr_->value (scope);
+}
+
+symbol
+NumberLet::dimension (const Scope& inherit_scope) const
+{
+  ScopeMulti scope (scope_clause_, inherit_scope);
+  return expr_->dimension (scope);
+}
+
+void
+NumberLet::tick (const Units& units, const Scope& inherit_scope, Treelog& msg)
+{
+  scope_clause_.tick (units, inherit_scope, msg);
+  expr_->tick (units, inherit_scope, msg);
+}
+
+bool
+NumberLet::initialize (const Units& units,
+                       const Scope& inherit_scope, Treelog& msg)
+{
+  TREELOG_MODEL (msg);
+  if (!scope_clause_.initialize (units, inherit_scope, msg))
+    return false;
+  ScopeMulti scope (scope_clause_, inherit_scope);
+  return expr_->initialize (units, scope, msg);
+}
+
+bool
+NumberLet::check (const Units& units,
+                  const Scope& inherit_scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  if (!scope_clause_.check (units, inherit_scope, msg))
+    return false;
+  scope_clause_.tick (units, inherit_scope, msg);
+  ScopeMulti scope (scope_clause_, inherit_scope);
+  return expr_->check (units, scope, msg);
+}
+
+NumberLet::NumberLet (std::vector<Clause> clauses, std::unique_ptr<Number> expr)
+  : Number ("let"),
+    scope_clause_ (std::move (clauses)),
+    expr_ (std::move (expr))
+{ }
+
+NumberLet::NumberLet (const BlockModel& al)
+  : Number (al),
+    scope_clause_ (al),
+    expr_ (Librarian::build_item<Number> (al, "expr"))
+{ }
 
 static struct NumberLetSyntax : public DeclareModel
 {
@@ -218,82 +262,92 @@ Bind symbols in 'clauses' in a new scope, and evaluate 'expr' in that scope.")
   { }
   void load_frame (Frame& frame) const
   {
-    NumberLet::ScopeClause::load_syntax (frame);
-    frame.declare_object ("expr", Number::component, "\
-Expression to evaluate.");
-    frame.order ("clauses", "expr");
+    NumberLet::load_syntax (frame);
   }
 } NumberLet_syntax;
 
-// The 'if' model.
-
-struct NumberIf : public Number
+bool
+NumberIf::missing (const Scope& scope) const
 {
-  std::unique_ptr<Boolean> if_b;
-  std::unique_ptr<Number> then_n;
-  std::unique_ptr<Number> else_n;
+  return if_b_->missing (scope)
+    || then_n_->missing (scope)
+    || else_n_->missing (scope);
+}
 
-  bool missing (const Scope& scope) const 
-  { 
-    return if_b->missing (scope)
-      || then_n->missing (scope)
-      || else_n->missing (scope);
-  }
-  double value (const Scope& scope) const
-  { 
-    return if_b->value (scope)
-      ? then_n->value (scope)
-      : else_n->value (scope);
-  }
-  symbol dimension (const Scope& scope) const 
-  {     
-    const symbol then_dim = then_n->dimension (scope);
-    const symbol else_dim = else_n->dimension (scope);
-    if (then_dim == else_dim)
-      return then_dim;
-    
-    return Attribute::Unknown ();
-  }
+double
+NumberIf::value (const Scope& scope) const
+{
+  return if_b_->value (scope)
+    ? then_n_->value (scope)
+    : else_n_->value (scope);
+}
 
-  // Create.
-  void tick (const Units& units, const Scope& scope, Treelog& msg)
-  { 
-    TREELOG_MODEL (msg);
-    if_b->tick (units, scope, msg);
-    then_n->tick (units, scope, msg);
-    else_n->tick (units, scope, msg);
-  }
-  bool initialize (const Units& units, const Scope& scope, Treelog& msg)
-  {
-    TREELOG_MODEL (msg);
-    bool ok = true;
-    if (!if_b->initialize (units, scope, msg))
-      ok = false;
-    if (!then_n->initialize (units, scope, msg))
-      ok = false;
-    if (!else_n->initialize (units, scope, msg))
-      ok = false;
-    return ok;
-  }
-  bool check (const Units& units, const Scope& scope, Treelog& msg) const
-  { 
-    TREELOG_MODEL (msg);
-    bool ok = true;
-    if (!if_b->check (units, scope, msg))
-      ok = false;
-    if (!then_n->check (units, scope, msg))
-      ok = false;
-    if (!else_n->check (units, scope, msg))
-      ok = false;
-    return ok;
-  }
-  NumberIf (const BlockModel& al)
-    : Number (al),
-      if_b (Librarian::build_item<Boolean> (al, "if")),
-      then_n (Librarian::build_item<Number> (al, "then")),
-      else_n (Librarian::build_item<Number> (al, "else"))
-  { }
-};
+symbol
+NumberIf::dimension (const Scope& scope) const
+{
+  const symbol then_dim = then_n_->dimension (scope);
+  const symbol else_dim = else_n_->dimension (scope);
+  if (then_dim == else_dim)
+    return then_dim;
+
+  return Attribute::Unknown ();
+}
+
+void
+NumberIf::tick (const Units& units, const Scope& scope, Treelog& msg)
+{
+  TREELOG_MODEL (msg);
+  if_b_->tick (units, scope, msg);
+  then_n_->tick (units, scope, msg);
+  else_n_->tick (units, scope, msg);
+}
+
+bool
+NumberIf::initialize (const Units& units, const Scope& scope, Treelog& msg)
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
+  if (!if_b_->initialize (units, scope, msg))
+    ok = false;
+  if (!then_n_->initialize (units, scope, msg))
+    ok = false;
+  if (!else_n_->initialize (units, scope, msg))
+    ok = false;
+  return ok;
+}
+
+bool
+NumberIf::check (const Units& units, const Scope& scope, Treelog& msg) const
+{
+  TREELOG_MODEL (msg);
+  bool ok = true;
+  if (!if_b_->check (units, scope, msg))
+    ok = false;
+  if (!then_n_->check (units, scope, msg))
+    ok = false;
+  if (!else_n_->check (units, scope, msg))
+    ok = false;
+  return ok;
+}
+
+NumberIf::NumberIf (std::unique_ptr<Boolean> if_b,
+                    std::unique_ptr<Number> then_n,
+                    std::unique_ptr<Number> else_n)
+  : Number ("if"),
+    if_b_ (std::move (if_b)),
+    then_n_ (std::move (then_n)),
+    else_n_ (std::move (else_n))
+{ }
+
+NumberIf::NumberIf (const BlockModel& al)
+  : Number (al),
+    if_b_ (Librarian::build_item<Boolean> (al, "if")),
+    then_n_ (Librarian::build_item<Number> (al, "then")),
+    else_n_ (Librarian::build_item<Number> (al, "else"))
+{ }
+
+NumberIf::~NumberIf ()
+{ }
 
 static struct NumberIfSyntax : public DeclareModel
 {

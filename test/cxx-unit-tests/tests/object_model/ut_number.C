@@ -14,6 +14,7 @@
 #include "object_model/library.h"
 #include "object_model/metalib.h"
 #include "object_model/object_model_registration_internal.h"
+#include "object_model/parameter_types/boolean.h"
 #include "object_model/parameter_types/number.h"
 #include "object_model/plf.h"
 #include "object_model/unit.h"
@@ -39,11 +40,13 @@ std::unique_ptr<FrameModel> clone_model(const Library& library,
 
 void register_test_models() {
   register_unit_models();
+  register_boolean_models();
   register_function_models();
   register_number_models();
   register_number_apply_models();
   register_number_arithmetic_models();
   register_number_const_models();
+  register_number_lisp_models();
   register_number_plf_models();
 }
 
@@ -124,6 +127,25 @@ boost::shared_ptr<const FrameModel> make_number_const_frame(const Library& libra
   return boost::shared_ptr<const FrameModel>(frame.release());
 }
 
+void load_number_let_clause_frame(Frame& frame) {
+  frame.declare_string("identifier", Attribute::Const, "Identifier to bind.");
+  frame.declare_object("expr", Number::component, " Value to give it.");
+  frame.order("identifier", "expr");
+}
+
+boost::shared_ptr<const FrameSubmodel> make_number_let_clause(
+    const Library& number_library,
+    symbol identifier,
+    double value,
+    symbol dimension) {
+  boost::shared_ptr<FrameSubmodel> clause(new FrameSubmodel(load_number_let_clause_frame));
+  std::unique_ptr<FrameModel> expr = clone_model(number_library, "const");
+  expr->set("value", value, dimension);
+  clause->set("identifier", identifier);
+  clause->set("expr", *expr);
+  return clause;
+}
+
 }  // namespace
 
 TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
@@ -149,6 +171,8 @@ TEST(NumberRegistrationTest, NumberLibraryContainsExpectedModels) {
   EXPECT_TRUE(entries.count("sqr"));
   EXPECT_TRUE(entries.count("pow"));
   EXPECT_TRUE(entries.count("apply"));
+  EXPECT_TRUE(entries.count("let"));
+  EXPECT_TRUE(entries.count("if"));
   EXPECT_TRUE(entries.count("max"));
   EXPECT_TRUE(entries.count("min"));
   EXPECT_TRUE(entries.count("*"));
@@ -208,7 +232,7 @@ TEST(NumberRegistrationTest, NumberPowAndSharedOperandModelsHaveExpectedInherita
   Metalib metalib(load_test_frame);
   const Library& library = metalib.library(Number::component);
 
-  const std::vector<symbol> names = {"pow", "max", "min", "*", "+", "-", "/"};
+  const std::vector<symbol> names = {"pow", "apply", "let", "if", "max", "min", "*", "+", "-", "/"};
   for (size_t i = 0; i < names.size(); ++i) {
     EXPECT_TRUE(library.check(names[i]));
     EXPECT_TRUE(library.is_derived_from(names[i], "component"));
@@ -231,6 +255,8 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_base_of<Number, NumberFetchGet>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberFetch>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberApply>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberLet>::value));
+  EXPECT_TRUE((std::is_base_of<Number, NumberIf>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberChild>::value));
   EXPECT_TRUE((std::is_base_of<Number, NumberOperand>::value));
   EXPECT_TRUE((std::is_base_of<NumberChild, NumberIdentity>::value));
@@ -259,6 +285,9 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberFetchGet, const BlockModel&, symbol>::value));
   EXPECT_TRUE((std::is_constructible<NumberFetch, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberApply, std::unique_ptr<Function>, double, symbol>::value));
+  EXPECT_TRUE((std::is_constructible<NumberLet::Clause, symbol, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberLet, std::vector<NumberLet::Clause>, std::unique_ptr<Number>>::value));
+  EXPECT_TRUE((std::is_constructible<NumberIf, std::unique_ptr<Boolean>, std::unique_ptr<Number>, std::unique_ptr<Number>>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, std::unique_ptr<Number>, const Units&, symbol>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, std::unique_ptr<Number>, const Units&, symbol>::value));
@@ -281,6 +310,8 @@ TEST(NumberExposureTest, NumberConstIsPublicAndDirectlyConstructible) {
   EXPECT_TRUE((std::is_constructible<NumberGet, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberFetch, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberApply, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberLet, const BlockModel&>::value));
+  EXPECT_TRUE((std::is_constructible<NumberIf, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberIdentity, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberConvert, const BlockModel&>::value));
   EXPECT_TRUE((std::is_constructible<NumberDim, const BlockModel&>::value));
@@ -445,6 +476,71 @@ TEST(NumberExposureTest, NumberApplyCanBeInstantiatedDirectlyFromBlockModel) {
   EXPECT_FALSE(number.missing(Scope::null()));
   EXPECT_DOUBLE_EQ(number.value(Scope::null()), 8.5);
   EXPECT_EQ(number.dimension(Scope::null()), Units::mm());
+}
+
+TEST(NumberExposureTest, NumberLispClassesHaveDirectConstructors) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+
+  std::vector<NumberLet::Clause> clauses;
+  clauses.emplace_back("bound",
+                       std::make_unique<NumberConst>(17.5, metalib.units().get_unit(Units::cm())));
+  NumberLet let_number(std::move(clauses), std::make_unique<NumberFetchGet>("bound"));
+  EXPECT_TRUE(let_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(let_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(let_number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(let_number.value(Scope::null()), 17.5);
+  EXPECT_EQ(let_number.dimension(Scope::null()), Units::cm());
+
+  NumberIf if_number(std::make_unique<BooleanTrue>(),
+                     std::make_unique<NumberConst>(17.5, metalib.units().get_unit(Units::cm())),
+                     std::make_unique<NumberConst>(11.0, metalib.units().get_unit(Units::cm())));
+  EXPECT_TRUE(if_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(if_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(if_number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(if_number.value(Scope::null()), 17.5);
+  EXPECT_EQ(if_number.dimension(Scope::null()), Units::cm());
+}
+
+TEST(NumberExposureTest, NumberLispClassesCanBeInstantiatedDirectlyFromBlockModel) {
+  register_test_models();
+  Metalib metalib(load_test_frame);
+  const Library& number_library = metalib.library(Number::component);
+  const Library& boolean_library = metalib.library(Boolean::component);
+
+  BlockTop context(metalib, Treelog::null(), metalib);
+
+  std::unique_ptr<FrameModel> let_frame = clone_model(number_library, "let");
+  std::vector<boost::shared_ptr<const FrameSubmodel>> clauses;
+  clauses.push_back(make_number_let_clause(number_library, "bound", 17.5, Units::cm()));
+  let_frame->set("clauses", clauses);
+  std::unique_ptr<FrameModel> let_expr = clone_model(number_library, "fetch");
+  let_expr->set("name", "bound");
+  let_frame->set("expr", *let_expr);
+  BlockModel let_block(context, *let_frame, "let");
+  NumberLet let_number(let_block);
+  EXPECT_TRUE(let_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(let_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(let_number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(let_number.value(Scope::null()), 17.5);
+  EXPECT_EQ(let_number.dimension(Scope::null()), Units::cm());
+
+  std::unique_ptr<FrameModel> if_frame = clone_model(number_library, "if");
+  std::unique_ptr<FrameModel> condition = clone_model(boolean_library, "true");
+  std::unique_ptr<FrameModel> then_frame = clone_model(number_library, "const");
+  then_frame->set("value", 17.5, Units::cm());
+  std::unique_ptr<FrameModel> else_frame = clone_model(number_library, "const");
+  else_frame->set("value", 11.0, Units::cm());
+  if_frame->set("if", *condition);
+  if_frame->set("then", *then_frame);
+  if_frame->set("else", *else_frame);
+  BlockModel if_block(context, *if_frame, "if");
+  NumberIf if_number(if_block);
+  EXPECT_TRUE(if_number.initialize(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_TRUE(if_number.check(metalib.units(), Scope::null(), Treelog::null()));
+  EXPECT_FALSE(if_number.missing(Scope::null()));
+  EXPECT_DOUBLE_EQ(if_number.value(Scope::null()), 17.5);
+  EXPECT_EQ(if_number.dimension(Scope::null()), Units::cm());
 }
 
 TEST(NumberExposureTest, NumberIdentityAndDerivedClassesHaveDirectChildConstructors) {

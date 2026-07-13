@@ -35,6 +35,7 @@ python3 doc/model-reference/generate_from_registration.py \
   --source src/object_model/parameter_types/number_apply.C \
   --source src/object_model/parameter_types/number_arit.C \
   --source src/object_model/parameter_types/number_const.C \
+  --source src/object_model/parameter_types/number_lisp.C \
   --source src/object_model/parameter_types/number_plf.C \
   --source src/object_model/parameter_types/stringer.C
 ```

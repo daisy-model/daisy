@@ -33,6 +33,7 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_apply.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_arit.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_const.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_lisp.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_plf.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/stringer.C
     ${CMAKE_SOURCE_DIR}/src/object_model/plf.C
@@ -52,6 +53,7 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/util/mathlib.C
     ${CMAKE_SOURCE_DIR}/src/util/path.C
     ${CMAKE_SOURCE_DIR}/src/util/scope.C
+    ${CMAKE_SOURCE_DIR}/src/util/scope_multi.C
   )
 
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
