@@ -101,4 +101,95 @@ public:
   explicit IntegerCond (const BlockModel&);
 };
 
+class IntegerOperand : public Integer
+{
+protected:
+  const std::unique_ptr<Integer> operand_;
+  IntegerOperand (symbol name, std::unique_ptr<Integer> operand);
+public:
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Scope& scope, Treelog& msg) const;
+  explicit IntegerOperand (const BlockModel&);
+};
+
+class IntegerSqr : public IntegerOperand
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerSqr (std::unique_ptr<Integer> operand);
+  explicit IntegerSqr (const BlockModel&);
+};
+
+class IntegerOperands : public Integer
+{
+protected:
+  std::vector<std::unique_ptr<Integer>> operands_;
+  IntegerOperands (symbol name, std::vector<std::unique_ptr<Integer>> operands);
+public:
+  bool missing (const Scope& scope) const;
+  bool initialize (const Units& units, const Scope& scope, Treelog& msg);
+  bool check (const Scope& scope, Treelog& msg) const;
+  explicit IntegerOperands (const BlockModel&);
+};
+
+class IntegerMax : public IntegerOperands
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerMax (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerMax (const BlockModel&);
+};
+
+class IntegerMin : public IntegerOperands
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerMin (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerMin (const BlockModel&);
+};
+
+class IntegerProduct : public IntegerOperands
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerProduct (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerProduct (const BlockModel&);
+};
+
+class IntegerSum : public IntegerOperands
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerSum (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerSum (const BlockModel&);
+};
+
+class IntegerSubtract : public IntegerOperands
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerSubtract (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerSubtract (const BlockModel&);
+};
+
+class IntegerDivide : public IntegerOperands
+{
+protected:
+  IntegerDivide (symbol name, std::vector<std::unique_ptr<Integer>> operands);
+public:
+  int value (const Scope& scope) const;
+  bool check (const Scope& scope, Treelog& msg) const;
+  explicit IntegerDivide (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerDivide (const BlockModel&);
+};
+
+class IntegerModulo : public IntegerDivide
+{
+public:
+  int value (const Scope& scope) const;
+  explicit IntegerModulo (std::vector<std::unique_ptr<Integer>> operands);
+  explicit IntegerModulo (const BlockModel&);
+};
+
 #endif // INTEGER_H

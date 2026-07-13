@@ -15,6 +15,7 @@ if(${BUILD_DOC})
             --source src/object_model/parameter_types/boolean_number.C
             --source src/object_model/parameter_types/boolean_string.C
             --source src/object_model/parameter_types/integer.C
+            --source src/object_model/parameter_types/integer_arit.C
             --source src/object_model/parameter_types/number.C
             --source src/object_model/parameter_types/number_arit.C
             --source src/object_model/parameter_types/number_const.C

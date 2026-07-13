@@ -23,6 +23,16 @@ Generic representation of integers.
 | `Integer` | Abstract base class for integer-valued models. |
 | `IntegerConst` | Concrete model that always returns the same integer value. |
 | `IntegerCond` | Returns the value from the first matching boolean clause. |
+| `IntegerOperand` | Abstract helper for unary integer arithmetic models backed by one operand. |
+| `IntegerSqr` | Square of the operand. |
+| `IntegerOperands` | Abstract helper for integer arithmetic models backed by an operand sequence. |
+| `IntegerMax` | Largest value from the operand sequence. |
+| `IntegerMin` | Smallest value from the operand sequence. |
+| `IntegerProduct` | Product of the operand sequence. |
+| `IntegerSum` | Sum of the operand sequence. |
+| `IntegerSubtract` | Negation or left-associated subtraction across the operand sequence. |
+| `IntegerDivide` | Left-associated integer division across two operands. |
+| `IntegerModulo` | Modulo of the first integer operand by the second. |
 
 ## Shared declared entries
 
@@ -33,6 +43,14 @@ currently does not add shared frame entries at the component level.
 
 - `const`
 - `cond`
+- `sqr`
+- `max`
+- `min`
+- `*`
+- `+`
+- `-`
+- `div`
+- `mod`
 
 ## TODO
 

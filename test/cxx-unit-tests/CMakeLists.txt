@@ -28,6 +28,7 @@ if (${BUILD_CXX_TESTS})
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/boolean_number.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/boolean_string.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/integer.C
+    ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/integer_arit.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_arit.C
     ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_const.C

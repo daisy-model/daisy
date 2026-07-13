@@ -23,56 +23,72 @@
 #include "object_model/parameter_types/integer.h"
 #include "object_model/vcheck.h"
 #include "util/assertion.h"
-#include "util/memutils.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
 #include <sstream>
 #include <memory>
 
-struct IntegerOperand : public Integer
+namespace
 {
-  // Parameters.
-  const std::unique_ptr<Integer> operand;
-
-  // Simulation.
-  bool missing (const Scope& scope) const 
-  { return operand->missing (scope); }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& err)
-  { 
-    Treelog::Open nest (err, name);
-    return operand->initialize (units, scope, err); 
-  }
-  bool check (const Scope& scope, Treelog& err) const
-  { 
-    Treelog::Open nest (err, name);
-    return operand->check (scope, err); 
-  }
-  IntegerOperand (const BlockModel& al)
-    : Integer (al),
-      operand (Librarian::build_item<Integer> (al, "operand"))
-  { }
-};
-
-struct IntegerSqr : public IntegerOperand
+std::vector<std::unique_ptr<Integer>>
+build_operands (const BlockModel& al)
 {
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    const int v = operand->value (scope);
-    return v * v; 
-  }
+  std::vector<std::unique_ptr<Integer>> result;
+  std::vector<Integer*> operands = Librarian::build_vector<Integer> (al, "operands");
+  result.reserve (operands.size ());
+  for (size_t i = 0; i < operands.size (); ++i)
+    result.emplace_back (operands[i]);
+  return result;
+}
+} // namespace
 
-  // Create.
-  IntegerSqr (const BlockModel& al)
-    : IntegerOperand (al)
-  { }
-};
+IntegerOperand::IntegerOperand (symbol objid, std::unique_ptr<Integer> operand)
+  : Integer (objid),
+    operand_ (std::move (operand))
+{ }
 
-static struct IntegerSqrSyntax : public DeclareModel
+bool
+IntegerOperand::missing (const Scope& scope) const
+{ return operand_->missing (scope); }
+
+bool
+IntegerOperand::initialize (const Units& units, const Scope& scope, Treelog& err)
+{
+  Treelog::Open nest (err, name);
+  return operand_->initialize (units, scope, err);
+}
+
+bool
+IntegerOperand::check (const Scope& scope, Treelog& err) const
+{
+  Treelog::Open nest (err, name);
+  return operand_->check (scope, err);
+}
+
+IntegerOperand::IntegerOperand (const BlockModel& al)
+  : Integer (al),
+    operand_ (Librarian::build_item<Integer> (al, "operand"))
+{ }
+
+int
+IntegerSqr::value (const Scope& scope) const
+{
+  const int v = operand_->value (scope);
+  return v * v;
+}
+
+IntegerSqr::IntegerSqr (std::unique_ptr<Integer> operand)
+  : IntegerOperand ("sqr", std::move (operand))
+{ }
+
+IntegerSqr::IntegerSqr (const BlockModel& al)
+  : IntegerOperand (al)
+{ }
+
+struct IntegerSqrSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSqr (al); }
@@ -87,82 +103,204 @@ static struct IntegerSqrSyntax : public DeclareModel
                        "Operand for this function.");
     frame.order ("operand");
   }
-} IntegerSqr_syntax;
-
-struct IntegerOperands : public Integer
-{
-  // Parameters.
-  const std::vector<Integer*> operands;
-
-  // Use.
-  bool missing (const Scope& scope) const 
-  { 
-    for (size_t i = 0; i < operands.size (); i++)
-      if (operands[i]->missing (scope))
-        return true;
-    return false;
-  }
-
-  // Create.
-  bool initialize (const Units& units, const Scope& scope, Treelog& err)
-  { 
-    bool ok = true;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << name << "[" << i << "]";
-        Treelog::Open nest (err, tmp.str ());
-        
-        if (!operands[i]->initialize (units, scope, err))
-          ok = false;
-      }
-    return ok;
-  }
-
-  bool check (const Scope& scope, Treelog& err) const
-  { 
-    bool ok = true;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << name << "[" << i << "]";
-        Treelog::Open nest (err, tmp.str ());
-        
-        if (!operands[i]->check (scope, err))
-          ok = false;
-      }
-    return ok;
-  }
-  IntegerOperands (const BlockModel& al)
-    : Integer (al),
-      operands (Librarian::build_vector<Integer> (al, "operands"))
-  { }
-  ~IntegerOperands ()
-  { sequence_delete (operands.begin (), operands.end ()); }
 };
 
-struct IntegerMax : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    int max = operands[0]->value (scope);
-    for (size_t i = 1; i < operands.size (); i++)
-      {
-        const int value = operands[i]->value (scope);
-        if (value > max)
-          max = value;
-      }
-    return max;
-  }
-  // Create.
-  IntegerMax (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
-};
+IntegerOperands::IntegerOperands (symbol objid,
+                                  std::vector<std::unique_ptr<Integer>> operands)
+  : Integer (objid),
+    operands_ (std::move (operands))
+{ }
 
-static struct IntegerMaxSyntax : public DeclareModel
+bool
+IntegerOperands::missing (const Scope& scope) const
+{
+  for (size_t i = 0; i < operands_.size (); i++)
+    if (operands_[i]->missing (scope))
+      return true;
+  return false;
+}
+
+bool
+IntegerOperands::initialize (const Units& units, const Scope& scope, Treelog& err)
+{
+  bool ok = true;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+      std::ostringstream tmp;
+      tmp << name << "[" << i << "]";
+      Treelog::Open nest (err, tmp.str ());
+
+      if (!operands_[i]->initialize (units, scope, err))
+        ok = false;
+    }
+  return ok;
+}
+
+bool
+IntegerOperands::check (const Scope& scope, Treelog& err) const
+{
+  bool ok = true;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+      std::ostringstream tmp;
+      tmp << name << "[" << i << "]";
+      Treelog::Open nest (err, tmp.str ());
+
+      if (!operands_[i]->check (scope, err))
+        ok = false;
+    }
+  return ok;
+}
+
+IntegerOperands::IntegerOperands (const BlockModel& al)
+  : Integer (al),
+    operands_ (build_operands (al))
+{ }
+
+int
+IntegerMax::value (const Scope& scope) const
+{
+  daisy_assert (operands_.size () > 0);
+  int max = operands_[0]->value (scope);
+  for (size_t i = 1; i < operands_.size (); i++)
+    {
+      const int value = operands_[i]->value (scope);
+      if (value > max)
+        max = value;
+    }
+  return max;
+}
+
+IntegerMax::IntegerMax (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands ("max", std::move (operands))
+{ }
+
+IntegerMax::IntegerMax (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+int
+IntegerMin::value (const Scope& scope) const
+{
+  daisy_assert (operands_.size () > 0);
+  int min = operands_[0]->value (scope);
+  for (size_t i = 1; i < operands_.size (); i++)
+    {
+      const int value = operands_[i]->value (scope);
+      if (value < min)
+        min = value;
+    }
+  return min;
+}
+
+IntegerMin::IntegerMin (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands ("min", std::move (operands))
+{ }
+
+IntegerMin::IntegerMin (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+int
+IntegerProduct::value (const Scope& scope) const
+{
+  int product = 1;
+  for (size_t i = 0; i < operands_.size (); i++)
+    product *= operands_[i]->value (scope);
+  return product;
+}
+
+IntegerProduct::IntegerProduct (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands ("*", std::move (operands))
+{ }
+
+IntegerProduct::IntegerProduct (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+int
+IntegerSum::value (const Scope& scope) const
+{
+  int sum = 0;
+  for (size_t i = 0; i < operands_.size (); i++)
+    sum += operands_[i]->value (scope);
+  return sum;
+}
+
+IntegerSum::IntegerSum (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands ("+", std::move (operands))
+{ }
+
+IntegerSum::IntegerSum (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+int
+IntegerSubtract::value (const Scope& scope) const
+{
+  daisy_assert (operands_.size () > 0);
+  int val = operands_[0]->value (scope);
+  if (operands_.size () == 1)
+    return -val;
+  for (size_t i = 1; i < operands_.size (); i++)
+    val -= operands_[i]->value (scope);
+  return val;
+}
+
+IntegerSubtract::IntegerSubtract (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands ("-", std::move (operands))
+{ }
+
+IntegerSubtract::IntegerSubtract (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+int
+IntegerDivide::value (const Scope& scope) const
+{
+  daisy_assert (operands_.size () == 2);
+  int v1 = operands_[0]->value (scope);
+  int v2 = operands_[1]->value (scope);
+  if (v2 == 0)
+    throw ("Divide by zero");
+  return v1 / v2;
+}
+
+bool
+IntegerDivide::check (const Scope& scope, Treelog& err) const
+{
+  bool ok = true;
+  for (size_t i = 0; i < operands_.size (); i++)
+    {
+      std::ostringstream tmp;
+      tmp << name << "[" << i << "]";
+      Treelog::Open nest (err, tmp.str ());
+
+      if (!operands_[i]->check (scope, err))
+        ok = false;
+      if (i > 0 && operands_[i]->value (scope) == 0)
+        {
+          err.error ("Divide by zero");
+          ok = false;
+        }
+    }
+  return ok;
+}
+
+IntegerDivide::IntegerDivide (symbol objid,
+                              std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerOperands (objid, std::move (operands))
+{ }
+
+IntegerDivide::IntegerDivide (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerDivide ("div", std::move (operands))
+{ }
+
+IntegerDivide::IntegerDivide (const BlockModel& al)
+  : IntegerOperands (al)
+{ }
+
+struct IntegerMaxSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerMax (al); }
@@ -179,31 +317,9 @@ static struct IntegerMaxSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} IntegerMax_syntax;
-
-struct IntegerMin : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    int min = operands[0]->value (scope);
-    for (size_t i = 1; i < operands.size (); i++)
-      {
-        const int value = operands[i]->value (scope);
-        if (value < min)
-          min = value;
-      }
-    return min;
-  }
-
-  // Create.
-  IntegerMin (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
 };
 
-static struct IntegerMinSyntax : public DeclareModel
+struct IntegerMinSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerMin (al); }
@@ -220,26 +336,9 @@ static struct IntegerMinSyntax : public DeclareModel
     frame.set_check ("operands", VCheck::min_size_1 ());
     frame.order ("operands");
   }
-} IntegerMin_syntax;
-
-struct IntegerProduct : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    int product = 1;
-    for (size_t i = 0; i < operands.size (); i++)
-      product *= operands[i]->value (scope);
-    return product;
-  }
-
-  // Create.
-  IntegerProduct (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
 };
 
-static struct IntegerProductSyntax : public DeclareModel
+struct IntegerProductSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerProduct (al); }
@@ -255,26 +354,9 @@ static struct IntegerProductSyntax : public DeclareModel
                        "The operands for this function.");
     frame.order ("operands");
   }
-} IntegerProduct_syntax;
-
-struct IntegerSum : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    int sum = 0;
-    for (size_t i = 0; i < operands.size (); i++)
-      sum += operands[i]->value (scope);
-    return sum;
-  }
-
-  // Create.
-  IntegerSum (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
 };
 
-static struct IntegerSumSyntax : public DeclareModel
+struct IntegerSumSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSum (al); }
@@ -293,29 +375,9 @@ static struct IntegerSumSyntax : public DeclareModel
 #endif // CHECK_OPERANDS_DIM
     frame.order ("operands");
   }
-} IntegerSum_syntax;
-
-struct IntegerSubtract : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () > 0);
-    int val = operands[0]->value (scope);
-    if (operands.size () == 1)
-      return -val; 
-    for (size_t i = 1; i < operands.size (); i++)
-      val -= operands[i]->value (scope);
-    return val;
-  }
-
-  // Create.
-  IntegerSubtract (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
 };
 
-static struct IntegerSubtractSyntax : public DeclareModel
+struct IntegerSubtractSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerSubtract (al); }
@@ -333,66 +395,28 @@ subtracts all but the first from the first.")
                        "The operands for this function.");
     frame.order ("operands");
   }
-} IntegerSubtract_syntax;
-
-struct IntegerDivide : public IntegerOperands
-{
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () == 2);
-    int v1 = operands[0]->value (scope);
-    int v2 = operands[1]->value (scope);
-    if (v2 == 0)
-      throw ("Divide by zero");
-    return v1 / v2;
-  }
-
-  // Create.
-  bool check (const Scope& scope, Treelog& err) const
-  { 
-    bool ok = true;
-    for (size_t i = 0; i < operands.size (); i++)
-      {
-        std::ostringstream tmp;
-        tmp << name << "[" << i << "]";
-        Treelog::Open nest (err, tmp.str ());
-        
-        if (!operands[i]->check (scope, err))
-          ok = false;
-        if (i > 0 && operands[i]->value (scope) == 0)
-          {
-            err.error ("Divide by zero");
-            ok = false;
-          }
-      }
-    return ok;
-  }
-  IntegerDivide (const BlockModel& al)
-    : IntegerOperands (al)
-  { }
 };
 
-struct IntegerModulo : public IntegerDivide
+int
+IntegerModulo::value (const Scope& scope) const
 {
-  // Simulation.
-  int value (const Scope& scope) const
-  { 
-    daisy_assert (operands.size () == 2);
-    int v1 = operands[0]->value (scope);
-    int v2 = operands[1]->value (scope);
-    if (v2 == 0)
-      throw ("Modulo by zero");
-    return v1 % v2;
-  }
+  daisy_assert (operands_.size () == 2);
+  int v1 = operands_[0]->value (scope);
+  int v2 = operands_[1]->value (scope);
+  if (v2 == 0)
+    throw ("Modulo by zero");
+  return v1 % v2;
+}
 
-  // Create.
-  IntegerModulo (const BlockModel& al)
-    : IntegerDivide (al)
-  { }
-};
+IntegerModulo::IntegerModulo (std::vector<std::unique_ptr<Integer>> operands)
+  : IntegerDivide ("mod", std::move (operands))
+{ }
 
-static struct IntegerModuloSyntax : public DeclareModel
+IntegerModulo::IntegerModulo (const BlockModel& al)
+  : IntegerDivide (al)
+{ }
+
+struct IntegerModuloSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerModulo (al); }
@@ -408,9 +432,9 @@ static struct IntegerModuloSyntax : public DeclareModel
                          "The operands for this function.");
       frame.order ("operands");
   }
-} IntegerModulo_syntax;
+};
 
-static struct IntegerDivideSyntax : public DeclareModel
+struct IntegerDivideSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new IntegerDivide (al); }
@@ -426,5 +450,17 @@ static struct IntegerDivideSyntax : public DeclareModel
                          "The operands for this function.");
       frame.order ("operands");
   }
-} IntegerDivide_syntax;
+};
 
+void
+register_integer_arithmetic_models ()
+{
+  static IntegerSqrSyntax integer_sqr_syntax;
+  static IntegerMaxSyntax integer_max_syntax;
+  static IntegerMinSyntax integer_min_syntax;
+  static IntegerProductSyntax integer_product_syntax;
+  static IntegerSumSyntax integer_sum_syntax;
+  static IntegerSubtractSyntax integer_subtract_syntax;
+  static IntegerModuloSyntax integer_modulo_syntax;
+  static IntegerDivideSyntax integer_divide_syntax;
+}
