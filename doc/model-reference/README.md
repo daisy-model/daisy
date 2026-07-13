@@ -40,7 +40,8 @@ python3 doc/model-reference/generate_from_registration.py \
   --source src/object_model/parameter_types/number_soil.C \
   --source src/object_model/parameter_types/number_source.C \
   --source src/object_model/rate.C \
-  --source src/object_model/parameter_types/stringer.C
+  --source src/object_model/parameter_types/stringer.C \
+  --source src/object_model/unit_model.C
 ```
 
 That generated tree is meant to be the machine-derived baseline from

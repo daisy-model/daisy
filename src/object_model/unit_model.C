@@ -23,6 +23,7 @@
 #include "object_model/unit_model.h"
 #include "object_model/check.h"
 #include "object_model/librarian.h"
+#include "object_model/object_model_registration_internal.h"
 #include "object_model/frame.h"
 #include "object_model/block_model.h"
 #include "util/mathlib.h"
@@ -46,6 +47,11 @@ const Convert*
 MUnit::create_convertion (const Unit&) const
 { return NULL; }
 
+MUnit::MUnit (symbol native_name, const symbol base)
+  : name (native_name),
+    base_name_ (base)
+{ }
+
 MUnit::MUnit (const BlockModel& al, const symbol base)
   : name (al.type_name ()),
     base_name_ (base)
@@ -54,7 +60,7 @@ MUnit::MUnit (const BlockModel& al, const symbol base)
 MUnit::~MUnit ()
 { }
 
-static struct UnitInit : public DeclareComponent 
+struct UnitInit : public DeclareComponent 
 {
   UnitInit ()
     : DeclareComponent (MUnit::component, "\
@@ -67,30 +73,22 @@ defined by SI) unit for that dimension.")
   { }
   void load_frame (Frame& frame) const
   { Model::load_model (frame); }
-} Unit_init;
+};
 
 // Base model 'SI'.
 
-struct UnitSI : public MUnit
-{
-  // Content.
-  static const struct base_unit_type
-  { 
-    const symbol unit; 
-    const symbol dimension;
-  } base_unit[];
-  static const size_t base_unit_size;
+UnitSI::UnitSI (symbol name, symbol base)
+  : MUnit (name, base)
+{ }
 
-  // Create and destroy.
-  static symbol find_base (const BlockModel&);
-  UnitSI (const BlockModel& al)
-    : MUnit (al, find_base (al))
-  { }
-  ~UnitSI ()
-  { }
-};
+UnitSI::UnitSI (const BlockModel& al)
+  : MUnit (al, find_base (al))
+{ }
 
-const UnitSI::base_unit_type 
+UnitSI::~UnitSI ()
+{ }
+
+const UnitSI::base_unit_type
 UnitSI::base_unit[] = {
   { "m", "length" },
   { "kg", "mass" },
@@ -101,7 +99,7 @@ UnitSI::base_unit[] = {
   { "cd", "luminous_intensity" }
 };
 
-const size_t 
+const size_t
 UnitSI::base_unit_size
 /**/ = sizeof (UnitSI::base_unit) / sizeof (UnitSI::base_unit_type);
   
@@ -128,7 +126,7 @@ UnitSI::find_base (const BlockModel& al)
   return symbol (tmp.str ());
 }
 
-static struct UnitSISyntax : public DeclareBase
+struct UnitSISyntax : public DeclareBase
 {
   UnitSISyntax ()
     : DeclareBase (MUnit::component, "SI", "\
@@ -146,52 +144,60 @@ Dimension, base unit [" + unit + "].");
         frame.set (dimension, 0);
       }
   }
-} UnitSI_syntax;
+};
 
 // Model 'SIfactor'.
 
-struct UnitSIFactor : public UnitSI
+double
+UnitSIFactor::to_base (double value) const
+{ return value * factor_; }
+
+double
+UnitSIFactor::to_native (double value) const
+{ return value / factor_; }
+
+bool
+UnitSIFactor::in_native (double) const
+{ return true; }
+
+bool
+UnitSIFactor::in_base (double) const
+{ return true; }
+
+const Convert*
+UnitSIFactor::create_convertion (const Unit& to) const
 {
-  const double factor;
-  
-  double to_base (double value) const
-  { return value * factor; }
-  double to_native (double value) const
-  { return value / factor; }
-  bool in_native (double) const
-  { return true; }
-  bool in_base (double) const
-  { return true; }
+  const UnitSIFactor* to_si_factor = dynamic_cast<const UnitSIFactor*> (&to);
+  if (!to_si_factor)
+    return NULL;
 
-  const Convert* create_convertion (const Unit& to) const
-  { 
-    const UnitSIFactor* to_si_factor = dynamic_cast<const UnitSIFactor*> (&to);
-    if (!to_si_factor)
-      return NULL;
-    
-    if (base_name () != to_si_factor->base_name ())
-      return NULL;
+  if (base_name () != to_si_factor->base_name ())
+    return NULL;
 
-    struct ConvertFactor : public Convert
-    {
-      const double factor;
-      double operator()(const double value) const
-      { return factor * value; }
-      bool valid (const double value) const // FIXME: What is this supposed to do?
-      { return true; }
-      ConvertFactor (const double f)
-        : factor (f)
-      { }
-    };
+  struct ConvertFactor : public Convert
+  {
+    const double factor;
+    double operator()(const double value) const
+    { return factor * value; }
+    bool valid (const double value) const // FIXME: What is this supposed to do?
+    { return true; }
+    ConvertFactor (const double f)
+      : factor (f)
+    { }
+  };
 
-    return new ConvertFactor (this->factor / to_si_factor->factor);
-  }
+  return new ConvertFactor (this->factor_ / to_si_factor->factor_);
+}
 
-  UnitSIFactor (const BlockModel& al)
-    : UnitSI (al),
-      factor (al.number ("factor"))
-  { }
-};
+UnitSIFactor::UnitSIFactor (symbol name, symbol base, double factor)
+  : UnitSI (name, base),
+    factor_ (factor)
+{ }
+
+UnitSIFactor::UnitSIFactor (const BlockModel& al)
+  : UnitSI (al),
+    factor_ (al.number ("factor"))
+{ }
 
 struct DeclareSIFactor : public DeclareParam
 {
@@ -235,7 +241,7 @@ struct DeclareSIFactor : public DeclareParam
   }
 };
 
-static struct UnitSIFactorSyntax : public DeclareModel
+struct UnitSIFactorSyntax : public DeclareModel
 {
   auto_vector<const DeclareSIFactor*> declarations;
 
@@ -800,27 +806,35 @@ Connvert to SI base units by multiplying with a factor.")
     frame.declare ("factor", Attribute::None (), Check::non_zero (), Attribute::Const, "\
 Factor to multiply with to get base unit.");
   }
-} UnitSIFactor_syntax;
+};
 
 // Model 'pF'.
 
-struct UnitpF : public MUnit
-{
-  double to_base (double value) const
-  { return pF2h (value) * 100.0 /* Pa/cm */; }
-  double to_native (double value) const
-  { return h2pF (value / 100.0) /* cm/pa */; }
-  bool in_native (double value) const
-  { return value >= 0.0; }
-  bool in_base (double value) const
-  { return value < 0.0; }
+double
+UnitpF::to_base (double value) const
+{ return pF2h (value) * 100.0 /* Pa/cm */; }
 
-  UnitpF (const BlockModel& al)
-    : MUnit (al, Unit::pressure ())
-  { }
-};
+double
+UnitpF::to_native (double value) const
+{ return h2pF (value / 100.0) /* cm/pa */; }
 
-static struct UnitpFSyntax : public DeclareModel
+bool
+UnitpF::in_native (double value) const
+{ return value >= 0.0; }
+
+bool
+UnitpF::in_base (double value) const
+{ return value < 0.0; }
+
+UnitpF::UnitpF ()
+  : MUnit ("pF", Unit::pressure ())
+{ }
+
+UnitpF::UnitpF (const BlockModel& al)
+  : MUnit (al, Unit::pressure ())
+{ }
+
+struct UnitpFSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitpF (al); }
@@ -832,28 +846,36 @@ static struct UnitpFSyntax : public DeclareModel
   {
     // Add the 'pF' base model.
   }
-} UnitpF_syntax;
+};
 
 // Model 'base'.
 
-struct UnitBase : public MUnit
-{
-  double to_base (double value) const
-  { return value; }
-  double to_native (double value) const
-  { return value; }
-  bool in_native (double value) const // FIXME: What is this supposed to do?
-  { return true; }
-  bool in_base (double value) const // FIXME: What is this supposed to do?
-  { return true; }
+double
+UnitBase::to_base (double value) const
+{ return value; }
 
-  UnitBase (const BlockModel& al)
-    : MUnit (al, al.type_name ())
-  { }
-};
+double
+UnitBase::to_native (double value) const
+{ return value; }
+
+bool
+UnitBase::in_native (double value) const // FIXME: What is this supposed to do?
+{ return true; }
+
+bool
+UnitBase::in_base (double value) const // FIXME: What is this supposed to do?
+{ return true; }
+
+UnitBase::UnitBase (symbol name)
+  : MUnit (name, name)
+{ }
+
+UnitBase::UnitBase (const BlockModel& al)
+  : MUnit (al, al.type_name ())
+{ }
 
 
-static struct UnitBaseSyntax : public DeclareModel
+struct UnitBaseSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitBase (al); }
@@ -863,7 +885,7 @@ static struct UnitBaseSyntax : public DeclareModel
   { }
   void load_frame (Frame&) const
   { }
-} UnitBase_syntax;
+};
 
 struct DeclareBaseUnit : public DeclareParam
 {
@@ -875,43 +897,33 @@ struct DeclareBaseUnit : public DeclareParam
 };
 
 // Angles
-static DeclareBaseUnit Base_rad ("rad", "Radians");
+double
+UnitFactor::to_base (double value) const
+{ return value * factor_; }
 
-// Add geographical coordinates.
-static DeclareBaseUnit Base_dgEast ("dgEast", "Degrees East of Greenwich.");
-static DeclareBaseUnit Base_dgNorth ("dgNorth", "Degrees North of Equator.");
+double
+UnitFactor::to_native (double value) const
+{ return value / factor_; }
 
-// Soil fraction.
-static DeclareBaseUnit Base_DS_fraction (Units::dry_soil_fraction (), 
-                                         "Fraction of dry soil.");
+bool
+UnitFactor::in_native (double value) const // FIXME: What is this supposed to do?
+{ return true; }
 
-// Unknown unit.
-static DeclareBaseUnit Base_unknown (Attribute::Unknown (), "\
-Nothing is known about the dimension of this unit.");
-static DeclareBaseUnit Base_error (Units::error_symbol (), "Bogus unit.");
+bool
+UnitFactor::in_base (double value) const // FIXME: What is this supposed to do?
+{ return true; }
 
-// Model 'factor'.
+UnitFactor::UnitFactor (symbol name, symbol base, double factor)
+  : MUnit (name, base),
+    factor_ (factor)
+{ }
 
-struct UnitFactor : public MUnit
-{
-  const double factor;
+UnitFactor::UnitFactor (const BlockModel& al)
+  : MUnit (al, al.name ("base")),
+    factor_ (al.number ("factor"))
+{ }
 
-  double to_base (double value) const
-  { return value * factor; }
-  double to_native (double value) const
-  { return value / factor; }
-  bool in_native (double value) const // FIXME: What is this supposed to do?
-  { return true; }
-  bool in_base (double value) const // FIXME: What is this supposed to do?
-  { return true; }
-
-  UnitFactor (const BlockModel& al)
-    : MUnit (al, al.name ("base")),
-      factor (al.number ("factor"))
-  { }
-};
-
-static struct UnitFactorSyntax : public DeclareModel
+struct UnitFactorSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitFactor (al); }
@@ -928,7 +940,7 @@ Base unit to convert to and from.");
     frame.declare ("factor", Attribute::None (), Check::non_zero (), Attribute::Const, "\
 Factor to multiply with to get base unit.");
   }
-} UnitFactor_syntax;
+};
 
 struct DeclareBaseFactor : public DeclareParam
 {
@@ -948,46 +960,35 @@ struct DeclareBaseFactor : public DeclareParam
 };
 
 // Add angles.
-static DeclareBaseFactor Base_dg ("dg", M_PI / 180.0, "rad", "\
-Degrees");
-static DeclareBaseFactor Base_new_dg ("new dg", M_PI / 200.0, "rad", "\
-New degrees");
+double
+UnitOffset::to_base (double value) const
+{ return value * factor_ + offset_; }
 
-// Add geographical coordinates.
-static DeclareBaseFactor Base_dg_West ("dgWest", -1.0, "dgEast", "\
-Degrees West of Greenwich.");
-static DeclareBaseFactor Base_dgSouth ("dgSouth", -1.0, "dgNorth", "\
-Degrees North of Equator.");
+double
+UnitOffset::to_native (double value) const
+{ return (value - offset_) / factor_; }
 
-// Add dry soil.
-static DeclareBaseFactor Base_DS_ppm ("ppm dry soil", 1e-6, 
-                                      Units::dry_soil_fraction (), "\
-Part per million in dry soil.");
+bool
+UnitOffset::in_native (double value) const // FIXME: What is this supposed to do?
+{ return true; }
 
-// Model 'offset'.
+bool
+UnitOffset::in_base (double value) const // FIXME: What is this supposed to do?
+{ return true; }
 
-struct UnitOffset : public MUnit
-{
-  const double factor;
-  const double offset;
+UnitOffset::UnitOffset (symbol name, symbol base, double factor, double offset)
+  : MUnit (name, base),
+    factor_ (factor),
+    offset_ (offset)
+{ }
 
-  double to_base (double value) const
-  { return value * factor + offset; }
-  double to_native (double value) const
-  { return (value - offset) / factor; }
-  bool in_native (double value) const // FIXME: What is this supposed to do?
-  { return true; }
-  bool in_base (double value) const // FIXME: What is this supposed to do?
-  { return true; }
+UnitOffset::UnitOffset (const BlockModel& al)
+  : MUnit (al, al.name ("base")),
+    factor_ (al.number ("factor")),
+    offset_ (al.number ("offset"))
+{ }
 
-  UnitOffset (const BlockModel& al)
-    : MUnit (al, al.name ("base")),
-      factor (al.number ("factor")),
-      offset (al.number ("offset"))
-  { }
-};
-
-static struct UnitOffsetSyntax : public DeclareModel
+struct UnitOffsetSyntax : public DeclareModel
 {
   Model* make (const BlockModel& al) const
   { return new UnitOffset (al); }
@@ -1009,7 +1010,7 @@ Factor to multiply with to get base unit.");
 Offset to add after multiplying with factor to get base unit.");
     frame.set ("offset", 0.0);
   }
-} UnitOffset_syntax;
+};
 
 struct DeclareBaseOffset : public DeclareParam
 {
@@ -1032,12 +1033,43 @@ struct DeclareBaseOffset : public DeclareParam
   }
 };
 
-
-static DeclareBaseOffset Base_Celcius ("dg C", 1.0, 273.15, "K", "\
+void
+register_unit_models ()
+{
+  static UnitInit unit_init;
+  static UnitSISyntax unit_si_syntax;
+  static UnitSIFactorSyntax unit_si_factor_syntax;
+  static UnitpFSyntax unit_pf_syntax;
+  static UnitBaseSyntax unit_base_syntax;
+  static DeclareBaseUnit base_rad ("rad", "Radians");
+  static DeclareBaseUnit base_dg_east ("dgEast",
+                                       "Degrees East of Greenwich.");
+  static DeclareBaseUnit base_dg_north ("dgNorth",
+                                        "Degrees North of Equator.");
+  static DeclareBaseUnit base_ds_fraction (Units::dry_soil_fraction (),
+                                           "Fraction of dry soil.");
+  static DeclareBaseUnit base_unknown (Attribute::Unknown (), "\
+Nothing is known about the dimension of this unit.");
+  static DeclareBaseUnit base_error (Units::error_symbol (), "Bogus unit.");
+  static UnitFactorSyntax unit_factor_syntax;
+  static DeclareBaseFactor base_dg ("dg", M_PI / 180.0, "rad", "\
+Degrees");
+  static DeclareBaseFactor base_new_dg ("new dg", M_PI / 200.0, "rad", "\
+New degrees");
+  static DeclareBaseFactor base_dg_west ("dgWest", -1.0, "dgEast", "\
+Degrees West of Greenwich.");
+  static DeclareBaseFactor base_dg_south ("dgSouth", -1.0, "dgNorth", "\
+Degrees North of Equator.");
+  static DeclareBaseFactor base_ds_ppm ("ppm dry soil", 1e-6,
+                                        Units::dry_soil_fraction (), "\
+Part per million in dry soil.");
+  static UnitOffsetSyntax unit_offset_syntax;
+  static DeclareBaseOffset base_celcius ("dg C", 1.0, 273.15, "K", "\
 degree Celcius.");
-// Absolute zero is -459.67 degree Fahrenheit.
-static DeclareBaseOffset Base_Fahrenheit ("dg F", 
-                                          5.0/9.0, 459.67 * 5.0 / 9.0, "K", "\
+  static DeclareBaseOffset base_fahrenheit ("dg F",
+                                            5.0 / 9.0,
+                                            459.67 * 5.0 / 9.0, "K", "\
 degree Fahrenheit.");
+}
 
 // unit_model.C ends here.

@@ -26,6 +26,7 @@ if(${BUILD_DOC})
             --source src/object_model/parameter_types/number_source.C
             --source src/object_model/rate.C
             --source src/object_model/parameter_types/stringer.C
+            --source src/object_model/unit_model.C
   )
 
   add_custom_command(OUTPUT doc/components.tex
