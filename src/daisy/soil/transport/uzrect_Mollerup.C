@@ -33,7 +33,6 @@
 #include "util/mathlib.h"
 #include "util/assertion.h"
 #include "object_model/librarian.h"
-#include "util/anystate.h"
 #include "daisy/soil/transport/condedge.h"
 #include "object_model/treelog.h"
 

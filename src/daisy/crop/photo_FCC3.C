@@ -107,10 +107,11 @@ double
 PhotoFCC3::J_m (const double vmax25, const double T/*[degree C]*/) const
 {
   const double Jm25 = 2.1 * vmax25;
-  const double R = 8.314; //Gas constant, J/(mol K) 
-  const double a_ = Jm25 * exp((T+273.0-298.0)*Ea_Jm/(298.0*R*(T+273.0)));
+  const double R = 8.314; //Gas constant, J/(mol K)
+  const double TK = T+273.0;	// [K]
+  const double a_ = Jm25 * exp((TK-298.0)*Ea_Jm/(298.0*R*TK));
   const double b_ = 1.+exp((298.0*S-H)/(298.0*R));
-  const double c_ = 1.+exp(S*(T+273.0)-H)/(R*(T+273.0));
+  const double c_ = 1.+exp((S*TK-H)/(R*TK));
   double J_m = a_*b_/c_;     //mol/m2/s  
 
   // Temperature effect and development stage effect of photo_gl

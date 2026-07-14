@@ -108,6 +108,10 @@ struct RootUptake : public RootSystem
 			  double NO3_root_min,
 			  double PotNUpt);
 
+  void tick_uptake (const Geometry& geo, const SoilHeat& soil_heat,
+		    SoilWater& soil_water, const double day_fraction,
+		    const double dt, Treelog& msg);
+  
   void output (Log& log) const;
 
   // Create and Destroy

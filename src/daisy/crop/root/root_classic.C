@@ -24,7 +24,6 @@
 #include "daisy/crop/root/root_zone.h"
 #include "daisy/crop/root/rootdens.h"
 #include "daisy/soil/soil_water.h"
-#include "daisy/soil/soil_heat.h"
 #include "daisy/soil/soil.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/output/log.h"
@@ -78,26 +77,7 @@ RootClassic::tick_dynamic (const Geometry& geo, const SoilHeat& soil_heat,
   // Root death.
   rootdens->tick (geo, soil_heat, soil_water, Density, dt, msg);
 
-  // Update soil water sink term.
-  soil_water.root_uptake (H2OExtraction);
-
-  // Accumulated water stress.
-  water_stress_days_ += water_stress_ * day_fraction;
-
-  // Keep track of daily soil temperature.
-  const double T
-    = geo.content_height (soil_heat, &SoilHeat::T, -Depth);
-  partial_soil_temperature += T * dt;
-  partial_day += dt;
-  if (partial_day >= 24.0)
-    {
-      soil_temperature = partial_soil_temperature / partial_day;
-      partial_soil_temperature = 0.0;
-      partial_day = 0.0;
-    }
-
-  // Clear nitrogen.
-  NH4Upt = NO3Upt =0.0;
+  tick_uptake (geo, soil_heat, soil_water, day_fraction, dt, msg);
 }
 
 void

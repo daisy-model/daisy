@@ -8,6 +8,7 @@ target_sources(${DAISY_CORE_NAME} PRIVATE
   root_uptake.C
   root_zone.C
   root_classic.C
+#  root_additive.C
   rootdens.C
   rootdens_AP.C
   rootdens_GP1D.C
