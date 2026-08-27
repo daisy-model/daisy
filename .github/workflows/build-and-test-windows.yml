@@ -28,7 +28,7 @@ jobs:
             mingw-w64-ucrt-x86_64-uv
             unzip
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install python
         run: uv python install 3.13
@@ -53,7 +53,7 @@ jobs:
 
       - name: Install
         working-directory: ci-build
-        run: unzip $( ls | grep -e "daisy-.*-Windows-python.*zip" )
+        run: unzip daisy-*-Windows-python*.zip
 
       - name: Setup test environment
         working-directory: ci-build
@@ -67,7 +67,7 @@ jobs:
 
       - name: Upload test logs
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: test-output-windows
           path: ci-build/Testing

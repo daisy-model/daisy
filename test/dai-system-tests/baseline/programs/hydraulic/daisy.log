@@ -1,39 +1,44 @@
 Has DAISYHOME environment variable
-Using '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../..' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests'
-Daisy crop/soil simulation version 7.0.13. (Jun  3 2025)
+Using '/home/silas/Projects/daisy' as daisy home.
+Reseting current directory to '/home/silas/Projects/daisy/build/linux-gcc-portable/test/dai-system-tests/tests/programs'
+Daisy crop/soil simulation version 7.1.13. (Aug 27 2026)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
-Changing directory to '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/hydraulic' success
-Interpreting '.' in path as /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common
-In directory '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/hydraulic':
-Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai'
-* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai'
+Changing directory to '/tmp/tmp47detdfa' success
+Interpreting '.' in path as /home/silas/Projects/daisy/test/dai-system-tests/tests/common
+Adding '/home/silas/Projects/daisy/test/dai-system-tests/tests/common' to pythonpath
+In directory '/tmp/tmp47detdfa':
+Opening absolute file name '/home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai'
+* Parsing file: '/home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai'
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/hydraulic':
+In directory '/tmp/tmp47detdfa':
 Looking for file 'test_columns.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common/test_columns.dai' (cwd) success!
+Trying '/home/silas/Projects/daisy/test/dai-system-tests/tests/common/test_columns.dai' (cwd) success!
 ** Parsing file: 'test_columns.dai'
 Path set to:
 0: '.'
 1: '.'
-2: '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../../lib'
-3: '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/../../sample'
+2: '/home/silas/Projects/daisy/lib'
+3: '/home/silas/Projects/daisy/sample'
 done
-Command line: ../../build/portable-7.0.13/daisy -d /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/hydraulic -D /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/common /home/silas/Projects/daisy-model/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/test/dai-system-tests/baseline/programs/hydraulic'
+Command line: /home/silas/Projects/daisy/build/linux-gcc-portable/daisy -q -d /tmp/tmp47detdfa -D /home/silas/Projects/daisy/test/dai-system-tests/tests/common /home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-hydraulic.dai
+Storing 'daisy.log' in '/tmp/tmp47detdfa'
 * horizon: Ap_JB1_med_OM initialize_base
 (CEC 10.4351 [cmolc/kg]) ; Estimated from clay and humus.
 (quartz 0.673033 []) ; Estimated from texture.
-h	h	Theta	K	Cw2
-cm	pF		cm/h	cm^-1
-0		0.3951	5.15	0
--1	0	0.392919	2.62073	0.00311661
--10	1	0.34825	0.475774	0.00521608
--100	2	0.170958	0.00509191	0.000712044
--1000	3	0.0624763	1.90369e-05	2.77939e-05
--15848.9	4.2	0.0182326	2.15364e-08	5.13054e-07
-Program started Tue Jun  3 14:40:29 2025., 0 seconds ago.
+h	h	Theta	K	Cw2	M
+cm	pF		cm/h	cm^-1	cm^2/h
+0		0.3951	5.15	0	19.0361
+-1	0	0.392919	2.62073	0.00311661	15.7121
+-10	1	0.34825	0.475774	0.00521608	5.70583
+-100	2	0.170958	0.00509191	0.000712044	0.361759
+-1000	3	0.0624763	1.90369e-05	2.77939e-05	0.0129238
+-15848.9	4.2	0.0182326	2.15364e-08	5.13054e-07	6.73674e-05
+-100000	5	0.00801778	2.33446e-10	3.57592e-08	0
+-1e+06	6	0.00287114	8.1645e-13	1.28053e-09	0
+-1e+07	7	0.00102815	2.85543e-15	4.58553e-11	0
+
+Program started Thu Aug 27 11:43:27 2026, 1 second ago.
 pressure	pressure	Theta	K
 pF	cm	%	cm/h
 0	-1	39.2919	2.62073
@@ -88,4 +93,4 @@ pF	cm	%	cm/h
 4.9	-79432.8	0.888493	4.10971e-10
 5	-100000	0.801778	2.33446e-10
 
-Program finished after 0 seconds.
+Program finished after 1 second.

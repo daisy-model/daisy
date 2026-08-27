@@ -31,13 +31,15 @@
 // Get chdir.
 #if defined (__unix)
 #include <unistd.h>
+#include <sys/stat.h>
+#define DAISY_MKDIR(path) mkdir ((path), 0777)
 #elif defined (__MINGW32__) || defined (_MSC_VER)
-extern "C" int chdir (const char* dir);
-extern "C" char *getcwd (char *buf, size_t size);
+#include <direct.h>
+#define DAISY_MKDIR(path) mkdir (path)
 #else
 #include <dir.h>
+#define DAISY_MKDIR(path) mkdir ((path), 0777)
 #endif
-extern "C" int mkdir(const char *pathname, int mode);
 
 #include <fstream>
 #include <sstream>
@@ -55,7 +57,7 @@ extern "C" int mkdir(const char *pathname, int mode);
 static const std::string
 get_cwd ()
 {
-  const size_t BUFFER_SIZE = 10000;
+  const int BUFFER_SIZE = 10000;
   char buffer[BUFFER_SIZE];
   char *wd = getcwd (buffer, BUFFER_SIZE);
   if (!wd)
@@ -228,7 +230,7 @@ Path::set_directory (symbol directory_s)
   const std::string& directory = directory_s.name ();
   const char *const dir = directory.c_str ();
   const bool result 
-    = chdir (dir) == 0 || (mkdir (dir, 0777) == 0 && chdir (dir) == 0); 
+    = chdir (dir) == 0 || (DAISY_MKDIR (dir) == 0 && chdir (dir) == 0);
   
   if (!result)
     /* Do nothing */;

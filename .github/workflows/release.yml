@@ -15,6 +15,11 @@ on:
         required: true
         type: boolean
         default: false
+      draft:
+        description: Create or update the GitHub release as a draft
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -31,8 +36,9 @@ jobs:
       should_release: ${{ steps.validate.outputs.should_release }}
       release_tag: ${{ steps.validate.outputs.release_tag }}
       publish_release: ${{ steps.validate.outputs.publish_release }}
+      draft_release: ${{ steps.validate.outputs.draft_release }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -43,9 +49,11 @@ jobs:
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
           REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
+          REQUEST_DRAFT: ${{ github.event_name == 'workflow_dispatch' && inputs.draft || 'false' }}
         run: |
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
           echo "publish_release=false" >> "$GITHUB_OUTPUT"
+          echo "draft_release=false" >> "$GITHUB_OUTPUT"
 
           if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "Skipping: $RELEASE_TAG is not a stable release tag."
@@ -71,6 +79,9 @@ jobs:
               exit 1
             fi
             echo "publish_release=true" >> "$GITHUB_OUTPUT"
+            if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$REQUEST_DRAFT" = "true" ]; then
+              echo "draft_release=true" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "Manual dry run: building artifacts without publishing a GitHub release."
           fi
@@ -83,7 +94,7 @@ jobs:
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install build dependencies
         run: |
@@ -96,14 +107,14 @@ jobs:
           make linux-doc
 
       - name: Upload Linux deb package
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-deb
           path: build/linux-gcc-portable/*.deb
           if-no-files-found: error
 
       - name: Upload Linux documentation PDFs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-docs
           path: build/linux-gcc-portable/doc/*.pdf
@@ -115,7 +126,7 @@ jobs:
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install build dependencies
         run: |
@@ -123,7 +134,7 @@ jobs:
           sudo apt-get install -y flatpak flatpak-builder
 
       - name: Restore Flatpak builder cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             flatpak/.flatpak-builder
@@ -143,19 +154,27 @@ jobs:
           flatpak build-bundle repo "daisy-${version}.flatpak" dk.ku.daisy
 
       - name: Upload Linux flatpak package
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-flatpak
           path: flatpak/*.flatpak
           if-no-files-found: error
 
   build-macos:
-    name: Build macOS package
+    name: Build macOS package (${{ matrix.arch }})
     needs: preflight
     if: needs.preflight.outputs.should_release == 'true'
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Remove unused untrusted Homebrew tap
         run: brew untap aws/tap || true
@@ -164,7 +183,7 @@ jobs:
         run: brew install cmake boost suite-sparse pybind11
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           version: "0.9.18"
           enable-cache: false
@@ -173,9 +192,9 @@ jobs:
         run: make macos
 
       - name: Upload macOS packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
-          name: release-macos
+          name: release-macos-${{ matrix.arch }}
           path: build/macos-clang-portable/*.zip
           if-no-files-found: error
 
@@ -204,13 +223,13 @@ jobs:
             mingw-w64-ucrt-x86_64-uv
             mingw-w64-ucrt-x86_64-nsis
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Build Windows packages
         run: make windows
 
       - name: Upload Windows packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-windows
           path: |
@@ -230,7 +249,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download release artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: release-*
           merge-multiple: true
@@ -241,6 +260,17 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ needs.preflight.outputs.release_tag }}
+          DRAFT_RELEASE: ${{ needs.preflight.outputs.draft_release }}
         run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --generate-notes
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if [ "$DRAFT_RELEASE" = "true" ]; then
+              gh release edit "$RELEASE_TAG" --draft
+            else
+              gh release edit "$RELEASE_TAG" --draft=false
+            fi
+          elif [ "$DRAFT_RELEASE" = "true" ]; then
+            gh release create "$RELEASE_TAG" --draft --generate-notes
+          else
+            gh release create "$RELEASE_TAG" --generate-notes
+          fi
           gh release upload "$RELEASE_TAG" dist/* --clobber

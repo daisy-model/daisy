@@ -1,241 +1,254 @@
 Has DAISYHOME environment variable
-Using '/home/silas/Projects/daisy-model/daisy' as daisy home.
-Reseting current directory to '/home/silas/Projects/daisy-model/daisy/build/portable/tmp'
-Daisy crop/soil simulation version 7.1.1. (Sep 23 2025)
+Using '/home/silas/Projects/daisy' as daisy home.
+Reseting current directory to '/tmp/tmpond26wq0'
+Daisy crop/soil simulation version 7.1.13. (Aug 27 2026)
 Copyright 1996 - 2016 Per Abrahamsen, Søren Hansen and KU.
 Changing directory to 'W-A-S' success
 Interpreting '.' in path as ..
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
-Opening absolute file name '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
-* Parsing file: '/home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai'
+Adding '..' to pythonpath
+In directory '/tmp/tmpond26wq0/W-A-S':
+Opening absolute file name '/home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-spawn.dai'
+* Parsing file: '/home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-spawn.dai'
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'dk-soil.dai'
 Trying '../dk-soil.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-soil.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-soil.dai' success!
+Trying '/home/silas/Projects/daisy/lib/dk-soil.dai'
+Trying '/home/silas/Projects/daisy/sample/dk-soil.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'tillage.dai'
 Trying '../tillage.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/tillage.dai' success!
+Trying '/home/silas/Projects/daisy/lib/tillage.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'fertilizer.dai'
 Trying '../fertilizer.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/fertilizer.dai' success!
+Trying '/home/silas/Projects/daisy/lib/fertilizer.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'crop.dai'
 Trying '../crop.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/crop.dai' success!
+Trying '/home/silas/Projects/daisy/lib/crop.dai' success!
 ** Parsing file: 'crop.dai'
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'maize.dai'
 Trying '../maize.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/maize.dai' success!
+Trying '/home/silas/Projects/daisy/lib/maize.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'pea.dai'
 Trying '../pea.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/pea.dai' success!
+Trying '/home/silas/Projects/daisy/lib/pea.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'potato.dai'
 Trying '../potato.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/potato.dai' success!
+Trying '/home/silas/Projects/daisy/lib/potato.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'rye.dai'
 Trying '../rye.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/rye.dai' success!
+Trying '/home/silas/Projects/daisy/lib/rye.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'sbarley.dai'
 Trying '../sbarley.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/sbarley.dai' success!
+Trying '/home/silas/Projects/daisy/lib/sbarley.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'sugarbeet.dai'
 Trying '../sugarbeet.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/sugarbeet.dai' success!
+Trying '/home/silas/Projects/daisy/lib/sugarbeet.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'fodderbeet.dai'
 Trying '../fodderbeet.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/fodderbeet.dai' success!
+Trying '/home/silas/Projects/daisy/lib/fodderbeet.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'srape.dai'
 Trying '../srape.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/srape.dai' success!
+Trying '/home/silas/Projects/daisy/lib/srape.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'swheat.dai'
 Trying '../swheat.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/swheat.dai' success!
+Trying '/home/silas/Projects/daisy/lib/swheat.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'wbarley.dai'
 Trying '../wbarley.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/wbarley.dai' success!
+Trying '/home/silas/Projects/daisy/lib/wbarley.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'wrape.dai'
 Trying '../wrape.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/wrape.dai' success!
+Trying '/home/silas/Projects/daisy/lib/wrape.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'wwheat.dai'
 Trying '../wwheat.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/wwheat.dai' success!
+Trying '/home/silas/Projects/daisy/lib/wwheat.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'grass.dai'
 Trying '../grass.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/grass.dai' success!
+Trying '/home/silas/Projects/daisy/lib/grass.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'ryegrass.dai'
 Trying '../ryegrass.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/ryegrass.dai' success!
+Trying '/home/silas/Projects/daisy/lib/ryegrass.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'wclover.dai'
 Trying '../wclover.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/wclover.dai' success!
+Trying '/home/silas/Projects/daisy/lib/wclover.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'beetroot.dai'
 Trying '../beetroot.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/beetroot.dai' success!
+Trying '/home/silas/Projects/daisy/lib/beetroot.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'broccoli.dai'
 Trying '../broccoli.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/broccoli.dai' success!
+Trying '/home/silas/Projects/daisy/lib/broccoli.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'brusselssprouts.dai'
 Trying '../brusselssprouts.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/brusselssprouts.dai' success!
+Trying '/home/silas/Projects/daisy/lib/brusselssprouts.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'celeriac.dai'
 Trying '../celeriac.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/celeriac.dai' success!
+Trying '/home/silas/Projects/daisy/lib/celeriac.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'earlypotato.dai'
 Trying '../earlypotato.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/earlypotato.dai' success!
+Trying '/home/silas/Projects/daisy/lib/earlypotato.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'whitecabbage.dai'
 Trying '../whitecabbage.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/whitecabbage.dai' success!
+Trying '/home/silas/Projects/daisy/lib/whitecabbage.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'earlywhitecabbage.dai'
 Trying '../earlywhitecabbage.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/earlywhitecabbage.dai' success!
+Trying '/home/silas/Projects/daisy/lib/earlywhitecabbage.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'onion.dai'
 Trying '../onion.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/onion.dai' success!
+Trying '/home/silas/Projects/daisy/lib/onion.dai' success!
 *** input
 **** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'onion_plantingofsets.dai'
 Trying '../onion_plantingofsets.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/onion_plantingofsets.dai' success!
+Trying '/home/silas/Projects/daisy/lib/onion_plantingofsets.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'dk-management.dai'
 Trying '../dk-management.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-management.dai'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-management.dai' success!
+Trying '/home/silas/Projects/daisy/lib/dk-management.dai'
+Trying '/home/silas/Projects/daisy/sample/dk-management.dai' success!
 ** input
 *** file
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'log-std.dai'
 Trying '../log-std.dai' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/log-std.dai' success!
-Storing 'daisy.log' in '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S'
+Trying '/home/silas/Projects/daisy/lib/log-std.dai' success!
+Storing 'daisy.log' in '/tmp/tmpond26wq0/W-A-S'
 * Running 'W-A-S' from command line
 ** dk-taastrup.dwf: initializing at 1979-01-01T00:00:00
 *** source_initialize
-In directory '/home/silas/Projects/daisy-model/daisy/build/portable/tmp/W-A-S':
+In directory '/tmp/tmpond26wq0/W-A-S':
 Looking for file 'dk-taastrup.dwf'
 Trying '../dk-taastrup.dwf' (cwd)
-Trying '/home/silas/Projects/daisy-model/daisy/lib/dk-taastrup.dwf'
-Trying '/home/silas/Projects/daisy-model/daisy/sample/dk-taastrup.dwf' success!
+Trying '/home/silas/Projects/daisy/lib/dk-taastrup.dwf'
+Trying '/home/silas/Projects/daisy/sample/dk-taastrup.dwf' success!
 ** column: Askov initialize
 *** Soil
 **** Horizons
 ***** horizon: Askov Ap initialize_base
 (CEC 14.6389 [cmolc/kg]) ; Estimated from clay and humus.
 (quartz 0.607752 []) ; Estimated from texture.
-h	h	Theta	K	Cw2
-cm	pF		cm/h	cm^-1
-0		0.392	7.52	0
--1	0	0.390692	1.86726	0.00156596
--10	1	0.373747	0.356963	0.00188801
--100	2	0.285921	0.00602332	0.000504663
--1000	3	0.181071	2.21152e-05	3.77521e-05
--15848.9	4.2	0.10128	2.07975e-08	1.34778e-06
+h	h	Theta	K	Cw2	M
+cm	pF		cm/h	cm^-1	cm^2/h
+0		0.392	7.52	0	14.817
+-1	0	0.390692	1.86726	0.00156596	12.2012
+-10	1	0.373747	0.356963	0.00188801	5.22107
+-100	2	0.285921	0.00602332	0.000504663	0.435537
+-1000	3	0.181071	2.21152e-05	3.77521e-05	0.0144257
+-15848.9	4.2	0.10128	2.07975e-08	1.34778e-06	6.45542e-05
+-100000	5	0.0686674	1.97796e-10	1.44882e-07	0
+-1e+06	6	0.0422429	5.87139e-13	8.91323e-09	0
+-1e+07	7	0.0259869	1.74278e-15	5.48323e-10	0
+
 ***** horizon: Askov B initialize_base
 (CEC 14.9176 [cmolc/kg]) ; Estimated from clay and humus.
 (quartz 0.544673 []) ; Estimated from texture.
-h	h	Theta	K	Cw2
-cm	pF		cm/h	cm^-1
-0		0.445	14.5	0
--1	0	0.434715	0.492272	0.0104738
--10	1	0.377755	0.0154283	0.00381334
--100	2	0.285736	9.77405e-05	0.000376437
--1000	3	0.209958	4.61495e-07	2.82931e-05
--15848.9	4.2	0.144618	7.24524e-10	1.23175e-06
+h	h	Theta	K	Cw2	M
+cm	pF		cm/h	cm^-1	cm^2/h
+0		0.445	14.5	0	2.13898
+-1	0	0.434715	0.492272	0.0104738	0.954423
+-10	1	0.377755	0.0154283	0.00381334	0.135083
+-100	2	0.285736	9.77405e-05	0.000376437	0.00739984
+-1000	3	0.209958	4.61495e-07	2.82931e-05	0.000339178
+-15848.9	4.2	0.144618	7.24524e-10	1.23175e-06	2.29721e-06
+-100000	5	0.112778	9.77436e-12	1.52249e-07	0
+-1e+06	6	0.0826468	4.49358e-14	1.11573e-08	0
+-1e+07	7	0.0605656	2.06582e-16	8.17635e-10	0
+
 ***** horizon: Askov C initialize_base
 (CEC 15.397 [cmolc/kg]) ; Estimated from clay and humus.
 (quartz 0.536683 []) ; Estimated from texture.
-h	h	Theta	K	Cw2
-cm	pF		cm/h	cm^-1
-0		0.401	5	0
--1	0	0.39922	0.498016	0.00197103
--10	1	0.38174	0.0652063	0.00173131
--100	2	0.314448	0.00100008	0.000361443
--1000	3	0.235835	5.42683e-06	3.05785e-05
--15848.9	4.2	0.1644	8.84214e-09	1.35824e-06
+h	h	Theta	K	Cw2	M
+cm	pF		cm/h	cm^-1	cm^2/h
+0		0.401	5	0	3.2117
+-1	0	0.39922	0.498016	0.00197103	2.41217
+-10	1	0.38174	0.0652063	0.00173131	0.877505
+-100	2	0.314448	0.00100008	0.000361443	0.0807865
+-1000	3	0.235835	5.42683e-06	3.05785e-05	0.00403382
+-15848.9	4.2	0.1644	8.84214e-09	1.35824e-06	2.80562e-05
+-100000	5	0.129158	1.21551e-10	1.69188e-07	0
+-1e+06	6	0.0955267	5.71856e-13	1.25139e-08	0
+-1e+07	7	0.070652	2.69022e-15	9.25542e-10	0
+
 **** Geometry
 (zplus -2.5 -5 -10 -18 -27 -34 -42 -49 -57 -64 -72 -80 -88 -96 -104 -112 -120 -128 -136 -144 -152 -160 -168 -176 -184 -192 -201 -209 -217 -225 -233 -241 -250); 33 cells.
 *** bioclimate: default initialize
@@ -249,15 +262,15 @@ Bottom heat delay = -0.956909
 lay	humus	humus	input	input	AOM	SMB1	SMB2	SOM1	SOM2	SOM3	dSMB1	dSMB1	dSMB2	dSMB2	dSOM1	dSOM1	dSOM2	dSOM2	dSOM3	dSOM3
 	kg C/ha/cm	%	kg C/ha/cm/y	%	%	%	%	%	%	%	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1	kg C/ha/cm/y	y^-1
 0	2365.61	2.6	162.88	6.88533	1.79944	1.28265	0.741364	68.1319	28.0446	0	0	0	0	0	-9.13178	-0.00566581	0	0	-0	-nan	Above SOM1 limit
-0	2365.61	2.6	162.88	6.88533	1.79944	1.29543	0.741404	67.3146	28.8491	0	0	0	0	0	-8.77245	-0.00550895	-0.581092	-0.000851469	-0	-nan
+0	2365.61	2.6	162.88	6.88533	1.79944	1.29543	0.741404	67.3146	28.8491	-1.46662e-14	0	0	0	0	-8.77245	-0.00550895	-0.581092	-0.000851469	-0	0
 1	2365.61	2.6	127.162	5.37544	1.40484	1.19171	0.579388	74.8067	22.0174	0	0	0	0	0	-11.9475	-0.00675141	0	0	-0	-nan	Above SOM1 limit
-1	2365.61	2.6	127.162	5.37544	1.40484	1.30282	0.579737	67.6988	29.0138	1.53995e-13	0	0	0	0	-8.82252	-0.00550894	-5.05365	-0.00736304	-0	-0
+1	2365.61	2.6	127.162	5.37544	1.40484	1.30282	0.579737	67.6988	29.0138	5.86647e-14	0	0	0	0	-8.82252	-0.00550894	-5.05365	-0.00736304	-0	-0
 2	2365.61	2.6	87.7184	3.70807	0.969083	1.09127	0.400518	82.1776	15.3615	0	0	0	0	0	-15.057	-0.00774534	0	0	-0	-nan	Above SOM1 limit
-2	2365.61	2.6	87.7184	3.70807	0.969083	1.31099	0.401208	68.1231	29.1956	1.61328e-13	0	0	0	0	-8.87781	-0.00550894	-9.99269	-0.0144684	-0	-0
+2	2365.61	2.6	87.7184	3.70807	0.969083	1.31099	0.401208	68.1231	29.1956	1.75994e-13	0	0	0	0	-8.87781	-0.00550894	-9.99269	-0.0144684	-0	-0
 3	2365.61	2.6	46.0854	1.94814	0.509135	0.985265	0.211718	89.9578	8.33612	0	0	0	0	0	-18.339	-0.00861775	0	0	-0	-nan	Above SOM1 limit
-3	2365.61	2.6	46.0854	1.94814	0.509135	1.31961	0.212769	68.5709	29.3875	-3.0799e-13	0	0	0	0	-8.93618	-0.00550895	-15.2059	-0.0218729	-0	0
+3	2365.61	2.6	46.0854	1.94814	0.509135	1.31961	0.212769	68.5709	29.3875	-2.93324e-13	0	0	0	0	-8.93618	-0.00550895	-15.2059	-0.0218729	-0	0
 4	2365.61	2.6	19.8622	0.839621	0.21943	0.918494	0.0927998	94.8582	3.91108	0	0	0	0	0	-20.4062	-0.00909379	0	0	-0	-nan	Above SOM1 limit
-4	2365.61	2.6	19.8622	0.839621	0.21943	1.32504	0.0940776	68.853	29.5084	2.78657e-13	0	0	0	0	-8.97294	-0.00550894	-18.4895	-0.0264872	-0	-0
+4	2365.61	2.6	19.8622	0.839621	0.21943	1.32504	0.0940776	68.853	29.5084	-1.46662e-13	0	0	0	0	-8.97294	-0.00550895	-18.4895	-0.0264872	-0	0
 5	434.38	0.5	8.99482	2.07073	0.541173	0.404916	0.22262	11.931	12.2151	74.6851	0	0	0	0	0	0	0	0	-0	-0
 6	434.38	0.5	4.28016	0.98535	0.257516	0.192678	0.105933	5.67736	5.81253	87.954	0	0	0	0	0	0	0	0	-0	-0
 7	434.38	0.5	2.0367	0.468876	0.122538	0.0916854	0.0504081	2.70156	2.76588	94.2679	0	0	0	0	0	0	0	0	-0	-0
@@ -291,8 +304,8 @@ Expected humus change: -592.726 [kg C/ha/y], -4.09509e-07 [y^-1].
 Expected background mineralization: 53.8841 [kg N/ha/y].
 **** Top soil summary
 	SOM1	SOM2	SOM3	SMB1	SMB2	AOM1	AOM2	total
-kg C/ha	43678.5	18719.3	8.75168e-11	840.567	185.884	357.757	89.4394	63871.5
-kg N/ha	3949.48	1692.63	7.90617e-12	125.458	27.7438	3.97508	7.20484	5806.5
+kg C/ha	43678.5	18719.3	2.42861e-11	840.567	185.884	357.757	89.4394	63871.5
+kg N/ha	3949.48	1692.63	2.19951e-12	125.458	27.7438	3.97508	7.20484	5806.5
 
 Depth	27	cm
 T	7.8	dg C
@@ -303,7 +316,7 @@ Specified background mineralization	not specified	kg N/ha/y
 Zone input	1711.14	kg C/ha/y
 Zone background mineralization	0	kg C/ha/y
 Zone humus change	0	kg C/ha/y
-Time	Tue Sep 23 10:28:01 2025
+Time	Thu Aug 27 11:43:38 2026
 
 ** Running
 *** 1979-01-01T00:00:00
@@ -338,13 +351,13 @@ Emerging
 *** 1979-05-08T06:00:00
 **** crop: Spring Barley tick
 Luxury nitrogen uptake initiated
-*** 1979-06-03T23:00:00
+*** 1979-06-04T00:00:00
 **** crop: Spring Barley tick
 Crop affected by nitrogen stress
 *** 1979-06-04T01:00:00
 **** crop: Spring Barley tick
 Luxury nitrogen uptake initiated
-*** 1979-06-04T13:00:00
+*** 1979-06-04T14:00:00
 **** crop: Spring Barley tick
 Crop affected by nitrogen stress
 *** 1979-06-07T01:00:00
@@ -460,7 +473,7 @@ Nitrogen balance for the complete system.
               Min-Soil increase =   5.810 [kg N/ha]
           Min-Biopores increase =   0.000 [kg N/ha]
            Org-Surface increase =  -0.400 [kg N/ha]
-              Org-Soil increase = -95.341 [kg N/ha]
+              Org-Soil increase = -95.340 [kg N/ha]
                   Crop increase =  19.154 [kg N/ha]
                                   -------
       Total increase in content = -70.779 [kg N/ha]
@@ -494,7 +507,7 @@ Mineral balance for the complete system.
               Min-Soil increase =   5.810 [kg N/ha]
           Min-Biopores increase =   0.000 [kg N/ha]
                                   -------
-      Total increase in content =   5.808 [kg N/ha]
+      Total increase in content =   5.807 [kg N/ha]
 
                                   -------
 Balance (= In - Out - Increase) =   0.000 [kg N/ha]
@@ -514,7 +527,7 @@ Organic nitrogen balance for the complete system.
                    Total output = 103.512 [kg N/ha]
 
            Org-Surface increase =  -0.400 [kg N/ha]
-              Org-Soil increase = -95.341 [kg N/ha]
+              Org-Soil increase = -95.340 [kg N/ha]
                                   -------
       Total increase in content = -95.741 [kg N/ha]
 
@@ -541,6 +554,6 @@ Crop nitrogen balance for the complete system.
       Total increase in content = 19.154 [kg N/ha]
 
                                   ------
-Balance (= In - Out - Increase) =  0.000 [kg N/ha]
+Balance (= In - Out - Increase) = -0.000 [kg N/ha]
                                   ======
-Command line: /home/silas/Projects/daisy-model/daisy/build/portable/daisy -d W-A-S -D .. -q /home/silas/Projects/daisy-model/daisy/test/other/test-spawn.dai -p W-A-S
+Command line: /home/silas/Projects/daisy/build/linux-gcc-portable/daisy -d W-A-S -D .. -q /home/silas/Projects/daisy/test/dai-system-tests/tests/programs/test-spawn.dai -p W-A-S

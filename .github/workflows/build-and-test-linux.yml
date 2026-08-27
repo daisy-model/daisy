@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
 
     - name: Install build dependencies
       run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
 
     - name: Install uv for testing
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v10.0.1
       with:
         version: "0.9.18"
         enable-cache: false
@@ -46,7 +46,7 @@ jobs:
 
     - name: Upload test log
       if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: test-output-ubuntu
         path: build/Testing
