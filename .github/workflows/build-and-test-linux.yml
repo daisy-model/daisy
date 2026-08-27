@@ -15,7 +15,7 @@ jobs:
       run: sudo apt install cmake libsuitesparse-dev libboost-filesystem-dev python3-pybind11
 
     - name: Install uv for testing
-      uses: astral-sh/setup-uv@v10
+      uses: astral-sh/setup-uv@v10.0.1
       with:
         version: "0.9.18"
         enable-cache: false
