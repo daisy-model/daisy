@@ -166,7 +166,7 @@ macos-no-python:
 .PHONY: macos-test
 macos-test: macos
 	cd ${macos_build_dir} && \
-	unzip -qo `ls | grep -e "daisy.*Darwin-python.*zip"` && \
+	unzip -qo `ls daisy*-Darwin-*-python*.zip` && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
 	ctest --output-on-failure
