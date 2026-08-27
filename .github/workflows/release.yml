@@ -15,6 +15,11 @@ on:
         required: true
         type: boolean
         default: false
+      draft:
+        description: Create or update the GitHub release as a draft
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -31,6 +36,7 @@ jobs:
       should_release: ${{ steps.validate.outputs.should_release }}
       release_tag: ${{ steps.validate.outputs.release_tag }}
       publish_release: ${{ steps.validate.outputs.publish_release }}
+      draft_release: ${{ steps.validate.outputs.draft_release }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -43,9 +49,11 @@ jobs:
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
           REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
+          REQUEST_DRAFT: ${{ github.event_name == 'workflow_dispatch' && inputs.draft || 'false' }}
         run: |
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
           echo "publish_release=false" >> "$GITHUB_OUTPUT"
+          echo "draft_release=false" >> "$GITHUB_OUTPUT"
 
           if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "Skipping: $RELEASE_TAG is not a stable release tag."
@@ -71,6 +79,9 @@ jobs:
               exit 1
             fi
             echo "publish_release=true" >> "$GITHUB_OUTPUT"
+            if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$REQUEST_DRAFT" = "true" ]; then
+              echo "draft_release=true" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "Manual dry run: building artifacts without publishing a GitHub release."
           fi
@@ -249,6 +260,17 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ needs.preflight.outputs.release_tag }}
+          DRAFT_RELEASE: ${{ needs.preflight.outputs.draft_release }}
         run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --generate-notes
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            if [ "$DRAFT_RELEASE" = "true" ]; then
+              gh release edit "$RELEASE_TAG" --draft
+            else
+              gh release edit "$RELEASE_TAG" --draft=false
+            fi
+          elif [ "$DRAFT_RELEASE" = "true" ]; then
+            gh release create "$RELEASE_TAG" --draft --generate-notes
+          else
+            gh release create "$RELEASE_TAG" --generate-notes
+          fi
           gh release upload "$RELEASE_TAG" dist/* --clobber
