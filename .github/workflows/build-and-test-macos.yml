@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
 
     - name: Remove unused untrusted Homebrew tap
       run: brew untap aws/tap || true
@@ -27,7 +27,7 @@ jobs:
       run: brew install cmake boost suite-sparse pybind11
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v10
       with:
         version: "0.9.18"
         enable-cache: false
@@ -69,7 +69,7 @@ jobs:
 
     - name: Upload test log
       if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: test-output-macos-${{ matrix.arch }}
         path: ci-build/Testing

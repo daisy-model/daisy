@@ -32,7 +32,7 @@ jobs:
       release_tag: ${{ steps.validate.outputs.release_tag }}
       publish_release: ${{ steps.validate.outputs.publish_release }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -83,7 +83,7 @@ jobs:
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install build dependencies
         run: |
@@ -96,14 +96,14 @@ jobs:
           make linux-doc
 
       - name: Upload Linux deb package
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-deb
           path: build/linux-gcc-portable/*.deb
           if-no-files-found: error
 
       - name: Upload Linux documentation PDFs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-docs
           path: build/linux-gcc-portable/doc/*.pdf
@@ -115,7 +115,7 @@ jobs:
     if: needs.preflight.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install build dependencies
         run: |
@@ -123,7 +123,7 @@ jobs:
           sudo apt-get install -y flatpak flatpak-builder
 
       - name: Restore Flatpak builder cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             flatpak/.flatpak-builder
@@ -143,7 +143,7 @@ jobs:
           flatpak build-bundle repo "daisy-${version}.flatpak" dk.ku.daisy
 
       - name: Upload Linux flatpak package
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-linux-flatpak
           path: flatpak/*.flatpak
@@ -163,7 +163,7 @@ jobs:
             arch: x86_64
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Remove unused untrusted Homebrew tap
         run: brew untap aws/tap || true
@@ -172,7 +172,7 @@ jobs:
         run: brew install cmake boost suite-sparse pybind11
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v10
         with:
           version: "0.9.18"
           enable-cache: false
@@ -181,7 +181,7 @@ jobs:
         run: make macos
 
       - name: Upload macOS packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-macos-${{ matrix.arch }}
           path: build/macos-clang-portable/*.zip
@@ -212,13 +212,13 @@ jobs:
             mingw-w64-ucrt-x86_64-uv
             mingw-w64-ucrt-x86_64-nsis
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Build Windows packages
         run: make windows
 
       - name: Upload Windows packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: release-windows
           path: |
@@ -238,7 +238,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download release artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: release-*
           merge-multiple: true
