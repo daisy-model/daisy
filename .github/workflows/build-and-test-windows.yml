@@ -53,7 +53,7 @@ jobs:
 
       - name: Install
         working-directory: ci-build
-        run: unzip $( ls | grep -e "daisy-.*-Windows-python.*zip" )
+        run: unzip daisy-*-Windows-python*.zip
 
       - name: Setup test environment
         working-directory: ci-build

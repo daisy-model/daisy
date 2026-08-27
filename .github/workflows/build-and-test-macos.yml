@@ -55,7 +55,7 @@ jobs:
 
     - name: Install
       working-directory: ci-build
-      run: unzip "$( ls daisy*-Darwin-*-python*.zip )"
+      run: unzip daisy*-Darwin-*-python*.zip
 
     - name: Setup test environment
       working-directory: ci-build

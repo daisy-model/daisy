@@ -35,6 +35,7 @@ release-tag:
 # Windows
 ## Windows: Default build installer and zip
 windows_build_dir=build/mingw-gcc-portable
+windows_test_archive ?=
 .PHONY: windows
 windows: windows-nsis windows-zip
 
@@ -61,7 +62,20 @@ windows-test: windows-zip
 	cd ${windows_build_dir} && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
-	unzip -qo `ls | grep -e "daisy-.*-Windows-python.*zip"` && \
+	if [ -n "$(windows_test_archive)" ]; then \
+		archive="$(windows_test_archive)"; \
+	elif set -- daisy-*-Windows-python*.zip && [ "$$1" != 'daisy-*-Windows-python*.zip' ] && [ "$$#" -eq 1 ]; then \
+		archive="$$1"; \
+	elif [ "$$1" = 'daisy-*-Windows-python*.zip' ]; then \
+		echo "No Windows package archive found" >&2; \
+		exit 1; \
+	else \
+		echo "Expected exactly one Windows package archive, found $$#" >&2; \
+		printf '  %s\n' "$$@" >&2; \
+		echo "Override with: make windows-test windows_test_archive=<archive.zip>" >&2; \
+		exit 1; \
+	fi; \
+	unzip -qo "$$archive" && \
 	ctest --output-on-failure
 
 # Linux
@@ -136,6 +150,7 @@ linux-doc:
 # MacOS
 ## MacOS: Standard build with python support
 macos_build_dir=build/macos-clang-portable
+macos_test_archive ?=
 .PHONY: macos
 macos: uv-python
 	mkdir -p ${macos_build_dir} && \
@@ -166,7 +181,20 @@ macos-no-python:
 .PHONY: macos-test
 macos-test: macos
 	cd ${macos_build_dir} && \
-	unzip -qo `ls daisy*-Darwin-*-python*.zip` && \
+	if [ -n "$(macos_test_archive)" ]; then \
+		archive="$(macos_test_archive)"; \
+	elif set -- daisy*-Darwin-*-python*.zip && [ "$$1" != 'daisy*-Darwin-*-python*.zip' ] && [ "$$#" -eq 1 ]; then \
+		archive="$$1"; \
+	elif [ "$$1" = 'daisy*-Darwin-*-python*.zip' ]; then \
+		echo "No macOS package archive found" >&2; \
+		exit 1; \
+	else \
+		echo "Expected exactly one macOS package archive, found $$#" >&2; \
+		printf '  %s\n' "$$@" >&2; \
+		echo "Override with: make macos-test macos_test_archive=<archive.zip>" >&2; \
+		exit 1; \
+	fi; \
+	unzip -qo "$$archive" && \
 	uv venv --allow-existing && \
 	uv pip install git+https://github.com/daisy-model/daisypy-test && \
 	ctest --output-on-failure
