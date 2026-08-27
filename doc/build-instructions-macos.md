@@ -26,11 +26,13 @@ The Makefile defines some convenience targets
     make macos
 
 Will build daisy in `build/macos-clang-portable` and make a zip archive.
+The generated archive name includes the macOS architecture, such as `arm64` or `x86_64`.
 
 
     make macos-no-python
 
 Will build a version of daisy without python support in `build/macos-clang-portable-no-python` and make a zip archive.
+The generated archive name includes the macOS architecture, such as `arm64` or `x86_64`.
 
 ### Non-standard builds
 [CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using gcc

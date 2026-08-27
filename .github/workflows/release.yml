@@ -150,10 +150,18 @@ jobs:
           if-no-files-found: error
 
   build-macos:
-    name: Build macOS package
+    name: Build macOS package (${{ matrix.arch }})
     needs: preflight
     if: needs.preflight.outputs.should_release == 'true'
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: arm64
+          - runner: macos-13
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v5
 
@@ -175,7 +183,7 @@ jobs:
       - name: Upload macOS packages
         uses: actions/upload-artifact@v5
         with:
-          name: release-macos
+          name: release-macos-${{ matrix.arch }}
           path: build/macos-clang-portable/*.zip
           if-no-files-found: error
 
