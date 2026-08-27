@@ -33,7 +33,7 @@ to your `settings.json` file.
 1. Open the `sample.dai` file from the `sample` directory in your Daisy installation.
 2. Press `F5` to run the simulation (or click on the tiny Daisy icon in the top right of VSCode).
 
-This should prompt you first for the path to your Daisy installation directory, then for the path to the Daisy executable you want to use.
+This should prompt you first for the path to your Daisy installation directory, then for the path to the Daisy executable you want to use. On Windows you want the `daisy.cmd` script, on MacOS you want the `daisy` script. You do NOT want the `daisy-bin` programs.
 
 * On Windows Daisy is typically installed to `C:/Program Files/daisy <version-number>`.
 * On MacOS Daisy is typically installed to `/Applications/Daisy`
@@ -52,14 +52,10 @@ When you have multiple entries in your "Daisy.executable" settings, you will be 
 {
     "Daisy.executable": [
         {
-            "name": "daisy-v7.1.0",
-            "path": "C:/Program Files/daisy 7.1.0/bin/daisy.exe"
-        },
-        {
-            "name": "daisy-v7.1.0_no-python",
-            "path": "C:/Program Files/daisy 7.1.0_no-python/bin/daisy.exe"
+            "name": "daisy-v7.1.12",
+            "path": "C:/Program Files/daisy 7.1.12/bin/daisy.cmd"
         }
     ],
-    "Daisy.home": "C:/Program Files/daisy 7.1.0"
+    "Daisy.home": "C:/Program Files/daisy 7.1.12"
 }
 ```
