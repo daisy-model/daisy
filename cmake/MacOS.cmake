@@ -18,79 +18,22 @@ install(TARGETS ${DAISY_BIN_NAME}
   COMPONENT runtime
 )
 
-# When making an installer we want to be able to redistribute the dylibs and find them.
-#
-# Copy dylibs so we can redistribute. First copy to a directory in the build tree. CMake will
-# handle symlinks. Then install all the files we just copied.
-# We put them in bin/lib, then we dont need to update the rpath of the shared library files
-# because they look in @loader_path/../lib, which becomes lib/
+# Stage non-target runtime files that will be installed alongside the packaged
+# executable. Runtime library fixups are handled by a post-build CMake script.
 set(_staging_dir "${CMAKE_CURRENT_BINARY_DIR}/_staging")
-set(_boost_path_prefix "")
 set(_dylib_target_dir "${_staging_dir}/bin/lib")
-file(INSTALL
-  "${HOMEBREW_PREFIX}/lib/libcxsparse.4.dylib"
-  "${HOMEBREW_PREFIX}/lib/libsuitesparseconfig.7.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_filesystem.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_container.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_atomic.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_process.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_context.dylib"
-  "${HOMEBREW_PREFIX}/${_boost_path_prefix}lib/libboost_date_time.dylib"
-  "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib"
-  DESTINATION ${_dylib_target_dir}
-  FOLLOW_SYMLINK_CHAIN
-)
 
-# Update daisy binary so it knows to look in @executable_path for dylibs
-# First update the rpath.
-# For the installed binary we use @executable_path directly because it is installed to
-#  <prefix/bin
-# which contain lib/ with shared libraries.
-# For the build binary we use @executable_path/bin because the binary is not moved to the bin dir
+# The packaged executable lives in Daisy/bin and its bundled libraries live in
+# Daisy/bin/lib. In the build tree, the post-build fixup script stages those
+# libraries under _staging/bin/lib relative to daisy-bin.
 set_target_properties(${DAISY_BIN_NAME}
   PROPERTIES
   INSTALL_RPATH "@executable_path"
-  BUILD_RPATH "@executable_path/bin"
+  BUILD_RPATH "@executable_path/_staging/bin"
 )
 
-# Then update the id of dylibs
-# This is brittle. Would be nice to get the dir path dynamically.
-set(_boost_id_prefix "boost/")
-set(_dylibs_rel_path
-  "suite-sparse/lib/libcxsparse.4.dylib"
-  "${_boost_id_prefix}lib/libboost_filesystem.dylib"
-  "${_boost_id_prefix}lib/libboost_container.dylib"
-  "${_boost_id_prefix}lib/libboost_atomic.dylib"
-  "${_boost_id_prefix}lib/libboost_process.dylib"
-  "${_boost_id_prefix}lib/libboost_context.dylib"
-  "${_boost_id_prefix}lib/libboost_date_time.dylib"
-)
-foreach(_dylib_rel_path ${_dylibs_rel_path})
-  set(_old_lib_id "${HOMEBREW_PREFIX}/opt/${_dylib_rel_path}")
-  cmake_path(GET _old_lib_id FILENAME _dylib)
-  set(_new_lib_id "@rpath/lib/${_dylib}")
-
-  message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
-  add_custom_command(TARGET ${DAISY_BIN_NAME}
-    POST_BUILD
-    COMMAND "install_name_tool"
-    ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
-    "${DAISY_BIN_NAME}"
-  )
-endforeach()
-
-# We also need to update the path of libomp in libsuitesparseconfig
-set(_old_lib_id "${HOMEBREW_PREFIX}/opt/libomp/lib/libomp.dylib")
-set(_new_lib_id "@rpath/libomp.dylib")
-set(_suitesparseconfig "${_dylib_target_dir}/libsuitesparseconfig.7.dylib")
-message("-- In ${_suitesparseconfig}: Change ${_old_lib_id} -> ${_new_lib_id}")
-add_custom_command(TARGET ${DAISY_BIN_NAME}
-  POST_BUILD
-  COMMAND "install_name_tool"
-  ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
-  "${_suitesparseconfig}"
-)
-
+set(_python_dir "")
+set(_python_dylib_name "")
 if (${BUILD_PYTHON})
   # We add python version to distribution name, so people can see the version they get
   set(DAISY_PYTHON_VERSION "${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}")
@@ -107,25 +50,12 @@ if (${BUILD_PYTHON})
     PATTERN "include" EXCLUDE             # We dont need header files
   )
 
-  # Replace the id of the python dylib to avoid leaking info about build
-  # Not necesary for running, because we will never link new objects against
-  # the dylib.
+  # Replace the id of the python dylib to avoid leaking info about build.
   set(_python_dylib_relpath "${_staging_dir}/python/lib/${_python_dylib_name}")
-  message("-- In ${_python_dylib_relpath}: Change id to ${_python_dylib_name}")
   add_custom_command(TARGET ${DAISY_BIN_NAME}
     POST_BUILD
     COMMAND "install_name_tool"
     ARGS "-id" "${_python_dylib_name}" "${_python_dylib_relpath}"
-  )
-
-  # Update the python dylib path in daisy binary
-  set(_new_lib_id "@executable_path/../python/lib/${_python_dylib_name}")
-  message("-- In ${DAISY_BIN_NAME}: Change ${_old_lib_id} -> ${_new_lib_id}")
-  add_custom_command(TARGET ${DAISY_BIN_NAME}
-    POST_BUILD
-    COMMAND "install_name_tool"
-    ARGS "-change" "${_old_lib_id}" "${_new_lib_id}"
-    "${DAISY_BIN_NAME}"
   )
 
   # Install the wrapper script that calls daisy with python
@@ -145,6 +75,18 @@ else()
   )
 endif()
 
+add_custom_command(TARGET ${DAISY_BIN_NAME}
+  POST_BUILD
+  COMMAND "${CMAKE_COMMAND}"
+  ARGS
+    -DDAISY_EXECUTABLE=$<TARGET_FILE:${DAISY_BIN_NAME}>
+    -DDAISY_STAGING_DIR=${_staging_dir}
+    -DDAISY_DYLIB_TARGET_DIR=${_dylib_target_dir}
+    -DDAISY_PYTHON_ROOT_DIR=${_python_dir}
+    -DDAISY_PYTHON_DYLIB_NAME=${_python_dylib_name}
+    -DHOMEBREW_PREFIX=${HOMEBREW_PREFIX}
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FixupMacOSDependencies.cmake
+)
 
 # Install the staged stuff
 install(DIRECTORY ${_staging_dir}/
