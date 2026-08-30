@@ -87,4 +87,18 @@ the other processes in Daisy as submodels.")
   { }
 } Column_init;
 
+// Default BMI implementations on Column base class.
+// Subclasses (e.g. ColumnStandard) override these.
+double
+Column::get_column_area () const
+{ return area; }
+
+std::vector<double>
+Column::get_layer_tops () const
+{ return {}; }
+
+std::vector<double>
+Column::get_layer_bottoms () const
+{ return {}; }
+
 // column.C ends here.

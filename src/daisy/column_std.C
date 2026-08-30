@@ -87,6 +87,14 @@ struct ColumnStandard : public Column
   std::vector<double> tillage_age;
   std::unique_ptr<Irrigation> irrigation;
 
+  // Python/BMI coupling: cached arrays (filled in tick_move, valid after each tick).
+  double bottom_flux_cached_ = 0.0;                // [cm/h]
+  std::vector<double> flux_array_cached_;          // [cm/h], bottom edge of each cell
+  std::vector<double> h_array_cached_;             // [cm], pressure head per layer
+  std::vector<double> theta_array_cached_;         // [-], volumetric water content
+  std::vector<double> theta_sat_cached_;           // [-], saturated θ (static soil param)
+  mutable double runoff_rate_cached_ = 0.0;        // [mm], accumulated since last read
+
   // Log variables.
   double yield_DM;
   double yield_N;
@@ -183,6 +191,19 @@ public:
   double crop_sorg_dm (const symbol name) const;
   std::string crop_names () const;
   double bottom () const;
+
+  // Python/BMI coupling.
+  double get_groundwater_table () const override;
+  void   set_groundwater_table (double cm) override;
+  double get_bottom_flux () const override;
+  double get_column_area () const override;
+  std::vector<double> get_layer_tops () const override;
+  std::vector<double> get_layer_bottoms () const override;
+  std::vector<double> get_flux_array () const override;
+  std::vector<double> get_h_array () const override;
+  std::vector<double> get_theta_array () const override;
+  std::vector<double> get_theta_sat_array () const override;
+  double get_runoff_rate () const override;
 
   // Simulation.
   void clear ();
@@ -848,6 +869,7 @@ ColumnStandard::tick_move (const Metalib& metalib,
   soil_heat->tick (geometry, *soil, *soil_water, T_bottom, *movement, 
                    surface->temperature (), dt, msg);
   soil_water->reset_old (); // Set Theta_old to Theta here.
+
   chemistry->mass_balance (geometry, *soil_water);
   soil_water->tick_ice (geometry, *soil, dt, msg); 
   movement->tick (*soil, *soil_water, *soil_heat,
@@ -891,6 +913,24 @@ ColumnStandard::tick_move (const Metalib& metalib,
     }
   chemistry->update_C (*soil, *soil_water, *soil_heat, *awi);
   chemistry->mass_balance (geometry, *soil_water);
+
+  // BMI: cache post-Richards arrays and runoff for BMI getters.
+  {
+    const size_t n = geometry.cell_size ();
+
+    bottom_flux_cached_ = soil_water->q_matrix (n);
+
+    flux_array_cached_.resize (n);
+    h_array_cached_.resize (n);
+    theta_array_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      {
+        flux_array_cached_[i]  = soil_water->q_matrix (i + 1); // [cm/h]
+        h_array_cached_[i]     = soil_water->h (i);            // [cm]
+        theta_array_cached_[i] = soil_water->Theta (i);        // [-]
+      }
+    runoff_rate_cached_ += surface->runoff_rate () * surface->ponding_average () * dt; // [mm]
+  }
 }
 
 bool
@@ -1211,6 +1251,14 @@ ColumnStandard::initialize (const Metalib& metalib,
   // Soil conductivity and capacity logs.
   soil_heat->tick_after (geometry.cell_size (), *soil, *soil_water, msg);
 
+  // BMI: cache static soil parameter theta_sat once after initialization.
+  {
+    const size_t n = geometry.cell_size ();
+    theta_sat_cached_.resize (n);
+    for (size_t i = 0; i < n; ++i)
+      theta_sat_cached_[i] = soil->Theta_sat (i);
+  }
+
   // Litter layer.
   litter->tick (*bioclimate, geometry, *soil, *soil_water, *soil_heat,
 		*organic_matter, *chemistry, 0.0, msg);
@@ -1363,3 +1411,65 @@ Hansen et.al. 1990. with generic movement in soil.")
 } column_syntax;
 
 // column_std.C ends here.
+
+// ===== Python/BMI getter implementations =====
+
+double
+ColumnStandard::get_groundwater_table () const
+{ return groundwater->table (); }
+
+void
+ColumnStandard::set_groundwater_table (double cm)
+{ groundwater->set_table (cm); }
+
+double
+ColumnStandard::get_bottom_flux () const
+{ return bottom_flux_cached_; }
+
+double
+ColumnStandard::get_column_area () const
+{ return area; }
+
+std::vector<double>
+ColumnStandard::get_layer_tops () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> tops (n);
+  for (size_t i = 0; i < n; ++i)
+    tops[i] = geometry.cell_top (i);
+  return tops;
+}
+
+std::vector<double>
+ColumnStandard::get_layer_bottoms () const
+{
+  const size_t n = geometry.cell_size ();
+  std::vector<double> bottoms (n);
+  for (size_t i = 0; i < n; ++i)
+    bottoms[i] = geometry.cell_bottom (i);
+  return bottoms;
+}
+
+std::vector<double>
+ColumnStandard::get_flux_array () const
+{ return flux_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_h_array () const
+{ return h_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_array () const
+{ return theta_array_cached_; }
+
+std::vector<double>
+ColumnStandard::get_theta_sat_array () const
+{ return theta_sat_cached_; }
+
+double
+ColumnStandard::get_runoff_rate () const
+{
+  const double v = runoff_rate_cached_;
+  runoff_rate_cached_ = 0.0;
+  return v;
+}
