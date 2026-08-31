@@ -10,6 +10,14 @@ on:
         description: Release tag to validate against CMakeLists.txt, for example v7.1.12
         required: true
         type: string
+      target_platform:
+        description: Platforms to build for this manual run
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - macos
       publish:
         description: Publish a GitHub release after building artifacts
         required: true
@@ -37,6 +45,7 @@ jobs:
       release_tag: ${{ steps.validate.outputs.release_tag }}
       publish_release: ${{ steps.validate.outputs.publish_release }}
       draft_release: ${{ steps.validate.outputs.draft_release }}
+      target_platform: ${{ steps.validate.outputs.target_platform }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -48,12 +57,14 @@ jobs:
           REF_NAME: ${{ github.ref_name }}
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
+          REQUEST_TARGET_PLATFORM: ${{ github.event_name == 'workflow_dispatch' && inputs.target_platform || 'all' }}
           REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
           REQUEST_DRAFT: ${{ github.event_name == 'workflow_dispatch' && inputs.draft || 'false' }}
         run: |
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
           echo "publish_release=false" >> "$GITHUB_OUTPUT"
           echo "draft_release=false" >> "$GITHUB_OUTPUT"
+          echo "target_platform=${REQUEST_TARGET_PLATFORM}" >> "$GITHUB_OUTPUT"
 
           if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "Skipping: $RELEASE_TAG is not a stable release tag."
@@ -64,6 +75,16 @@ jobs:
           cmake_version="$( sed -n '/project(/,/)/ s/.*VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt | head -n1 )"
           if [ "v${cmake_version}" != "$RELEASE_TAG" ]; then
             echo "Error: tag $RELEASE_TAG does not match project version v${cmake_version}."
+            exit 1
+          fi
+
+          if [ "$REQUEST_TARGET_PLATFORM" != "all" ] && [ "$REQUEST_TARGET_PLATFORM" != "macos" ]; then
+            echo "Error: unsupported target_platform '$REQUEST_TARGET_PLATFORM'." >&2
+            exit 1
+          fi
+
+          if [ "$REQUEST_TARGET_PLATFORM" != "all" ] && [ "$REQUEST_PUBLISH" = "true" ]; then
+            echo "Error: publishing a GitHub release requires target_platform=all." >&2
             exit 1
           fi
 
@@ -91,7 +112,7 @@ jobs:
   build-linux-deb:
     name: Build Linux deb package
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -123,7 +144,7 @@ jobs:
   build-linux-flatpak:
     name: Build Linux flatpak package
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -241,11 +262,12 @@ jobs:
           mkdir -p "$work_dir"
           ditto -x -k "$archive_path" "$work_dir"
 
-          package_root="$(find "$work_dir" -maxdepth 1 -mindepth 1 -type d -name 'Daisy' -print -quit)"
-          if [ -z "$package_root" ]; then
+          daisy_bin="$(find "$work_dir" -type f -path '*/bin/daisy-bin' -print -quit)"
+          if [ -z "$daisy_bin" ]; then
             echo "Expected Daisy package root was not found after unpacking $archive_path." >&2
             exit 1
           fi
+          package_root="$(dirname "$(dirname "$daisy_bin")")"
 
           while IFS= read -r -d '' candidate; do
             file_description="$(file -b "$candidate")"
@@ -270,7 +292,12 @@ jobs:
           rm -rf "$work_dir"
           mkdir -p "$work_dir"
           ditto -x -k "$archive_path" "$work_dir"
-          package_root="$(find "$work_dir" -maxdepth 1 -mindepth 1 -type d -name 'Daisy' -print -quit)"
+          daisy_bin="$(find "$work_dir" -type f -path '*/bin/daisy-bin' -print -quit)"
+          if [ -z "$daisy_bin" ]; then
+            echo "Expected Daisy package root was not found after unpacking $archive_path." >&2
+            exit 1
+          fi
+          package_root="$(dirname "$(dirname "$daisy_bin")")"
           codesign --verify --strict --verbose=2 "$package_root/bin/daisy-bin"
 
           python_bin="$(find "$package_root/python/bin" -maxdepth 1 -type f -name 'python3*' -print -quit)"
@@ -320,7 +347,7 @@ jobs:
   build-windows:
     name: Build Windows packages
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: windows-latest
     defaults:
       run:
@@ -364,7 +391,7 @@ jobs:
       - build-linux-flatpak
       - build-macos
       - build-windows
-    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - name: Download release artifacts
