@@ -290,6 +290,12 @@ jobs:
         run: |
           build_dir="build/macos-clang-portable"
           archive_path="$(find "$build_dir" -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found in $build_dir." >&2
+            exit 1
+          fi
+
           work_dir="$RUNNER_TEMP/macos-package-verify"
           rm -rf "$work_dir"
           mkdir -p "$work_dir"
