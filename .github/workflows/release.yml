@@ -10,6 +10,14 @@ on:
         description: Release tag to validate against CMakeLists.txt, for example v7.1.12
         required: true
         type: string
+      target_platform:
+        description: Platforms to build for this manual run
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - macos
       publish:
         description: Publish a GitHub release after building artifacts
         required: true
@@ -37,6 +45,7 @@ jobs:
       release_tag: ${{ steps.validate.outputs.release_tag }}
       publish_release: ${{ steps.validate.outputs.publish_release }}
       draft_release: ${{ steps.validate.outputs.draft_release }}
+      target_platform: ${{ steps.validate.outputs.target_platform }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -48,12 +57,14 @@ jobs:
           REF_NAME: ${{ github.ref_name }}
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
+          REQUEST_TARGET_PLATFORM: ${{ github.event_name == 'workflow_dispatch' && inputs.target_platform || 'all' }}
           REQUEST_PUBLISH: ${{ github.event_name == 'workflow_dispatch' && inputs.publish || 'false' }}
           REQUEST_DRAFT: ${{ github.event_name == 'workflow_dispatch' && inputs.draft || 'false' }}
         run: |
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
           echo "publish_release=false" >> "$GITHUB_OUTPUT"
           echo "draft_release=false" >> "$GITHUB_OUTPUT"
+          echo "target_platform=${REQUEST_TARGET_PLATFORM}" >> "$GITHUB_OUTPUT"
 
           if ! printf '%s\n' "$RELEASE_TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "Skipping: $RELEASE_TAG is not a stable release tag."
@@ -64,6 +75,16 @@ jobs:
           cmake_version="$( sed -n '/project(/,/)/ s/.*VERSION \([0-9.]*\).*/\1/p' CMakeLists.txt | head -n1 )"
           if [ "v${cmake_version}" != "$RELEASE_TAG" ]; then
             echo "Error: tag $RELEASE_TAG does not match project version v${cmake_version}."
+            exit 1
+          fi
+
+          if [ "$REQUEST_TARGET_PLATFORM" != "all" ] && [ "$REQUEST_TARGET_PLATFORM" != "macos" ]; then
+            echo "Error: unsupported target_platform '$REQUEST_TARGET_PLATFORM'." >&2
+            exit 1
+          fi
+
+          if [ "$REQUEST_TARGET_PLATFORM" != "all" ] && [ "$REQUEST_PUBLISH" = "true" ]; then
+            echo "Error: publishing a GitHub release requires target_platform=all." >&2
             exit 1
           fi
 
@@ -91,7 +112,7 @@ jobs:
   build-linux-deb:
     name: Build Linux deb package
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -123,7 +144,7 @@ jobs:
   build-linux-flatpak:
     name: Build Linux flatpak package
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -188,8 +209,154 @@ jobs:
           version: "0.9.18"
           enable-cache: false
 
+      - name: Import Developer ID certificate
+        id: signing
+        env:
+          APPLE_DEVELOPER_ID_CERT_P12_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_CERT_P12_BASE64 }}
+          APPLE_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_CERT_PASSWORD }}
+        run: |
+          cert_path="$RUNNER_TEMP/developer-id-application.p12"
+          keychain_path="$RUNNER_TEMP/app-signing.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+
+          printf '%s' "$APPLE_DEVELOPER_ID_CERT_P12_BASE64" | base64 -D > "$cert_path"
+
+          security create-keychain -p "$keychain_password" "$keychain_path"
+          security set-keychain-settings -lut 21600 "$keychain_path"
+          security unlock-keychain -p "$keychain_password" "$keychain_path"
+          security list-keychains -d user -s "$keychain_path" login.keychain-db
+          security default-keychain -d user -s "$keychain_path"
+          security import "$cert_path" \
+            -k "$keychain_path" \
+            -P "$APPLE_DEVELOPER_ID_CERT_PASSWORD" \
+            -T /usr/bin/codesign \
+            -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$keychain_password" "$keychain_path"
+
+          signing_identity="$(security find-identity -v -p codesigning "$keychain_path" | sed -n 's/.*"\(Developer ID Application:.*\)"/\1/p' | head -n1)"
+          if [ -z "$signing_identity" ]; then
+            echo "Developer ID Application identity not found in imported keychain." >&2
+            exit 1
+          fi
+
+          echo "cert_path=$cert_path" >> "$GITHUB_OUTPUT"
+          echo "keychain_path=$keychain_path" >> "$GITHUB_OUTPUT"
+          echo "signing_identity=$signing_identity" >> "$GITHUB_OUTPUT"
+
       - name: Build macOS package
         run: make macos
+
+      - name: Sign macOS package contents
+        env:
+          APPLE_KEYCHAIN_PATH: ${{ steps.signing.outputs.keychain_path }}
+          APPLE_SIGNING_IDENTITY: ${{ steps.signing.outputs.signing_identity }}
+        run: |
+          build_dir="build/macos-clang-portable"
+          archive_path="$(find "$build_dir" -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found in $build_dir." >&2
+            exit 1
+          fi
+
+          work_dir="$RUNNER_TEMP/macos-package"
+          rm -rf "$work_dir"
+          mkdir -p "$work_dir"
+          ditto -x -k "$archive_path" "$work_dir"
+
+          daisy_bin="$(find "$work_dir" -type f -path '*/bin/daisy-bin' -print -quit)"
+          if [ -z "$daisy_bin" ]; then
+            echo "Expected Daisy package root was not found after unpacking $archive_path." >&2
+            exit 1
+          fi
+          package_root="$(dirname "$(dirname "$daisy_bin")")"
+
+          while IFS= read -r -d '' candidate; do
+            file_description="$(file -b "$candidate")"
+            case "$file_description" in
+              *"Mach-O"*"dynamically linked shared library"*|*"Mach-O"*"bundle"*)
+                codesign --force --sign "$APPLE_SIGNING_IDENTITY" --keychain "$APPLE_KEYCHAIN_PATH" --timestamp "$candidate"
+                ;;
+              *"Mach-O"*)
+                codesign --force --sign "$APPLE_SIGNING_IDENTITY" --keychain "$APPLE_KEYCHAIN_PATH" --options runtime --timestamp "$candidate"
+                ;;
+            esac
+          done < <(find "$package_root" -type f -print0)
+
+          rm -f "$archive_path"
+          ditto -c -k --sequesterRsrc --keepParent "$package_root" "$archive_path"
+
+      - name: Verify macOS signatures
+        run: |
+          build_dir="build/macos-clang-portable"
+          archive_path="$(find "$build_dir" -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found in $build_dir." >&2
+            exit 1
+          fi
+
+          work_dir="$RUNNER_TEMP/macos-package-verify"
+          rm -rf "$work_dir"
+          mkdir -p "$work_dir"
+          ditto -x -k "$archive_path" "$work_dir"
+          daisy_bin="$(find "$work_dir" -type f -path '*/bin/daisy-bin' -print -quit)"
+          if [ -z "$daisy_bin" ]; then
+            echo "Expected Daisy package root was not found after unpacking $archive_path." >&2
+            exit 1
+          fi
+          package_root="$(dirname "$(dirname "$daisy_bin")")"
+          codesign --verify --strict --verbose=2 "$package_root/bin/daisy-bin"
+
+          python_bin=""
+          for candidate in "$package_root"/python/bin/python3*; do
+            if [ ! -e "$candidate" ]; then
+              continue
+            fi
+
+            file_description="$(file -L -b "$candidate")"
+            case "$file_description" in
+              *"Mach-O"*)
+                python_bin="$candidate"
+                break
+                ;;
+            esac
+          done
+          if [ -z "$python_bin" ]; then
+            echo "Embedded Python executable not found for signature verification." >&2
+            exit 1
+          fi
+          codesign --verify --strict --verbose=2 "$python_bin"
+
+          while IFS= read -r -d '' candidate; do
+            codesign --verify --strict --verbose=2 "$candidate"
+          done < <(find "$package_root" -type f \( -name '*.dylib' -o -path '*/site-packages/*.so' \) -print0)
+
+      - name: Notarize macOS package
+        env:
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          archive_path="$(find build/macos-clang-portable -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found for notarization." >&2
+            exit 1
+          fi
+
+          xcrun notarytool submit "$archive_path" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait
+
+      - name: Clean up signing keychain
+        if: ${{ always() }}
+        run: |
+          rm -f "${{ steps.signing.outputs.cert_path }}"
+          if [ -n "${{ steps.signing.outputs.keychain_path }}" ]; then
+            security delete-keychain "${{ steps.signing.outputs.keychain_path }}" || true
+          fi
 
       - name: Upload macOS packages
         uses: actions/upload-artifact@v7
@@ -201,7 +368,7 @@ jobs:
   build-windows:
     name: Build Windows packages
     needs: preflight
-    if: needs.preflight.outputs.should_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: windows-latest
     defaults:
       run:
@@ -245,7 +412,7 @@ jobs:
       - build-linux-flatpak
       - build-macos
       - build-windows
-    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true'
+    if: needs.preflight.outputs.should_release == 'true' && needs.preflight.outputs.publish_release == 'true' && needs.preflight.outputs.target_platform == 'all'
     runs-on: ubuntu-latest
     steps:
       - name: Download release artifacts

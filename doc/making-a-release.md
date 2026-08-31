@@ -15,9 +15,24 @@ The workflow can be started manually from the GitHub Actions page with `workflow
 Choose the `Build packages and publish release` workflow, select a branch, and provide:
 
 * `release_tag`: a stable version tag such as `v7.1.12`
+* `target_platform`: leave this as `all` for a full release dry run, or choose `macos` to only build and notarize the macOS artifacts
 * `publish`: leave this as `false` for a dry run
 
-With `publish=false`, the workflow validates the version, builds the Linux, MacOS, and Windows packages, and uploads them as workflow artifacts, but it does not create a GitHub release.
+With `publish=false`, the workflow validates the version and uploads workflow artifacts without creating a GitHub release. The `target_platform` input controls whether it builds all platforms or only macOS.
+
+Manual publishing requires `target_platform=all`.
+
+## Apple signing and notarization secrets
+
+The macOS release job signs the package with a Developer ID Application certificate and submits the archive for notarization. Configure these repository secrets before testing or publishing a release:
+
+* `APPLE_DEVELOPER_ID_CERT_P12_BASE64`
+* `APPLE_DEVELOPER_ID_CERT_PASSWORD`
+* `APPLE_TEAM_ID`
+* `APPLE_ID`
+* `APPLE_APP_SPECIFIC_PASSWORD`
+
+The `APPLE_DEVELOPER_ID_CERT_P12_BASE64` secret should contain a base64-encoded `.p12` export of the Developer ID Application certificate together with its private key.
 
 ## 1. Update the version
 
