@@ -302,18 +302,20 @@ jobs:
           package_root="$(dirname "$(dirname "$daisy_bin")")"
           codesign --verify --strict --verbose=2 "$package_root/bin/daisy-bin"
 
-          python_bin="$(
-            find -L "$package_root/python/bin" -maxdepth 1 \( -type f -o -type l \) -name 'python3*' -print0 \
-              | while IFS= read -r -d '' candidate; do
-                  file_description="$(file -b "$candidate")"
-                  case "$file_description" in
-                    *"Mach-O"*)
-                      printf '%s\n' "$candidate"
-                      break
-                      ;;
-                  esac
-                done
-          )"
+          python_bin=""
+          for candidate in "$package_root"/python/bin/python3*; do
+            if [ ! -e "$candidate" ]; then
+              continue
+            fi
+
+            file_description="$(file -L -b "$candidate")"
+            case "$file_description" in
+              *"Mach-O"*)
+                python_bin="$candidate"
+                break
+                ;;
+            esac
+          done
           if [ -z "$python_bin" ]; then
             echo "Embedded Python executable not found for signature verification." >&2
             exit 1
