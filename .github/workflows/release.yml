@@ -188,8 +188,127 @@ jobs:
           version: "0.9.18"
           enable-cache: false
 
+      - name: Import Developer ID certificate
+        id: signing
+        env:
+          APPLE_DEVELOPER_ID_CERT_P12_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_CERT_P12_BASE64 }}
+          APPLE_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_CERT_PASSWORD }}
+        run: |
+          cert_path="$RUNNER_TEMP/developer-id-application.p12"
+          keychain_path="$RUNNER_TEMP/app-signing.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+
+          printf '%s' "$APPLE_DEVELOPER_ID_CERT_P12_BASE64" | base64 -D > "$cert_path"
+
+          security create-keychain -p "$keychain_password" "$keychain_path"
+          security set-keychain-settings -lut 21600 "$keychain_path"
+          security unlock-keychain -p "$keychain_password" "$keychain_path"
+          security import "$cert_path" \
+            -k "$keychain_path" \
+            -P "$APPLE_DEVELOPER_ID_CERT_PASSWORD" \
+            -T /usr/bin/codesign \
+            -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$keychain_password" "$keychain_path"
+
+          signing_identity="$(security find-identity -v -p codesigning "$keychain_path" | sed -n 's/.*"\(Developer ID Application:.*\)"/\1/p' | head -n1)"
+          if [ -z "$signing_identity" ]; then
+            echo "Developer ID Application identity not found in imported keychain." >&2
+            exit 1
+          fi
+
+          echo "cert_path=$cert_path" >> "$GITHUB_OUTPUT"
+          echo "keychain_path=$keychain_path" >> "$GITHUB_OUTPUT"
+          echo "signing_identity=$signing_identity" >> "$GITHUB_OUTPUT"
+
       - name: Build macOS package
         run: make macos
+
+      - name: Sign macOS package contents
+        env:
+          APPLE_KEYCHAIN_PATH: ${{ steps.signing.outputs.keychain_path }}
+          APPLE_SIGNING_IDENTITY: ${{ steps.signing.outputs.signing_identity }}
+        run: |
+          build_dir="build/macos-clang-portable"
+          archive_path="$(find "$build_dir" -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found in $build_dir." >&2
+            exit 1
+          fi
+
+          work_dir="$RUNNER_TEMP/macos-package"
+          rm -rf "$work_dir"
+          mkdir -p "$work_dir"
+          ditto -x -k "$archive_path" "$work_dir"
+
+          package_root="$(find "$work_dir" -maxdepth 1 -mindepth 1 -type d -name 'Daisy' -print -quit)"
+          if [ -z "$package_root" ]; then
+            echo "Expected Daisy package root was not found after unpacking $archive_path." >&2
+            exit 1
+          fi
+
+          while IFS= read -r -d '' candidate; do
+            file_description="$(file -b "$candidate")"
+            case "$file_description" in
+              *"Mach-O"*"dynamically linked shared library"*|*"Mach-O"*"bundle"*)
+                codesign --force --sign "$APPLE_SIGNING_IDENTITY" --keychain "$APPLE_KEYCHAIN_PATH" --timestamp "$candidate"
+                ;;
+              *"Mach-O"*)
+                codesign --force --sign "$APPLE_SIGNING_IDENTITY" --keychain "$APPLE_KEYCHAIN_PATH" --options runtime --timestamp "$candidate"
+                ;;
+            esac
+          done < <(find "$package_root" -type f -print0)
+
+          rm -f "$archive_path"
+          ditto -c -k --sequesterRsrc --keepParent "$package_root" "$archive_path"
+
+      - name: Verify macOS signatures
+        run: |
+          build_dir="build/macos-clang-portable"
+          archive_path="$(find "$build_dir" -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+          work_dir="$RUNNER_TEMP/macos-package-verify"
+          rm -rf "$work_dir"
+          mkdir -p "$work_dir"
+          ditto -x -k "$archive_path" "$work_dir"
+          package_root="$(find "$work_dir" -maxdepth 1 -mindepth 1 -type d -name 'Daisy' -print -quit)"
+          codesign --verify --strict --verbose=2 "$package_root/bin/daisy-bin"
+
+          python_bin="$(find "$package_root/python/bin" -maxdepth 1 -type f -name 'python3*' -print -quit)"
+          if [ -z "$python_bin" ]; then
+            echo "Embedded Python executable not found for signature verification." >&2
+            exit 1
+          fi
+          codesign --verify --strict --verbose=2 "$python_bin"
+
+          while IFS= read -r -d '' candidate; do
+            codesign --verify --strict --verbose=2 "$candidate"
+          done < <(find "$package_root" -type f \( -name '*.dylib' -o -path '*/site-packages/*.so' \) -print0)
+
+      - name: Notarize macOS package
+        env:
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          archive_path="$(find build/macos-clang-portable -maxdepth 1 -type f -name 'daisy-*-Darwin-*-python*.zip' -print -quit)"
+          if [ -z "$archive_path" ]; then
+            echo "macOS release archive not found for notarization." >&2
+            exit 1
+          fi
+
+          xcrun notarytool submit "$archive_path" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --wait
+
+      - name: Clean up signing keychain
+        if: ${{ always() }}
+        run: |
+          rm -f "${{ steps.signing.outputs.cert_path }}"
+          if [ -n "${{ steps.signing.outputs.keychain_path }}" ]; then
+            security delete-keychain "${{ steps.signing.outputs.keychain_path }}" || true
+          fi
 
       - name: Upload macOS packages
         uses: actions/upload-artifact@v7
