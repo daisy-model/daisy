@@ -99,8 +99,6 @@ def discover_system_tests(bundle_root: Path, output_root: Path, excluded_tests: 
         if test_id in excluded_tests:
             continue
         baseline_dir = baseline_root / rel_dir / test_name
-        if not baseline_dir.is_dir():
-            continue
         cases.append(
             TestCase(
                 suite="dai-system",
