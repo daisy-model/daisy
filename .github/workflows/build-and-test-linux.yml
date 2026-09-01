@@ -35,7 +35,7 @@ jobs:
       if: ${{ always() }}
       continue-on-error: true
       working-directory: ci-build
-      run: ctest -L known-failure --output-on-failure
+      run: ctest -L cxx-unit -L known-failure --output-on-failure
 
     - name: Build Debian package
       working-directory: ci-build
