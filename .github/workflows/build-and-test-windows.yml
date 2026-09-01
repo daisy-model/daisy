@@ -110,13 +110,13 @@ jobs:
         run: uv python install 3.13
 
       - name: Download Windows package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ci-windows-package
           path: ci-package
 
       - name: Download Windows test bundle
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ci-windows-test-bundle
           path: ci-test-bundle

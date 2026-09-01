@@ -112,13 +112,13 @@ jobs:
       run: uv python install 3.13
 
     - name: Download macOS package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ci-macos-package-${{ matrix.arch }}
         path: ci-package
 
     - name: Download macOS test bundle
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ci-macos-test-bundle-${{ matrix.arch }}
         path: ci-test-bundle

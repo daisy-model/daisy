@@ -85,13 +85,13 @@ jobs:
       run: uv python install 3.13
 
     - name: Download Linux Debian package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ci-linux-package
         path: ci-package
 
     - name: Download Linux test bundle
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ci-linux-test-bundle
         path: ci-test-bundle
