@@ -93,8 +93,15 @@ Path::get_daisy_home ()
 
   auto has_runtime_data = [] (const std::filesystem::path& path)
     {
-      return std::filesystem::is_directory (path / "lib")
-        && std::filesystem::is_directory (path / "sample");
+      try
+        {
+          return std::filesystem::is_directory (path / "lib")
+            && std::filesystem::is_directory (path / "sample");
+        }
+      catch (const std::filesystem::filesystem_error&)
+        {
+          return false;
+        }
     };
 
   if (daisy_home != symbol ())

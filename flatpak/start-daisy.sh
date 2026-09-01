@@ -2,6 +2,7 @@
 APP_ID="dk.ku.daisy"
 DATA_DIR="${XDG_DATA_HOME}" # Flatpak always sets XDG_DATA_HOME
 DATA_STAMP_FILE="$DATA_DIR/.bundled-data.sha256"
+BUNDLED_DATA_STAMP_FILE="/app/share/daisy/.bundled-data.sha256"
 
 # Create user data dir if missing
 mkdir -p "$DATA_DIR"
@@ -17,6 +18,14 @@ compute_bundled_data_stamp() {
     )
 }
 
+bundled_data_stamp() {
+    if [ -f "$BUNDLED_DATA_STAMP_FILE" ]; then
+        cat "$BUNDLED_DATA_STAMP_FILE"
+        return 0
+    fi
+    compute_bundled_data_stamp
+}
+
 sync_bundled_dir() {
     local source_dir="$1"
     local target_dir="$2"
@@ -28,7 +37,7 @@ sync_bundled_dir() {
     mv "$temp_dir" "$target_dir"
 }
 
-bundled_data_stamp="$(compute_bundled_data_stamp)"
+bundled_data_stamp="$(bundled_data_stamp)"
 installed_data_stamp=""
 if [ -f "$DATA_STAMP_FILE" ]; then
     installed_data_stamp="$(cat "$DATA_STAMP_FILE")"

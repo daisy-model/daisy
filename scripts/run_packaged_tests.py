@@ -157,8 +157,13 @@ def build_daisy_command(daisy_bin: Path, env: dict[str, str]) -> list[str]:
 
 
 def resolve_daisy_launcher(daisy_bin: Path, env: dict[str, str]) -> str:
+    cached_launcher = env.get("DAISY_PACKAGED_LAUNCHER")
+    if cached_launcher:
+        return cached_launcher
+
     command = build_daisy_command(daisy_bin, env)
     if len(command) == 1:
+        env["DAISY_PACKAGED_LAUNCHER"] = command[0]
         return command[0]
 
     wrapper_path = Path(env["TMPDIR"]) / "daisy-launcher.sh"
@@ -169,7 +174,8 @@ def resolve_daisy_launcher(daisy_bin: Path, env: dict[str, str]) -> str:
         encoding="utf-8",
     )
     wrapper_path.chmod(0o755)
-    return str(wrapper_path)
+    env["DAISY_PACKAGED_LAUNCHER"] = str(wrapper_path)
+    return env["DAISY_PACKAGED_LAUNCHER"]
 
 
 def run_case(case: TestCase, daisy_bin: Path, env: dict[str, str]) -> tuple[int, FailureDetail | None]:
