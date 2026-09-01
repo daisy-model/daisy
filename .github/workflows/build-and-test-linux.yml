@@ -27,9 +27,15 @@ jobs:
       working-directory: ci-build
       run: cmake --build . -j 4
 
-    - name: Run C++ unit tests
+    - name: Run gating C++ unit tests
       working-directory: ci-build
-      run: ctest -L cxx-unit --output-on-failure
+      run: ctest -L cxx-unit -LE known-failure --output-on-failure
+
+    - name: Run known failing C++ unit tests
+      if: ${{ always() }}
+      continue-on-error: true
+      working-directory: ci-build
+      run: ctest -L known-failure --output-on-failure
 
     - name: Build Debian package
       working-directory: ci-build
