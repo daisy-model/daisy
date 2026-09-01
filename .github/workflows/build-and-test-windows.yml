@@ -22,6 +22,7 @@ jobs:
             make
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gtest
             mingw-w64-ucrt-x86_64-ninja
             mingw-w64-ucrt-x86_64-suitesparse
             mingw-w64-ucrt-x86_64-boost
@@ -42,11 +43,16 @@ jobs:
         run: >
           cmake ..
           -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
+          -DBUILD_CXX_TESTS=ON
           --preset mingw-gcc-portable
 
       - name: Build
         working-directory: ci-build
         run: cmake --build .
+
+      - name: Run C++ unit tests
+        working-directory: ci-build
+        run: ctest -L cxx-unit --output-on-failure
 
       - name: Pack
         working-directory: ci-build
@@ -54,20 +60,6 @@ jobs:
 
       - name: Build packaged test bundle
         run: make test-bundle
-
-      - name: Install
-        working-directory: ci-build
-        run: unzip daisy-*-Windows-python*.zip
-
-      - name: Setup test environment
-        working-directory: ci-build
-        run: |
-          uv venv
-          uv pip install git+https://github.com/daisy-model/daisypy-test
-
-      - name: Test
-        working-directory: ci-build
-        run: ctest --output-on-failure
 
       - name: Upload test logs
         if: ${{ !cancelled() }}
