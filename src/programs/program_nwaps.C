@@ -429,7 +429,8 @@ struct ProgramNwaps : public Program
       success_file (al.name ("success_file")),
       failure_file (al.name ("failure_file")),
       missing (al.name_sequence ("missing")),
-      fractiles (al.number_sequence ("fractiles"))
+      fractiles (al.number_sequence ("fractiles")),
+      first (true)
   { }
   ~ProgramNwaps ()
   {  }

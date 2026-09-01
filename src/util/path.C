@@ -53,23 +53,37 @@
 #define PATH_SEPARATOR ";"
 #endif
 
-// Find current directory.
-static const std::string
-get_cwd ()
+// Copilot code
+static std::string
+get_cwd()
 {
-  const int BUFFER_SIZE = 10000;
-  char buffer[BUFFER_SIZE];
-  char *wd = getcwd (buffer, BUFFER_SIZE);
-  if (!wd)
+    namespace fs = std::filesystem;
+
+    std::error_code ec;
+    fs::path cwd = fs::current_path(ec);
+
+    if (ec)
     {
-      daisy_bug ("Current directory path is too long");
-      return ".";
+        std::string msg =
+            "Failed to determine current working directory: "
+            + ec.message();
+
+#ifdef __APPLE__
+        msg +=
+            "\n\nOn macOS, this may be caused by Privacy & Security "
+            "settings. Check System Settings > Privacy & Security "
+            "and ensure the application has permission to access "
+            "the current directory.";
+#endif
+
+        daisy_bug(msg);
+        return ".";
     }
-  return wd;
+
+    return cwd.string();
 }
 
 std::vector<symbol> Path::daisy_path;
-
 
 void 
 Path::parse_path (const std::string& colon_path, std::vector<symbol>& result)

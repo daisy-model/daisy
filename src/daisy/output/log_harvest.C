@@ -252,7 +252,7 @@ Yeallow leaves dry matter removed by harvest.");
 Green leaves dry matter removed by harvest.");
       entry (format, "sorg_DM", "Mg DM/ha", "\
 Storage organ (grains or tuber) dry matter removed by harvest.\n\
-For some crops, only the economicly important part of the storage organ\n\
+For some crops, only the economically important part of the storage organ\n\
 is counted.");
     }
     format.soft_linebreak ();
@@ -267,7 +267,9 @@ Yeallow leaves nitrogen removed by harvest.");
       entry (format, "leaf_N", "kg N/ha", "\
 Green leaves nitrogen removed by harvest.");
       entry (format, "sorg_N", "kg N/ha", "\
-Storage organ (grains or tuber) nitrogen removed by harvest.");
+Storage organ (grains or tuber) nitrogen removed by harvest.\n\
+For some crops, only the economically important part of the storage organ\n\
+is counted.");
     }
     format.soft_linebreak ();
       
@@ -281,7 +283,9 @@ Yeallow leaves carbon removed by harvest.");
       entry (format, "leaf_C", "kg C/ha", "\
 Green leaves carbon removed by harvest.");
       entry (format, "sorg_C", "kg C/ha", "\
-Storage organ (grains or tuber) carbon removed by harvest.");
+Storage organ (grains or tuber) carbon removed by harvest.\n\
+For some crops, only the economically important part of the storage organ\n\
+is counted.");
     }
     format.soft_linebreak ();
 

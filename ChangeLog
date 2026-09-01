@@ -1,3 +1,17 @@
+2026-09-01  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/util/path.C (get_cwd): Had Copilot write code for a better
+	error message, if VS Code has no TCC access to Documents on Mac.
+
+2026-08-26  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/programs/program_nwaps.C (first): Initialize.
+
+2026-08-21  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/output/log_harvest.C (document_entries): Mention
+	"economically important" for sorg_C and sorg_N as well.
+
 2026-07-14  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/daisy/crop/photo_FCC3.C (PhotoFCC3::J_m): Fix parenthesis
