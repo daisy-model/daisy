@@ -80,6 +80,7 @@ jobs:
       with:
         version: "0.9.18"
         enable-cache: false
+        ignore-empty-workdir: true
 
     - name: Install python
       run: uv python install 3.13
