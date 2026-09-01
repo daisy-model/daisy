@@ -70,10 +70,9 @@ get_cwd()
 
 #ifdef __APPLE__
         msg +=
-            "\n\nOn macOS, this may be caused by Privacy & Security "
-            "settings. Check System Settings > Privacy & Security "
+            "\n\nOn macOS, Check System Settings > Privacy & Security "
             "and ensure the application has permission to access "
-            "the current directory.";
+            "the current folder.";
 #endif
 
         daisy_bug(msg);
