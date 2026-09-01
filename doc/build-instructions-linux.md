@@ -27,7 +27,7 @@ Using apt
 ## Build Daisy
 Download the source code and change to to repository root directory
 
-    git clone git@github.com:daisy-model/daisy.git
+    git clone https://github.com/daisy-model/daisy.git
     cd daisy
 
 ### Default build for release
