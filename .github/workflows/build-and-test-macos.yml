@@ -78,7 +78,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: ci-macos-package-${{ matrix.arch }}
-        path: ci-build/daisy-*Darwin-python*.zip
+        path: ci-build/daisy-*-Darwin-*-python*.zip
         if-no-files-found: error
 
     - name: Upload macOS test bundle
