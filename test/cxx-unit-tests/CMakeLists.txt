@@ -2,7 +2,7 @@ if (${BUILD_CXX_TESTS})
   find_package(GTest REQUIRED)
   include(GoogleTest)
 
-  add_library(ut_core SHARED
+  add_library(ut_core STATIC
     ${CMAKE_SOURCE_DIR}/src/daisy/daisy_time.C
     ${CMAKE_SOURCE_DIR}/src/daisy/timestep.C
     ${CMAKE_SOURCE_DIR}/src/object_model/attribute.C
@@ -49,6 +49,17 @@ if (${BUILD_CXX_TESTS})
   target_include_directories(ut_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
   target_compile_options(ut_core PRIVATE ${COMPILE_OPTIONS})
   target_link_options(ut_core PRIVATE ${LINKER_OPTIONS})
+  if (${OS} STREQUAL "macos")
+    target_link_directories(ut_core PUBLIC ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
+  endif()
+  if (WIN32)
+    target_compile_definitions(ut_core PUBLIC BUILD_DLL)
+  endif()
+  set(_ut_core_boost_libs Boost::filesystem)
+  if(TARGET Boost::system)
+    list(APPEND _ut_core_boost_libs Boost::system)
+  endif()
+  target_link_libraries(ut_core PUBLIC ${_ut_core_boost_libs})
 
   # function(cxx_unit_test_mock name)
   #   add_executable(${name} ${CMAKE_SOURCE_DIR}/test/cxx-unit-tests/tests/${name}.C ${ARGN})
@@ -68,13 +79,19 @@ if (${BUILD_CXX_TESTS})
     target_include_directories(${name} PUBLIC ${CMAKE_SOURCE_DIR}/include)
     target_compile_options(${name} PRIVATE ${COMPILE_OPTIONS})
     target_link_options(${name} PRIVATE ${LINKER_OPTIONS})
+    if (${OS} STREQUAL "macos")
+      target_link_directories(${name} PRIVATE ${EXTRA_SYSTEM_INCLUDE_DIRECTORIES})
+    endif()
     target_link_libraries(${name} PUBLIC
       ut_core
       cxsparse
       GTest::gtest
       GTest::gtest_main
     )
-    gtest_discover_tests(${name} TEST_PREFIX cxx_unit_test.)
+    gtest_discover_tests(${name}
+      TEST_PREFIX cxx_unit_test.
+      PROPERTIES LABELS "cxx-unit"
+    )
   endfunction()
 
   add_subdirectory(tests)

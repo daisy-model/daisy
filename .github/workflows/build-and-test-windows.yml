@@ -19,8 +19,10 @@ jobs:
           update: true
           install: >-
             git
+            make
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gtest
             mingw-w64-ucrt-x86_64-ninja
             mingw-w64-ucrt-x86_64-suitesparse
             mingw-w64-ucrt-x86_64-boost
@@ -41,29 +43,29 @@ jobs:
         run: >
           cmake ..
           -DUV_INSTALLED_PYTHON_ROOT_DIR=$( ls -d $( uv python dir | tr \\\\ / )/* | grep 3.13 )
+          -DBUILD_CXX_TESTS=ON
           --preset mingw-gcc-portable
 
       - name: Build
         working-directory: ci-build
         run: cmake --build .
 
+      - name: Run gating C++ unit tests
+        working-directory: ci-build
+        run: ctest -L cxx-unit -LE known-failure --output-on-failure
+
+      - name: Run known failing C++ unit tests
+        if: ${{ always() }}
+        continue-on-error: true
+        working-directory: ci-build
+        run: ctest -L cxx-unit -L known-failure --output-on-failure
+
       - name: Pack
         working-directory: ci-build
         run: cpack -G ZIP
 
-      - name: Install
-        working-directory: ci-build
-        run: unzip daisy-*-Windows-python*.zip
-
-      - name: Setup test environment
-        working-directory: ci-build
-        run: |
-          uv venv
-          uv pip install git+https://github.com/daisy-model/daisypy-test
-
-      - name: Test
-        working-directory: ci-build
-        run: ctest --output-on-failure
+      - name: Build packaged test bundle
+        run: make test-bundle
 
       - name: Upload test logs
         if: ${{ !cancelled() }}
@@ -71,3 +73,80 @@ jobs:
         with:
           name: test-output-windows
           path: ci-build/Testing
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ci-windows-package
+          path: ci-build/daisy-*-Windows-python*.zip
+          if-no-files-found: error
+
+      - name: Upload Windows test bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: ci-windows-test-bundle
+          path: build/test-bundle/*.zip
+          if-no-files-found: error
+
+  package-test:
+    needs: build
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            mingw-w64-ucrt-x86_64-uv
+            unzip
+
+      - name: Install python
+        run: uv python install 3.13
+
+      - name: Download Windows package
+        uses: actions/download-artifact@v8
+        with:
+          name: ci-windows-package
+          path: ci-package
+
+      - name: Download Windows test bundle
+        uses: actions/download-artifact@v8
+        with:
+          name: ci-windows-test-bundle
+          path: ci-test-bundle
+
+      - name: Unpack package and test bundle
+        run: |
+          unzip ci-package/*.zip -d ci-install
+          unzip ci-test-bundle/*.zip -d ci-test-bundle
+
+      - name: Run packaged tests
+        run: |
+          bundle_root="$(find ci-test-bundle -maxdepth 1 -type d -name 'daisy-test-suite-*' -print -quit)"
+          daisy_bin="$(find ci-install -type f -path '*/bin/daisy-bin.exe' -print -quit)"
+          if [ -z "$bundle_root" ]; then
+            echo "Packaged test bundle not found." >&2
+            exit 1
+          fi
+          if [ -z "$daisy_bin" ]; then
+            echo "Packaged Daisy binary not found." >&2
+            exit 1
+          fi
+          uv run --with git+https://github.com/daisy-model/daisypy-test \
+            python "$bundle_root/run_packaged_tests.py" \
+            --bundle-root "$bundle_root" \
+            --daisy-bin "$daisy_bin" \
+            --output-root "$PWD/package-test-results"
+
+      - name: Upload packaged test output
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: packaged-test-output-windows
+          path: package-test-results

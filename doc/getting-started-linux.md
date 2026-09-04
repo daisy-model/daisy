@@ -32,7 +32,6 @@ It requires
 You should now be able to run Daisy
 ```
 $ flatpak run dk.ku.daisy --info
-Installing lib and sample
 Daisy crop/soil simulation version 7.1.3. (Dec 17 2025)
 Python 3.13.9
 ```
@@ -62,6 +61,17 @@ If you installed the `flatpak` package, then Daisy comes with a python environme
 ```
 daisy --python
 ```
+
+The bundled Daisy `lib/` and `sample/` data under the Flatpak app-data
+directory are refreshed automatically when the packaged data changes, so
+package reinstalls and upgrades do not keep stale copies of those files.
+
+When Daisy is launched through Flatpak, temporary directories may resolve
+differently inside the sandbox than they do for host-side tools. If you use a
+host-side test harness that expects Daisy output files in a temporary directory,
+make sure the harness pins its temp root to a host-visible location instead of
+relying on the default `/tmp`. The packaged test runner does this by setting
+`TMPDIR`, `TMP`, and `TEMP` under its chosen output directory.
 
 You can install additional packages by passing `--pip` to daisy. To install `numpy`
 ```

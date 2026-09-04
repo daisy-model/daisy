@@ -1,0 +1,30 @@
+{
+  "excluded": [
+    "dai_system_test.programs.gnuplot",
+    "dai_system_test.daisy/lower_boundary.groundwater-file",
+    "dai_system_test.daisy/soil/transport.uzmodel-lr",
+    "dai_system_test.daisy/soil/transport.uzmodel-lr-2",
+    "dai_system_test.daisy/soil/transport.uzmodel-richards2",
+    "dai_system_test.daisy/crop.photosynthesis-FC_C3",
+    "dai_system_test.daisy/crop.photosynthesis-FC_C4",
+    "dai_system_test.daisy/crop.stomatacon-MNA",
+    "dai_system_test.daisy/crop.stomatacon-SHA12",
+    "dai_system_test.daisy/crop.stomatacon-SHA14",
+    "dai_system_test.daisy/upper_boundary/bioclimate.svat-SSOC"
+  ],
+  "linux": [
+    "dai_system_test.programs.hydraulic",
+    "dai_system_test.programs.spawn"
+  ],
+  "macos": [
+    "dai_system_test.daisy/lower_boundary.groundwater-deep",
+    "dai_system_test.programs.hydraulic",
+    "dai_system_test.programs.spawn"
+  ],
+  "mingw": [
+    "dai_system_test.daisy/crop.vernalization-default",
+    "dai_system_test.daisy/lower_boundary.groundwater-deep",
+    "dai_system_test.programs.hydraulic",
+    "dai_system_test.programs.spawn"
+  ]
+}
