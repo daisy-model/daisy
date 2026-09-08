@@ -10,7 +10,8 @@
     "dai_system_test.daisy/crop.stomatacon-MNA",
     "dai_system_test.daisy/crop.stomatacon-SHA12",
     "dai_system_test.daisy/crop.stomatacon-SHA14",
-    "dai_system_test.daisy/upper_boundary/bioclimate.svat-SSOC"
+    "dai_system_test.daisy/upper_boundary/bioclimate.svat-SSOC",
+    "dai_system_test.daisy/upper_boundary/bioclimate.cloudiness-weather"
   ],
   "linux": [
     "dai_system_test.programs.hydraulic",
