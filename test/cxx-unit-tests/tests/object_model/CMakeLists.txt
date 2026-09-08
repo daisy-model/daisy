@@ -11,6 +11,7 @@ cxx_unit_test(ut_oldunits)
 cxx_unit_test(ut_treelog)
 cxx_unit_test(ut_attribute)
 cxx_unit_test(ut_check)
+cxx_unit_test(ut_frame)
 cxx_unit_test(ut_vcheck)
 cxx_unit_test(ut_value)
 cxx_unit_test(ut_xref
