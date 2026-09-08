@@ -17,6 +17,14 @@ cxx_unit_test(ut_parameter_types
 cxx_unit_test(ut_rate
   ${CMAKE_SOURCE_DIR}/src/object_model/rate.C
 )
+cxx_unit_test(ut_format
+  ${CMAKE_SOURCE_DIR}/src/util/format.C
+  ${CMAKE_SOURCE_DIR}/src/util/format_LaTeX.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/version.C
+)
+cxx_unit_test(ut_scopesel
+  ${CMAKE_SOURCE_DIR}/src/util/scopesel.C
+)
 cxx_unit_test(ut_library)
 cxx_unit_test(ut_metalib)
 cxx_unit_test(ut_type)
