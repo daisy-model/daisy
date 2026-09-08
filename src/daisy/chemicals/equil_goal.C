@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/equil.h"
 #include "object_model/block_model.h"
 #include "util/scope_soil.h"

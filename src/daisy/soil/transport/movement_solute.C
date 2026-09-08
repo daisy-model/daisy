@@ -19,7 +19,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-
 #include "daisy/soil/transport/movement_solute.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/soil_water.h"
@@ -915,3 +914,4 @@ Matrix solute transport model used for fully sorbed constituents.");
 } MovementSolute_syntax;
 
 // movement_solute.C ends here.
+

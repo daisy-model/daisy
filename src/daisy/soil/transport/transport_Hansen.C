@@ -22,7 +22,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/soil/transport/transport.h"
 #include "object_model/block_model.h"
 #include "daisy/soil/transport/geometry1d.h"

@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/soil/transport/tertiary.h"
 #include "daisy/soil/transport/biopore.h"
 #include "util/memutils.h"

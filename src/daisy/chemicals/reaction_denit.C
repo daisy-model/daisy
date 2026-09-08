@@ -22,7 +22,6 @@
 
 #define BUILD_DLL
 
-
 // The 'denitrification' reaction model.
 #include "daisy/chemicals/reaction.h"
 #include "daisy/chemicals/denprod.h"        

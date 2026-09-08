@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/reaction_colgen.h"
 #include "util/mathlib.h"
 #include <sstream>

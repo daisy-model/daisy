@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/rainergy.h"
 #include "util/mathlib.h"
 #include "object_model/librarian.h"

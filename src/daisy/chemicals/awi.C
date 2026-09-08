@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/awi.h"
 #include "object_model/librarian.h"
 #include "object_model/block_model.h"

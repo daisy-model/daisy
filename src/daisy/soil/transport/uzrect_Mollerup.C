@@ -19,7 +19,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/soil/transport/uzrect.h"
 #include "daisy/soil/transport/geometry_rect.h"
 #include "daisy/soil/soil.h"

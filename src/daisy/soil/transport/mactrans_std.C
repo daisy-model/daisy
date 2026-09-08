@@ -21,7 +21,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/soil/transport/mactrans.h"
 #include "daisy/soil/soil_water.h"
 #include "daisy/soil/transport/geometry1d.h"

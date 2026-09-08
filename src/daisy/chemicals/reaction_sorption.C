@@ -21,7 +21,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/reaction.h"
 #include "object_model/block_model.h"
 #include "daisy/chemicals/chemistry.h"

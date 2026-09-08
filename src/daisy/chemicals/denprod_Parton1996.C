@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/denprod.h"
 #include "object_model/function.h"
 #include "object_model/librarian.h"

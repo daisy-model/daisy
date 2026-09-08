@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/reaction_colgen.h"
 #include "object_model/librarian.h"
 #include "object_model/frame.h"

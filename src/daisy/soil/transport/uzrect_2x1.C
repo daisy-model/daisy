@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/soil/transport/uzrect.h"
 #include "daisy/soil/transport/uzmodel.h"
 #include "daisy/soil/transport/uz1d.h"

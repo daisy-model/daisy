@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/reaction.h"
 #include "daisy/soil/transport/geometry.h"
 #include "daisy/soil/soil.h"

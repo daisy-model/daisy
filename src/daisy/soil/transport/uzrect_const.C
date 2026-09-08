@@ -19,7 +19,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #define BUILD_DLL
-
 #include "daisy/soil/transport/uzrect.h"
 #include "daisy/soil/transport/geometry_rect.h"
 #include "daisy/soil/soil_water.h"

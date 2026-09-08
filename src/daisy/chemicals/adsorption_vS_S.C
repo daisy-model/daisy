@@ -21,7 +21,6 @@
 
 #define BUILD_DLL
 
-
 #include "daisy/chemicals/adsorption.h"
 #include "daisy/soil/soil.h"
 #include "util/mathlib.h"
