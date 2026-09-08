@@ -14,6 +14,9 @@ cxx_unit_test(ut_parameter_types
   ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/stringer.C
   ${CMAKE_SOURCE_DIR}/src/util/scope_multi.C
 )
+cxx_unit_test(ut_rate
+  ${CMAKE_SOURCE_DIR}/src/object_model/rate.C
+)
 cxx_unit_test(ut_library)
 cxx_unit_test(ut_metalib)
 cxx_unit_test(ut_type)
