@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 
 #include "daisy/chemicals/awi.h"
 #include "object_model/librarian.h"

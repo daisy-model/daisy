@@ -22,7 +22,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/transport/uz1d.h"
 #include "object_model/librarian.h"
 #include <sstream>

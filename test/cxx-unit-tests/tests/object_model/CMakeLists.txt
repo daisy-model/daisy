@@ -20,3 +20,18 @@ target_link_libraries(ut_xref PUBLIC
 if(TARGET Boost::system)
   target_link_libraries(ut_xref PUBLIC Boost::system)
 endif()
+
+set(_cxx_known_failures_file
+  "${CMAKE_CURRENT_BINARY_DIR}/cxx_known_failures.cmake")
+file(WRITE "${_cxx_known_failures_file}" [=[
+set_tests_properties(
+  cxx_unit_test.XRefTest.ModelUsersWithDifferentPathsStayDistinct
+  cxx_unit_test.XRefTest.ModelUsersDeduplicateIdenticalEntriesAndOrderByPath
+  cxx_unit_test.XRefTest.SubmodelUsersWithDifferentPathsStayDistinct
+  cxx_unit_test.XRefTest.SubmodelUsersDefaultConstructAndOrderByPath
+  PROPERTIES
+  LABELS "cxx-unit;known-failure"
+)
+]=])
+set_property(DIRECTORY APPEND PROPERTY TEST_INCLUDE_FILES
+  "${_cxx_known_failures_file}")

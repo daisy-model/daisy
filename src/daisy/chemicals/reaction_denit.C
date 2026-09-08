@@ -22,7 +22,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 
 // The 'denitrification' reaction model.
 #include "daisy/chemicals/reaction.h"

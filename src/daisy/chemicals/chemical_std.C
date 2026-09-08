@@ -21,7 +21,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 #include "daisy/chemicals/chemical.h"
 #include "daisy/organic_matter/organic.h"
 #include "daisy/soil/soil_heat.h"

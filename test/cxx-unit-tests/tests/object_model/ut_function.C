@@ -7,7 +7,6 @@
 #include "object_model/function.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
-#include "object_model/object_model_registration_internal.h"
 #include "object_model/units.h"
 
 namespace {
@@ -22,15 +21,9 @@ std::set<symbol> library_entries(const Library& library) {
   return std::set<symbol>(entries.begin(), entries.end());
 }
 
-void register_test_models() {
-  register_unit_models();
-  register_function_models();
-}
-
 }  // namespace
 
 TEST(FunctionRegistrationTest, FunctionLibraryContainsExpectedModels) {
-  register_test_models();
   Metalib metalib(load_test_frame);
 
   ASSERT_TRUE(metalib.exist(Function::component));
@@ -42,7 +35,6 @@ TEST(FunctionRegistrationTest, FunctionLibraryContainsExpectedModels) {
 }
 
 TEST(FunctionRegistrationTest, FunctionModelsHaveExpectedInheritance) {
-  register_test_models();
   Metalib metalib(load_test_frame);
   const Library& library = metalib.library(Function::component);
 

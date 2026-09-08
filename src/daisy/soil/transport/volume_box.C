@@ -20,7 +20,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 #include "daisy/soil/transport/volume_box.h"
 #include "daisy/soil/transport/bound.h"
 #include "daisy/soil/transport/border.h"

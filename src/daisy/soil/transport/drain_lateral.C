@@ -19,7 +19,6 @@
 
 #define BUILD_DLL
 
-#include "daisy/daisy_registration_internal.h"
 
 #include "daisy/soil/transport/drain.h"
 #include "daisy/soil/transport/geometry.h"

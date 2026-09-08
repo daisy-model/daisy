@@ -4,7 +4,6 @@
 #include "object_model/convert.h"
 #include "object_model/unit.h"
 #include "object_model/metalib.h"
-#include "object_model/object_model_registration_internal.h"
 #include "object_model/treelog.h"
 #include "object_model/treelog_text.h"
 #include "util/assertion.h"
@@ -20,7 +19,6 @@ struct UnitsTest : public testing::Test
 
   static std::unique_ptr<Metalib> make_metalib ()
   {
-    register_unit_models ();
     return std::make_unique<Metalib> (Units::load_syntax);
   }
   

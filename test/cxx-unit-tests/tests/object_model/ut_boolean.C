@@ -6,7 +6,6 @@
 #include "object_model/frame_model.h"
 #include "object_model/library.h"
 #include "object_model/metalib.h"
-#include "object_model/object_model_registration_internal.h"
 #include "object_model/parameter_types/boolean.h"
 #include "object_model/units.h"
 
@@ -22,15 +21,9 @@ std::set<symbol> library_entries(const Library& library) {
   return std::set<symbol>(entries.begin(), entries.end());
 }
 
-void register_test_models() {
-  register_unit_models();
-  register_boolean_models();
-}
-
 }  // namespace
 
 TEST(BooleanRegistrationTest, BooleanLibraryContainsExpectedModels) {
-  register_test_models();
   Metalib metalib(load_test_frame);
 
   ASSERT_TRUE(metalib.exist(Boolean::component));
@@ -47,7 +40,6 @@ TEST(BooleanRegistrationTest, BooleanLibraryContainsExpectedModels) {
 }
 
 TEST(BooleanRegistrationTest, BooleanCompositeModelsDeriveFromOperandsBase) {
-  register_test_models();
   Metalib metalib(load_test_frame);
   const Library& library = metalib.library(Boolean::component);
 
@@ -68,7 +60,6 @@ TEST(BooleanRegistrationTest, BooleanCompositeModelsDeriveFromOperandsBase) {
 }
 
 TEST(BooleanRegistrationTest, BooleanLeafModelsHaveNoBaseModel) {
-  register_test_models();
   Metalib metalib(load_test_frame);
   const Library& library = metalib.library(Boolean::component);
 
