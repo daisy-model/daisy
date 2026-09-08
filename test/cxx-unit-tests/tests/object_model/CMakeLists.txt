@@ -2,6 +2,18 @@ cxx_unit_test(ut_symbol)
 cxx_unit_test(ut_plf)
 cxx_unit_test(ut_function)
 cxx_unit_test(ut_boolean)
+cxx_unit_test(ut_parameter_types
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_const.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_plf.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_apply.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_lisp.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/number_arit.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/integer.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/integer_arit.C
+  ${CMAKE_SOURCE_DIR}/src/object_model/parameter_types/stringer.C
+  ${CMAKE_SOURCE_DIR}/src/util/scope_multi.C
+)
 cxx_unit_test(ut_library)
 cxx_unit_test(ut_metalib)
 cxx_unit_test(ut_type)
