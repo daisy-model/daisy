@@ -34,6 +34,12 @@ The generated archive name includes the macOS architecture, such as `arm64` or `
 Will build a version of daisy without python support in `build/macos-clang-portable-no-python` and make a zip archive.
 The generated archive name includes the macOS architecture, such as `arm64` or `x86_64`.
 
+
+    make macos-test
+
+Will build the packaged Python-enabled archive, install the local test harness,
+and run the test suite. This is the recommended local test entrypoint on MacOS.
+
 ### Non-standard builds
 [CMakePresets.json](CMakePresets.json) define setups for various builds using gcc or clang. For example, to build a native optimized version using gcc
 

@@ -13,6 +13,7 @@ if(${OS} STREQUAL "mingw")
     set_tests_properties(
       dai_system_test.${dir}.${name}
       PROPERTIES
+      LABELS "dai-system"
       ENVIRONMENT_MODIFICATION
       "DAISYHOME=set:${CMAKE_SOURCE_DIR};PYTHONPATH=string_prepend:${CMAKE_SOURCE_DIR}/sample/python"
     )
@@ -31,6 +32,7 @@ else()
     set_tests_properties(
       dai_system_test.${dir}.${name}
       PROPERTIES
+      LABELS "dai-system"
       ENVIRONMENT_MODIFICATION
       "DAISYHOME=set:${CMAKE_SOURCE_DIR};PYTHONPATH=string_prepend:${CMAKE_SOURCE_DIR}/sample/python"
     )
