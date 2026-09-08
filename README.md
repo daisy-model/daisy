@@ -23,3 +23,6 @@ See [https://daisy.ku.dk/](https://daisy.ku.dk/) for more information.
 
 ## Code coverage
 [doc/code-coverage.md](doc/code-coverage.md)
+
+## Development
+[doc/development.md](doc/development.md)

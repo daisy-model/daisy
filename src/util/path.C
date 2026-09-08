@@ -104,6 +104,19 @@ Path::get_daisy_home ()
 {
   static symbol daisy_home;
 
+  auto has_runtime_data = [] (const std::filesystem::path& path)
+    {
+      try
+        {
+          return std::filesystem::is_directory (path / "lib")
+            && std::filesystem::is_directory (path / "sample");
+        }
+      catch (const std::filesystem::filesystem_error&)
+        {
+          return false;
+        }
+    };
+
   if (daisy_home != symbol ())
     return daisy_home;
 
@@ -126,6 +139,12 @@ Path::get_daisy_home ()
 	  Assertion::debug ("Running from 'build' environment");
 	  path = path.parent_path ();
 	}
+      const auto share_path = path / "share" / "daisy";
+      if (has_runtime_data (share_path))
+        path = share_path;
+      else if (!has_runtime_data (path))
+        Assertion::debug ("Could not verify Daisy runtime data under '"
+                          + path.string () + "' or '" + share_path.string () + "'");
       daisy_home = path.string ();
       return daisy_home;
     }

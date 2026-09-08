@@ -76,6 +76,15 @@ modules:
   - name: launcher
     buildsystem: simple
     build-commands:
+      - >
+        (
+          cd /app/share/daisy &&
+          find lib sample -type f -print0 |
+          sort -z |
+          xargs -0 sha256sum |
+          sha256sum |
+          cut -d' ' -f1
+        ) > /app/share/daisy/.bundled-data.sha256
       - install -Dm755 start-daisy.sh /app/bin/start-daisy.sh
     sources:
       - type: file
