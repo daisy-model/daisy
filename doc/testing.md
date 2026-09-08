@@ -1,4 +1,11 @@
 # Testing
+Use the [Makefile](../Makefile) test targets to build and run tests.
+```
+make linux-test
+make macos-test
+make windows-test
+```
+
 ## Install test dependencies
 We use a set of python tools to check Daisy output against a baseline. These are available from [daispy-test](https://github.com/daisy-model/daisypy-test) and can be installed with
 
