@@ -17,15 +17,6 @@ if(${OS} STREQUAL "mingw")
       ENVIRONMENT_MODIFICATION
       "DAISYHOME=set:${CMAKE_SOURCE_DIR};PYTHONPATH=string_prepend:${CMAKE_SOURCE_DIR}/sample/python"
     )
-    if(_test_name IN_LIST _disabled_dai_system_tests)
-      message(STATUS "Disabling ${_test_name} on ${OS}: known-failure")
-      set_tests_properties(
-        ${_test_name}
-        PROPERTIES
-        DISABLED TRUE
-        LABELS "dai-system;disabled;${OS};known-failure"
-      )
-    endif()
   endfunction()
 else()
   function(dai_system_test name dir)
@@ -45,15 +36,6 @@ else()
       ENVIRONMENT_MODIFICATION
       "DAISYHOME=set:${CMAKE_SOURCE_DIR};PYTHONPATH=string_prepend:${CMAKE_SOURCE_DIR}/sample/python"
     )
-    if(_test_name IN_LIST _disabled_dai_system_tests)
-      message(STATUS "Disabling ${_test_name} on ${OS}: known-failure")
-      set_tests_properties(
-        ${_test_name}
-        PROPERTIES
-        DISABLED TRUE
-        LABELS "dai-system;disabled;${OS};known-failure"
-      )
-    endif()
   endfunction()
 endif()
 
