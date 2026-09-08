@@ -1,4 +1,5 @@
 // ut_units.C -- units unit tests 
+#include <memory>
 
 #include "object_model/units.h"
 #include "object_model/convert.h"
