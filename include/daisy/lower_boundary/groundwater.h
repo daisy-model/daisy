@@ -59,6 +59,7 @@ public:
   // Accessors.
 public:
   virtual double table () const = 0;
+  virtual void set_table (double) {}  // [cm], default no-op (override in fixed-table models)
 
     // Create and Destroy.
 public:

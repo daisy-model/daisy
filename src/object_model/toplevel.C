@@ -46,13 +46,16 @@
 
 #ifdef BUILD_PYTHON
 #include <pybind11/embed.h>
+#include <optional>
 #endif
 
 struct Toplevel::Implementation : boost::noncopyable
 {
 #ifdef BUILD_PYTHON
-  // Start python interpreter
-  pybind11::scoped_interpreter guard;
+  // When running as a standalone executable, we own the Python interpreter.
+  // When loaded as a Python extension (BMI), Python is already running —
+  // skip initialisation to avoid "interpreter is already running" error.
+  std::optional<pybind11::scoped_interpreter> guard;
 #endif
   const symbol preferred_ui;
   const std::string program_name;
@@ -195,6 +198,10 @@ Toplevel::Implementation::Implementation (Metalib::load_frame_t load_syntax,
     has_daisy_log (false)
 { 
   (void) setlocale (LC_ALL, "C");
+#ifdef BUILD_PYTHON
+  if (!Py_IsInitialized ())
+    guard.emplace ();
+#endif
 }
   
 Toplevel::Implementation::~Implementation ()

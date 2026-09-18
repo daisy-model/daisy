@@ -6,6 +6,7 @@ project(
   HOMEPAGE_URL https://daisy.ku.dk/
   LANGUAGES CXX C
 )
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(cmake/AddCoverageBuildType.cmake)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -98,6 +99,9 @@ endif()
 
 # Sources are added with target_sources in CMakeLists in the source tree
 add_subdirectory(src)
+
+# Add tools for python interface
+add_subdirectory(tools)
 
 # Packaging
 # lib/ and sample/ contain .dai files that define functionality that should be installed

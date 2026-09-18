@@ -1,14 +1,14 @@
 '''Module illustrating how to implement a concrete DaisyPyFun that can be called from Daisy'''
 import math
-from daisy_py_fun_interface import DaisyPyFun
+from daisy.plugins import DaisyPyFun
 
+# define Tmin plugin
 class Tmin(DaisyPyFun):
     '''A class that calculates the T_min function built into Daisy. See the reference manual for
     details.
     '''
     range = 'None'
     domain = 'dg C'
-
 
     def __init__(self, args):
         '''Initialize T_min.
