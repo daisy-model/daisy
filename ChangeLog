@@ -1,3 +1,8 @@
+2026-11-09  Per Abrahamsen  <pa@plen.ku.dk>
+
+	* src/daisy/soil/hydraulic_hyprop.C (S_ad): Handle h = h0 case
+	more numerically stable.
+
 2026-09-01  Per Abrahamsen  <pa@plen.ku.dk>
 
 	* src/util/path.C (get_cwd): Had Copilot write code for a better

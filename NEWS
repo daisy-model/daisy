@@ -44,8 +44,8 @@ where h0 is the pressure in the top node, and h_surf is either h_crit,
 or if not set, h_atm, and L is the distance from top node center to
 surface.  M is integrated version of hydraulic conductivity (K).
 
-This model only makes sense if your hydraulic function includes vapor
-flow, such as hyprop.
+This model only makes sense if your hydraulic function include
+non-capillarty flow, such as hyprop.
 
 * 7.1.9
 

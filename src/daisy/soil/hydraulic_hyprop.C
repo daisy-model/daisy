@@ -69,11 +69,27 @@ class HydraulicHyprop : public Hydraulic
     
     const double x = h2pF (h);
 
+    if (approximate (x, x0))
+      // h == h0, with some numeric noise.
+      return 0.0;
+    
     const double result		// Eq 2.
       =  1.0
       + (1.0 / (xa - x0))
       * (x - xa + b * std::log (1.0 + std::exp ((xa - x) / b)));
-    
+    if (!(result >= 0.0))
+      {
+	std::ostringstream tmp;
+	tmp << "result = " << result
+	    << "; xa = " << xa 
+	    << "; x0  = " << x
+	    << "; x = " << x
+	    << "; b = " << b 
+	    << "; std::log (1.0 + std::exp ((xa - x) / b))) = " << std::log (1.0 + std::exp ((xa - x) / b))
+	    << "; 1.0 + std::exp ((xa - x) / b)) = " << (1.0 + std::exp ((xa - x) / b));
+	  Assertion::message (tmp.str ());
+	  return 0.0;
+      }
     daisy_assert (result >= 0.0);
     daisy_assert (result <= 1.01);
     return result;
